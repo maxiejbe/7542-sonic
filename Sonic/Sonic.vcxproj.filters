@@ -15,7 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="test.cpp">
+    <ClCompile Include="LTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -36,6 +42,24 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="img\loaded.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\background.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\foo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\bg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\dot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\level1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\level.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
