@@ -2,6 +2,7 @@
 #include <SDL_image.h>
 #include <stdio.h>
 #include <string>
+#include <cmath>
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
@@ -261,6 +262,22 @@ int main(int argc, char* args[])
 
 				//Render texture to screen
 				SDL_RenderCopy(gRenderer, gTexture, NULL, NULL);
+
+				//Clear screen
+				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+
+				//Render red filled quad
+				SDL_Rect fillRect = { SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4 };
+				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0x00, 0x00, 0xFF );		
+				SDL_RenderFillRect( gRenderer, &fillRect );
+
+				//Render green outlined quad
+				SDL_Rect outlineRect = { SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6, SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT * 2 / 3 };
+				SDL_SetRenderDrawColor( gRenderer, 0x00, 0xFF, 0x00, 0xFF );		
+				SDL_RenderDrawRect( gRenderer, &outlineRect );
+
+				//Update screen
+				SDL_RenderPresent( gRenderer );
 
 				//Update screen
 				SDL_RenderPresent(gRenderer);
