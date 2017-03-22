@@ -21,6 +21,14 @@
   <ItemGroup>
     <ClCompile Include="test.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="img\down.bmp" />
+    <Image Include="img\left.bmp" />
+    <Image Include="img\loaded.png" />
+    <Image Include="img\press.bmp" />
+    <Image Include="img\right.bmp" />
+    <Image Include="img\up.bmp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A3F8E1A0-5C50-4336-A742-6CAFA67F93A0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -74,8 +82,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)libs\SDL2-2.0.5\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)libs\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)libs\SDL2_image-2.0.1\include;$(ProjectDir)libs\SDL2-2.0.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86;$(ProjectDir)libs\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -98,7 +106,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
