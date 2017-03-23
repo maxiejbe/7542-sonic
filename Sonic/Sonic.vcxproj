@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Dot.cpp" />
     <ClCompile Include="LTexture.cpp" />
+    <ClCompile Include="LTimer.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

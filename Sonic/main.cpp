@@ -4,17 +4,17 @@
 #include <string>
 #include <cmath>
 #include "LTexture.cpp"
+#include "LTimer.cpp"
 #include "Dot.cpp"
 
-using namespace std;
 
 //The dimensions of the level
-const int LEVEL_WIDTH = 3328;
-const int LEVEL_HEIGHT = 768;
+const int LEVEL_WIDTH = 3328; // TODO: tomar del json
+const int LEVEL_HEIGHT = 768; // TODO: tomar del json
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 800; // TODO: tomar del json
+const int SCREEN_HEIGHT = 600; // TODO: tomar del json
 
 //Starts up SDL and creates window
 bool init();
@@ -102,24 +102,6 @@ void LTexture::free()
 	}
 }
 
-void LTexture::setColor(Uint8 red, Uint8 green, Uint8 blue)
-{
-	//Modulate texture rgb
-	SDL_SetTextureColorMod(mTexture, red, green, blue);
-}
-
-void LTexture::setBlendMode(SDL_BlendMode blending)
-{
-	//Set blending function
-	SDL_SetTextureBlendMode(mTexture, blending);
-}
-
-void LTexture::setAlpha(Uint8 alpha)
-{
-	//Modulate texture alpha
-	SDL_SetTextureAlphaMod(mTexture, alpha);
-}
-
 void LTexture::render(int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip)
 {
 	//Set rendering space and render to screen
@@ -146,11 +128,13 @@ int LTexture::getHeight()
 	return mHeight;
 }
 
+// Dot
+
 Dot::Dot()
 {
 	//Initialize the offsets
 	mPosX = 0;
-	mPosY = 0;
+	mPosY = SCREEN_HEIGHT / 2;
 
 	//Initialize the velocity
 	mVelX = 0;
@@ -185,44 +169,155 @@ void Dot::handleEvent(SDL_Event& e)
 	}
 }
 
-void Dot::move()
+void Dot::move(float timeStep)
 {
 	//Move the dot left or right
-	mPosX += mVelX;
+	mPosX += mVelX * timeStep;
 
 	//If the dot went too far to the left or right
-	if ((mPosX < 0) || (mPosX + DOT_WIDTH > LEVEL_WIDTH))
+	if (mPosX < 0)
 	{
-		//Move back
-		mPosX -= mVelX;
+		mPosX = 0;
+	}
+	else if (mPosX > LEVEL_WIDTH - DOT_WIDTH)
+	{
+		mPosX = LEVEL_WIDTH - DOT_WIDTH;
 	}
 
 	//Move the dot up or down
-	mPosY += mVelY;
+	mPosY += mVelY * timeStep;
 
 	//If the dot went too far up or down
-	if ((mPosY < 0) || (mPosY + DOT_HEIGHT > LEVEL_HEIGHT))
+	if (mPosY < 0)
 	{
-		//Move back
-		mPosY -= mVelY;
+		mPosY = 0;
+	}
+	else if (mPosY > LEVEL_HEIGHT - DOT_HEIGHT)
+	{
+		mPosY = LEVEL_HEIGHT - DOT_HEIGHT;
 	}
 }
 
 void Dot::render(int camX, int camY)
 {
 	//Show the dot relative to the camera
-	gDotTexture.render(mPosX - camX, mPosY - camY);
+	gDotTexture.render((int)(mPosX - camX), (int)(mPosY - camY));
 }
 
-int Dot::getPosX()
+float Dot::getPosX()
 {
 	return mPosX;
 }
 
-int Dot::getPosY()
+float Dot::getPosY()
 {
 	return mPosY;
 }
+
+// Timer
+
+LTimer::LTimer()
+{
+	//Initialize the variables
+	mStartTicks = 0;
+	mPausedTicks = 0;
+
+	mPaused = false;
+	mStarted = false;
+}
+
+void LTimer::start()
+{
+	//Start the timer
+	mStarted = true;
+
+	//Unpause the timer
+	mPaused = false;
+
+	//Get the current clock time
+	mStartTicks = SDL_GetTicks();
+	mPausedTicks = 0;
+}
+
+void LTimer::stop()
+{
+	//Stop the timer
+	mStarted = false;
+
+	//Unpause the timer
+	mPaused = false;
+
+	//Clear tick variables
+	mStartTicks = 0;
+	mPausedTicks = 0;
+}
+
+void LTimer::pause()
+{
+	//If the timer is running and isn't already paused
+	if (mStarted && !mPaused)
+	{
+		//Pause the timer
+		mPaused = true;
+
+		//Calculate the paused ticks
+		mPausedTicks = SDL_GetTicks() - mStartTicks;
+		mStartTicks = 0;
+	}
+}
+
+void LTimer::unpause()
+{
+	//If the timer is running and paused
+	if (mStarted && mPaused)
+	{
+		//Unpause the timer
+		mPaused = false;
+
+		//Reset the starting ticks
+		mStartTicks = SDL_GetTicks() - mPausedTicks;
+
+		//Reset the paused ticks
+		mPausedTicks = 0;
+	}
+}
+
+Uint32 LTimer::getTicks()
+{
+	//The actual timer time
+	Uint32 time = 0;
+
+	//If the timer is running
+	if (mStarted)
+	{
+		//If the timer is paused
+		if (mPaused)
+		{
+			//Return the number of ticks when the timer was paused
+			time = mPausedTicks;
+		}
+		else
+		{
+			//Return the current time minus the start time
+			time = SDL_GetTicks() - mStartTicks;
+		}
+	}
+
+	return time;
+}
+
+bool LTimer::isStarted()
+{
+	//Timer is running and paused or unpaused
+	return mStarted;
+}
+
+bool LTimer::isPaused()
+{
+	//Timer is running and paused
+	return mPaused && mStarted;
+}
+
 
 bool init()
 {
@@ -283,17 +378,17 @@ bool loadMedia()
 	//Loading success flag
 	bool success = true;
 
-	//Load background texture
-	if (!gBGTexture.loadFromFile("img/level.png"))
-	{
-		printf("Failed to load background texture!\n");
-		success = false;
-	}
-
 	//Load dot texture
 	if (!gDotTexture.loadFromFile("img/dot.bmp"))
 	{
 		printf("Failed to load dot texture!\n");
+		success = false;
+	}
+
+	//Load background texture
+	if (!gBGTexture.loadFromFile("img/level.png"))
+	{
+		printf("Failed to load background texture!\n");
 		success = false;
 	}
 
@@ -342,6 +437,9 @@ int main(int argc, char* args[])
 			//The dot that will be moving around on the screen
 			Dot dot;
 
+			//Keeps track of time between steps
+			LTimer stepTimer;
+
 			//The camera area
 			SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
@@ -359,42 +457,20 @@ int main(int argc, char* args[])
 
 					//Handle input for the dot
 					dot.handleEvent(e);
-
-					//User presses a key
-					/*else if (e.type == SDL_KEYDOWN)
-					{
-						//Select surfaces based on key press
-						switch (e.key.keysym.sym)
-						{
-						case SDLK_UP:
-							gTexture = gKeyPressTextures[KEY_PRESS_SURFACE_UP];
-							break;
-
-						case SDLK_DOWN:
-							gTexture = gKeyPressTextures[KEY_PRESS_SURFACE_DOWN];
-							break;
-
-						case SDLK_LEFT:
-							gTexture = gKeyPressTextures[KEY_PRESS_SURFACE_LEFT];
-							break;
-
-						case SDLK_RIGHT:
-							gTexture = gKeyPressTextures[KEY_PRESS_SURFACE_RIGHT];
-							break;
-
-						default:
-							gTexture = gKeyPressTextures[KEY_PRESS_SURFACE_DEFAULT];
-							break;
-						}
-					}*/
 				}
 
-				//Move the dot
-				dot.move();
+				//Calculate time step
+				float timeStep = stepTimer.getTicks() / 1000.f;
+
+				//Move for time step
+				dot.move(timeStep);
+
+				//Restart step timer
+				stepTimer.start();
 
 				//Center the camera over the dot
-				camera.x = (dot.getPosX() + Dot::DOT_WIDTH / 2) - SCREEN_WIDTH / 2;
-				camera.y = (dot.getPosY() + Dot::DOT_HEIGHT / 2) - SCREEN_HEIGHT / 2;
+				camera.x = ((int)dot.getPosX() + Dot::DOT_WIDTH / 2) - SCREEN_WIDTH / 2;
+				camera.y = ((int)dot.getPosY() + Dot::DOT_HEIGHT / 2) - SCREEN_HEIGHT / 2;
 
 				//Keep the camera in bounds
 				if (camera.x < 0)
@@ -417,19 +493,6 @@ int main(int argc, char* args[])
 				//Clear screen
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gRenderer);
-
-				//Render texture to screen
-				//SDL_RenderCopy(gRenderer, gTexture, NULL, NULL);
-
-				////Render red filled quad
-				//SDL_Rect fillRect = { SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4 };
-				//SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);
-				//SDL_RenderFillRect(gRenderer, &fillRect);
-
-				////Render green outlined quad
-				//SDL_Rect outlineRect = { SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6, SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT * 2 / 3 };
-				//SDL_SetRenderDrawColor(gRenderer, 0x00, 0xFF, 0x00, 0xFF);
-				//SDL_RenderDrawRect(gRenderer, &outlineRect);
 
 				//Render background
 				gBGTexture.render(0, 0, &camera);
