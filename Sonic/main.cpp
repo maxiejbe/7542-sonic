@@ -6,6 +6,7 @@
 #include "LTexture.cpp"
 #include "LTimer.cpp"
 #include "Dot.cpp"
+#include "Logger.cpp"
 
 
 //The dimensions of the level
@@ -414,6 +415,14 @@ void close()
 
 int main(int argc, char* args[])
 {
+	Logger logger();
+
+	logger << Logger::LogLevel::logLOW << "Hola!";
+	logger << Logger::LogLevel::logMEDIUM << "Como va!";
+	logger << Logger::LogLevel::logHIGH << "Chau!";
+
+
+
 	//Start up SDL and create window
 	if (!init())
 	{
