@@ -415,7 +415,7 @@ void close()
 
 int main(int argc, char* args[])
 {
-	Logger logger();
+	Logger logger;
 
 	logger << Logger::LogLevel::logLOW << "Hola!";
 	logger << Logger::LogLevel::logMEDIUM << "Como va!";

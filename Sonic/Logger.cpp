@@ -1,12 +1,8 @@
 #include <fstream>
-#include <chrono>
-#include <ctime>
-#include <sstream>
-#include <iomanip>
 #include <string>
+#include "DateUtils.cpp"
 
 using namespace std;
-using namespace std::chrono;
 
 class Logger {
 
@@ -14,18 +10,19 @@ public:
 
 	enum LogLevel { logLOW, logMEDIUM, logHIGH };
 
-	Logger(const string fileName = "log.txt") {
+	Logger() {
 		// Open file
+		string fileName = "log_" + DateUtils::getCurrentDate() + ".txt";
 		logFile.open(fileName);
 
 		// Write init line
 		if (logFile.is_open()) {
-			logFile << "Logger initialized" << endl;
+			logFile << "Logger initialized" << endl << endl;
 		}
 	}
 
 	friend Logger &operator << (Logger &logger, const LogLevel logLevel) {
-		logger.logFile << logger.getCurrentDateTime();
+		logger.logFile << DateUtils::getCurrentDateTime();
 
 		switch (logLevel) {
 		case LogLevel::logLOW:
@@ -50,28 +47,10 @@ public:
 	~Logger() {
 		// Write end line and close file
 		if (logFile.is_open()) {
-			logFile << "Logger terminated" << endl;
+			logFile << endl << "Logger terminated" << endl;
 			logFile.close();
 		}
 	}
 private:
 	ofstream logFile;
-
-	string getCurrentDateTime() {
-		auto now = system_clock::now();
-		auto in_time_t = system_clock::to_time_t(now);
-
-		stringstream ss;
-		ss << put_time(localtime(&in_time_t), "%Y-%m-%d %X");
-		return ss.str();
-	}
-
-	string getCurrentDate() {
-		auto now = system_clock::now();
-		auto in_time_t = system_clock::to_time_t(now);
-
-		stringstream ss;
-		ss << put_time(localtime(&in_time_t), "%Y-%m-%d");
-		return ss.str();
-	}
 };
