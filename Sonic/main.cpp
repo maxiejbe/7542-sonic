@@ -7,7 +7,7 @@
 #include "LTimer.cpp"
 #include "Dot.cpp"
 #include "Logger.cpp"
-
+#include "Parser.cpp"
 
 //The dimensions of the level
 const int LEVEL_WIDTH = 3328; // TODO: tomar del json
@@ -426,6 +426,10 @@ int main(int argc, char* args[])
 	
 	*/
 
+	//Get file path from args
+	if (argc == 0) {
+
+	}
 
 	//Start up SDL and create window
 	if (!init())
