@@ -42,6 +42,7 @@
     <Image Include="img\up.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="config\params.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -426,10 +426,8 @@ int main(int argc, char* args[])
 	
 	*/
 
-	//Get file path from args
-	if (argc == 0) {
-
-	}
+	//TODO: Take params from argv
+	Parser* p = new Parser("config/params.json");
 
 	//Start up SDL and create window
 	if (!init())
