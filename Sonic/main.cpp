@@ -415,12 +415,12 @@ void close()
 
 int main(int argc, char* args[])
 {
-	Logger logger;
+	Logger::Init();
+	Logger::ReportingLevel() = logMEDIUM;
 
-	logger << Logger::LogLevel::logLOW << "Hola!";
-	logger << Logger::LogLevel::logMEDIUM << "Como va!";
-	logger << Logger::LogLevel::logHIGH << "Chau!";
-
+	LOG(logLOW) << "Hola!"; // Deberia loguear
+	LOG(logMEDIUM) << "Como va!!"; // Deberia loguear
+	LOG(logHIGH) << "Chau!!!"; // NO deberia loguear
 
 
 	//Start up SDL and create window

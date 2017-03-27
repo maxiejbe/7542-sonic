@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DateUtils.cpp" />
     <ClCompile Include="Dot.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="LTexture.cpp" />

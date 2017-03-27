@@ -1,56 +1,82 @@
 #include <fstream>
 #include <string>
+#include <sstream>
+#include <stdio.h>
 #include "DateUtils.cpp"
 
 using namespace std;
 
+enum LogLevel { logLOW, logMEDIUM, logHIGH };
+
 class Logger {
 
 public:
-
-	enum LogLevel { logLOW, logMEDIUM, logHIGH };
-
-	Logger() {
-		// Open file
-		string fileName = "log_" + DateUtils::getCurrentDate() + ".txt";
-		logFile.open(fileName);
-
-		// Write init line
-		if (logFile.is_open()) {
-			logFile << "Logger initialized" << endl << endl;
-		}
-	}
-
-	friend Logger &operator << (Logger &logger, const LogLevel logLevel) {
-		logger.logFile << DateUtils::getCurrentDateTime();
-
-		switch (logLevel) {
-		case LogLevel::logLOW:
-			logger.logFile << " [LOW] ";
-			break;
-		case LogLevel::logMEDIUM:
-			logger.logFile << " [MEDIUM] ";
-			break;
-		case LogLevel::logHIGH:
-			logger.logFile << " [HIGH] ";
-			break;
-		}
-
-		return logger;
-	}
-
-	friend Logger &operator << (Logger &logger, const char *text) {
-		logger.logFile << text << endl;
-		return logger;
-	}
-
-	~Logger() {
-		// Write end line and close file
-		if (logFile.is_open()) {
-			logFile << endl << "Logger terminated" << endl;
-			logFile.close();
-		}
-	}
+	Logger();
+	~Logger();
+	static void Init();
+	std::ostringstream& Get(LogLevel level = logMEDIUM);
+	static LogLevel& ReportingLevel();
+	static FILE*& Stream();
+protected:
+	std::ostringstream os;
 private:
+	Logger(const Logger&);
+	Logger& operator =(const Logger&);
 	ofstream logFile;
 };
+
+
+inline Logger::Logger() {
+}
+
+inline Logger::~Logger() {
+	FILE* pStream = Stream();
+	if (!pStream)
+		return;
+
+	os << endl;
+	fprintf(pStream, "%s", os.str().c_str());
+	fflush(pStream);
+}
+
+inline void Logger::Init() {
+	string fileName = "log_" + DateUtils::getCurrentDate() + ".log";
+	FILE* pFile = fopen(fileName.c_str(), "a");
+	Logger::Stream() = pFile;
+
+	Logger().Get(logLOW) << "Inicializado!" << endl;
+}
+
+inline std::ostringstream& Logger::Get(LogLevel level) {
+	os << DateUtils::getCurrentDateTime();
+
+	switch (level) {
+	case LogLevel::logLOW:
+		os << " [LOW] ";
+		break;
+	case LogLevel::logMEDIUM:
+		os << " [MEDIUM] ";
+		break;
+	case LogLevel::logHIGH:
+		os << " [HIGH] ";
+		break;
+	}
+
+	return os;
+}
+
+inline LogLevel& Logger::ReportingLevel()
+{
+	static LogLevel reportingLevel = logMEDIUM;
+	return reportingLevel;
+}
+
+inline FILE*& Logger::Stream()
+{
+	static FILE* pStream = stderr;
+	return pStream;
+}
+
+#define LOG(level) \
+	if (level > Logger::ReportingLevel() || !Logger::Stream()) ; \
+	else Logger().Get(level)

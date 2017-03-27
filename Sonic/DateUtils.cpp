@@ -7,7 +7,7 @@
 using namespace std;
 using namespace std::chrono;
 
-static class DateUtils {
+class DateUtils {
 public:
 	static string getCurrentDateTime() {
 		return getCurrentDate(true);
