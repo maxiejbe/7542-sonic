@@ -415,12 +415,16 @@ void close()
 
 int main(int argc, char* args[])
 {
-	Logger::Init();
-	Logger::ReportingLevel() = logMEDIUM; // TODO: tomar de json
+	/* Ejemplo de uso de Logger
 
-	LOG(logLOW) << "Log LOW"; // Deberia loguear
-	LOG(logMEDIUM) << "Log MEDIUM"; // Deberia loguear
-	LOG(logHIGH) << "Log HIGH"; // NO deberia loguear
+	Logger::Init();
+	Logger::LoggingLevel() = logMEDIUM; // TODO: tomar de json
+
+	LOG(logINFO) << "Informacion bla bla bla.";
+	LOG(logWARNING) << "Cuidado, es un warning!";
+	LOG(logERROR) << "Este es un error de ejemplo.";
+	
+	*/
 
 
 	//Start up SDL and create window

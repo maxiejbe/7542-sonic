@@ -6,7 +6,14 @@
 
 using namespace std;
 
+/* Definicion de niveles de log
+	LOW: INFO
+	MEDIUM: INFO + WARNING
+	HIGH: INFO + WARNING + ERROR
+*/
+
 enum LogLevel { logLOW, logMEDIUM, logHIGH };
+enum LogType { logINFO, logWARNING, logERROR };
 
 class Logger {
 
@@ -14,14 +21,14 @@ public:
 	Logger();
 	~Logger();
 	static void Init();
-	std::ostringstream& Get(LogLevel level = logMEDIUM);
-	static LogLevel& ReportingLevel();
+	std::ostringstream& Get(LogType level = logINFO);
+	static LogLevel& LoggingLevel();
 	static FILE*& Stream();
 protected:
 	std::ostringstream os;
 private:
 	Logger(const Logger&);
-	std::ostringstream& GetHeader();
+	std::ostringstream& GetSeparator();
 	Logger& operator =(const Logger&);
 	ofstream logFile;
 	const string SEPARATOR = "========================================";
@@ -46,42 +53,38 @@ inline void Logger::Init() {
 	FILE* file = fopen(fileName.c_str(), "a");
 	Logger::Stream() = file;
 
-	Logger().GetHeader();
+	Logger().GetSeparator();
+	Logger().Get(logINFO) << "La aplicación se ha iniciado.";
+	Logger().GetSeparator();
 }
 
-inline std::ostringstream& Logger::GetHeader() {
-	os << endl << SEPARATOR << endl;
-	os << DateUtils::getCurrentDateTime();
-	os << " La aplicación se ha iniciado." << endl;
-	os << SEPARATOR << endl;
+inline std::ostringstream& Logger::GetSeparator() {
+	os << SEPARATOR;
 	return os;
 }
 
-inline std::ostringstream& Logger::Get(LogLevel level) {
-	os << DateUtils::getCurrentDateTime();
+inline std::ostringstream& Logger::Get(LogType type) {
+	os << DateUtils::getCurrentDateTime() << " ";
 
-	switch (level) {
-	case LogLevel::logLOW:
-		os << " [LOW] ";
+	switch (type) {
+	case LogType::logINFO:
+		os << "[INFO] ";
 		break;
-	case LogLevel::logMEDIUM:
-		os << " [MEDIUM] ";
+	case LogType::logWARNING:
+		os << "[WARNING] ";
 		break;
-	case LogLevel::logHIGH:
-		os << " [HIGH] ";
-		break;
-	default:
-		os << " ";
+	case LogType::logERROR:
+		os << "[ERROR] ";
 		break;
 	}
 
 	return os;
 }
 
-inline LogLevel& Logger::ReportingLevel()
+inline LogLevel& Logger::LoggingLevel()
 {
-	static LogLevel reportingLevel = logMEDIUM;
-	return reportingLevel;
+	static LogLevel loggingLevel = logMEDIUM;
+	return loggingLevel;
 }
 
 inline FILE*& Logger::Stream()
@@ -90,6 +93,6 @@ inline FILE*& Logger::Stream()
 	return stream;
 }
 
-#define LOG(level) \
-	if (level > Logger::ReportingLevel() || !Logger::Stream()) ; \
-	else Logger().Get(level)
+#define LOG(type) \
+	if (type > Logger::LoggingLevel() || !Logger::Stream()) ; \
+	else Logger().Get(type)
