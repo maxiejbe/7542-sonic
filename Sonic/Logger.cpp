@@ -21,8 +21,10 @@ protected:
 	std::ostringstream os;
 private:
 	Logger(const Logger&);
+	std::ostringstream& GetHeader();
 	Logger& operator =(const Logger&);
 	ofstream logFile;
+	const string SEPARATOR = "========================================";
 };
 
 
@@ -30,21 +32,29 @@ inline Logger::Logger() {
 }
 
 inline Logger::~Logger() {
-	FILE* pStream = Stream();
-	if (!pStream)
+	FILE* stream = Stream();
+	if (!stream)
 		return;
 
 	os << endl;
-	fprintf(pStream, "%s", os.str().c_str());
-	fflush(pStream);
+	fprintf(stream, "%s", os.str().c_str());
+	fflush(stream);
 }
 
 inline void Logger::Init() {
 	string fileName = "log_" + DateUtils::getCurrentDate() + ".log";
-	FILE* pFile = fopen(fileName.c_str(), "a");
-	Logger::Stream() = pFile;
+	FILE* file = fopen(fileName.c_str(), "a");
+	Logger::Stream() = file;
 
-	Logger().Get(logLOW) << "Inicializado!" << endl;
+	Logger().GetHeader();
+}
+
+inline std::ostringstream& Logger::GetHeader() {
+	os << endl << SEPARATOR << endl;
+	os << DateUtils::getCurrentDateTime();
+	os << " La aplicación se ha iniciado." << endl;
+	os << SEPARATOR << endl;
+	return os;
 }
 
 inline std::ostringstream& Logger::Get(LogLevel level) {
@@ -60,6 +70,9 @@ inline std::ostringstream& Logger::Get(LogLevel level) {
 	case LogLevel::logHIGH:
 		os << " [HIGH] ";
 		break;
+	default:
+		os << " ";
+		break;
 	}
 
 	return os;
@@ -73,8 +86,8 @@ inline LogLevel& Logger::ReportingLevel()
 
 inline FILE*& Logger::Stream()
 {
-	static FILE* pStream = stderr;
-	return pStream;
+	static FILE* stream = stderr;
+	return stream;
 }
 
 #define LOG(level) \

@@ -416,11 +416,11 @@ void close()
 int main(int argc, char* args[])
 {
 	Logger::Init();
-	Logger::ReportingLevel() = logMEDIUM;
+	Logger::ReportingLevel() = logMEDIUM; // TODO: tomar de json
 
-	LOG(logLOW) << "Hola!"; // Deberia loguear
-	LOG(logMEDIUM) << "Como va!!"; // Deberia loguear
-	LOG(logHIGH) << "Chau!!!"; // NO deberia loguear
+	LOG(logLOW) << "Log LOW"; // Deberia loguear
+	LOG(logMEDIUM) << "Log MEDIUM"; // Deberia loguear
+	LOG(logHIGH) << "Log HIGH"; // NO deberia loguear
 
 
 	//Start up SDL and create window
