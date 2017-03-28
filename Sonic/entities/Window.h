@@ -10,7 +10,7 @@ public:
 
 	Dimensions GetDimensions();
 private:
-	Dimensions* dimensions;
+	Dimensions dimensions;
 };
 
 #endif

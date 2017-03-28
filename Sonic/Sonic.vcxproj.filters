@@ -45,6 +45,12 @@
     <ClCompile Include="LTimer.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="entities\Layer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Coordinate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\down.bmp">
@@ -120,6 +126,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="entities\Layer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="entities\Coordinate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

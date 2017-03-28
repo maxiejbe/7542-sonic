@@ -21,8 +21,10 @@
   <ItemGroup>
     <ClCompile Include="DateUtils.cpp" />
     <ClCompile Include="entities\Configuration.cpp" />
+    <ClCompile Include="entities\Coordinate.cpp" />
     <ClCompile Include="entities\Dimensions.cpp" />
     <ClCompile Include="entities\Entity.cpp" />
+    <ClCompile Include="entities\Layer.cpp" />
     <ClCompile Include="entities\Scenario.cpp" />
     <ClCompile Include="entities\Window.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -51,8 +53,10 @@
   <ItemGroup>
     <ClInclude Include="Dot.h" />
     <ClInclude Include="entities\Configuration.h" />
+    <ClInclude Include="entities\Coordinate.h" />
     <ClInclude Include="entities\Dimensions.h" />
     <ClInclude Include="entities\Entity.h" />
+    <ClInclude Include="entities\Layer.h" />
     <ClInclude Include="entities\Scenario.h" />
     <ClInclude Include="LTexture.h" />
     <ClInclude Include="Parser.h" />

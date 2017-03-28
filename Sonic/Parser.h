@@ -11,9 +11,15 @@
 #include "rapidjson/stringbuffer.h"
 #include "entities/Window.h"
 #include "entities/Configuration.h"
+#include "entities/Scenario.h"
+#include "entities/Coordinate.h"
+#include <vector>
 
 using namespace std;
 using namespace rapidjson;
+
+//TODO Maxi: Extract to base methods ParseObject and ParseCollection with generics
+//Unserealization would be responsibility of each object
 
 class Parser {
 public:
@@ -21,6 +27,7 @@ public:
 	~Parser();
 	Window ParseWindow();
 	Configuration ParseConfiguration();
+	Scenario ParseScenario();
 
 private:
 	Document document;
@@ -28,7 +35,14 @@ private:
 
 	string ReadConfigFileContent(string path);
 
-	Dimensions ParseDimensions();
+	Dimensions ParseDimensions(char* parentNode);
+	Layer ParseLayer(int index);
+	Entity ParseEntity(int index);
+	Coordinate ParseCoordinate(int index);
+
+	vector<Layer> ParseLayers();
+	vector<Entity> ParseEntities();
+
 };
 
 #endif

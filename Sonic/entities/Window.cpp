@@ -6,10 +6,10 @@ Window::Window()
 
 Window::Window(Dimensions dimensionsParam)
 {
-	dimensions = new Dimensions(dimensionsParam.GetWidth(), dimensionsParam.GetHeight());
+	dimensions = dimensionsParam;
 }
 
 Dimensions Window::GetDimensions()
 {
-	return *dimensions;
+	return dimensions;
 }

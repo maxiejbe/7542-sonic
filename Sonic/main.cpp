@@ -430,16 +430,10 @@ int main(int argc, char* args[])
 
 	//TODO: Take params from argv
 	Parser* p = new Parser("config/params.json");
-	Window mainWindow = p->ParseWindow();
-	
-	cout << mainWindow.GetDimensions().GetHeight() << endl;
-	cout << mainWindow.GetDimensions().GetWidth() << endl;
+	Window window = p->ParseWindow();
+	Configuration config = p->ParseConfiguration();
+	Scenario scenario = p->ParseScenario();
 
-	Configuration configuration = p->ParseConfiguration();
-
-	cout << configuration.GetScrollSpeed() << endl;
-	
-	
 	//Start up SDL and create window
 	if (!init())
 	{
