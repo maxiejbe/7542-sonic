@@ -20,15 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DateUtils.cpp" />
-    <ClCompile Include="Dot.cpp" />
     <ClCompile Include="entities\Configuration.cpp" />
     <ClCompile Include="entities\Dimensions.cpp" />
     <ClCompile Include="entities\Entity.cpp" />
     <ClCompile Include="entities\Scenario.cpp" />
     <ClCompile Include="entities\Window.cpp" />
     <ClCompile Include="Logger.cpp" />
-    <ClCompile Include="LTexture.cpp" />
-    <ClCompile Include="LTimer.cpp" />
+    <ClCompile Include="LTimer.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parser.cpp" />
   </ItemGroup>
@@ -47,23 +45,24 @@
     <Image Include="img\up.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\Users\maxi\Desktop\params.json" />
     <None Include="config\params.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Dot.h" />
     <ClInclude Include="entities\Configuration.h" />
     <ClInclude Include="entities\Dimensions.h" />
     <ClInclude Include="entities\Entity.h" />
     <ClInclude Include="entities\Scenario.h" />
+    <ClInclude Include="LTexture.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="entities\Window.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="DateUtils.h" />
+    <ClInclude Include="Logger.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sonic.rc" />
-    <ClInclude Include="DateUtils.h" />
-    <ClInclude Include="Logger.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A3F8E1A0-5C50-4336-A742-6CAFA67F93A0}</ProjectGuid>

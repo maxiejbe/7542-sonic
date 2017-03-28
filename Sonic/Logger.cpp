@@ -54,6 +54,20 @@ std::ostringstream& Logger::Get(LogType type) {
 	return os;
 }
 
+LogLevel Logger::FromString(string level) {
+	transform(level.begin(), level.end(), level.begin(), ::toupper);
+
+	if (level == "LOW")
+		return logLOW;
+	if (level == "MEDIUM")
+		return logMEDIUM;
+	if (level == "HIGH")
+		return logHIGH;
+	
+	Logger().Get(logWARNING) << "El nivel de log '" << level << "' no existe. Se tomará el nivel MEDIUM por defecto.";
+	return logMEDIUM;
+}
+
 LogLevel& Logger::LoggingLevel()
 {
 	static LogLevel loggingLevel = logMEDIUM;

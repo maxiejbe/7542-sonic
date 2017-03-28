@@ -1,4 +1,6 @@
-//The dot that will move around on the screen
+#ifndef DOT_H
+#define DOT_H
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
@@ -33,3 +35,5 @@ private:
 	float mPosX, mPosY;
 	float mVelX, mVelY;
 };
+
+#endif // !DOT_H
