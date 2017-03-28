@@ -13,6 +13,7 @@
 #include "entities/Configuration.h"
 #include "entities/Scenario.h"
 #include "entities/Coordinate.h"
+#include "entities/common/Serializable.h"
 #include <vector>
 
 using namespace std;
@@ -25,23 +26,20 @@ class Parser {
 public:
 	Parser(string path);
 	~Parser();
-	Window ParseWindow();
-	Configuration ParseConfiguration();
-	Scenario ParseScenario();
-
+	void Parse(Serializable* serializable);
 private:
 	Document document;
 	Document windowNode;
 
 	string ReadConfigFileContent(string path);
 
-	Dimensions ParseDimensions(char* parentNode);
-	Layer ParseLayer(int index);
-	Entity ParseEntity(int index);
-	Coordinate ParseCoordinate(int index);
+	Dimensions ParseDimensions(Value* parentNodeRef);
+	Layer ParseLayer(Value* parentNodeRef);
+	Entity ParseEntity(Value* parentNodeRef);
+	Coordinate ParseCoordinate(Value* parentNodeRef);
 
-	vector<Layer> ParseLayers();
-	vector<Entity> ParseEntities();
+	vector<Layer> ParseLayers(Value* parentNodeRef);
+	vector<Entity> ParseEntities(Value* parentNodeRef);
 
 };
 

@@ -2,18 +2,21 @@
 #define LAYER_H
 
 #include <string>
+#include "common/Serializable.h"
 
 using namespace std;
 
-class Layer {
+class Layer : public Serializable {
 public:
 	Layer();
-	Layer(int idParam, int zIndexParam, string imagePathParam);
-
 private:
 	int id;
 	int zIndex;
 	string imagePath;
+
+	// Inherited via Serializable
+	virtual void Unserialize(Value * nodeRef) override;
+	virtual char * GetNodeName() override;
 };
 
 #endif

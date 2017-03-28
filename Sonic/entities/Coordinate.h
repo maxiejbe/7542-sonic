@@ -1,13 +1,18 @@
 #ifndef COORDINATE_H
 #define COORDINATE_H
 
-class Coordinate {
+#include "common/Serializable.h"
+
+class Coordinate : public Serializable {
 public:
 	Coordinate();
-	Coordinate(int xParam, int yParam);
 private:
 	int x;
 	int y;
+
+	// Inherited via Serializable
+	virtual void Unserialize(Value * nodeRef) override;
+	virtual char * GetNodeName() override;
 };
 
 #endif

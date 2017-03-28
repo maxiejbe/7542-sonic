@@ -263,9 +263,19 @@ int main(int argc, char* args[])
 
 	//TODO: Take params from argv
 	Parser* p = new Parser("config/params.json");
-	Window window = p->ParseWindow();
-	Configuration config = p->ParseConfiguration();
-	Scenario scenario = p->ParseScenario();
+	Window window;
+	p->Parse(&window);
+
+	Configuration config;
+	p->Parse(&config);
+
+	Scenario scenario;
+	p->Parse(&scenario);
+
+
+	//Configuration config = p->ParseConfiguration();
+	//Scenario scenario;
+	//p->ParseScenario(&scenario);
 
 	//Start up SDL and create window
 	if (!SDLWindow::getInstance().Create() || !Renderer::getInstance().Create()) {
