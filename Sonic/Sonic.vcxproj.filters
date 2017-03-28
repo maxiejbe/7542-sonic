@@ -1,143 +1,58 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="DateUtils.cpp" />
+    <ClCompile Include="entities\Configuration.cpp" />
+    <ClCompile Include="entities\Coordinate.cpp" />
+    <ClCompile Include="entities\Dimensions.cpp" />
+    <ClCompile Include="entities\Entity.cpp" />
+    <ClCompile Include="entities\Layer.cpp" />
+    <ClCompile Include="entities\Scenario.cpp" />
+    <ClCompile Include="entities\Window.cpp" />
+    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="Timer.h" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="SDLWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DateUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Parser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entities\Window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entities\Configuration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entities\Scenario.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entities\Dimensions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entities\Entity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LTimer.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entities\Layer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entities\Coordinate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="Dot.h" />
+    <ClInclude Include="entities\Configuration.h" />
+    <ClInclude Include="entities\Coordinate.h" />
+    <ClInclude Include="entities\Dimensions.h" />
+    <ClInclude Include="entities\Entity.h" />
+    <ClInclude Include="entities\Layer.h" />
+    <ClInclude Include="entities\Scenario.h" />
+    <ClInclude Include="LTexture.h" />
+    <ClInclude Include="Parser.h" />
+    <ClInclude Include="entities\Window.h" />
+    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="DateUtils.h" />
+    <ClInclude Include="Logger.h" />
+    <ClInclude Include="SDLWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="img\down.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\left.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\press.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\right.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\up.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\loaded.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\background.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\foo.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\bg.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\dot.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\level1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\level.png">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <ResourceCompile Include="Sonic.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Image Include="img\background.png" />
+    <Image Include="img\bg.png" />
+    <Image Include="img\dot.bmp" />
+    <Image Include="img\down.bmp" />
+    <Image Include="img\foo.png" />
+    <Image Include="img\left.bmp" />
+    <Image Include="img\level.png" />
+    <Image Include="img\level1.png" />
+    <Image Include="img\loaded.png" />
+    <Image Include="img\press.bmp" />
+    <Image Include="img\right.bmp" />
+    <Image Include="img\up.bmp" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="config\params.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entities\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Parser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entities\Scenario.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entities\Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entities\Dimensions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entities\Configuration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DateUtils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entities\Layer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entities\Coordinate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Sonic.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

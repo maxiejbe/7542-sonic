@@ -28,9 +28,12 @@
     <ClCompile Include="entities\Scenario.cpp" />
     <ClCompile Include="entities\Window.cpp" />
     <ClCompile Include="Logger.cpp" />
-    <ClCompile Include="LTimer.h" />
+    <ClCompile Include="SDLWindow.cpp" />
+    <ClCompile Include="Timer.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\background.png" />
@@ -61,9 +64,11 @@
     <ClInclude Include="LTexture.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="entities\Window.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="DateUtils.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="SDLWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sonic.rc" />
