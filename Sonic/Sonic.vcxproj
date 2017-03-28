@@ -41,6 +41,7 @@
     <Image Include="img\up.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DateUtils.h" />
     <ClInclude Include="Logger.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
