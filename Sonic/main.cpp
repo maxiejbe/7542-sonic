@@ -7,7 +7,7 @@
 #include "LTimer.cpp"
 #include "Dot.cpp"
 #include "Logger.h"
-
+#include "Parser.h"
 
 //The dimensions of the level
 const int LEVEL_WIDTH = 3328; // TODO: tomar del json
@@ -426,6 +426,8 @@ int main(int argc, char* args[])
 	*/
 	
 
+	//TODO: Take params from argv
+	Parser* p = new Parser("config/params.json");
 
 	//Start up SDL and create window
 	if (!init())
