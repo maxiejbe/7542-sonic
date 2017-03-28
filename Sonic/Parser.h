@@ -8,14 +8,16 @@
 #include <stdio.h>
 #include "rapidjson/document.h"
 
+using namespace std;
+
 class Parser {
 public:
-	Parser(std::string path);
+	Parser(string path);
 	~Parser();
 
 private:
-	std::string fileContent;
-	std::string ReadConfigFileContent(std::string path);
+	string fileContent;
+	string ReadConfigFileContent(string path);
 };
 
 #endif

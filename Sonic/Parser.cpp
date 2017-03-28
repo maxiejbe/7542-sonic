@@ -3,8 +3,6 @@
 /* Json parser para archivo de configuración inicial
 */
 
-using namespace std;
-
 string Parser::ReadConfigFileContent(string path)
 {
 	ifstream file(path);
