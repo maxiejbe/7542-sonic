@@ -428,7 +428,12 @@ int main(int argc, char* args[])
 
 	//TODO: Take params from argv
 	Parser* p = new Parser("config/params.json");
+	Window mainWindow = p->ParseWindow();
+	
+	cout << mainWindow.GetDimensions().GetHeight() << endl;
+	cout << mainWindow.GetDimensions().GetWidth() << endl;
 
+	
 	//Start up SDL and create window
 	if (!init())
 	{

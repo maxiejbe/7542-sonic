@@ -3,18 +3,42 @@
 /* Json parser para archivo de configuración inicial
 */
 
-bool Parser::DocumentHasKey(char* key) {
-	//TODO: Check for semantic errors
-	return document.HasMember(key);
-}
+const char* WINDOW_NODE = "ventana";
+const char* DIMENSIONS_NODE = "dimensiones";
+const char* DIMENSIONS_WIDTH_NODE = "ancho";
+const char* DIMENSIONS_HEIGHT_NODE = "alto";
 
-Window* Parser::ParseWindow() {
-	Window* window = new Window();
-	if (DocumentHasKey("ventana")) {		
 
+Dimensions Parser::ParseDimensions() {
+	if (!document[WINDOW_NODE].HasMember(DIMENSIONS_NODE)) {
+		return Dimensions();
 	}
 
-	return window;
+	int width;
+	if (document[WINDOW_NODE][DIMENSIONS_NODE].HasMember(DIMENSIONS_WIDTH_NODE) && document[WINDOW_NODE][DIMENSIONS_NODE][DIMENSIONS_WIDTH_NODE].IsInt()) {
+		width = document[WINDOW_NODE][DIMENSIONS_NODE][DIMENSIONS_WIDTH_NODE].GetInt();
+	}
+
+	int height;
+	if (document[WINDOW_NODE][DIMENSIONS_NODE].HasMember(DIMENSIONS_HEIGHT_NODE) && document[WINDOW_NODE][DIMENSIONS_NODE][DIMENSIONS_HEIGHT_NODE].IsInt()) {
+		height = document[WINDOW_NODE][DIMENSIONS_NODE][DIMENSIONS_WIDTH_NODE].GetInt();
+	}
+	
+	return Dimensions(width, height);
+}
+
+
+
+Window Parser::ParseWindow() {
+	if (!document.HasMember(WINDOW_NODE)) {
+		return Window();
+	}
+
+	if (!document[WINDOW_NODE].IsObject()) {
+		return Window();
+	}
+	
+	return Window(ParseDimensions());
 }
 
 string Parser::ReadConfigFileContent(string path)

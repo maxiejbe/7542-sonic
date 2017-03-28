@@ -7,6 +7,7 @@
 #include <sstream>
 #include <stdio.h>
 #include "rapidjson/document.h"
+#include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 #include "entities/Window.h"
 
@@ -17,13 +18,15 @@ class Parser {
 public:
 	Parser(string path);
 	~Parser();
-	Window* ParseWindow();
+	Window ParseWindow();
 
 private:
 	Document document;
+	Document windowNode;
+
 	string ReadConfigFileContent(string path);
 
-	bool DocumentHasKey(char* key);
+	Dimensions ParseDimensions();
 };
 
 #endif

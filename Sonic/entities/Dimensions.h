@@ -1,9 +1,9 @@
 class Dimensions {
 public:
-	void SetWidth(int widthParam);
-	int GetWidth();
+	Dimensions();
+	Dimensions(int widthParam, int heightParam);
 
-	void SetHeight(int heightParam);
+	int GetWidth();
 	int GetHeight();
 private:
 	int width;

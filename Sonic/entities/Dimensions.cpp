@@ -1,18 +1,18 @@
 #include "Dimensions.h"
 
-void Dimensions::SetWidth(int widthParam)
+Dimensions::Dimensions()
+{
+}
+
+Dimensions::Dimensions(int widthParam, int heightParam)
 {
 	width = widthParam;
+	height = heightParam;
 }
 
 int Dimensions::GetWidth()
 {
 	return width;
-}
-
-void Dimensions::SetHeight(int heightParam)
-{
-	height = heightParam;
 }
 
 int Dimensions::GetHeight()

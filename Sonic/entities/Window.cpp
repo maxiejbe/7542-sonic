@@ -1,11 +1,15 @@
 #include "Window.h"
 
-void Window::SetDimensions(Dimensions dimensionsParam)
+Window::Window()
 {
-	dimensions = dimensionsParam;
+}
+
+Window::Window(Dimensions dimensionsParam)
+{
+	dimensions = new Dimensions(dimensionsParam.GetWidth(), dimensionsParam.GetHeight());
 }
 
 Dimensions Window::GetDimensions()
 {
-	return dimensions;
+	return *dimensions;
 }

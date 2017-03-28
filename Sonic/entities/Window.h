@@ -2,8 +2,10 @@
 
 class Window {
 public:
-	void SetDimensions(Dimensions dimensionsParam);
+	Window();
+	Window(Dimensions dimensions);
+
 	Dimensions GetDimensions();
 private:
-	Dimensions dimensions;
+	Dimensions* dimensions;
 };
