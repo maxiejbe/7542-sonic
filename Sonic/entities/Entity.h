@@ -11,6 +11,7 @@ class Entity {
 public:
 	Entity();
 	Entity(int idParam, string typeParam, string colorParam, Dimensions dimensionsParam, Coordinate coordinateParam, string imagePathParam, int zIndexParam);
+	virtual void draw();
 private:
 	int id;
 	string type;

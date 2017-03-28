@@ -14,3 +14,6 @@ Entity::Entity(int idParam, string typeParam, string colorParam, Dimensions dime
 	imagePath = imagePathParam;
 	zIndex = zIndexParam;
 }
+
+void Entity::draw() {
+}
