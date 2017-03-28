@@ -1,11 +1,12 @@
 #include "Renderer.h"
+#include "Entities/Window.h"
 
-bool Renderer::Create(SDL_Window* window) {
+bool Renderer::Create() {
 
 	bool success = true;
 
 	//Create renderer for window
-	gRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	gRenderer = SDL_CreateRenderer(Window::getInstance().gWindow, -1, SDL_RENDERER_ACCELERATED);
 	if (gRenderer == NULL)
 	{
 		printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());

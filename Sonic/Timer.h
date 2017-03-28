@@ -4,11 +4,11 @@
 #include <string>
 
 //The application time based timer
-class LTimer
+class Timer
 {
 public:
 	//Initializes variables
-	LTimer();
+	Timer();
 
 	//The various clock actions
 	void start();

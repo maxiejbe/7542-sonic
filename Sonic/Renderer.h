@@ -9,7 +9,7 @@ public:
 		static Renderer instance;
 		return instance;
 	}
-	bool Create(SDL_Window* window);
+	bool Create();
 	void Close();
 	SDL_Renderer* gRenderer = NULL;
 private:

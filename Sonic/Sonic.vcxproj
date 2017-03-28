@@ -26,10 +26,11 @@
     <ClCompile Include="entities\Scenario.cpp" />
     <ClCompile Include="entities\Window.cpp" />
     <ClCompile Include="Logger.cpp" />
-    <ClCompile Include="LTimer.h" />
+    <ClCompile Include="Timer.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\background.png" />
