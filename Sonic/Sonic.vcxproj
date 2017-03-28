@@ -40,6 +40,9 @@
     <Image Include="img\right.bmp" />
     <Image Include="img\up.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Logger.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A3F8E1A0-5C50-4336-A742-6CAFA67F93A0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

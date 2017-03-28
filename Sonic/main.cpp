@@ -6,7 +6,7 @@
 #include "LTexture.cpp"
 #include "LTimer.cpp"
 #include "Dot.cpp"
-#include "Logger.cpp"
+#include "Logger.h"
 
 
 //The dimensions of the level
@@ -423,8 +423,8 @@ int main(int argc, char* args[])
 	LOG(logINFO) << "Informacion bla bla bla.";
 	LOG(logWARNING) << "Cuidado, es un warning!";
 	LOG(logERROR) << "Este es un error de ejemplo.";
-	
 	*/
+	
 
 
 	//Start up SDL and create window
