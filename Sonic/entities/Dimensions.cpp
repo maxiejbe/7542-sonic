@@ -4,10 +4,11 @@ Dimensions::Dimensions()
 {
 }
 
-Dimensions::Dimensions(int widthParam, int heightParam)
+Dimensions::Dimensions(int widthParam, int heightParam, int radioParam)
 {
 	width = widthParam;
 	height = heightParam;
+	radio = radioParam;
 }
 
 int Dimensions::GetWidth()

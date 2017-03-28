@@ -27,7 +27,7 @@ public:
 	~Parser();
 	Window ParseWindow();
 	Configuration ParseConfiguration();
-	Scenario ParseScenario();
+	void ParseScenario(Scenario* scenario);
 
 private:
 	Document document;
@@ -35,13 +35,13 @@ private:
 
 	string ReadConfigFileContent(string path);
 
-	Dimensions ParseDimensions(char* parentNode);
-	Layer ParseLayer(int index);
-	Entity ParseEntity(int index);
-	Coordinate ParseCoordinate(int index);
+	Dimensions ParseDimensions(Value* parentNodeRef);
+	Layer ParseLayer(Value* parentNodeRef);
+	Entity ParseEntity(Value* parentNodeRef);
+	Coordinate ParseCoordinate(Value* parentNodeRef);
 
-	vector<Layer> ParseLayers();
-	vector<Entity> ParseEntities();
+	vector<Layer> ParseLayers(Value* parentNodeRef);
+	vector<Entity> ParseEntities(Value* parentNodeRef);
 
 };
 

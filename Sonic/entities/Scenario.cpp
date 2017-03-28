@@ -4,9 +4,17 @@ Scenario::Scenario()
 {
 }
 
-Scenario::Scenario(Dimensions dimensionsParam, vector<Layer> layersParam, vector<Entity> entitiesParam)
+void Scenario::SetDimensions(Dimensions dimensionsParam)
 {
 	dimensions = dimensionsParam;
+}
+
+void Scenario::SetLayers(vector<Layer> layersParam)
+{
 	layers = layersParam;
+}
+
+void Scenario::SetEntities(vector<Entity> entitiesParam)
+{
 	entities = entitiesParam;
 }

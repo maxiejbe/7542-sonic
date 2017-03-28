@@ -265,7 +265,8 @@ int main(int argc, char* args[])
 	Parser* p = new Parser("config/params.json");
 	Window window = p->ParseWindow();
 	Configuration config = p->ParseConfiguration();
-	Scenario scenario = p->ParseScenario();
+	Scenario scenario;
+	p->ParseScenario(&scenario);
 
 	//Start up SDL and create window
 	if (!SDLWindow::getInstance().Create() || !Renderer::getInstance().Create()) {

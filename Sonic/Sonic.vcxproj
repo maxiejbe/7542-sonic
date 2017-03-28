@@ -61,6 +61,7 @@
     <ClInclude Include="entities\Entity.h" />
     <ClInclude Include="entities\Layer.h" />
     <ClInclude Include="entities\Scenario.h" />
+    <ClInclude Include="interfaces\ISerializable.h" />
     <ClInclude Include="LTexture.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="entities\Window.h" />

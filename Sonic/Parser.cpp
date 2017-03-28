@@ -7,6 +7,7 @@ char* WINDOW_NODE = "ventana";
 const char* DIMENSIONS_NODE = "dimensiones";
 const char* DIMENSIONS_WIDTH_NODE = "ancho";
 const char* DIMENSIONS_HEIGHT_NODE = "alto";
+const char* DIMENSIONS_RADIO_NODE = "radio";
 
 const char* CONFIGURATION_NODE = "configuracion";
 const char* CONFIGURATION_SCROLL_SPEED_NODE = "vel_scroll";
@@ -29,138 +30,162 @@ const char* COORDINATE_NODE = "coordenada";
 const char* COORDINATE_X_NODE = "x";
 const char* COORDINATE_Y_NODE = "y";
 
-Dimensions Parser::ParseDimensions(char* parentNode) {
-	if (!document[parentNode].HasMember(DIMENSIONS_NODE)) {
+Dimensions Parser::ParseDimensions(Value* parentNodeRef) {
+	Value& parentNode = *parentNodeRef;
+
+	if (!parentNode.HasMember(DIMENSIONS_NODE)) {
 		return Dimensions();
 	}
 
-	if (!document[parentNode][DIMENSIONS_NODE].IsObject()) {
+	Value& childNode = parentNode[DIMENSIONS_NODE];
+	if (!childNode.IsObject()) {
 		return Dimensions();
 	}
 
-	int width;
-	if (document[parentNode][DIMENSIONS_NODE].HasMember(DIMENSIONS_WIDTH_NODE) && document[parentNode][DIMENSIONS_NODE][DIMENSIONS_WIDTH_NODE].IsInt()) {
-		width = document[parentNode][DIMENSIONS_NODE][DIMENSIONS_WIDTH_NODE].GetInt();
+	int width = 0;
+	if (childNode.HasMember(DIMENSIONS_WIDTH_NODE) && childNode[DIMENSIONS_WIDTH_NODE].IsInt()) {
+		width = childNode[DIMENSIONS_WIDTH_NODE].GetInt();
 	}
 
-	int height;
-	if (document[parentNode][DIMENSIONS_NODE].HasMember(DIMENSIONS_HEIGHT_NODE) && document[parentNode][DIMENSIONS_NODE][DIMENSIONS_HEIGHT_NODE].IsInt()) {
-		height = document[parentNode][DIMENSIONS_NODE][DIMENSIONS_WIDTH_NODE].GetInt();
+	int height = 0;
+	if (childNode.HasMember(DIMENSIONS_HEIGHT_NODE) && childNode[DIMENSIONS_HEIGHT_NODE].IsInt()) {
+		height = childNode[DIMENSIONS_HEIGHT_NODE].GetInt();
+	}
+
+	int radio = 0;
+	if (childNode.HasMember(DIMENSIONS_RADIO_NODE) && childNode[DIMENSIONS_RADIO_NODE].IsInt()) {
+		radio = childNode[DIMENSIONS_RADIO_NODE].GetInt();
 	}
 	
-	return Dimensions(width, height);
+	return Dimensions(width, height, radio);
 }
 
-vector<Entity> Parser::ParseEntities() {
+vector<Entity> Parser::ParseEntities(Value* parentNodeRef) {
+	Value& parentNode = *parentNodeRef;
 
-	if (!document[SCENARIO_NODE].HasMember(ENTITY_NODE)) {
+	if (!parentNode.HasMember(ENTITY_NODE)) {
 		return vector<Entity>();
 	}
 
-	if (!document[SCENARIO_NODE][ENTITY_NODE].IsArray()) {
+	Value& childNode = parentNode[ENTITY_NODE];
+	if (!childNode.IsArray()) {
 		return vector<Entity>();
 	}
 
 	vector<Entity> entities;
-	for (SizeType i = 0; i < document[SCENARIO_NODE][ENTITY_NODE].Size(); i++) {
-		entities.push_back(ParseEntity(i));
+	entities.clear();
+	for (SizeType i = 0; i < childNode.Size(); i++) {
+		Value& entityNode = childNode[i];
+		entities.push_back(ParseEntity(&entityNode));
 	}
 	return entities;
 }
 
-vector<Layer> Parser::ParseLayers() {
+vector<Layer> Parser::ParseLayers(Value* parentNodeRef) {
+	Value& parentNode = *parentNodeRef;
 
-	if (!document[SCENARIO_NODE].HasMember(LAYER_NODE)) {
+	if (!parentNode.HasMember(LAYER_NODE)) {
 		return vector<Layer>();
 	}
 
-	if (!document[SCENARIO_NODE][LAYER_NODE].IsArray()) {
+	Value& childNode = parentNode[LAYER_NODE];
+	if (!childNode.IsArray()) {
 		return vector<Layer>();
 	}
 	
 	vector<Layer> layers;
-	for (SizeType i = 0; i < document[SCENARIO_NODE][LAYER_NODE].Size(); i++) {
-		layers.push_back(ParseLayer(i));
+	layers.clear();
+	for (SizeType i = 0; i < childNode.Size(); i++) {
+		Value* layerNode = &childNode[i];
+		layers.push_back(ParseLayer(layerNode));
 	}
 	return layers;
 }
 
-Coordinate Parser::ParseCoordinate(int index) {
-	if (!document[SCENARIO_NODE][ENTITY_NODE][index].HasMember(COORDINATE_NODE)) {
+Coordinate Parser::ParseCoordinate(Value* parentNodeRef) {
+	Value& parentNode = *parentNodeRef;
+
+	if (!parentNode.HasMember(COORDINATE_NODE)) {
 		return Coordinate();
 	}
 
-	if (!document[SCENARIO_NODE][ENTITY_NODE][index][COORDINATE_NODE].IsObject()) {
+	Value& childNode = parentNode[COORDINATE_NODE];
+	if (!childNode.IsObject()) {
 		return Coordinate();
 	}
 
 	int x;
-	if (document[SCENARIO_NODE][ENTITY_NODE][index][COORDINATE_NODE].HasMember(COORDINATE_X_NODE) && document[SCENARIO_NODE][ENTITY_NODE][index][COORDINATE_NODE][COORDINATE_X_NODE].IsInt()) {
-		x = document[SCENARIO_NODE][ENTITY_NODE][index][COORDINATE_NODE][COORDINATE_X_NODE].GetInt();
+	if (childNode.HasMember(COORDINATE_X_NODE) && childNode[COORDINATE_X_NODE].IsInt()) {
+		x = childNode[COORDINATE_X_NODE].GetInt();
 	}
 
 	int y;
-	if (document[SCENARIO_NODE][ENTITY_NODE][index][COORDINATE_NODE].HasMember(COORDINATE_Y_NODE) && document[SCENARIO_NODE][ENTITY_NODE][index][COORDINATE_NODE][COORDINATE_Y_NODE].IsInt()) {
-		y = document[SCENARIO_NODE][ENTITY_NODE][index][COORDINATE_NODE][COORDINATE_Y_NODE].GetInt();
+	if (childNode.HasMember(COORDINATE_Y_NODE) && childNode[COORDINATE_Y_NODE].IsInt()) {
+		y = childNode[COORDINATE_Y_NODE].GetInt();
 	}
 
 	return Coordinate(x, y);
 }
 
-Entity Parser::ParseEntity(int index) {
-	if (!document[SCENARIO_NODE][ENTITY_NODE][index].IsObject()) {
+Entity Parser::ParseEntity(Value* parentNodeRef) {
+	Value& parentNode = *parentNodeRef;
+
+	if (!parentNode.IsObject()) {
 		return Entity();
 	}
 
 	int id;
-	if (document[SCENARIO_NODE][ENTITY_NODE][index].HasMember(ENTITY_ID_NODE) && document[SCENARIO_NODE][ENTITY_NODE][index][ENTITY_ID_NODE].IsInt()) {
-		id = document[SCENARIO_NODE][ENTITY_NODE][index][ENTITY_ID_NODE].GetInt();
+	if (parentNode.HasMember(ENTITY_ID_NODE) && parentNode[ENTITY_ID_NODE].IsInt()) {
+		id = parentNode[ENTITY_ID_NODE].GetInt();
 	}
 
 	string type;
-	if (document[SCENARIO_NODE][ENTITY_NODE][index].HasMember(ENTITY_TYPE_NODE) && document[SCENARIO_NODE][ENTITY_NODE][index][ENTITY_TYPE_NODE].IsString()) {
-		type = document[SCENARIO_NODE][ENTITY_NODE][index][ENTITY_TYPE_NODE].GetString();
+	if (parentNode.HasMember(ENTITY_TYPE_NODE) && parentNode[ENTITY_TYPE_NODE].IsString()) {
+		type = parentNode[ENTITY_TYPE_NODE].GetString();
 	}
 
 	string color;
-	if (document[SCENARIO_NODE][ENTITY_NODE][index].HasMember(ENTITY_COLOR_NODE) && document[SCENARIO_NODE][ENTITY_NODE][index][ENTITY_COLOR_NODE].IsString()) {
-		color = document[SCENARIO_NODE][ENTITY_NODE][index][ENTITY_COLOR_NODE].GetString();
+	if (parentNode.HasMember(ENTITY_COLOR_NODE) && parentNode[ENTITY_COLOR_NODE].IsString()) {
+		color = parentNode[ENTITY_COLOR_NODE].GetString();
 	}
 
-	//Dimensions dimensions = ParseDimensions();
-	Coordinate coordinate = ParseCoordinate(index);
+	Dimensions dimensions = ParseDimensions(parentNodeRef);
+
+	Coordinate coordinate = ParseCoordinate(parentNodeRef);
 	
 	string imagePath;
-	if (document[SCENARIO_NODE][ENTITY_NODE][index].HasMember(ENTITY_IMAGE_PATH_NODE) && document[SCENARIO_NODE][ENTITY_NODE][index][ENTITY_IMAGE_PATH_NODE].IsString()) {
-		imagePath = document[SCENARIO_NODE][ENTITY_NODE][index][ENTITY_IMAGE_PATH_NODE].GetString();
+	if (parentNode.HasMember(ENTITY_IMAGE_PATH_NODE) && parentNode[ENTITY_IMAGE_PATH_NODE].IsString()) {
+		imagePath = parentNode[ENTITY_IMAGE_PATH_NODE].GetString();
 	}
 
 	int zIndex;
-	if (document[SCENARIO_NODE][ENTITY_NODE][index].HasMember(ENTITY_ZINDEX_NODE) && document[SCENARIO_NODE][ENTITY_NODE][index][ENTITY_ZINDEX_NODE].IsInt()) {
-		zIndex = document[SCENARIO_NODE][ENTITY_NODE][index][ENTITY_ZINDEX_NODE].GetInt();
+	if (parentNode.HasMember(ENTITY_ZINDEX_NODE) && parentNode[ENTITY_ZINDEX_NODE].IsInt()) {
+		zIndex = parentNode[ENTITY_ZINDEX_NODE].GetInt();
 	}
 
-	return Entity(id, type, color, Dimensions(), coordinate, imagePath, zIndex);
+	return Entity(id, type, color, dimensions, coordinate, imagePath, zIndex);
 }
 
-Layer Parser::ParseLayer(int index) {
-	if (!document[SCENARIO_NODE][LAYER_NODE][index].IsObject()) {
+Layer Parser::ParseLayer(Value* parentNodeRef) {
+	Value& parentNode = *parentNodeRef;
+	
+	if (!parentNode.IsObject()) {
 		return Layer();
 	}
 
 	int id;
-	if (document[SCENARIO_NODE][LAYER_NODE][index].HasMember(LAYER_ID_NODE) && document[SCENARIO_NODE][LAYER_NODE][index][LAYER_ID_NODE].IsInt()) {
-		id = document[SCENARIO_NODE][LAYER_NODE][index][LAYER_ID_NODE].GetInt();
+	if (parentNode.HasMember(LAYER_ID_NODE) && parentNode[LAYER_ID_NODE].IsInt()) {
+		id = parentNode[LAYER_ID_NODE].GetInt();
 	}
 
 	int zIndex;
-	if (document[SCENARIO_NODE][LAYER_NODE][index].HasMember(LAYER_ZINDEX_NODE) && document[SCENARIO_NODE][LAYER_NODE][index][LAYER_ZINDEX_NODE].IsInt()) {
-		zIndex = document[SCENARIO_NODE][LAYER_NODE][index][LAYER_ZINDEX_NODE].GetInt();
+	if (parentNode.HasMember(LAYER_ZINDEX_NODE) && parentNode[LAYER_ZINDEX_NODE].IsInt()) {
+		zIndex = parentNode[LAYER_ZINDEX_NODE].GetInt();
 	}
 
 	string imagePath;
-	if (document[SCENARIO_NODE][LAYER_NODE][index].HasMember(LAYER_IMAGE_PATH_NODE) && document[SCENARIO_NODE][LAYER_NODE][index][LAYER_IMAGE_PATH_NODE].IsString()) {
-		imagePath = document[SCENARIO_NODE][LAYER_NODE][index][LAYER_IMAGE_PATH_NODE].GetString();
+	if (parentNode.HasMember(LAYER_IMAGE_PATH_NODE) && parentNode[LAYER_IMAGE_PATH_NODE].IsString()) {
+		imagePath = parentNode[LAYER_IMAGE_PATH_NODE].GetString();
 	}
 
 	return Layer(id, zIndex, imagePath);
@@ -171,11 +196,12 @@ Window Parser::ParseWindow() {
 		return Window();
 	}
 
-	if (!document[WINDOW_NODE].IsObject()) {
+	Value* windowNode = &document[WINDOW_NODE];
+	if (!windowNode->IsObject()) {
 		return Window();
 	}
 
-	return Window(ParseDimensions(WINDOW_NODE));
+	return Window(ParseDimensions(windowNode));
 }
 
 Configuration Parser::ParseConfiguration() {
@@ -183,32 +209,41 @@ Configuration Parser::ParseConfiguration() {
 		return Configuration();
 	}
 
-	if (!document[CONFIGURATION_NODE].IsObject()) {
+	Value& confNode = document[CONFIGURATION_NODE];
+	
+	if (!confNode.IsObject()) {
 		return Configuration();
 	}
 
 	int scrollSpeed;
-	if (document[CONFIGURATION_NODE].HasMember(CONFIGURATION_SCROLL_SPEED_NODE) && document[CONFIGURATION_NODE][CONFIGURATION_SCROLL_SPEED_NODE].IsInt()) {
-		scrollSpeed = document[CONFIGURATION_NODE][CONFIGURATION_SCROLL_SPEED_NODE].GetInt();
+	if (confNode.HasMember(CONFIGURATION_SCROLL_SPEED_NODE) && confNode[CONFIGURATION_SCROLL_SPEED_NODE].IsInt()) {
+		scrollSpeed = confNode[CONFIGURATION_SCROLL_SPEED_NODE].GetInt();
 	}
 
 	return Configuration(scrollSpeed);
 }
 
-Scenario Parser::ParseScenario() {
+void Parser::ParseScenario(Scenario* scenario) {
+	
 	if (!document.HasMember(SCENARIO_NODE)) {
-		return Scenario();
+		return;
 	}
 
-	if (!document[SCENARIO_NODE].IsObject()) {
-		return Scenario();
+	Value& scenarioNode = document[SCENARIO_NODE];
+	if (!scenarioNode.IsObject()) {
+		return;
 	}
 
-	Dimensions dimensions = ParseDimensions(SCENARIO_NODE);
-	vector<Layer> layers = ParseLayers();
-	vector<Entity> entities = ParseEntities();
+	Dimensions dimensions = ParseDimensions(&scenarioNode);
+	scenario->SetDimensions(dimensions);
+	
+	vector<Layer> layers = ParseLayers(&scenarioNode);
+	scenario->SetLayers(layers);
+	
+	vector<Entity> entities = ParseEntities(&scenarioNode);
+	scenario->SetEntities(entities);
 
-	return Scenario(dimensions, layers, entities);
+	return;
 }
 
 string Parser::ReadConfigFileContent(string path)

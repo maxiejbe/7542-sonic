@@ -33,6 +33,7 @@
     <ClInclude Include="DateUtils.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="SDLWindow.h" />
+    <ClInclude Include="interfaces\ISerializable.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sonic.rc" />

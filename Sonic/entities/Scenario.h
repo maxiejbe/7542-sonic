@@ -12,7 +12,9 @@ using namespace std;
 class Scenario {
 public:
 	Scenario();
-	Scenario(Dimensions dimensionsParam, vector<Layer> layersParam, vector<Entity> entitiesParam);
+	void SetDimensions(Dimensions dimensionsParam);
+	void SetLayers(vector<Layer> layersParam);
+	void SetEntities(vector<Entity> entitiesParam);
 
 private:
 	Dimensions dimensions;
