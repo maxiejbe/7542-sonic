@@ -435,6 +435,10 @@ int main(int argc, char* args[])
 	cout << mainWindow.GetDimensions().GetHeight() << endl;
 	cout << mainWindow.GetDimensions().GetWidth() << endl;
 
+	Configuration configuration = p->ParseConfiguration();
+
+	cout << configuration.GetScrollSpeed() << endl;
+	
 	
 	//Start up SDL and create window
 	if (!init())

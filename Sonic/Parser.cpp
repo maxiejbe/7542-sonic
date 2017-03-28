@@ -8,6 +8,8 @@ const char* DIMENSIONS_NODE = "dimensiones";
 const char* DIMENSIONS_WIDTH_NODE = "ancho";
 const char* DIMENSIONS_HEIGHT_NODE = "alto";
 
+const char* CONFIGURATION_NODE = "configuracion";
+const char* CONFIGURATION_SCROLL_SPEED_NODE = "vel_scroll";
 
 Dimensions Parser::ParseDimensions() {
 	if (!document[WINDOW_NODE].HasMember(DIMENSIONS_NODE)) {
@@ -27,8 +29,6 @@ Dimensions Parser::ParseDimensions() {
 	return Dimensions(width, height);
 }
 
-
-
 Window Parser::ParseWindow() {
 	if (!document.HasMember(WINDOW_NODE)) {
 		return Window();
@@ -40,6 +40,20 @@ Window Parser::ParseWindow() {
 	
 	return Window(ParseDimensions());
 }
+
+Configuration Parser::ParseConfiguration() {
+	if (!document.HasMember(CONFIGURATION_NODE)) {
+		return Configuration();
+	}
+
+	int scrollSpeed;
+	if (document[CONFIGURATION_NODE].HasMember(CONFIGURATION_SCROLL_SPEED_NODE) && document[CONFIGURATION_NODE][CONFIGURATION_SCROLL_SPEED_NODE].IsInt()) {
+		scrollSpeed = document[CONFIGURATION_NODE][CONFIGURATION_SCROLL_SPEED_NODE].GetInt();
+	}
+
+	return Configuration(scrollSpeed);
+}
+
 
 string Parser::ReadConfigFileContent(string path)
 {
@@ -61,9 +75,6 @@ Parser::Parser(string path)
 	
 	const char *cstr = fileContent.c_str();
 	document.Parse(cstr);
-
-	printf(document.IsObject() ? "true" : "false");
-	//cout << fileContent << std::endl;
 }
 
 Parser::~Parser()

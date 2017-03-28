@@ -1,3 +1,6 @@
+#ifndef WINDOW_H
+#define WINDOW_H
+
 #include "Dimensions.h"
 
 class Window {
@@ -9,3 +12,5 @@ public:
 private:
 	Dimensions* dimensions;
 };
+
+#endif

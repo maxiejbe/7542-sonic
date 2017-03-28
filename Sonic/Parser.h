@@ -10,6 +10,7 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 #include "entities/Window.h"
+#include "entities/Configuration.h"
 
 using namespace std;
 using namespace rapidjson;
@@ -19,6 +20,7 @@ public:
 	Parser(string path);
 	~Parser();
 	Window ParseWindow();
+	Configuration ParseConfiguration();
 
 private:
 	Document document;
