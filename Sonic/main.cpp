@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <string>
 #include <cmath>
-#include "LTexture.cpp"
-#include "LTimer.cpp"
-#include "Dot.cpp"
+#include "LTexture.h"
+#include "LTimer.h"
+#include "Dot.h"
 #include "Logger.h"
 #include "Parser.h"
 
@@ -35,6 +35,8 @@ SDL_Renderer* gRenderer = NULL;
 //Scene textures
 LTexture gDotTexture;
 LTexture gBGTexture;
+
+// TODO: moverlo a LTexture.cpp
 
 LTexture::LTexture()
 {
@@ -129,7 +131,7 @@ int LTexture::getHeight()
 	return mHeight;
 }
 
-// Dot
+// TODO: moverlo a Dot.cpp
 
 Dot::Dot()
 {
@@ -215,7 +217,7 @@ float Dot::getPosY()
 	return mPosY;
 }
 
-// Timer
+// TODO: mover a LTimer.cpp
 
 LTimer::LTimer()
 {
