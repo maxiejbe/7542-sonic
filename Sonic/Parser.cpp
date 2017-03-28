@@ -3,8 +3,18 @@
 /* Json parser para archivo de configuración inicial
 */
 
-Window Parser::ParseWindow() {
-	return Window();
+bool Parser::DocumentHasKey(char* key) {
+	//TODO: Check for semantic errors
+	return document.HasMember(key);
+}
+
+Window* Parser::ParseWindow() {
+	Window* window = new Window();
+	if (DocumentHasKey("ventana")) {		
+
+	}
+
+	return window;
 }
 
 string Parser::ReadConfigFileContent(string path)

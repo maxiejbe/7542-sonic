@@ -17,11 +17,13 @@ class Parser {
 public:
 	Parser(string path);
 	~Parser();
-	Window ParseWindow();
+	Window* ParseWindow();
 
 private:
 	Document document;
 	string ReadConfigFileContent(string path);
+
+	bool DocumentHasKey(char* key);
 };
 
 #endif
