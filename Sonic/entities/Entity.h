@@ -10,6 +10,7 @@ using namespace std;
 class Entity : public Serializable {
 public:
 	Entity();
+	virtual void draw();
 private:
 	int id;
 	string type;

@@ -44,3 +44,6 @@ char * Entity::GetNodeName()
 {
 	return nullptr;
 }
+
+void Entity::draw() {
+}
