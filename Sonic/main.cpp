@@ -6,8 +6,8 @@
 #include "LTexture.cpp"
 #include "LTimer.cpp"
 #include "Dot.cpp"
-#include "Logger.cpp"
 #include "Parser.h"
+#include "Logger.h"
 
 //The dimensions of the level
 const int LEVEL_WIDTH = 3328; // TODO: tomar del json
@@ -423,8 +423,8 @@ int main(int argc, char* args[])
 	LOG(logINFO) << "Informacion bla bla bla.";
 	LOG(logWARNING) << "Cuidado, es un warning!";
 	LOG(logERROR) << "Este es un error de ejemplo.";
-	
 	*/
+	
 
 	//TODO: Take params from argv
 	Parser* p = new Parser("config/params.json");

@@ -122,5 +122,11 @@
     <ResourceCompile Include="Sonic.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+    <ClInclude Include="Logger.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DateUtils.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

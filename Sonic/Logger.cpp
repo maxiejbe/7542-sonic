@@ -1,8 +1,4 @@
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <stdio.h>
-#include "DateUtils.cpp"
+#include "Logger.h"
 
 using namespace std;
 
@@ -12,33 +8,10 @@ using namespace std;
 	HIGH: INFO + WARNING + ERROR
 */
 
-enum LogLevel { logLOW, logMEDIUM, logHIGH };
-enum LogType { logINFO, logWARNING, logERROR };
-
-class Logger {
-
-public:
-	Logger();
-	~Logger();
-	static void Init();
-	std::ostringstream& Get(LogType level = logINFO);
-	static LogLevel& LoggingLevel();
-	static FILE*& Stream();
-protected:
-	std::ostringstream os;
-private:
-	Logger(const Logger&);
-	std::ostringstream& GetSeparator();
-	Logger& operator =(const Logger&);
-	ofstream logFile;
-	const string SEPARATOR = "========================================";
-};
-
-
-inline Logger::Logger() {
+Logger::Logger() {
 }
 
-inline Logger::~Logger() {
+Logger::~Logger() {
 	FILE* stream = Stream();
 	if (!stream)
 		return;
@@ -48,7 +21,7 @@ inline Logger::~Logger() {
 	fflush(stream);
 }
 
-inline void Logger::Init() {
+void Logger::Init() {
 	string fileName = "log_" + DateUtils::getCurrentDate() + ".log";
 	FILE* file = fopen(fileName.c_str(), "a");
 	Logger::Stream() = file;
@@ -58,12 +31,12 @@ inline void Logger::Init() {
 	Logger().GetSeparator();
 }
 
-inline std::ostringstream& Logger::GetSeparator() {
+std::ostringstream& Logger::GetSeparator() {
 	os << SEPARATOR;
 	return os;
 }
 
-inline std::ostringstream& Logger::Get(LogType type) {
+std::ostringstream& Logger::Get(LogType type) {
 	os << DateUtils::getCurrentDateTime() << " ";
 
 	switch (type) {
@@ -81,18 +54,14 @@ inline std::ostringstream& Logger::Get(LogType type) {
 	return os;
 }
 
-inline LogLevel& Logger::LoggingLevel()
+LogLevel& Logger::LoggingLevel()
 {
 	static LogLevel loggingLevel = logMEDIUM;
 	return loggingLevel;
 }
 
-inline FILE*& Logger::Stream()
+FILE*& Logger::Stream()
 {
 	static FILE* stream = stderr;
 	return stream;
 }
-
-#define LOG(type) \
-	if (type > Logger::LoggingLevel() || !Logger::Stream()) ; \
-	else Logger().Get(type)
