@@ -8,17 +8,12 @@
 #include "Dot.h"
 #include "Logger.h"
 #include "Parser.h"
+#include "Entities/Window.h"
+#include "Renderer.h"
 
 //The dimensions of the level
 const int LEVEL_WIDTH = 3328; // TODO: tomar del json
 const int LEVEL_HEIGHT = 768; // TODO: tomar del json
-
-//Screen dimension constants
-const int SCREEN_WIDTH = 800; // TODO: tomar del json
-const int SCREEN_HEIGHT = 600; // TODO: tomar del json
-
-//Starts up SDL and creates window
-bool init();
 
 //Loads media
 bool loadMedia();
@@ -26,13 +21,7 @@ bool loadMedia();
 //Frees media and shuts down SDL
 void close();
 
-//The window we'll be rendering to
-SDL_Window* gWindow = NULL;
-
-//The window renderer
-SDL_Renderer* gRenderer = NULL;
-
-//Scene textures
+//Scene textures 
 LTexture gDotTexture;
 LTexture gBGTexture;
 
@@ -72,7 +61,7 @@ bool LTexture::loadFromFile(std::string path)
 		SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
 
 		//Create texture from surface pixels
-		newTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+		newTexture = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, loadedSurface);
 		if (newTexture == NULL)
 		{
 			printf("Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
@@ -118,7 +107,7 @@ void LTexture::render(int x, int y, SDL_Rect* clip, double angle, SDL_Point* cen
 	}
 
 	//Render to screen
-	SDL_RenderCopyEx(gRenderer, mTexture, clip, &renderQuad, angle, center, flip);
+	SDL_RenderCopyEx(Renderer::getInstance().gRenderer, mTexture, clip, &renderQuad, angle, center, flip);
 }
 
 int LTexture::getWidth()
@@ -137,7 +126,7 @@ Dot::Dot()
 {
 	//Initialize the offsets
 	mPosX = 0;
-	mPosY = SCREEN_HEIGHT / 2;
+	mPosY = Window::getInstance().SCREEN_HEIGHT / 2;
 
 	//Initialize the velocity
 	mVelX = 0;
@@ -321,61 +310,6 @@ bool LTimer::isPaused()
 	return mPaused && mStarted;
 }
 
-
-bool init()
-{
-	//Initialization flag
-	bool success = true;
-
-	//Initialize SDL
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-		success = false;
-	}
-	else
-	{
-		//Set texture filtering to linear
-		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
-		{
-			printf("Warning: Linear texture filtering not enabled!");
-		}
-
-		//Create window
-		gWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		if (gWindow == NULL)
-		{
-			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-			success = false;
-		}
-		else
-		{
-			//Create renderer for window
-			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
-			if (gRenderer == NULL)
-			{
-				printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
-				success = false;
-			}
-			else
-			{
-				//Initialize renderer color
-				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-
-				//Initialize PNG loading
-				int imgFlags = IMG_INIT_PNG;
-				if (!(IMG_Init(imgFlags) & imgFlags))
-				{
-					printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-					success = false;
-				}
-			}
-		}
-	}
-
-	return success;
-}
-
 bool loadMedia()
 {
 	//Loading success flag
@@ -404,11 +338,11 @@ void close()
 	gDotTexture.free();
 	gBGTexture.free();
 
-	//Destroy window	
-	SDL_DestroyRenderer(gRenderer);
-	SDL_DestroyWindow(gWindow);
-	gWindow = NULL;
-	gRenderer = NULL;
+	//Destroy window
+	Window::getInstance().Close();
+
+	// Destroy renderer
+	Renderer::getInstance().Close();
 
 	//Quit SDL subsystems
 	IMG_Quit();
@@ -426,13 +360,16 @@ int main(int argc, char* args[])
 	LOG(logWARNING) << "Cuidado, es un warning!";
 	LOG(logERROR) << "Este es un error de ejemplo.";
 	*/
-	
+
+	// TODO: tomar de json
+	Window::getInstance().SCREEN_WIDTH = 800;
+	Window::getInstance().SCREEN_HEIGHT = 600;
 
 	//TODO: Take params from argv
 	Parser* p = new Parser("config/params.json");
 
 	//Start up SDL and create window
-	if (!init())
+	if (!Window::getInstance().Create() || !Renderer::getInstance().Create(Window::getInstance().gWindow))
 	{
 		printf("Failed to initialize!\n");
 	}
@@ -458,7 +395,7 @@ int main(int argc, char* args[])
 			LTimer stepTimer;
 
 			//The camera area
-			SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+			SDL_Rect camera = { 0, 0, Window::getInstance().SCREEN_WIDTH, Window::getInstance().SCREEN_HEIGHT };
 
 			//While application is running
 			while (!quit)
@@ -486,8 +423,8 @@ int main(int argc, char* args[])
 				stepTimer.start();
 
 				//Center the camera over the dot
-				camera.x = ((int)dot.getPosX() + Dot::DOT_WIDTH / 2) - SCREEN_WIDTH / 2;
-				camera.y = ((int)dot.getPosY() + Dot::DOT_HEIGHT / 2) - SCREEN_HEIGHT / 2;
+				camera.x = ((int)dot.getPosX() + Dot::DOT_WIDTH / 2) - Window::getInstance().SCREEN_WIDTH / 2;
+				camera.y = ((int)dot.getPosY() + Dot::DOT_HEIGHT / 2) - Window::getInstance().SCREEN_HEIGHT / 2;
 
 				//Keep the camera in bounds
 				if (camera.x < 0)
@@ -508,8 +445,8 @@ int main(int argc, char* args[])
 				}
 
 				//Clear screen
-				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-				SDL_RenderClear(gRenderer);
+				SDL_SetRenderDrawColor(Renderer::getInstance().gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+				SDL_RenderClear(Renderer::getInstance().gRenderer);
 
 				//Render background
 				gBGTexture.render(0, 0, &camera);
@@ -518,7 +455,7 @@ int main(int argc, char* args[])
 				dot.render(camera.x, camera.y);
 
 				//Update screen
-				SDL_RenderPresent(gRenderer);
+				SDL_RenderPresent(Renderer::getInstance().gRenderer);
 			}
 		}
 	}
