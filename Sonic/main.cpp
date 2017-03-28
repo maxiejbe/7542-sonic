@@ -247,35 +247,23 @@ void close()
 
 int main(int argc, char* args[])
 {
-	/* Ejemplo de uso de Logger
-
 	Logger::Init();
-	Logger::LoggingLevel() = Logger::FromString("low"); // TODO: tomar de json
-
-	LOG(logINFO) << "Informacion bla bla bla.";
-	LOG(logWARNING) << "Cuidado, es un warning!";
-	LOG(logERROR) << "Este es un error de ejemplo.";
-	*/
-
-	// TODO: tomar de json
-	SDLWindow::getInstance().SCREEN_WIDTH = 800;
-	SDLWindow::getInstance().SCREEN_HEIGHT = 600;
 
 	//TODO: Take params from argv
-	Parser* p = new Parser("config/params.json");
+	Parser* parser = new Parser("config/params.json");
 	Window window;
-	p->Parse(&window);
+	parser->Parse(&window);
+
+	SDLWindow::getInstance().SCREEN_WIDTH = window.GetDimensions().GetWidth();
+	SDLWindow::getInstance().SCREEN_HEIGHT = window.GetDimensions().GetHeight();
 
 	Configuration config;
-	p->Parse(&config);
+	parser->Parse(&config);
+
+	Logger::LoggingLevel() = Logger::FromString(config.GetLogLevel());
 
 	Scenario scenario;
-	p->Parse(&scenario);
-
-
-	//Configuration config = p->ParseConfiguration();
-	//Scenario scenario;
-	//p->ParseScenario(&scenario);
+	parser->Parse(&scenario);
 
 	//Start up SDL and create window
 	if (!SDLWindow::getInstance().Create() || !Renderer::getInstance().Create()) {

@@ -8,8 +8,10 @@ public:
 	Configuration();
 	
 	int GetScrollSpeed();
+	string GetLogLevel();
 private:
 	int scrollSpeed;
+	string logLevel;
 
 	// Inherited via Serializable
 	virtual void Unserialize(Value * nodeRef) override;

@@ -9,6 +9,21 @@ Dimensions::Dimensions()
 {
 }
 
+int Dimensions::GetWidth()
+{
+	return width;
+}
+
+int Dimensions::GetHeight()
+{
+	return height;
+}
+
+int Dimensions::GetRadio()
+{
+	return radio;
+}
+
 void Dimensions::Unserialize(Value* nodeRef)
 {
 	Value& node = *nodeRef;
@@ -30,3 +45,5 @@ char* Dimensions::GetNodeName()
 {
 	return DIMENSIONS_NODE;
 }
+
+

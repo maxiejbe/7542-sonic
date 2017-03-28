@@ -1,11 +1,14 @@
 {
   "ventana": {
     "dimensiones": {
-      "ancho": 3600,
+      "ancho": 800,
       "alto": 600
     }
   },
-  "configuracion": { "vel_scroll": 20 },
+  "configuracion": {
+    "vel_scroll": 20,
+    "nivel_log": "medio"
+  },
   "escenario": {
     "dimensiones": {
       "ancho": 3600,
