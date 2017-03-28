@@ -16,6 +16,9 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="SDLWindow.cpp" />
+    <ClCompile Include="entities\Circle.cpp" />
+    <ClCompile Include="entities\Rectangle.cpp" />
+    <ClCompile Include="entities\Square.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dot.h" />
@@ -33,6 +36,9 @@
     <ClInclude Include="DateUtils.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="SDLWindow.h" />
+    <ClInclude Include="entities\Circle.h" />
+    <ClInclude Include="entities\Rectangle.h" />
+    <ClInclude Include="entities\Square.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sonic.rc" />
