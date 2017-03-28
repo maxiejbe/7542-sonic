@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="..\..\..\..\Users\maxi\Desktop\params.json" />
     <None Include="config\params.json" />
   </ItemGroup>
   <ItemGroup>

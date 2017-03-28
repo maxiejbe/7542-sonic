@@ -47,6 +47,7 @@
     <Image Include="img\up.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\Users\maxi\Desktop\params.json" />
     <None Include="config\params.json" />
     <None Include="packages.config" />
   </ItemGroup>
