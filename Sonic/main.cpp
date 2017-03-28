@@ -7,7 +7,7 @@
 #include "LTimer.cpp"
 #include "Dot.cpp"
 #include "Logger.cpp"
-#include "Parser.cpp"
+#include "Parser.h"
 
 //The dimensions of the level
 const int LEVEL_WIDTH = 3328; // TODO: tomar del json

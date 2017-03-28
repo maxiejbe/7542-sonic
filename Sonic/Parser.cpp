@@ -1,38 +1,11 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <stdio.h>
-#include "rapidjson/document.h"
+#include "Parser.h"
 
 /* Json parser para archivo de configuración inicial
 */
 
 using namespace std;
 
-class Parser {
-public:
-	Parser(string path);
-	~Parser();
-
-private:
-	string ReadConfigFileContent(string path);
-};
-
-inline Parser::Parser(string path)
-{
-	string content = ReadConfigFileContent(path);
-	if (content.empty()) {
-		printf("File does not exist (or it's empty).");
-	}
-	//cout << content << std::endl;
-}
-
-inline Parser::~Parser()
-{
-}
-
-inline string Parser::ReadConfigFileContent(string path)
+string Parser::ReadConfigFileContent(string path)
 {
 	ifstream file(path);
 	ostringstream tmp;
@@ -42,3 +15,17 @@ inline string Parser::ReadConfigFileContent(string path)
 	file.close();
 	return content;
 }
+
+Parser::Parser(string path)
+{
+	fileContent = ReadConfigFileContent(path);
+	if (fileContent.empty()) {
+		printf("File does not exist (or it's empty).");
+	}
+	cout << fileContent << std::endl;
+}
+
+Parser::~Parser()
+{
+}
+
