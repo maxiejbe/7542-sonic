@@ -3,6 +3,10 @@
 /* Json parser para archivo de configuración inicial
 */
 
+Window Parser::ParseWindow() {
+	return Window();
+}
+
 string Parser::ReadConfigFileContent(string path)
 {
 	ifstream file(path);
@@ -16,11 +20,16 @@ string Parser::ReadConfigFileContent(string path)
 
 Parser::Parser(string path)
 {
-	fileContent = ReadConfigFileContent(path);
+	string fileContent = ReadConfigFileContent(path);
 	if (fileContent.empty()) {
 		printf("File does not exist (or it's empty).");
 	}
-	cout << fileContent << std::endl;
+	
+	const char *cstr = fileContent.c_str();
+	document.Parse(cstr);
+
+	printf(document.IsObject() ? "true" : "false");
+	//cout << fileContent << std::endl;
 }
 
 Parser::~Parser()

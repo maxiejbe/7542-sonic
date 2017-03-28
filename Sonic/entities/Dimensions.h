@@ -1,1 +1,5 @@
-#pragma once
+class Dimensions {
+public:
+
+private:
+};

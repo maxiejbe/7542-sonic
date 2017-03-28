@@ -7,16 +7,20 @@
 #include <sstream>
 #include <stdio.h>
 #include "rapidjson/document.h"
+#include "rapidjson/stringbuffer.h"
+#include "entities/Window.h"
 
 using namespace std;
+using namespace rapidjson;
 
 class Parser {
 public:
 	Parser(string path);
 	~Parser();
+	Window ParseWindow();
 
 private:
-	string fileContent;
+	Document document;
 	string ReadConfigFileContent(string path);
 };
 

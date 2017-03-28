@@ -1,5 +1,11 @@
-class Window {
-public:
+#include "Window.h"
 
-private:
-};
+void Window::SetDimensions(Dimensions dimensionsParam)
+{
+	dimensions = dimensionsParam;
+}
+
+Dimensions Window::GetDimensions()
+{
+	return dimensions;
+}
