@@ -418,7 +418,7 @@ int main(int argc, char* args[])
 	/* Ejemplo de uso de Logger
 
 	Logger::Init();
-	Logger::LoggingLevel() = logMEDIUM; // TODO: tomar de json
+	Logger::LoggingLevel() = Logger::FromString("low"); // TODO: tomar de json
 
 	LOG(logINFO) << "Informacion bla bla bla.";
 	LOG(logWARNING) << "Cuidado, es un warning!";

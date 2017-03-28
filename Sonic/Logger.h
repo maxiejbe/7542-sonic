@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <stdio.h>
+#include <algorithm>
 #include "DateUtils.h"
 
 using namespace std;
@@ -19,6 +20,7 @@ public:
 	~Logger();
 	static void Init();
 	std::ostringstream& Get(LogType level = logINFO);
+	static LogLevel FromString(string level);
 	static LogLevel& LoggingLevel();
 	static FILE*& Stream();
 protected:
