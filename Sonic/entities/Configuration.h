@@ -1,14 +1,19 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
-class Configuration {
+#include "common/Serializable.h"
+
+class Configuration : public Serializable {
 public:
 	Configuration();
-	Configuration(int scrollSpeedParam);
-
+	
 	int GetScrollSpeed();
 private:
 	int scrollSpeed;
+
+	// Inherited via Serializable
+	virtual void Unserialize(Value * nodeRef) override;
+	virtual char * GetNodeName() override;
 };
 
 #endif

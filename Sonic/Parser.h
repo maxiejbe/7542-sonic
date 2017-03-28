@@ -13,6 +13,7 @@
 #include "entities/Configuration.h"
 #include "entities/Scenario.h"
 #include "entities/Coordinate.h"
+#include "entities/common/Serializable.h"
 #include <vector>
 
 using namespace std;
@@ -25,10 +26,7 @@ class Parser {
 public:
 	Parser(string path);
 	~Parser();
-	Window ParseWindow();
-	Configuration ParseConfiguration();
-	void ParseScenario(Scenario* scenario);
-
+	void Parse(Serializable* serializable);
 private:
 	Document document;
 	Document windowNode;

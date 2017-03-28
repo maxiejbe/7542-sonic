@@ -7,10 +7,9 @@
 
 using namespace std;
 
-class Entity {
+class Entity : public Serializable {
 public:
 	Entity();
-	Entity(int idParam, string typeParam, string colorParam, Dimensions dimensionsParam, Coordinate coordinateParam, string imagePathParam, int zIndexParam);
 private:
 	int id;
 	string type;
@@ -19,6 +18,10 @@ private:
 	Coordinate coordinate;
 	string imagePath;
 	int zIndex;
+
+	// Inherited via Serializable
+	virtual void Unserialize(Value * nodeRef) override;
+	virtual char * GetNodeName() override;
 };
 
 #endif

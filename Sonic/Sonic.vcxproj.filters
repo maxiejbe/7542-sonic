@@ -16,6 +16,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="SDLWindow.cpp" />
+    <ClCompile Include="entities\common\Serializable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dot.h" />
@@ -33,7 +34,7 @@
     <ClInclude Include="DateUtils.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="SDLWindow.h" />
-    <ClInclude Include="interfaces\ISerializable.h" />
+    <ClInclude Include="entities\common\Serializable.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sonic.rc" />

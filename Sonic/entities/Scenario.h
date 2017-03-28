@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class Scenario {
+class Scenario : public Serializable {
 public:
 	Scenario();
 	void SetDimensions(Dimensions dimensionsParam);
@@ -20,6 +20,10 @@ private:
 	Dimensions dimensions;
 	vector<Layer> layers;
 	vector<Entity> entities;
+
+	// Inherited via Serializable
+	virtual void Unserialize(Value * nodeRef) override;
+	virtual char * GetNodeName() override;
 };
 
 #endif

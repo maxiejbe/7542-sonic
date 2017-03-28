@@ -27,6 +27,7 @@
     <ClCompile Include="entities\Layer.cpp" />
     <ClCompile Include="entities\Scenario.cpp" />
     <ClCompile Include="entities\Window.cpp" />
+    <ClCompile Include="entities\common\Serializable.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="SDLWindow.cpp" />
     <ClCompile Include="Timer.h" />
@@ -61,7 +62,7 @@
     <ClInclude Include="entities\Entity.h" />
     <ClInclude Include="entities\Layer.h" />
     <ClInclude Include="entities\Scenario.h" />
-    <ClInclude Include="interfaces\ISerializable.h" />
+    <ClInclude Include="entities\common\Serializable.h" />
     <ClInclude Include="LTexture.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="entities\Window.h" />

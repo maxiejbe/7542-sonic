@@ -1,22 +1,32 @@
 #include "Dimensions.h"
 
+char* DIMENSIONS_NODE = "dimensiones";
+const char* DIMENSIONS_WIDTH_NODE = "ancho";
+const char* DIMENSIONS_HEIGHT_NODE = "alto";
+const char* DIMENSIONS_RADIO_NODE = "radio";
+
 Dimensions::Dimensions()
 {
 }
 
-Dimensions::Dimensions(int widthParam, int heightParam, int radioParam)
+void Dimensions::Unserialize(Value* nodeRef)
 {
-	width = widthParam;
-	height = heightParam;
-	radio = radioParam;
+	Value& node = *nodeRef;
+
+	if (node.HasMember(DIMENSIONS_WIDTH_NODE) && node[DIMENSIONS_WIDTH_NODE].IsInt()) {
+		width = node[DIMENSIONS_WIDTH_NODE].GetInt();
+	}
+
+	if (node.HasMember(DIMENSIONS_HEIGHT_NODE) && node[DIMENSIONS_HEIGHT_NODE].IsInt()) {
+		height = node[DIMENSIONS_HEIGHT_NODE].GetInt();
+	}
+
+	if (node.HasMember(DIMENSIONS_RADIO_NODE) && node[DIMENSIONS_RADIO_NODE].IsInt()) {
+		radio = node[DIMENSIONS_RADIO_NODE].GetInt();
+	}
 }
 
-int Dimensions::GetWidth()
+char* Dimensions::GetNodeName()
 {
-	return width;
-}
-
-int Dimensions::GetHeight()
-{
-	return height;
+	return DIMENSIONS_NODE;
 }
