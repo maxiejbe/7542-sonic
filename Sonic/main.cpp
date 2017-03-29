@@ -12,6 +12,7 @@
 #include "Renderer.h"
 #include "Entities/Rectangle.h"
 #include "entities/Circle.h"
+#include "entities/Square.h"
 
 //The dimensions of the level
 const int LEVEL_WIDTH = 3328; // TODO: tomar del json
@@ -363,6 +364,9 @@ int main(int argc, char* args[])
 
 				Circle circle = Circle(1000,200, 100);
 				circle.draw(camera);
+
+				Square square = Square(800, 300, 80);
+				square.draw(camera);
 				
 				//Render objects
 				dot.render(camera.x, camera.y);

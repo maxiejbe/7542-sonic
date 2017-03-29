@@ -2,11 +2,13 @@
 #define SQUARE_H
 
 #include "Entity.h"
+#include "Rectangle.h"
 
 class Square : public Entity {
 public:
-	Square(); //TODO: definir atributos propios
-	void draw();
+	Square();
+	Square(int x, int y, int width); //TODO: definir atributos propios
+	void draw(SDL_Rect camera);
 };
 
 #endif // !SQUARE_H

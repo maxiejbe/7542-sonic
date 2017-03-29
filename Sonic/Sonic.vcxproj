@@ -135,7 +135,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir)libs\SDL2_gfx-1.0.3;$(ProjectDir)libs\SDL2_image-2.0.1\include;$(ProjectDir)libs\SDL2-2.0.5\include;$(Projectdir);$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)libs\SDL2_gfx-1.0.3\Win32\Debug;$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86;$(ProjectDir)libs\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)libs\SDL2_gfx-1.0.3\lib;$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86;$(ProjectDir)libs\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>

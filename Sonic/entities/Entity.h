@@ -2,9 +2,11 @@
 #define ENTITY_H
 
 #include <string>
+#include <SDL.h>
+#include <SDL2_gfxPrimitives.h>
 #include "Dimensions.h"
 #include "Coordinate.h"
-#include <SDL.h>
+#include "../Renderer.h"
 
 using namespace std;
 
