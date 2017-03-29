@@ -4,14 +4,16 @@
 #include <string>
 #include "Dimensions.h"
 #include "Coordinate.h"
+#include <SDL.h>
 
 using namespace std;
 
 class Entity : public Serializable {
 public:
 	Entity();
-	virtual void draw();
-private:
+	//TODO: create class Camera and make it a singleton
+	virtual void draw(SDL_Rect camera);
+protected:
 	int id;
 	string type;
 	string color;

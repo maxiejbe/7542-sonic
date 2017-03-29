@@ -45,5 +45,5 @@ char * Entity::GetNodeName()
 	return nullptr;
 }
 
-void Entity::draw() {
+void Entity::draw(SDL_Rect camera) {
 }

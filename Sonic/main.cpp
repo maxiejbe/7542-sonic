@@ -10,6 +10,8 @@
 #include "Parser.h"
 #include "Entities/Window.h"
 #include "Renderer.h"
+#include "Entities/Rectangle.h"
+#include "entities/Circle.h"
 
 //The dimensions of the level
 const int LEVEL_WIDTH = 3328; // TODO: tomar del json
@@ -356,6 +358,12 @@ int main(int argc, char* args[])
 				//Render background
 				gBGTexture.render(0, 0, &camera);
 
+				Rectangle rectangle = Rectangle(300, 20, 50, 50);
+				rectangle.draw(camera);
+
+				Circle circle = Circle(1000,200, 100);
+				circle.draw(camera);
+				
 				//Render objects
 				dot.render(camera.x, camera.y);
 

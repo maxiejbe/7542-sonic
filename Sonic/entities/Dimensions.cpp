@@ -5,8 +5,25 @@ const char* DIMENSIONS_WIDTH_NODE = "ancho";
 const char* DIMENSIONS_HEIGHT_NODE = "alto";
 const char* DIMENSIONS_RADIO_NODE = "radio";
 
-Dimensions::Dimensions()
+Dimensions::Dimensions() {}
+
+Dimensions::Dimensions(int width, int height, int radio)
 {
+	this->width = width;
+	this->height = height;
+	this->radio = radio;
+}
+
+int Dimensions::getWidth() {
+	return width;
+}
+
+int Dimensions::getHeight() {
+	return height;
+}
+
+int Dimensions::getRadio() {
+	return radio;
 }
 
 void Dimensions::Unserialize(Value* nodeRef)
