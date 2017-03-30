@@ -72,6 +72,9 @@
     <ClCompile Include="entities\common\Serializable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dot.h">
@@ -172,6 +175,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="img\up.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\sprite.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

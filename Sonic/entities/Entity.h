@@ -7,6 +7,7 @@
 #include "Dimensions.h"
 #include "Coordinate.h"
 #include "../Renderer.h"
+#include "LTexture.h"
 
 using namespace std;
 
@@ -23,6 +24,7 @@ protected:
 	Coordinate coordinate;
 	string imagePath;
 	int zIndex;
+	LTexture gTexture;
 
 	// Inherited via Serializable
 	virtual void Unserialize(Value * nodeRef) override;

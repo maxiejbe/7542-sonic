@@ -32,6 +32,7 @@
     <ClCompile Include="entities\Window.cpp" />
     <ClCompile Include="entities\common\Serializable.cpp" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="LTexture.cpp" />
     <ClCompile Include="SDLWindow.cpp" />
     <ClCompile Include="Timer.h" />
     <ClCompile Include="main.cpp" />
@@ -51,6 +52,7 @@
     <Image Include="img\loaded.png" />
     <Image Include="img\press.bmp" />
     <Image Include="img\right.bmp" />
+    <Image Include="img\sprite.png" />
     <Image Include="img\up.bmp" />
   </ItemGroup>
   <ItemGroup>

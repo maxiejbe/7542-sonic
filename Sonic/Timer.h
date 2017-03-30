@@ -1,3 +1,6 @@
+#ifndef TIMER_H
+#define TIMER_H
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <stdio.h>
@@ -34,3 +37,5 @@ private:
 	bool mPaused;
 	bool mStarted;
 };
+
+#endif

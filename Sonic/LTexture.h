@@ -1,6 +1,12 @@
-#include <SDL.h>
-#include <SDL_image.h>
+#ifndef LTEXTURE_H
+#define LTEXTURE_H
+
 #include <string>
+#include <SDL.h>
+#include <SDL2_gfxPrimitives.h>
+#include "entities/Dimensions.h"
+#include "entities/Coordinate.h"
+#include "Renderer.h"
 
 class LTexture
 {
@@ -41,3 +47,5 @@ private:
 	int mWidth;
 	int mHeight;
 };
+
+#endif
