@@ -13,7 +13,7 @@ public:
 	void ParseObject(Value* parentNodeRef);
 
 	template <class T>
-	void ParseCollection(vector<T>* collection, Value* nodeRef, char* collectionNodeName);
+	void ParseCollection(vector<T>* collection, Value* parentNodeRef, char* collectionNodeName);
 
 	void ParseCurrentObject(Value* nodeRef);
 
@@ -22,10 +22,10 @@ public:
 };
 
 template <class T>
-inline void Serializable::ParseCollection(vector<T>* collection, Value* nodeRef, char * collectionNodeName)
+inline void Serializable::ParseCollection(vector<T>* collection, Value* parentNodeRef, char * collectionNodeName)
 {
-	Value& node = *nodeRef;
-	Value& entitiesNode = node[collectionNodeName];
+	Value& parentNode = *parentNodeRef;
+	Value& entitiesNode = parentNode[collectionNodeName];
 
 	collection->clear();
 
