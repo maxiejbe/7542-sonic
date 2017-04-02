@@ -7,7 +7,7 @@
   },
   "configuracion": {
     "vel_scroll": 20,
-    "nivel_log": "medio"
+    "nivel_log": "alto"
   },
   "escenario": {
     "dimensiones": {

@@ -53,6 +53,10 @@ int main(int argc, char* args[])
 
 	Logger::LoggingLevel() = Logger::FromString(config.GetLogLevel());
 
+	LOG(logERROR) << "Esto es un error.";
+	LOG(logWARNING) << "Esto es un warning.";
+	LOG(logINFO) << "Esto es una info.";
+
 	Scenario scenario;
 	parser->Parse(&scenario);
 

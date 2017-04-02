@@ -2,12 +2,6 @@
 
 using namespace std;
 
-/* Definicion de niveles de log
-	LOW: INFO
-	MEDIUM: INFO + WARNING
-	HIGH: INFO + WARNING + ERROR
-*/
-
 Logger::Logger() {
 }
 
@@ -28,7 +22,7 @@ void Logger::Init() {
 
 	Logger().GetSeparator();
 	Logger().Get(logINFO) << "La aplicación se ha iniciado.";
-	Logger().GetSeparator();
+	//Logger().GetSeparator();
 }
 
 std::ostringstream& Logger::GetSeparator() {

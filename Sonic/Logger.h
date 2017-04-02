@@ -10,8 +10,14 @@
 
 using namespace std;
 
+/* Definicion de niveles de log
+	LOW: ERROR
+	MEDIUM: ERROR + WARNING
+	HIGH: ERROR + WARNING + INFO
+*/
+
 enum LogLevel { logLOW, logMEDIUM, logHIGH };
-enum LogType { logINFO, logWARNING, logERROR };
+enum LogType { logERROR, logWARNING, logINFO };
 
 class Logger {
 
