@@ -24,7 +24,6 @@ protected:
 	Coordinate coordinate;
 	string imagePath;
 	int zIndex;
-	LTexture gTexture;
 
 	// Inherited via Serializable
 	virtual void Unserialize(Value * nodeRef) override;

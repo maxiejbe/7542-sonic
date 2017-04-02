@@ -37,7 +37,9 @@ public:
 
 	//Gets image dimensions
 	int getWidth();
-	int getHeight();
+	int getHeight();	
+
+	SDL_Texture* getTexture();
 
 private:
 	//The actual hardware texture

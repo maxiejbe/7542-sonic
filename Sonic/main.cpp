@@ -26,8 +26,9 @@ void close();
 
 //Scene textures 
 LTexture gDotTexture;
-Layer gBGLayer;
+LTexture gBGTexture;
 LTexture gSpriteTexture;
+LTexture gSpriteTexture1;
 
 // TODO: moverlo a Dot.cpp
 Dot::Dot()
@@ -127,16 +128,21 @@ bool loadMedia()
 	}
 
 	//Load background texture
-	/*if (!gBGTexture.loadFromFile("img/level.png"))
+	if (!gBGTexture.loadFromFile("img/level.png"))
 	{
 		printf("Failed to load background texture!\n");
 		success = false;
 	}
-	*/
-	//Load background layer
-	success = gBGLayer.loadLayer();
+
 	//Load sprite texture
 	if (!gSpriteTexture.loadFromFile("img/sprite.png"))
+	{
+		printf("Failed to load background texture!\n");
+		success = false;
+	}
+
+	//Load sprite texture
+	if (!gSpriteTexture1.loadFromFile("img/sprite.png"))
 	{
 		printf("Failed to load background texture!\n");
 		success = false;
@@ -149,8 +155,7 @@ void close()
 {
 	//Free loaded images
 	gDotTexture.free();
-	//gBGTexture.free();
-	gBGLayer.destroyLayer();
+	gBGTexture.free();
 	gSpriteTexture.free();
 
 	//Destroy window
@@ -273,20 +278,51 @@ int main(int argc, char* args[])
 				SDL_RenderClear(Renderer::getInstance().gRenderer);
 
 				//Render background
-				//gBGTexture.render(0, 0, &camera);
-				gBGLayer.renderLayer(0, 0, &camera);
+				gBGTexture.render(0, 0, &camera);
 
-				//No funcionan las texturas (igual hay que hacer una textura diferente por cada entidad)
-				Rectangle rectangle = Rectangle(300, 20, 50, 50, gSpriteTexture);
+
+				//Crop img = rect
+				Rectangle rectangle = Rectangle(100, 100, 100, 100);
 				rectangle.draw(camera);
+				int x1 = 100 - camera.x;
+				int y1 = 100 - camera.y;
+				SDL_Rect dstrect = { x1, y1, 100, 100 };			
+				SDL_Rect croprect = { 0, 0, 100, 100 };				
+				SDL_RenderCopy(Renderer::getInstance().gRenderer, gSpriteTexture.getTexture(), &croprect, &dstrect);
 
-				Rectangle rectanglePng = Rectangle(800, 150, 100, 100, gSpriteTexture);
-				rectanglePng.draw(camera);
+				//Crop img < rect
+				Rectangle rectangle1 = Rectangle(300, 300, 300, 300);
+				rectangle1.draw(camera);
+				x1 = 300 - camera.x;
+				y1 = 300 - camera.y;
+				SDL_Rect dstrect1 = { x1, y1, 200, 200 };
+				SDL_Rect croprect1 = { 0, 0, 200, 200 };
+				SDL_RenderCopy(Renderer::getInstance().gRenderer, gSpriteTexture1.getTexture(), &croprect1, &dstrect1);
 
-				Circle circle = Circle(1000,200, 100);
+				//Crop img > rect (img.h es mas chica que el rect.h)
+				Rectangle rectangle2 = Rectangle(700, 200, 300, 100);
+				rectangle2.draw(camera);
+				x1 = 700 - camera.x;
+				y1 = 200 - camera.y;
+				SDL_Rect dstrect2 = { x1, y1, 200, 100 };
+				SDL_Rect croprect2 = { 0, 0, 200, 100 }; //rect.w mas grande que img.w, queda la img.w
+				SDL_RenderCopy(Renderer::getInstance().gRenderer, gSpriteTexture1.getTexture(), &croprect2, &dstrect2);
+
+				//Crop img > rect (img.w es mas chica que el rect.w)
+				Rectangle rectangle3 = Rectangle(1200, 50, 60, 400);
+				rectangle3.draw(camera);
+				x1 = 1200 - camera.x;
+				y1 = 50 - camera.y;
+				SDL_Rect dstrect3 = { x1, y1, 60, 200 };
+				SDL_Rect croprect3 = { 0, 0, 60, 200 }; //rect.w mas chico que img.w, queda la rect.w, rect.h es mas grande que img.h entocnes queda igual
+				SDL_RenderCopy(Renderer::getInstance().gRenderer, gSpriteTexture1.getTexture(), &croprect3, &dstrect3);
+
+
+
+				Circle circle = Circle(1500,200, 100);
 				circle.draw(camera);
 
-				Square square = Square(800, 300, 80, gSpriteTexture);
+				Square square = Square(1300, 300, 80);
 				square.draw(camera);
 				
 				//Render objects
