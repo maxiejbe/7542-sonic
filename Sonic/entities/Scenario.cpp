@@ -8,19 +8,19 @@ Scenario::Scenario()
 {
 }
 
-void Scenario::SetDimensions(Dimensions dimensionsParam)
+void Scenario::SetDimensions(Dimensions dimensions)
 {
-	dimensions = dimensionsParam;
+	this->dimensions = dimensions;
 }
 
-void Scenario::SetLayers(vector<Layer> layersParam)
+void Scenario::SetLayers(vector<Layer> layers)
 {
-	layers = layersParam;
+	this->layers = layers;
 }
 
-void Scenario::SetEntities(vector<Entity> entitiesParam)
+void Scenario::SetEntities(vector<Entity> entities)
 {
-	entities = entitiesParam;
+	this->entities = entities;
 }
 
 void Scenario::Unserialize(Value * nodeRef)
@@ -29,30 +29,9 @@ void Scenario::Unserialize(Value * nodeRef)
 	
 	dimensions.ParseObject(nodeRef);
 
-	//TODO: Extract layers and entities code blocks to new method
-	Value& layersNode = node[SCENARIO_LAYERS_NODE];
-	layers.clear();
-
-	if (layersNode.IsArray()) {
-		for (SizeType i = 0; i < layersNode.Size(); i++) {
-			Value& layerNode = layersNode[i];
-			Layer layer;
-			layer.ParseCurrentObject(&layerNode);
-			layers.push_back(layer);
-		}
-	}
-
-	Value& entitiesNode = node[SCENARIO_ENTITIES_NODE];
-	entities.clear();
-
-	if (entitiesNode.IsArray()) {
-		for (SizeType i = 0; i < entitiesNode.Size(); i++) {
-			Value& entityNode = entitiesNode[i];
-			Entity entity;
-			entity.ParseCurrentObject(&entityNode);
-			entities.push_back(entity);
-		}
-	}
+	ParseCollection<Layer>(&layers, nodeRef, SCENARIO_LAYERS_NODE);
+	
+	ParseCollection<Entity>(&entities, nodeRef, SCENARIO_ENTITIES_NODE);
 }
 
 char * Scenario::GetNodeName()

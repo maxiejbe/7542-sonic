@@ -12,15 +12,15 @@ using namespace std;
 class Scenario : public Serializable {
 public:
 	Scenario();
-	void SetDimensions(Dimensions dimensionsParam);
-	void SetLayers(vector<Layer> layersParam);
-	void SetEntities(vector<Entity> entitiesParam);
+	void SetDimensions(Dimensions);
+	void SetLayers(vector<Layer>);
+	void SetEntities(vector<Entity>);
 
 private:
 	Dimensions dimensions;
 	vector<Layer> layers;
 	vector<Entity> entities;
-
+	
 	// Inherited via Serializable
 	virtual void Unserialize(Value * nodeRef) override;
 	virtual char * GetNodeName() override;
