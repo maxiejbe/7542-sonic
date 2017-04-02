@@ -4,8 +4,7 @@ char* SCENARIO_NODE = "escenario";
 char* SCENARIO_LAYERS_NODE = "capas";
 char* SCENARIO_ENTITIES_NODE = "entidades";
 
-Scenario::Scenario()
-{
+Scenario::Scenario() {
 }
 
 void Scenario::SetDimensions(Dimensions dimensions)
@@ -23,10 +22,17 @@ void Scenario::SetEntities(vector<Entity> entities)
 	this->entities = entities;
 }
 
-void Scenario::Unserialize(Value * nodeRef)
-{
+int Scenario::GetWidth() {
+	return dimensions.GetWidth();
+}
+
+int Scenario::GetHeight() {
+	return dimensions.GetHeight();
+}
+
+void Scenario::Unserialize(Value * nodeRef) {
 	Value& node = *nodeRef;
-	
+
 	dimensions.ParseObject(nodeRef);
 
 	ParseCollection<Layer>(&layers, nodeRef, SCENARIO_LAYERS_NODE);
@@ -34,7 +40,6 @@ void Scenario::Unserialize(Value * nodeRef)
 	ParseCollection<Entity>(&entities, nodeRef, SCENARIO_ENTITIES_NODE);
 }
 
-char * Scenario::GetNodeName()
-{
+char * Scenario::GetNodeName() {
 	return SCENARIO_NODE;
 }

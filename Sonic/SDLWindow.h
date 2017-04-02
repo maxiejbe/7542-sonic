@@ -11,16 +11,18 @@ public:
 		static SDLWindow instance;
 		return instance;
 	}
-	bool Create();
+	bool Create(int width, int height);
 	void Close();
+
+	int GetScreenWidth();
+	int GetScreenHeight();
+
 	SDL_Window* gWindow = NULL;
-	int SCREEN_WIDTH;
-	int SCREEN_HEIGHT;
-private:
-	SDLWindow() {}
-public:
 	SDLWindow(SDLWindow const&) = delete;
 	void operator=(SDLWindow const&) = delete;
+private:
+	SDLWindow() {}
+	int screenWidth, screenHeight;
 };
 
 #endif // !SDLWindow_H

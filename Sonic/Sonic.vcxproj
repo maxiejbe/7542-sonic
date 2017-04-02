@@ -32,7 +32,9 @@
     <ClCompile Include="entities\Window.cpp" />
     <ClCompile Include="entities\common\Serializable.cpp" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="SDLWindow.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parser.cpp" />
@@ -58,7 +60,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Dot.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="entities\Circle.h" />
     <ClInclude Include="entities\Configuration.h" />
     <ClInclude Include="entities\Coordinate.h" />
@@ -69,7 +71,7 @@
     <ClInclude Include="entities\Scenario.h" />
     <ClInclude Include="entities\Square.h" />
     <ClInclude Include="entities\common\Serializable.h" />
-    <ClInclude Include="LTexture.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="entities\Window.h" />
     <ClInclude Include="Renderer.h" />

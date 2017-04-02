@@ -2,26 +2,25 @@
 
 char* WINDOW_NODE = "ventana";
 
-Window::Window()
-{
+Window::Window() {
 }
 
-Window::Window(Dimensions dimensionsParam)
-{
+Window::Window(Dimensions dimensionsParam) {
 	dimensions = dimensionsParam;
 }
 
-Dimensions Window::GetDimensions()
-{
-	return dimensions;
+int Window::GetWidth() {
+	return dimensions.GetWidth();
 }
 
-void Window::Unserialize(Value* nodeRef)
-{
+int Window::GetHeight() {
+	return dimensions.GetHeight();
+}
+
+void Window::Unserialize(Value* nodeRef) {
 	dimensions.ParseObject(nodeRef);
 }
 
-char * Window::GetNodeName()
-{
+char * Window::GetNodeName() {
 	return WINDOW_NODE;
 }
