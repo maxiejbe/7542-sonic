@@ -30,3 +30,34 @@ char* Layer::GetNodeName()
 {
 	return "0";
 }
+
+bool Layer::loadLayer()
+{
+	if (!layer.loadFromFile("img/level.png")) // imagePath that gets from json
+	{
+		printf("Failed to load background texture!\n");
+		return false;
+	}
+	return true;
+}
+
+void Layer::renderLayer(int x, int y, SDL_Rect* rect)
+{
+	layer.render(x,y,rect);
+}
+
+void Layer::destroyLayer() 
+{
+	layer.free();
+}
+
+int Layer::getZIndex()
+{
+	return zIndex;
+}
+
+string Layer::getImagePath()
+{
+	return imagePath;
+}
+

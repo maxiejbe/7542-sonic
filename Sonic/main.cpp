@@ -26,7 +26,7 @@ void close();
 
 //Scene textures 
 LTexture gDotTexture;
-LTexture gBGTexture;
+Layer gBGLayer;
 LTexture gSpriteTexture;
 
 // TODO: moverlo a Dot.cpp
@@ -127,12 +127,14 @@ bool loadMedia()
 	}
 
 	//Load background texture
-	if (!gBGTexture.loadFromFile("img/level.png"))
+	/*if (!gBGTexture.loadFromFile("img/level.png"))
 	{
 		printf("Failed to load background texture!\n");
 		success = false;
 	}
-
+	*/
+	//Load background layer
+	success = gBGLayer.loadLayer();
 	//Load sprite texture
 	if (!gSpriteTexture.loadFromFile("img/sprite.png"))
 	{
@@ -147,7 +149,8 @@ void close()
 {
 	//Free loaded images
 	gDotTexture.free();
-	gBGTexture.free();
+	//gBGTexture.free();
+	gBGLayer.destroyLayer();
 	gSpriteTexture.free();
 
 	//Destroy window
@@ -270,7 +273,8 @@ int main(int argc, char* args[])
 				SDL_RenderClear(Renderer::getInstance().gRenderer);
 
 				//Render background
-				gBGTexture.render(0, 0, &camera);	
+				//gBGTexture.render(0, 0, &camera);
+				gBGLayer.renderLayer(0, 0, &camera);
 
 				//No funcionan las texturas (igual hay que hacer una textura diferente por cada entidad)
 				Rectangle rectangle = Rectangle(300, 20, 50, 50, gSpriteTexture);
