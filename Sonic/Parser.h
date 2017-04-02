@@ -15,6 +15,7 @@
 #include "entities/Coordinate.h"
 #include "entities/common/Serializable.h"
 #include <vector>
+#include "Logger.h"
 
 using namespace std;
 using namespace rapidjson;
