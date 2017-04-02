@@ -48,9 +48,6 @@ int main(int argc, char* args[])
 	Window window;
 	parser->Parse(&window);
 
-	SDLWindow::getInstance().SCREEN_WIDTH = window.GetWidth();
-	SDLWindow::getInstance().SCREEN_HEIGHT = window.GetHeight();
-
 	Configuration config;
 	parser->Parse(&config);
 
@@ -62,12 +59,10 @@ int main(int argc, char* args[])
 	int scenarioWidth = scenario.GetWidth();
 	int scenarioHeight = scenario.GetHeight();
 
-	//Start up SDL and create window
-	if (!SDLWindow::getInstance().Create() || !Renderer::getInstance().Create()) {
+	if (!SDLWindow::getInstance().Create(window.GetWidth(), window.GetHeight()) || !Renderer::getInstance().Create()) {
 		printf("Failed to initialize!\n");
 	}
 	else {
-		//Load media
 		if (!loadMedia()) {
 			printf("Failed to load media!\n");
 		}
@@ -75,11 +70,10 @@ int main(int argc, char* args[])
 			bool isRunning = true;
 			SDL_Event e;
 
-			//The dot that will be moving around on the screen
-			Player player("img/sonic.png", 0, SDLWindow::getInstance().SCREEN_HEIGHT / 2, 0, 0, scenarioWidth, scenarioHeight);
+			Player player("img/sonic.png", 0, SDLWindow::getInstance().GetScreenHeight() / 2, 0, 0, scenarioWidth, scenarioHeight);
 
 			Timer stepTimer;
-			SDL_Rect camera = { 0, 0, SDLWindow::getInstance().SCREEN_WIDTH, SDLWindow::getInstance().SCREEN_HEIGHT };
+			SDL_Rect camera = { 0, 0, SDLWindow::getInstance().GetScreenWidth(), SDLWindow::getInstance().GetScreenHeight() };
 
 			while (isRunning) {
 
@@ -91,20 +85,17 @@ int main(int argc, char* args[])
 					player.handleEvent(e);
 				}
 
-				//Calculate time step
 				float timeStep = stepTimer.getTicks() / 1000.f;
 
-				//Move for time step
 				player.move(timeStep);
 
-				//Restart step timer
 				stepTimer.start();
 
-				//Center the camera over the player
-				camera.x = ((int)player.getPosX() + player.GetWidth() / 2) - SDLWindow::getInstance().SCREEN_WIDTH / 2;
-				camera.y = ((int)player.getPosY() + player.GetHeight() / 2) - SDLWindow::getInstance().SCREEN_HEIGHT / 2;
+				// Center the camera
+				camera.x = ((int)player.getPosX() + player.GetWidth() / 2) - SDLWindow::getInstance().GetScreenWidth() / 2;
+				camera.y = ((int)player.getPosY() + player.GetHeight() / 2) - SDLWindow::getInstance().GetScreenHeight() / 2;
 
-				//Keep the camera in bounds
+				// Keep the camera in bounds
 				if (camera.x < 0)
 					camera.x = 0;
 				if (camera.y < 0)
@@ -115,13 +106,11 @@ int main(int argc, char* args[])
 				if (camera.y > scenarioHeight - camera.h)
 					camera.y = scenarioHeight - camera.h;
 
-				//Clear screen
+				// Clear screen
 				SDL_SetRenderDrawColor(Renderer::getInstance().gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(Renderer::getInstance().gRenderer);
 
-				//Render background
 				gBGTexture.render(0, 0, &camera);
-
 				player.render(camera.x, camera.y);
 
 				SDL_RenderPresent(Renderer::getInstance().gRenderer);
