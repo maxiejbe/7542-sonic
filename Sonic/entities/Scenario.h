@@ -15,7 +15,8 @@ public:
 	void SetDimensions(Dimensions dimensionsParam);
 	void SetLayers(vector<Layer> layersParam);
 	void SetEntities(vector<Entity> entitiesParam);
-
+	int GetWidth();
+	int GetHeight();
 private:
 	Dimensions dimensions;
 	vector<Layer> layers;
