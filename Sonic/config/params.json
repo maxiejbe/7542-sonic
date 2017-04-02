@@ -11,8 +11,8 @@
   },
   "escenario": {
     "dimensiones": {
-      "ancho": 3328,
-      "alto": 768
+      "ancho": 1920,
+      "alto": 600
     },
     "capas": [
       {

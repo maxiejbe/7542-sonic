@@ -19,7 +19,7 @@ bool loadMedia()
 {
 	bool success = true;
 
-	if (!gBGTexture.loadFromFile("img/level.png"))
+	if (!gBGTexture.loadFromFile("img/level2.jpg"))
 	{
 		printf("Failed to load background texture!\n");
 		success = false;
