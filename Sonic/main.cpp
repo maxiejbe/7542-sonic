@@ -37,17 +37,12 @@ int main(int argc, char* args[])
 	parser->Parse(&config);
 
 	Logger::LoggingLevel() = Logger::FromString(config.GetLogLevel());
-	LOG(logINFO) << "Se ha configurado el nivel de log en '" << Logger::ToString() << "'.";
-
-	LOG(logINFO) << "Se ha configurado la velocidad de scroll en " << config.GetScrollSpeed() << " pixels por segundo.";
-
+	
 	Scenario scenario;
 	parser->Parse(&scenario);
 
 	int scenarioWidth = scenario.GetWidth();
 	int scenarioHeight = scenario.GetHeight();
-
-	LOG(logINFO) << "Se ha creado el escenario con un tamaño de " << scenarioWidth << "x" << scenarioHeight << ".";
 
 	if (!SDLWindow::getInstance().create(window.getWidth(), window.getHeight()) || !Renderer::getInstance().create()) {
 		LOG(logERROR) << "Error al inicializar el juego!";
