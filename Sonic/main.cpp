@@ -20,7 +20,8 @@ bool loadMedia()
 	bool success = true;
 
 	if (!gBGTexture.loadFromFile("img/level2.jpg")) {
-		LOG(logERROR) << "Error al cargar la imagen de la capa."; // TODO: usar img por defecto
+		LOG(logERROR) << "Error al cargar la imagen de la capa.";
+		// TODO: usar img por defecto
 		success = false;
 	}
 
@@ -31,8 +32,8 @@ void close()
 {
 	gBGTexture.free();
 
-	SDLWindow::getInstance().Close();
-	Renderer::getInstance().Close();
+	SDLWindow::getInstance().close();
+	Renderer::getInstance().close();
 
 	IMG_Quit();
 	SDL_Quit();
@@ -51,6 +52,9 @@ int main(int argc, char* args[])
 	parser->Parse(&config);
 
 	Logger::LoggingLevel() = Logger::FromString(config.GetLogLevel());
+	LOG(logINFO) << "Se ha configurado el nivel de log en '" << Logger::ToString() << "'.";
+
+	LOG(logINFO) << "Se ha configurado la velocidad de scroll en " << config.GetScrollSpeed() << " pixels por segundo.";
 
 	Scenario scenario;
 	parser->Parse(&scenario);
@@ -58,7 +62,9 @@ int main(int argc, char* args[])
 	int scenarioWidth = scenario.GetWidth();
 	int scenarioHeight = scenario.GetHeight();
 
-	if (!SDLWindow::getInstance().Create(window.GetWidth(), window.GetHeight()) || !Renderer::getInstance().Create()) {
+	LOG(logINFO) << "Se ha creado el escenario con un tamaño de " << scenarioWidth << "x" << scenarioHeight << ".";
+
+	if (!SDLWindow::getInstance().create(window.getWidth(), window.getHeight()) || !Renderer::getInstance().create()) {
 		LOG(logERROR) << "Error al inicializar el juego!";
 	}
 	else {
@@ -69,10 +75,11 @@ int main(int argc, char* args[])
 			bool isRunning = true;
 			SDL_Event event;
 
-			Player player("img/sonic.png", 0, SDLWindow::getInstance().GetScreenHeight() / 1.35, 0, 0, scenarioWidth, scenarioHeight);
+			Player player("img/sonic.png", 0, SDLWindow::getInstance().getScreenHeight() / 1.35, 0, 0, scenarioWidth, scenarioHeight, config.GetScrollSpeed());
+			LOG(logINFO) << "El personaje ha sido creado correctamente.";
 
 			Timer stepTimer;
-			SDL_Rect camera = { 0, 0, SDLWindow::getInstance().GetScreenWidth(), SDLWindow::getInstance().GetScreenHeight() };
+			SDL_Rect camera = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
 
 			while (isRunning) {
 
@@ -80,6 +87,7 @@ int main(int argc, char* args[])
 				while (SDL_PollEvent(&event) != 0) {
 					if (event.type == SDL_QUIT) {
 						isRunning = false;
+						LOG(logINFO) << "El usuario ha solicitado la terminación del juego.";
 					}
 
 					player.handleEvent(event);
@@ -92,8 +100,8 @@ int main(int argc, char* args[])
 				stepTimer.start();
 
 				// Center the camera
-				camera.x = ((int)player.getPosX() + player.GetWidth() / 2) - SDLWindow::getInstance().GetScreenWidth() / 2;
-				camera.y = ((int)player.getPosY() + player.GetHeight() / 2) - SDLWindow::getInstance().GetScreenHeight() / 2;
+				camera.x = ((int)player.getPosX() + player.getWidth() / 2) - SDLWindow::getInstance().getScreenWidth() / 2;
+				camera.y = ((int)player.getPosY() + player.getHeight() / 2) - SDLWindow::getInstance().getScreenHeight() / 2;
 
 				// Keep the camera in bounds
 				if (camera.x < 0)
@@ -119,6 +127,8 @@ int main(int argc, char* args[])
 	}
 
 	close();
+
+	LOG(logINFO) << "El juego ha finalizado.";
 
 	return 0;
 }

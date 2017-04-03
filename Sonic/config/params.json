@@ -6,7 +6,7 @@
     }
   },
   "configuracion": {
-    "vel_scroll": 20,
+    "vel_scroll": 600,
     "nivel_log": "alto"
   },
   "escenario": {

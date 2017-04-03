@@ -11,12 +11,12 @@ Window::Window(Dimensions dimensionsParam)
 	dimensions = dimensionsParam;
 }
 
-int Window::GetWidth()
+int Window::getWidth()
 {
 	return dimensions.GetWidth();
 }
 
-int Window::GetHeight()
+int Window::getHeight()
 {
 	return dimensions.GetHeight();
 }

@@ -1,7 +1,7 @@
 #include "Renderer.h"
 #include "SDLWindow.h"
 
-bool Renderer::Create()
+bool Renderer::create()
 {
 	gRenderer = SDL_CreateRenderer(SDLWindow::getInstance().gWindow, -1, SDL_RENDERER_ACCELERATED);
 	if (gRenderer == NULL) {
@@ -19,7 +19,7 @@ bool Renderer::Create()
 	return true;
 }
 
-void Renderer::Close()
+void Renderer::close()
 {
 	SDL_DestroyRenderer(gRenderer);
 	gRenderer = NULL;

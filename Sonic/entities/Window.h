@@ -9,8 +9,8 @@ public:
 	Window();
 	Window(Dimensions dimensions);
 
-	int GetWidth();
-	int GetHeight();
+	int getWidth();
+	int getHeight();
 private:
 	Dimensions dimensions;
 

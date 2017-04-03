@@ -21,7 +21,7 @@ void Logger::Init() {
 	Logger::Stream() = file;
 
 	Logger().GetSeparator();
-	Logger().Get(logINFO) << "El juego se ha iniciado.";
+	Logger().Get(logINFO) << "El juego ha sido iniciado.";
 }
 
 std::ostringstream& Logger::GetSeparator() {
@@ -59,6 +59,17 @@ LogLevel Logger::FromString(string level) {
 	
 	Logger().Get(logWARNING) << "El nivel de log '" << level << "' no existe. Se tomará el nivel MEDIO por defecto.";
 	return logMEDIUM;
+}
+
+string Logger::ToString() {
+	switch (Logger::LoggingLevel()) {
+	case LogLevel::logLOW:
+		return "bajo";
+	case LogLevel::logMEDIUM:
+		return "medio";
+	case LogLevel::logHIGH:
+		return "alto";
+	}
 }
 
 LogLevel& Logger::LoggingLevel()

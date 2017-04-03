@@ -27,6 +27,7 @@ public:
 	static void Init();
 	std::ostringstream& Get(LogType level = logINFO);
 	static LogLevel FromString(string level);
+	static string ToString();
 	static LogLevel& LoggingLevel();
 	static FILE*& Stream();
 protected:

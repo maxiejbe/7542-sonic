@@ -19,7 +19,7 @@ bool Texture::loadFromFile(std::string path)
 	SDL_Texture* texture = NULL;
 	SDL_Surface* surface = IMG_Load(path.c_str());
 	if (surface == NULL) {
-		LOG(logERROR) << "No se pudo cargar la imagen '" << path.c_str() << "'. SDL_Image Error: " << IMG_GetError();
+		LOG(logERROR) << "No se pudo cargar la imagen '" << path.c_str() << "'. Se tomará una por defecto. SDL_Image Error: " << IMG_GetError();
 		// TODO: cargar img por defecto
 	}
 	else {

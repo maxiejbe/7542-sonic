@@ -1,10 +1,11 @@
 #include "Player.h"
 #include "SDLWindow.h"
 
-Player::Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH)
+Player::Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH, int scrollSpeed)
 {
 	if (!texture.loadFromFile(filePath)) {
-		LOG(logWARNING) << "La imagen del player no existe. Se tomará una por defecto."; //TODO: tomar por defecto
+		LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << filePath << "'. Se tomará una por defecto.";
+		//TODO: tomar por defecto
 	}
 
 	this->posX = x;
@@ -15,24 +16,25 @@ Player::Player(string filePath, float x, float y, float velX, float velY, int sc
 	this->height = texture.getHeight();
 	this->scenarioWidth = scenW;
 	this->scenarioHeight = scenH;
+	this->scrollSpeed = scrollSpeed;
 }
 
 void Player::handleEvent(SDL_Event& e)
 {
 	if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
 		switch (e.key.keysym.sym) {
-		case SDLK_UP: velY -= PLAYER_VEL; break;
-		case SDLK_DOWN: velY += PLAYER_VEL; break;
-		case SDLK_LEFT: velX -= PLAYER_VEL; break;
-		case SDLK_RIGHT: velX += PLAYER_VEL; break;
+		case SDLK_UP: velY -= scrollSpeed; break;
+		case SDLK_DOWN: velY += scrollSpeed; break;
+		case SDLK_LEFT: velX -= scrollSpeed; break;
+		case SDLK_RIGHT: velX += scrollSpeed; break;
 		}
 	}
 	else if (e.type == SDL_KEYUP && e.key.repeat == 0) {
 		switch (e.key.keysym.sym) {
-		case SDLK_UP: velY += PLAYER_VEL; break;
-		case SDLK_DOWN: velY -= PLAYER_VEL; break;
-		case SDLK_LEFT: velX += PLAYER_VEL; break;
-		case SDLK_RIGHT: velX -= PLAYER_VEL; break;
+		case SDLK_UP: velY += scrollSpeed; break;
+		case SDLK_DOWN: velY -= scrollSpeed; break;
+		case SDLK_LEFT: velX += scrollSpeed; break;
+		case SDLK_RIGHT: velX -= scrollSpeed; break;
 		}
 	}
 }
@@ -69,12 +71,12 @@ float Player::getPosY()
 	return this->posY;
 }
 
-int Player::GetWidth()
+int Player::getWidth()
 {
 	return this->texture.getWidth();
 }
 
-int Player::GetHeight()
+int Player::getHeight()
 {
 	return this->texture.getHeight();
 }

@@ -1,22 +1,22 @@
 #include "SDLWindow.h"
 
-void SDLWindow::Close()
+void SDLWindow::close()
 {
 	SDL_DestroyWindow(gWindow);
 	gWindow = NULL;
 }
 
-int SDLWindow::GetScreenWidth()
+int SDLWindow::getScreenWidth()
 {
 	return this->screenWidth;
 }
 
-int SDLWindow::GetScreenHeight()
+int SDLWindow::getScreenHeight()
 {
 	return this->screenHeight;
 }
 
-bool SDLWindow::Create(int width, int height)
+bool SDLWindow::create(int width, int height)
 {
 	this->screenWidth = width;
 	this->screenHeight = height;
@@ -30,12 +30,14 @@ bool SDLWindow::Create(int width, int height)
 			LOG(logWARNING) << "El filtrado de textura lineal no está habilitado.";
 		}
 
-		gWindow = SDL_CreateWindow("Sonic", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, GetScreenWidth(), GetScreenHeight(), SDL_WINDOW_SHOWN);
+		gWindow = SDL_CreateWindow("Sonic", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, getScreenWidth(), getScreenHeight(), SDL_WINDOW_SHOWN);
 		if (gWindow == NULL) {
 			LOG(logERROR) << "La ventana no pudo ser creada! SDL Error: " << SDL_GetError();
 			return false;
 		}
 	}
+
+	LOG(logINFO) << "Se ha creado la ventana con un tamaño de " << width << "x" << height << ".";
 
 	return true;
 }

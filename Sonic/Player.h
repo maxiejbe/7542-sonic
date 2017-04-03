@@ -13,9 +13,7 @@ using namespace std;
 class Player
 {
 public:
-	static const int PLAYER_VEL = 600; // TODO: tomar del json
-
-	Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH);
+	Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH, int scrollSpeed);
 
 	void handleEvent(SDL_Event& e);
 	void move(float timeStep);
@@ -23,14 +21,16 @@ public:
 
 	float getPosX();
 	float getPosY();
-	int GetWidth();
-	int GetHeight();
+	int getWidth();
+	int getHeight();
+	int getScrollSpeed();
 private:
 	Texture texture;
 	float posX, posY;
 	float velX, velY;
 	int width, height;
 	int scenarioWidth, scenarioHeight;
+	int scrollSpeed;
 };
 
 #endif // !PLAYER_H

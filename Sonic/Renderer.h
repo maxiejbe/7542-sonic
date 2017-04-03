@@ -10,8 +10,8 @@ public:
 		static Renderer instance;
 		return instance;
 	}
-	bool Create();
-	void Close();
+	bool create();
+	void close();
 	SDL_Renderer* gRenderer = NULL;
 private:
 	Renderer() {}
