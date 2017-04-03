@@ -5,7 +5,7 @@
       "alto": 600
     }
   },
-  "configuracion": {
+  "CONFIGURACION": {
     "vel_scroll": 20,
     "nivel_log": "alto"
   },

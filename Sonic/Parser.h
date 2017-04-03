@@ -16,6 +16,7 @@
 #include "entities/common/Serializable.h"
 #include <vector>
 #include "Logger.h"
+#include <algorithm>
 
 using namespace std;
 using namespace rapidjson;

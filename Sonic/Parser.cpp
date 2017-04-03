@@ -36,6 +36,7 @@ bool Parser::ReadConfigFileContent(string path)
 	tmp << file.rdbuf();
 	fileContent.clear();
 	fileContent = tmp.str();
+	transform(fileContent.begin(), fileContent.end(), fileContent.begin(), ::tolower);
 	tmp.clear();
 
 	file.close();
