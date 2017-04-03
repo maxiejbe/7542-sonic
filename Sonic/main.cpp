@@ -98,6 +98,20 @@ int main(int argc, char* args[])
 			Timer stepTimer;
 			SDL_Rect camera = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
 
+			// ESTO DEBERIA VENIR DEL JSON
+			Entity *entities[6];
+			//Crop img = rect
+			entities[0] = new Rectangle(1, "rectangulo", "rojo", Dimensions(100, 100, 0), Coordinate(100, 100), "img/sprite.png", 99);
+			//Crop img < rect
+			entities[1] = new Rectangle(1, "rectangulo", "rojo", Dimensions(300, 300, 0), Coordinate(300, 300), "img/sprite.png", 99);
+			//Crop img.h < rect.h
+			entities[2] = new Rectangle(1, "rectangulo", "rojo", Dimensions(300, 100, 0), Coordinate(700, 200), "img/sprite.png", 99);
+			//Crop img.w < rect.w
+			entities[3] = new Rectangle(1, "rectangulo", "rojo", Dimensions(60, 400, 0), Coordinate(1200, 50), "img/sprite.png", 99);
+			entities[4] = new Circle(1, "circulo", "rojo", Dimensions(0, 0, 100), Coordinate(1500, 200), "img/sprite.png", 99);
+			entities[5] = new Square(1, "cuadrado", "rojo", Dimensions(80, 80, 0), Coordinate(1300, 300), "img/sprite.png", 99);
+			// FIN ESTO DEBERIA VENIR DEL JSON
+
 			while (isRunning) {
 
 				// Check event type
@@ -138,17 +152,6 @@ int main(int argc, char* args[])
 				//Render background
 				gBGLayer.renderLayer(0, 0, &camera);
 
-				Entity *entities[6];
-				//Crop img = rect
-				entities[0] = new Rectangle(1, "rectangulo", "rojo", Dimensions(100, 100, 0), Coordinate(100, 100), "img/sprite.png", 99);
-				//Crop img < rect
-				entities[1] = new Rectangle(1, "rectangulo", "rojo", Dimensions(300, 300, 0), Coordinate(300, 300), "img/sprite.png", 99);
-				//Crop img.h < rect.h
-				entities[2] = new Rectangle(1, "rectangulo", "rojo", Dimensions(300, 100, 0), Coordinate(700, 200), "img/sprite.png", 99);
-				//Crop img.w < rect.w
-				entities[3] = new Rectangle(1, "rectangulo", "rojo", Dimensions(60, 400, 0), Coordinate(1200, 50), "img/sprite.png", 99);
-				entities[4] = new Circle(1, "circulo", "rojo", Dimensions(0, 0, 100), Coordinate(1500, 200), "img/sprite.png", 99);
-				entities[5] = new Square(1, "cuadrado", "rojo", Dimensions(80, 80, 0), Coordinate(1300, 300), "img/sprite.png", 99);
 
 				for (int i = 0; i < 6; i++) {
 					entities[i]->draw(camera);
