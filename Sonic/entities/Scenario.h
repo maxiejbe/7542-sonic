@@ -12,6 +12,7 @@ using namespace std;
 class Scenario : public Serializable {
 public:
 	Scenario();
+	vector<Layer> getLayers();
 	void SetDimensions(Dimensions);
 	void SetLayers(vector<Layer>);
 	void SetEntities(vector<Entity>);

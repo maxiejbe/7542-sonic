@@ -12,20 +12,16 @@ public:
 	Layer();
 
 	int getZIndex();
-	
 	string getImagePath();
-
-	bool loadLayer();
-
+	void loadLayer();
+	void loadLayer2(string aaa);
 	void renderLayer(int x, int y, SDL_Rect* rect);
-
 	void destroyLayer();
-
 private:
 	int id;
 	int zIndex;
 	string imagePath;
-	Texture layer;
+	Texture texture;
 
 	// Inherited via Serializable
 	virtual void Unserialize(Value * nodeRef) override;

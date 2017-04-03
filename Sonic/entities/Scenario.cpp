@@ -54,10 +54,14 @@ void Scenario::Unserialize(Value * nodeRef)
 	ParseCollection<Entity>(&entities, nodeRef, SCENARIO_ENTITIES_NODE);
 
 	LOG(logINFO) << MESSAGE_END_PARSING_SCENARIO_NODE;
-
 }
 
 char * Scenario::GetNodeName()
 {
 	return SCENARIO_NODE;
+}
+
+vector<Layer> Scenario::getLayers()
+{
+	return this->layers;
 }

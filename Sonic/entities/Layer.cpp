@@ -23,7 +23,7 @@ void Layer::Unserialize(Value * nodeRef)
 	LOG(logINFO) << MESSAGE_PARSING_LAYER_NODE;
 
 	ParseInt(&id, LAYER_DEFAULT_ID, nodeRef, LAYER_ID_NODE);
-	
+
 	ParseInt(&zIndex, LAYER_DEFAULT_ZINDEX, nodeRef, LAYER_ZINDEX_NODE);
 
 	ParseString(&imagePath, LAYER_DEFAULT_IMAGE_PATH, nodeRef, LAYER_IMAGE_PATH_NODE);
@@ -36,24 +36,30 @@ char* Layer::GetNodeName()
 	return "0";
 }
 
-bool Layer::loadLayer()
+void Layer::loadLayer()
 {
-	if (!layer.loadFromFile("img/level2.jpg")) //TODO: imagePath that gets from json
-	{
-		printf("Failed to load background texture!\n");
-		return false;
+	if (!texture.loadFromFile(imagePath)) {
+		LOG(logWARNING) << "No se pudo cargar la imagen de la capa '" << imagePath << "'. Se tomará una por defecto.";
+		//TODO: tomar por defecto
 	}
-	return true;
+}
+
+void Layer::loadLayer2(string aaa = "img/sprite.png")
+{
+	if (!texture.loadFromFile(aaa)) {
+		LOG(logWARNING) << "No se pudo cargar la imagen de la capa '" << imagePath << "'. Se tomará una por defecto.";
+		//TODO: tomar por defecto
+	}
 }
 
 void Layer::renderLayer(int x, int y, SDL_Rect* rect)
 {
-	layer.render(x,y,rect);
+	texture.render(x, y, rect);
 }
 
-void Layer::destroyLayer() 
+void Layer::destroyLayer()
 {
-	layer.free();
+	texture.free();
 }
 
 int Layer::getZIndex()

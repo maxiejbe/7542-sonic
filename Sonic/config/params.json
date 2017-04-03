@@ -18,12 +18,12 @@
       {
         "id": 1,
         "index_z": 99,
-        "ruta_imagen": "/images/capa1.png"
+        "ruta_imagen": "img/level2.jpg"
       },
       {
         "id": 2,
         "index_z": 98,
-        "ruta_imagen": "/images/capa2.png"
+        "ruta_imagen": "img/rain.png"
       }
     ],
     "entidades": [

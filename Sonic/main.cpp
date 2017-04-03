@@ -12,43 +12,11 @@
 #include "entities/Rectangle.h"
 #include "entities/Circle.h"
 #include "entities/Square.h"
-//#include "Texture.h"
 
-bool loadMedia(); //TODO: volarlo
 void close();
-
-Layer gBGLayer;
-Texture gSpriteTexture;
-Texture gSpriteTexture1;
-
-bool loadMedia()
-{
-	bool success = true;
-
-	success = gBGLayer.loadLayer();
-
-	//Load sprite texture
-	if (!gSpriteTexture.loadFromFile("img/sprite.png"))
-	{
-		printf("Failed to load background texture!\n");
-		success = false;
-	}
-
-	//Load sprite texture
-	if (!gSpriteTexture1.loadFromFile("img/sprite.png"))
-	{
-		printf("Failed to load background texture!\n");
-		success = false;
-	}
-
-	return success;
-}
 
 void close()
 {
-	gBGLayer.destroyLayer();
-	gSpriteTexture.free();
-
 	SDLWindow::getInstance().close();
 	Renderer::getInstance().close();
 
@@ -85,83 +53,87 @@ int main(int argc, char* args[])
 		LOG(logERROR) << "Error al inicializar el juego!";
 	}
 	else {
-		if (!loadMedia()) {
-			printf("Failed to load media!\n");
-		}
-		else {
-			bool isRunning = true;
-			SDL_Event event;
+		bool isRunning = true;
+		SDL_Event event;
 
-			Player player("img/sonic.png", 0, SDLWindow::getInstance().getScreenHeight() / 1.35, 0, 0, scenarioWidth, scenarioHeight, config.GetScrollSpeed());
-			LOG(logINFO) << "El personaje ha sido creado correctamente.";
+		// TODO: mejorar esto
+		Layer layer1 = scenario.getLayers().at(0);
+		Layer layer2 = scenario.getLayers().at(1);
+		layer1.loadLayer();
+		layer2.loadLayer();
 
-			Timer stepTimer;
-			SDL_Rect camera = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
+		//gBGLayer.loadLayer2("img/sonic.png");
 
-			// ESTO DEBERIA VENIR DEL JSON
-			Entity *entities[6];
-			//Crop img = rect
-			/*entities[0] = new Rectangle(1, "rectangulo", "rojo", Dimensions(100, 100, 0), Coordinate(100, 100), "img/sprite.png", 99);
-			//Crop img < rect
-			entities[1] = new Rectangle(1, "rectangulo", "rojo", Dimensions(300, 300, 0), Coordinate(300, 300), "img/sprite.png", 99);
-			//Crop img.h < rect.h
-			entities[2] = new Rectangle(1, "rectangulo", "rojo", Dimensions(300, 100, 0), Coordinate(700, 200), "img/sprite.png", 99);
-			//Crop img.w < rect.w
-			entities[3] = new Rectangle(1, "rectangulo", "rojo", Dimensions(60, 400, 0), Coordinate(1200, 50), "img/sprite.png", 99);
-			entities[4] = new Circle(1, "circulo", "rojo", Dimensions(0, 0, 100), Coordinate(1500, 200), "img/sprite.png", 99);
-			entities[5] = new Square(1, "cuadrado", "rojo", Dimensions(80, 80, 0), Coordinate(1300, 300), "img/sprite.png", 99);
-			// FIN ESTO DEBERIA VENIR DEL JSON*/
+		Player player("img/sonic.png", 0, SDLWindow::getInstance().getScreenHeight() / 1.35, 0, 0, scenarioWidth, scenarioHeight, config.GetScrollSpeed());
+		LOG(logINFO) << "El personaje ha sido creado correctamente.";
 
-			while (isRunning) {
+		Timer stepTimer;
+		SDL_Rect camera = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
 
-				// Check event type
-				while (SDL_PollEvent(&event) != 0) {
-					if (event.type == SDL_QUIT) {
-						isRunning = false;
-						LOG(logINFO) << "El usuario ha solicitado la terminación del juego.";
-					}
+		/*// ESTO DEBERIA VENIR DEL JSON
+		Entity *entities[6];
+		//Crop img = rect
+		entities[0] = new Rectangle(1, "rectangulo", "rojo", Dimensions(100, 100, 0), Coordinate(100, 100), "img/sprite.png", 99);
+		//Crop img < rect
+		entities[1] = new Rectangle(1, "rectangulo", "rojo", Dimensions(300, 300, 0), Coordinate(300, 300), "img/sprite.png", 99);
+		//Crop img.h < rect.h
+		entities[2] = new Rectangle(1, "rectangulo", "rojo", Dimensions(300, 100, 0), Coordinate(700, 200), "img/sprite.png", 99);
+		//Crop img.w < rect.w
+		entities[3] = new Rectangle(1, "rectangulo", "rojo", Dimensions(60, 400, 0), Coordinate(1200, 50), "img/sprite.png", 99);
+		entities[4] = new Circle(1, "circulo", "rojo", Dimensions(0, 0, 100), Coordinate(1500, 200), "img/sprite.png", 99);
+		entities[5] = new Square(1, "cuadrado", "rojo", Dimensions(80, 80, 0), Coordinate(1300, 300), "img/sprite.png", 99);
+		// FIN ESTO DEBERIA VENIR DEL JSON*/
 
-					player.handleEvent(event);
+		while (isRunning) {
+
+			// Check event type
+			while (SDL_PollEvent(&event) != 0) {
+				if (event.type == SDL_QUIT) {
+					isRunning = false;
+					LOG(logINFO) << "El usuario ha solicitado la terminación del juego.";
 				}
 
-				float timeStep = stepTimer.getTicks() / 1000.f;
-
-				player.move(timeStep);
-
-				stepTimer.start();
-
-				// Center the camera
-				camera.x = ((int)player.getPosX() + player.getWidth() / 2) - SDLWindow::getInstance().getScreenWidth() / 2;
-				camera.y = ((int)player.getPosY() + player.getHeight() / 2) - SDLWindow::getInstance().getScreenHeight() / 2;
-
-				// Keep the camera in bounds
-				if (camera.x < 0)
-					camera.x = 0;
-				if (camera.y < 0)
-					camera.y = 0;
-
-				if (camera.x > scenarioWidth - camera.w)
-					camera.x = scenarioWidth - camera.w;
-				if (camera.y > scenarioHeight - camera.h)
-					camera.y = scenarioHeight - camera.h;
-
-				// Clear screen
-				SDL_SetRenderDrawColor(Renderer::getInstance().gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-				SDL_RenderClear(Renderer::getInstance().gRenderer);
-
-				//Render background
-				gBGLayer.renderLayer(0, 0, &camera);
-
-
-				/*for (int i = 0; i < 6; i++) {
-					entities[i]->draw(camera);
-				}*/
-
-				// Render player
-				player.render(camera.x, camera.y);
-
-				SDL_RenderPresent(Renderer::getInstance().gRenderer);
+				player.handleEvent(event);
 			}
+
+			float timeStep = stepTimer.getTicks() / 1000.f;
+
+			player.move(timeStep);
+
+			stepTimer.start();
+
+			// Center the camera
+			camera.x = ((int)player.getPosX() + player.getWidth() / 2) - SDLWindow::getInstance().getScreenWidth() / 2;
+			camera.y = ((int)player.getPosY() + player.getHeight() / 2) - SDLWindow::getInstance().getScreenHeight() / 2;
+
+			// Keep the camera in bounds
+			if (camera.x < 0)
+				camera.x = 0;
+			if (camera.y < 0)
+				camera.y = 0;
+
+			if (camera.x > scenarioWidth - camera.w)
+				camera.x = scenarioWidth - camera.w;
+			if (camera.y > scenarioHeight - camera.h)
+				camera.y = scenarioHeight - camera.h;
+
+			// Clear screen
+			SDL_SetRenderDrawColor(Renderer::getInstance().gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+			SDL_RenderClear(Renderer::getInstance().gRenderer);
+
+			//Render background
+			// TODO: mejorar esto
+			layer1.renderLayer(0, 0, &camera);
+			layer2.renderLayer(0, 0, &camera);
+
+			/*for (int i = 0; i < 6; i++) {
+				entities[i]->draw(camera);
+			}*/
+
+			// Render player
+			player.render(camera.x, camera.y);
+
+			SDL_RenderPresent(Renderer::getInstance().gRenderer);
 		}
 	}
 
