@@ -5,11 +5,10 @@
 #include "Rectangle.h"
 #include "common/Drawable.h"
 
-class Square : public Entity, public Drawable {
+class Square : public Entity {
 public:
-	Square();
-	Square(int x, int y, int width); //TODO: definir atributos propios
-	virtual void draw(SDL_Rect camera) override;
+	Square(int id, string type, string color, Dimensions dimensions, Coordinate coordinate, string imagePath, int zIndex);
+	virtual void draw(SDL_Rect camera);
 };
 
 #endif // !SQUARE_H

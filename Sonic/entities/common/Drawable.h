@@ -6,6 +6,7 @@
 //#include "../Texture.h"
 #include <SDL.h>
 #include <SDL2_gfxPrimitives.h>
+#include <algorithm>
 
 class Drawable {
 protected:

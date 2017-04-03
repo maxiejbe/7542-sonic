@@ -1,27 +1,39 @@
 #include "Rectangle.h"
 
-Rectangle::Rectangle(int x, int y, int w, int h) {
-	//ONLY FOR TESTING, REMOVE WHEN DONE!
-	coordinate = Coordinate(x, y);
-	dimensions = Dimensions(w, h, 0);
-}
-
-Rectangle::Rectangle(Coordinate coordinate, Dimensions dimensions) {
-	this->coordinate = coordinate;
+Rectangle::Rectangle(int id, string type, string color, Dimensions dimensions, Coordinate coordinate, string imagePath, int zIndex)
+{
+	this->id = id;
+	this->type = type;
+	this->color = color;
 	this->dimensions = dimensions;
+	this->coordinate = coordinate;
+	this->imagePath = imagePath;
+	this->zIndex = zIndex;
 }
 
-void Rectangle::draw(SDL_Rect camera) {
-	//Show the tile
-	SDL_Renderer * gRenderer = Renderer::getInstance().gRenderer;	
-	if ( gRenderer != NULL) {
+void Rectangle::draw(SDL_Rect camera)
+{
+	SDL_Renderer* gRenderer = Renderer::getInstance().gRenderer;
+	if (gRenderer != NULL) {
 		int x1 = coordinate.getX() - camera.x;
 		int x2 = x1 + dimensions.getWidth();
 		int y1 = coordinate.getY() - camera.y;
 		int y2 = y1 + dimensions.getHeight();
-		// Fixme
-		//boxRGBA(gRenderer,x1,y1,x2,y2, 0x00, 0xFF, 0x00, 0xFF);
-	}else {
+		boxRGBA(gRenderer, x1, y1, x2, y2, 0x00, 0xFF, 0x00, 0xFF);
+
+		if (!texture.loadFromFile(imagePath)) {
+			LOG(logWARNING) << "No se pudo cargar la imagen '" << imagePath << "'. Se tomará una por defecto.";
+			//TODO: tomar por defecto
+		}
+		else {
+			x1 = coordinate.getX() - camera.x;
+			y1 = coordinate.getY() - camera.y;
+			SDL_Rect dstrect = { x1, y1, min(texture.getWidth(), dimensions.getWidth()) , min(texture.getHeight(), dimensions.getHeight()) };
+			SDL_Rect croprect = { 0, 0, min(texture.getWidth(), dimensions.getWidth()), min(texture.getHeight(), dimensions.getHeight()) };
+			SDL_RenderCopy(Renderer::getInstance().gRenderer, texture.getTexture(), &croprect, &dstrect);
+		}
+	}
+	else {
 		//TODO: log errors
 	}
 }

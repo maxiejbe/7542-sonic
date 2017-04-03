@@ -33,7 +33,7 @@ char* Layer::GetNodeName()
 
 bool Layer::loadLayer()
 {
-	if (!layer.loadFromFile("img/level.png")) // imagePath that gets from json
+	if (!layer.loadFromFile("img/level2.jpg")) //TODO: imagePath that gets from json
 	{
 		printf("Failed to load background texture!\n");
 		return false;

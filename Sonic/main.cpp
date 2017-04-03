@@ -61,7 +61,7 @@ int main(int argc, char* args[])
 	Logger::Init();
 
 	//TODO: Take params from argv
-	Parser* parser = new Parser("config/params2.json");
+	Parser* parser = new Parser("config/params.json");
 	Window window;
 	parser->Parse(&window);
 
@@ -135,56 +135,28 @@ int main(int argc, char* args[])
 				SDL_SetRenderDrawColor(Renderer::getInstance().gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(Renderer::getInstance().gRenderer);
 
-			
-
 				//Render background
 				gBGLayer.renderLayer(0, 0, &camera);
 
-
+				Entity *entities[6];
 				//Crop img = rect
-				Rectangle rectangle = Rectangle(100, 100, 100, 100);
-				rectangle.draw(camera);
-				int x1 = 100 - camera.x;
-				int y1 = 100 - camera.y;
-				SDL_Rect dstrect = { x1, y1, 100, 100 };			
-				SDL_Rect croprect = { 0, 0, 100, 100 };				
-				SDL_RenderCopy(Renderer::getInstance().gRenderer, gSpriteTexture.getTexture(), &croprect, &dstrect);
-
+				entities[0] = new Rectangle(1, "rectangulo", "rojo", Dimensions(100, 100, 0), Coordinate(100, 100), "img/sprite.png", 99);
 				//Crop img < rect
-				Rectangle rectangle1 = Rectangle(300, 300, 300, 300);
-				rectangle1.draw(camera);
-				x1 = 300 - camera.x;
-				y1 = 300 - camera.y;
-				SDL_Rect dstrect1 = { x1, y1, 200, 200 };
-				SDL_Rect croprect1 = { 0, 0, 200, 200 };
-				SDL_RenderCopy(Renderer::getInstance().gRenderer, gSpriteTexture1.getTexture(), &croprect1, &dstrect1);
+				entities[1] = new Rectangle(1, "rectangulo", "rojo", Dimensions(300, 300, 0), Coordinate(300, 300), "img/sprite.png", 99);
+				//Crop img.h < rect.h
+				entities[2] = new Rectangle(1, "rectangulo", "rojo", Dimensions(300, 100, 0), Coordinate(700, 200), "img/sprite.png", 99);
+				//Crop img.w < rect.w
+				entities[3] = new Rectangle(1, "rectangulo", "rojo", Dimensions(60, 400, 0), Coordinate(1200, 50), "img/sprite.png", 99);
+				entities[4] = new Circle(1, "circulo", "rojo", Dimensions(0, 0, 100), Coordinate(1500, 200), "img/sprite.png", 99);
+				entities[5] = new Square(1, "cuadrado", "rojo", Dimensions(80, 80, 0), Coordinate(1300, 300), "img/sprite.png", 99);
 
-				//Crop img > rect (img.h es mas chica que el rect.h)
-				Rectangle rectangle2 = Rectangle(700, 200, 300, 100);
-				rectangle2.draw(camera);
-				x1 = 700 - camera.x;
-				y1 = 200 - camera.y;
-				SDL_Rect dstrect2 = { x1, y1, 200, 100 };
-				SDL_Rect croprect2 = { 0, 0, 200, 100 }; //rect.w mas grande que img.w, queda la img.w
-				SDL_RenderCopy(Renderer::getInstance().gRenderer, gSpriteTexture1.getTexture(), &croprect2, &dstrect2);
+				for (int i = 0; i < 6; i++) {
+					entities[i]->draw(camera);
+				}
 
-				//Crop img > rect (img.w es mas chica que el rect.w)
-				Rectangle rectangle3 = Rectangle(1200, 50, 60, 400);
-				rectangle3.draw(camera);
-				x1 = 1200 - camera.x;
-				y1 = 50 - camera.y;
-				SDL_Rect dstrect3 = { x1, y1, 60, 200 };
-				SDL_Rect croprect3 = { 0, 0, 60, 200 }; //rect.w mas chico que img.w, queda la rect.w, rect.h es mas grande que img.h entocnes queda igual
-				SDL_RenderCopy(Renderer::getInstance().gRenderer, gSpriteTexture1.getTexture(), &croprect3, &dstrect3);
-
-				Circle circle = Circle(1500,200, 100);
-				circle.draw(camera);
-
-				Square square = Square(1300, 300, 80);
-				square.draw(camera);
-
+				// Render player
 				player.render(camera.x, camera.y);
-				
+
 				SDL_RenderPresent(Renderer::getInstance().gRenderer);
 			}
 		}

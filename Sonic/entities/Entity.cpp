@@ -11,6 +11,10 @@ Entity::Entity()
 {
 }
 
+void Entity::draw(SDL_Rect camera)
+{
+}
+
 void Entity::Unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;

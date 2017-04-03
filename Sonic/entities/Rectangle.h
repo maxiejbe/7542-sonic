@@ -2,13 +2,10 @@
 #define RECTANGLE_H
 
 #include "Entity.h"
-#include "common/Drawable.h"
 
-class Rectangle : public Entity, public Drawable {
+class Rectangle : public Entity {
 public:
-	//ONLY FOR TESTING, REMOVE WHEN DONE!
-	Rectangle(int x, int y, int w, int h); //TODO: definir atributos propios
-	Rectangle(Coordinate coordinate, Dimensions dimensions);
+	Rectangle(int id, string type, string color, Dimensions dimensions, Coordinate coordinate, string imagePath, int zIndex);
 	virtual void draw(SDL_Rect camera) override;
 };
 

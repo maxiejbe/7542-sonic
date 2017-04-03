@@ -23,7 +23,6 @@ public:
 	float getPosY();
 	int getWidth();
 	int getHeight();
-	int getScrollSpeed();
 private:
 	Texture texture;
 	float posX, posY;
