@@ -72,3 +72,8 @@ int Texture::getHeight()
 {
 	return height;
 }
+
+SDL_Texture* Texture::getTexture()
+{
+	return texture;
+}

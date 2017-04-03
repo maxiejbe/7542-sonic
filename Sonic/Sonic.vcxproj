@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="entities\common\Drawable.cpp" />
     <ClCompile Include="DateUtils.cpp" />
     <ClCompile Include="entities\Circle.cpp" />
     <ClCompile Include="entities\Configuration.cpp" />
@@ -53,6 +54,7 @@
     <Image Include="img\loaded.png" />
     <Image Include="img\press.bmp" />
     <Image Include="img\right.bmp" />
+    <Image Include="img\sprite.png" />
     <Image Include="img\up.bmp" />
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +62,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="entities\common\Drawable.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="entities\Circle.h" />
     <ClInclude Include="entities\Configuration.h" />
@@ -138,6 +141,8 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir)libs\SDL2_image-2.0.1\include;$(ProjectDir)libs\SDL2-2.0.5\include;$(Projectdir);$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86;$(ProjectDir)libs\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)libs\SDL2_gfx-1.0.3;$(ProjectDir)libs\SDL2_image-2.0.1\include;$(ProjectDir)libs\SDL2-2.0.5\include;$(Projectdir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)libs\SDL2_gfx-1.0.3\lib;$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86;$(ProjectDir)libs\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -156,11 +161,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\MATT-PC\Desktop\UBA\7542-sonic\Sonic\libs\SDL2_gfx-1.0.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\MATT-PC\Desktop\UBA\7542-sonic\Sonic\libs\SDL2_gfx-1.0.3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /Q /Y "$(ProjectDir)libs\SDL2-2.0.5\lib\x86\*.dll" "$(ProjectDir)"

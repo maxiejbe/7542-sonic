@@ -13,12 +13,12 @@ Window::Window(Dimensions dimensionsParam)
 
 int Window::getWidth()
 {
-	return dimensions.GetWidth();
+	return dimensions.getWidth();
 }
 
 int Window::getHeight()
 {
-	return dimensions.GetHeight();
+	return dimensions.getHeight();
 }
 
 void Window::Unserialize(Value* nodeRef)

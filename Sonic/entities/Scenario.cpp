@@ -25,12 +25,12 @@ void Scenario::SetEntities(vector<Entity> entities)
 
 int Scenario::GetWidth()
 {
-	return dimensions.GetWidth();
+	return dimensions.getWidth();
 }
 
 int Scenario::GetHeight()
 {
-	return dimensions.GetHeight();
+	return dimensions.getHeight();
 }
 
 void Scenario::Unserialize(Value * nodeRef)

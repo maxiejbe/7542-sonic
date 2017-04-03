@@ -4,8 +4,20 @@ char* COORDINATE_NODE = "coordenada";
 const char* COORDINATE_X_NODE = "x";
 const char* COORDINATE_Y_NODE = "y";
 
-Coordinate::Coordinate()
+Coordinate::Coordinate(){}
+
+Coordinate::Coordinate(int x, int y)
 {
+	this->x = x;
+	this->y = y;
+}
+
+int Coordinate::getX() {
+	return x;
+}
+
+int Coordinate::getY() {
+	return y;
 }
 
 void Coordinate::Unserialize(Value * nodeRef)

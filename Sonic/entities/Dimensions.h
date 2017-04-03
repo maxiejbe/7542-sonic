@@ -6,9 +6,10 @@
 class Dimensions : public Serializable {
 public:
 	Dimensions();
-	int GetWidth();
-	int GetHeight();
-	int GetRadio();
+	Dimensions(int width, int height, int radio);
+	int getWidth();
+	int getHeight();
+	int getRadio();
 private:
 	int width;
 	int height;

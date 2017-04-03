@@ -69,6 +69,8 @@ string Logger::ToString() {
 		return "medio";
 	case LogLevel::logHIGH:
 		return "alto";
+	default:
+		return "";
 	}
 }
 

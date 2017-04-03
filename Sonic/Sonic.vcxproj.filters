@@ -75,8 +75,8 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.h">
-      <Filter>Header Files</Filter>
+    <ClCompile Include="entities\common\Drawable.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +137,12 @@
     <ClInclude Include="Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClCompile Include="Timer.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClInclude Include="entities\common\Drawable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sonic.rc">
@@ -178,6 +184,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="img\up.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\sprite.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

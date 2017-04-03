@@ -1,3 +1,6 @@
+#ifndef TEXTURE_H
+#define TEXTURE_H
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
@@ -17,9 +20,12 @@ public:
 
 	int getWidth();
 	int getHeight();
+	SDL_Texture* getTexture(); // es necesario?
 
 private:
 	SDL_Texture* texture;
 	int width;
 	int height;
 };
+
+#endif

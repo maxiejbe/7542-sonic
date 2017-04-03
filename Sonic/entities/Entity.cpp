@@ -40,10 +40,7 @@ void Entity::Unserialize(Value * nodeRef)
 	}
 }
 
-char * Entity::GetNodeName()
+char* Entity::GetNodeName()
 {
 	return nullptr;
-}
-
-void Entity::draw() {
 }
