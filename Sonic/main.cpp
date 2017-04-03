@@ -61,7 +61,7 @@ int main(int argc, char* args[])
 	Logger::Init();
 
 	//TODO: Take params from argv
-	Parser* parser = new Parser("config/params.json");
+	Parser* parser = new Parser("config/params2.json");
 	Window window;
 	parser->Parse(&window);
 

@@ -76,7 +76,7 @@ string Logger::ToString() {
 
 LogLevel& Logger::LoggingLevel()
 {
-	static LogLevel loggingLevel = logMEDIUM;
+	static LogLevel loggingLevel = logHIGH;
 	return loggingLevel;
 }
 

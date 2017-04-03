@@ -16,6 +16,7 @@
 #include "entities/common/Serializable.h"
 #include <vector>
 #include "Logger.h"
+#include <algorithm>
 
 using namespace std;
 using namespace rapidjson;
@@ -32,7 +33,10 @@ private:
 	Document document;
 	Document windowNode;
 
-	string ReadConfigFileContent(string path);
+	bool ReadConfigFileContent(string path);
+	bool ParseDocument();
+
+	string fileContent;
 };
 
 #endif
