@@ -19,9 +19,8 @@ bool loadMedia()
 {
 	bool success = true;
 
-	if (!gBGTexture.loadFromFile("img/level2.jpg"))
-	{
-		printf("Failed to load background texture!\n");
+	if (!gBGTexture.loadFromFile("img/level2.jpg")) {
+		LOG(logERROR) << "Error al cargar la imagen de la capa."; // TODO: usar img por defecto
 		success = false;
 	}
 
@@ -53,10 +52,6 @@ int main(int argc, char* args[])
 
 	Logger::LoggingLevel() = Logger::FromString(config.GetLogLevel());
 
-	LOG(logERROR) << "Esto es un error.";
-	LOG(logWARNING) << "Esto es un warning.";
-	LOG(logINFO) << "Esto es una info.";
-
 	Scenario scenario;
 	parser->Parse(&scenario);
 
@@ -64,7 +59,7 @@ int main(int argc, char* args[])
 	int scenarioHeight = scenario.GetHeight();
 
 	if (!SDLWindow::getInstance().Create(window.GetWidth(), window.GetHeight()) || !Renderer::getInstance().Create()) {
-		printf("Failed to initialize!\n");
+		LOG(logERROR) << "Error al inicializar el juego!";
 	}
 	else {
 		if (!loadMedia()) {
@@ -72,21 +67,22 @@ int main(int argc, char* args[])
 		}
 		else {
 			bool isRunning = true;
-			SDL_Event e;
+			SDL_Event event;
 
-			Player player("img/sonic.png", 0, SDLWindow::getInstance().GetScreenHeight() / 2, 0, 0, scenarioWidth, scenarioHeight);
+			Player player("img/sonic.png", 0, SDLWindow::getInstance().GetScreenHeight() / 1.35, 0, 0, scenarioWidth, scenarioHeight);
 
 			Timer stepTimer;
 			SDL_Rect camera = { 0, 0, SDLWindow::getInstance().GetScreenWidth(), SDLWindow::getInstance().GetScreenHeight() };
 
 			while (isRunning) {
 
-				while (SDL_PollEvent(&e) != 0) {
-					if (e.type == SDL_QUIT) {
+				// Check event type
+				while (SDL_PollEvent(&event) != 0) {
+					if (event.type == SDL_QUIT) {
 						isRunning = false;
 					}
 
-					player.handleEvent(e);
+					player.handleEvent(event);
 				}
 
 				float timeStep = stepTimer.getTicks() / 1000.f;

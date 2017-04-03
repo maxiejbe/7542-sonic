@@ -1,10 +1,10 @@
 #include "Player.h"
 #include "SDLWindow.h"
 
-Player::Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH) {
-
+Player::Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH)
+{
 	if (!texture.loadFromFile(filePath)) {
-		LOG(logERROR, "Failed to load dot texture!");
+		LOG(logWARNING) << "La imagen del player no existe. Se tomará una por defecto."; //TODO: tomar por defecto
 	}
 
 	this->posX = x;
@@ -17,7 +17,8 @@ Player::Player(string filePath, float x, float y, float velX, float velY, int sc
 	this->scenarioHeight = scenH;
 }
 
-void Player::handleEvent(SDL_Event& e) {
+void Player::handleEvent(SDL_Event& e)
+{
 	if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
 		switch (e.key.keysym.sym) {
 		case SDLK_UP: velY -= PLAYER_VEL; break;
@@ -36,33 +37,25 @@ void Player::handleEvent(SDL_Event& e) {
 	}
 }
 
-void Player::move(float timeStep) {
-
+void Player::move(float timeStep)
+{
 	posX += velX * timeStep;
 
-	if (posX < 0) {
+	if (posX < 0)
 		posX = 0;
-	}
-	else if (posX > scenarioWidth - width) {
+	else if (posX > scenarioWidth - width)
 		posX = scenarioWidth - width;
-	}
 
-	//Move the dot up or down
 	posY += velY * timeStep;
 
-	//If the dot went too far up or down
 	if (posY < 0)
-	{
 		posY = 0;
-	}
 	else if (posY > scenarioHeight - height)
-	{
 		posY = scenarioHeight - height;
-	}
 }
 
-void Player::render(int camX, int camY) {
-	// Show the player relative to the camera
+void Player::render(int camX, int camY)
+{
 	texture.render((int)(posX - camX), (int)(posY - camY));
 }
 

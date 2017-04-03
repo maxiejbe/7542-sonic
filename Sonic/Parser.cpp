@@ -7,8 +7,7 @@ void Parser::Parse(Serializable* serializable) {
 	serializable->ParseObject(&document);
 }
 
-string Parser::ReadConfigFileContent(string path)
-{
+string Parser::ReadConfigFileContent(string path) {
 	ifstream file(path);
 	ostringstream tmp;
 	tmp << file.rdbuf();
@@ -18,18 +17,16 @@ string Parser::ReadConfigFileContent(string path)
 	return content;
 }
 
-Parser::Parser(string path)
-{
+Parser::Parser(string path) {
 	string fileContent = ReadConfigFileContent(path);
 	if (fileContent.empty()) {
-		printf("File does not exist (or it's empty).");
+		LOG(logWARNING) << "El archivo '" + path + "' no existe o está vacío. Se tomará uno por defecto."; // TODO: tomar por defecto
 	}
-	
+
 	const char *cstr = fileContent.c_str();
 	document.Parse(cstr);
 }
 
-Parser::~Parser()
-{
+Parser::~Parser() {
 }
 

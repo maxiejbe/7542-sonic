@@ -2,6 +2,7 @@
 #define RENDERER_H
 
 #include "SDLWindow.h"
+#include "Logger.h"
 
 class Renderer {
 public:

@@ -21,8 +21,7 @@ void Logger::Init() {
 	Logger::Stream() = file;
 
 	Logger().GetSeparator();
-	Logger().Get(logINFO) << "La aplicación se ha iniciado.";
-	//Logger().GetSeparator();
+	Logger().Get(logINFO) << "El juego se ha iniciado.";
 }
 
 std::ostringstream& Logger::GetSeparator() {

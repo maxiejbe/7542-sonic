@@ -1,36 +1,26 @@
 #include "Renderer.h"
 #include "SDLWindow.h"
 
-bool Renderer::Create() {
-
-	bool success = true;
-
-	//Create renderer for window
+bool Renderer::Create()
+{
 	gRenderer = SDL_CreateRenderer(SDLWindow::getInstance().gWindow, -1, SDL_RENDERER_ACCELERATED);
-	if (gRenderer == NULL)
-	{
-		printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
-		success = false;
+	if (gRenderer == NULL) {
+		LOG(logERROR) << "El Renderer no pudo ser creado! SDL Error: " << SDL_GetError();
+		return false;
 	}
-	else
-	{
-		//Initialize renderer color
+	else {
 		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-
-		//Initialize PNG loading
 		int imgFlags = IMG_INIT_PNG;
-		if (!(IMG_Init(imgFlags) & imgFlags))
-		{
-			printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-			success = false;
+		if (!(IMG_Init(imgFlags) & imgFlags)) {
+			LOG(logERROR) << "SDL_Image no pudo ser inicializado! SDL_Image Error: " << IMG_GetError();
+			return false;
 		}
 	}
-
-	return success;
+	return true;
 }
 
-void Renderer::Close() {
-	//Destroy renderer	
+void Renderer::Close()
+{
 	SDL_DestroyRenderer(gRenderer);
 	gRenderer = NULL;
 }
