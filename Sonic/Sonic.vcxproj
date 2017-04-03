@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="config\params.json" />
+    <None Include="config\params2.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

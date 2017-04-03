@@ -32,16 +32,10 @@ private:
 	Document document;
 	Document windowNode;
 
-	string ReadConfigFileContent(string path);
+	bool ReadConfigFileContent(string path);
+	bool ParseDocument();
 
-	Dimensions ParseDimensions(Value* parentNodeRef);
-	Layer ParseLayer(Value* parentNodeRef);
-	Entity ParseEntity(Value* parentNodeRef);
-	Coordinate ParseCoordinate(Value* parentNodeRef);
-
-	vector<Layer> ParseLayers(Value* parentNodeRef);
-	vector<Entity> ParseEntities(Value* parentNodeRef);
-
+	string fileContent;
 };
 
 #endif

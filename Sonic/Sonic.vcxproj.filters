@@ -184,5 +184,6 @@
   <ItemGroup>
     <None Include="config\params.json" />
     <None Include="packages.config" />
+    <None Include="config\params2.json" />
   </ItemGroup>
 </Project>

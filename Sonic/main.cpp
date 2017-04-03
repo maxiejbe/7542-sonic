@@ -44,7 +44,7 @@ int main(int argc, char* args[])
 	Logger::Init();
 
 	//TODO: Take params from argv
-	Parser* parser = new Parser("config/params.json");
+	Parser* parser = new Parser("config/params2.json");
 	Window window;
 	parser->Parse(&window);
 
@@ -52,10 +52,6 @@ int main(int argc, char* args[])
 	parser->Parse(&config);
 
 	Logger::LoggingLevel() = Logger::FromString(config.GetLogLevel());
-
-	LOG(logERROR) << "Esto es un error.";
-	LOG(logWARNING) << "Esto es un warning.";
-	LOG(logINFO) << "Esto es una info.";
 
 	Scenario scenario;
 	parser->Parse(&scenario);

@@ -64,7 +64,7 @@ LogLevel Logger::FromString(string level) {
 
 LogLevel& Logger::LoggingLevel()
 {
-	static LogLevel loggingLevel = logMEDIUM;
+	static LogLevel loggingLevel = logHIGH;
 	return loggingLevel;
 }
 
