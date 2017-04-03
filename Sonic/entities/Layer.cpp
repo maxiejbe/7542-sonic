@@ -4,6 +4,13 @@ const char* LAYER_ID_NODE = "id";
 const char* LAYER_ZINDEX_NODE = "index_z";
 const char* LAYER_IMAGE_PATH_NODE = "ruta_imagen";
 
+const char* MESSAGE_PARSING_LAYER_NODE = "Inicio de parseo de nodo capa.";
+const char* MESSAGE_END_PARSING_LAYER_NODE = "Fin de parseo de nodo capa.";
+
+const int LAYER_DEFAULT_ID = 0;
+const int LAYER_DEFAULT_ZINDEX = 0;
+const string LAYER_DEFAULT_IMAGE_PATH = "";
+
 Layer::Layer()
 {
 }
@@ -13,17 +20,15 @@ void Layer::Unserialize(Value * nodeRef)
 	Value& node = *nodeRef;
 	const char* nodeName = GetNodeName();
 
-	if (node.HasMember(LAYER_ID_NODE) && node[LAYER_ID_NODE].IsInt()) {
-		id = node[LAYER_ID_NODE].GetInt();
-	}
+	LOG(logINFO) << MESSAGE_PARSING_LAYER_NODE;
 
-	if (node.HasMember(LAYER_ZINDEX_NODE) && node[LAYER_ZINDEX_NODE].IsInt()) {
-		zIndex = node[LAYER_ZINDEX_NODE].GetInt();
-	}
+	ParseInt(&id, LAYER_DEFAULT_ID, nodeRef, LAYER_ID_NODE);
+	
+	ParseInt(&zIndex, LAYER_DEFAULT_ZINDEX, nodeRef, LAYER_ZINDEX_NODE);
 
-	if (node.HasMember(LAYER_IMAGE_PATH_NODE) && node[LAYER_IMAGE_PATH_NODE].IsString()) {
-		imagePath = node[LAYER_IMAGE_PATH_NODE].GetString();
-	}
+	ParseString(&imagePath, LAYER_DEFAULT_IMAGE_PATH, nodeRef, LAYER_IMAGE_PATH_NODE);
+
+	LOG(logINFO) << MESSAGE_END_PARSING_LAYER_NODE;
 }
 
 char* Layer::GetNodeName()

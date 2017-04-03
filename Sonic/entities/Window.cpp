@@ -2,6 +2,13 @@
 
 char* WINDOW_NODE = "ventana";
 
+const char* MESSAGE_PARSING_WINDOW_NODE = "Inicio de parseo de nodo ventana.";
+const char* MESSAGE_END_PARSING_WINDOW_NODE = "Fin de parseo de nodo ventana.";
+
+const int WINDOW_DEFAULT_WIDTH = 800;
+const int WINDOW_DEFAULT_HEIGHT = 600;
+const int WINDOW_DEFAULT_RADIO = 0;
+
 Window::Window()
 {
 }
@@ -23,7 +30,12 @@ int Window::getHeight()
 
 void Window::Unserialize(Value* nodeRef)
 {
+	LOG(logINFO) << MESSAGE_PARSING_WINDOW_NODE;
+
+	dimensions.SetDefaults(WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT, WINDOW_DEFAULT_RADIO);
 	dimensions.ParseObject(nodeRef);
+
+	LOG(logINFO) << MESSAGE_END_PARSING_WINDOW_NODE;
 }
 
 char * Window::GetNodeName()

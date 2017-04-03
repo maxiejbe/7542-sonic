@@ -7,6 +7,18 @@ const char* ENTITY_COLOR_NODE = "color";
 const char* ENTITY_IMAGE_PATH_NODE = "ruta_imagen";
 const char* ENTITY_ZINDEX_NODE = "index_z";
 
+const char* MESSAGE_PARSING_ENTITY_NODE = "Inicio de parseo de nodo entidad.";
+const char* MESSAGE_END_PARSING_ENTITY_NODE = "Fin de parseo de nodo entidad.";
+
+const int ENTITY_DEFAULT_ID = 0;
+const string ENTITY_DEFAULT_TYPE = "";
+const string ENTITY_DEFAULT_COLOR = "";
+const int ENTITY_DEFAULT_WIDTH = 0;
+const int ENTITY_DEFAULT_HEIGHT = 0;
+const int ENTITY_DEFAULT_RADIO = 0;
+const string ENTITY_DEFAULT_IMAGE_PATH = "";
+const int ENTITY_DEFAULT_ZINDEX = 0;
+
 Entity::Entity()
 {
 }
@@ -20,28 +32,23 @@ void Entity::Unserialize(Value * nodeRef)
 	Value& node = *nodeRef;
 	const char* nodeName = GetNodeName();
 
-	if (node.HasMember(ENTITY_ID_NODE) && node[ENTITY_ID_NODE].IsInt()) {
-		id = node[ENTITY_ID_NODE].GetInt();
-	}
+	LOG(logINFO) << MESSAGE_PARSING_ENTITY_NODE;
 
-	if (node.HasMember(ENTITY_TYPE_NODE) && node[ENTITY_TYPE_NODE].IsString()) {
-		type = node[ENTITY_TYPE_NODE].GetString();
-	}
+	ParseInt(&id, ENTITY_DEFAULT_ID, nodeRef, ENTITY_ID_NODE);
+	
+	ParseString(&type, ENTITY_DEFAULT_TYPE, nodeRef, ENTITY_TYPE_NODE);
+	
+	ParseString(&color, ENTITY_DEFAULT_COLOR, nodeRef, ENTITY_COLOR_NODE);
 
-	if (node.HasMember(ENTITY_COLOR_NODE) && node[ENTITY_COLOR_NODE].IsString()) {
-		color = node[ENTITY_COLOR_NODE].GetString();
-	}
-
-	dimensions.ParseObject(nodeRef);
+	dimensions.SetDefaults(ENTITY_DEFAULT_WIDTH, ENTITY_DEFAULT_HEIGHT, ENTITY_DEFAULT_RADIO);
+	dimensions.ParseObject(nodeRef);	
 	coordinate.ParseObject(nodeRef);
 
-	if (node.HasMember(ENTITY_IMAGE_PATH_NODE) && node[ENTITY_IMAGE_PATH_NODE].IsString()) {
-		imagePath = node[ENTITY_IMAGE_PATH_NODE].GetString();
-	}
+	ParseString(&imagePath, ENTITY_DEFAULT_IMAGE_PATH, nodeRef, ENTITY_IMAGE_PATH_NODE);
+	
+	ParseInt(&zIndex, ENTITY_DEFAULT_ZINDEX, nodeRef, ENTITY_ZINDEX_NODE);
 
-	if (node.HasMember(ENTITY_ZINDEX_NODE) && node[ENTITY_ZINDEX_NODE].IsInt()) {
-		zIndex = node[ENTITY_ZINDEX_NODE].GetInt();
-	}
+	LOG(logINFO) << MESSAGE_END_PARSING_ENTITY_NODE;
 }
 
 char* Entity::GetNodeName()

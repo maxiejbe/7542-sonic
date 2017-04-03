@@ -5,13 +5,16 @@ const char* DIMENSIONS_WIDTH_NODE = "ancho";
 const char* DIMENSIONS_HEIGHT_NODE = "alto";
 const char* DIMENSIONS_RADIO_NODE = "radio";
 
+const char* MESSAGE_PARSING_DIMENSIONS_NODE = "Inicio de parseo de nodo dimensiones.";
+const char* MESSAGE_END_PARSING_DIMENSIONS_NODE = "Fin de parseo de nodo dimensiones.";
+
 Dimensions::Dimensions() {}
 
-Dimensions::Dimensions(int width, int height, int radio)
+void Dimensions::SetDefaults(int width, int height, int radio)
 {
-	this->width = width;
-	this->height = height;
-	this->radio = radio;
+	this->defaultWidth = width;
+	this->defaultHeight = height;
+	this->defaultRadio = radio;
 }
 
 int Dimensions::getWidth()
@@ -33,17 +36,15 @@ void Dimensions::Unserialize(Value* nodeRef)
 {
 	Value& node = *nodeRef;
 
-	if (node.HasMember(DIMENSIONS_WIDTH_NODE) && node[DIMENSIONS_WIDTH_NODE].IsInt()) {
-		width = node[DIMENSIONS_WIDTH_NODE].GetInt();
-	}
+	LOG(logINFO) << MESSAGE_PARSING_DIMENSIONS_NODE;
 
-	if (node.HasMember(DIMENSIONS_HEIGHT_NODE) && node[DIMENSIONS_HEIGHT_NODE].IsInt()) {
-		height = node[DIMENSIONS_HEIGHT_NODE].GetInt();
-	}
+	ParseInt(&width, defaultWidth, nodeRef, DIMENSIONS_WIDTH_NODE);
 
-	if (node.HasMember(DIMENSIONS_RADIO_NODE) && node[DIMENSIONS_RADIO_NODE].IsInt()) {
-		radio = node[DIMENSIONS_RADIO_NODE].GetInt();
-	}
+	ParseInt(&height, defaultHeight, nodeRef, DIMENSIONS_HEIGHT_NODE);
+	
+	ParseInt(&radio, defaultRadio, nodeRef, DIMENSIONS_RADIO_NODE);
+
+	LOG(logINFO) << MESSAGE_END_PARSING_DIMENSIONS_NODE;
 }
 
 char* Dimensions::GetNodeName()

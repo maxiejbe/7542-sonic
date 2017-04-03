@@ -1,16 +1,5 @@
 #include "Circle.h"
 
-Circle::Circle(int id, string type, string color, Dimensions dimensions, Coordinate coordinate, string imagePath, int zIndex)
-{
-	this->id = id;
-	this->type = type;
-	this->color = color;
-	this->dimensions = dimensions;
-	this->coordinate = coordinate;
-	this->imagePath = imagePath;
-	this->zIndex = zIndex;
-}
-
 void Circle::draw(SDL_Rect camera) {
 	SDL_Renderer * gRenderer = Renderer::getInstance().gRenderer;
 	if (gRenderer != NULL) {

@@ -4,6 +4,12 @@ char* CONFIGURATION_NODE = "configuracion";
 const char* CONFIGURATION_SCROLL_SPEED_NODE = "vel_scroll";
 const char* CONFIGURATION_LOG_LEVEL_NODE = "nivel_log";
 
+const char* MESSAGE_PARSING_CONFIGURATION_NODE = "Inicio de parseo de nodo configuración.";
+const char* MESSAGE_END_PARSING_CONFIGURATION_NODE = "Fin de parseo de nodo configuración.";
+
+const int DEFAULT_SCROLL_SPEED = 600;
+const string DEFAULT_LOG_LEVEL = "medium";
+
 Configuration::Configuration()
 {
 }
@@ -21,13 +27,13 @@ void Configuration::Unserialize(Value* nodeRef)
 {
 	Value& node = *nodeRef;
 
-	if (node.HasMember(CONFIGURATION_SCROLL_SPEED_NODE) && node[CONFIGURATION_SCROLL_SPEED_NODE].IsInt()) {
-		scrollSpeed = node[CONFIGURATION_SCROLL_SPEED_NODE].GetInt();
-	}
+	LOG(logINFO) << MESSAGE_PARSING_CONFIGURATION_NODE;
 
-	if (node.HasMember(CONFIGURATION_LOG_LEVEL_NODE) && node[CONFIGURATION_LOG_LEVEL_NODE].IsString()) {
-		logLevel = node[CONFIGURATION_LOG_LEVEL_NODE].GetString();
-	}
+	ParseInt(&scrollSpeed, DEFAULT_SCROLL_SPEED, nodeRef, CONFIGURATION_SCROLL_SPEED_NODE);
+	
+	ParseString(&logLevel, DEFAULT_LOG_LEVEL, nodeRef, CONFIGURATION_LOG_LEVEL_NODE);
+	
+	LOG(logINFO) << MESSAGE_END_PARSING_CONFIGURATION_NODE;
 }
 
 char * Configuration::GetNodeName()

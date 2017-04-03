@@ -4,13 +4,10 @@ char* COORDINATE_NODE = "coordenada";
 const char* COORDINATE_X_NODE = "x";
 const char* COORDINATE_Y_NODE = "y";
 
-Coordinate::Coordinate(){}
+const char* MESSAGE_PARSING_COORDINATE_NODE = "Inicio de parseo de nodo coordenada.";
+const char* MESSAGE_END_PARSING_COORDINATE_NODE = "Fin de parseo de nodo coordenada.";
 
-Coordinate::Coordinate(int x, int y)
-{
-	this->x = x;
-	this->y = y;
-}
+Coordinate::Coordinate(){}
 
 int Coordinate::getX() {
 	return x;
@@ -24,13 +21,13 @@ void Coordinate::Unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;
 	
-	if (node.HasMember(COORDINATE_X_NODE) && node[COORDINATE_X_NODE].IsInt()) {
-		x = node[COORDINATE_X_NODE].GetInt();
-	}
+	LOG(logINFO) << MESSAGE_PARSING_COORDINATE_NODE;
 
-	if (node.HasMember(COORDINATE_Y_NODE) && node[COORDINATE_Y_NODE].IsInt()) {
-		y = node[COORDINATE_Y_NODE].GetInt();
-	}
+	ParseInt(&x, 0, nodeRef, COORDINATE_X_NODE);
+	
+	ParseInt(&y, 0, nodeRef, COORDINATE_Y_NODE);
+
+	LOG(logINFO) << MESSAGE_END_PARSING_COORDINATE_NODE;
 }
 
 char * Coordinate::GetNodeName()

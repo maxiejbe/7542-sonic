@@ -1,20 +1,8 @@
 #include "Rectangle.h"
 
-Rectangle::Rectangle(int id, string type, string color, Dimensions dimensions, Coordinate coordinate, string imagePath, int zIndex)
-{
-	this->id = id;
-	this->type = type;
-	this->color = color;
-	this->dimensions = dimensions;
-	this->coordinate = coordinate;
-	this->imagePath = imagePath;
-	this->zIndex = zIndex;
-}
-
-void Rectangle::draw(SDL_Rect camera)
-{
-	SDL_Renderer* gRenderer = Renderer::getInstance().gRenderer;
-	if (gRenderer != NULL) {
+void Rectangle::draw(SDL_Rect camera) {
+	SDL_Renderer * gRenderer = Renderer::getInstance().gRenderer;	
+	if ( gRenderer != NULL) {
 		int x1 = coordinate.getX() - camera.x;
 		int x2 = x1 + dimensions.getWidth();
 		int y1 = coordinate.getY() - camera.y;

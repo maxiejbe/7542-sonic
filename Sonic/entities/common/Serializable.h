@@ -3,6 +3,8 @@
 
 #include "rapidjson/document.h"
 #include <vector>
+#include <string>
+#include "../../Logger.h"
 
 using namespace rapidjson;
 using namespace std;
@@ -16,6 +18,9 @@ public:
 	void ParseCollection(vector<T>* collection, Value* parentNodeRef, char* collectionNodeName);
 
 	void ParseCurrentObject(Value* nodeRef);
+
+	void ParseInt(int* value, int defaultValue, Value* nodeRef, const char* fieldName);
+	void ParseString(string* value, string defaultValue, Value* nodeRef, const char* fieldName);
 
 	virtual void Unserialize(Value* nodeRef) = 0;
 	virtual char* GetNodeName() = 0;
