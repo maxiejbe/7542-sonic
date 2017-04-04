@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="utils\img_crop\CircleImageCropper.cpp" />
     <ClCompile Include="entities\common\Drawable.cpp" />
     <ClCompile Include="DateUtils.cpp" />
     <ClCompile Include="entities\Circle.cpp" />
@@ -36,6 +37,7 @@
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SDLWindow.cpp" />
+    <ClCompile Include="StreamingTexture.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.h" />
     <ClCompile Include="main.cpp" />
@@ -63,6 +65,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="utils\img_crop\CircleImageCropper.h" />
     <ClInclude Include="entities\common\Drawable.h" />
     <ClInclude Include="entities\common\EntityResolver.h" />
     <ClInclude Include="Player.h" />
@@ -76,6 +79,7 @@
     <ClInclude Include="entities\Scenario.h" />
     <ClInclude Include="entities\Square.h" />
     <ClInclude Include="entities\common\Serializable.h" />
+    <ClInclude Include="StreamingTexture.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="entities\Window.h" />

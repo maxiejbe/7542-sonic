@@ -81,6 +81,12 @@
     <ClCompile Include="entities\common\EntityResolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StreamingTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\img_crop\CircleImageCropper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entities\Configuration.h">
@@ -147,6 +153,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="entities\common\EntityResolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StreamingTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\img_crop\CircleImageCropper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
