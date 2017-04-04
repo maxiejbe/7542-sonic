@@ -21,7 +21,6 @@ public:
 
 	void ParseCurrentObject(Value* nodeRef);
 
-	//void ParseInt(int* value, int defaultValue, Value* nodeRef, const char* fieldName);
 	void ParseInt(int * value, int defaultValue, Value * nodeRef, const char* fieldName, function<bool(int)> condition = NULL);
 	void ParseString(string* value, string defaultValue, Value* nodeRef, const char* fieldName);
 

@@ -7,7 +7,7 @@
   },
   "CONFIGURACION": {
     "vel_scroll": 600,
-    "nivel_log": "alto"
+    "nivel_log": "medio"
   },
   "escenario": {
     "dimensiones": {
@@ -21,7 +21,7 @@
         "ruta_imagen": "img/rain.png"
       },
       {
-        "id": 2,
+        "id": 0,
         "index_z": 98,
         "ruta_imagen": "img/level2.jpg"
       }

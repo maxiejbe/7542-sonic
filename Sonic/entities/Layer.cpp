@@ -7,9 +7,9 @@ const char* LAYER_IMAGE_PATH_NODE = "ruta_imagen";
 const char* MESSAGE_PARSING_LAYER_NODE = "Inicio de parseo de nodo capa.";
 const char* MESSAGE_END_PARSING_LAYER_NODE = "Fin de parseo de nodo capa.";
 
-const int LAYER_DEFAULT_ID = 0;
+const int LAYER_DEFAULT_ID = 1;
 const int LAYER_DEFAULT_ZINDEX = 0;
-const string LAYER_DEFAULT_IMAGE_PATH = "";
+const string LAYER_DEFAULT_IMAGE_PATH = "img/layer-not-found.png";
 
 Layer::Layer()
 {
@@ -22,7 +22,9 @@ void Layer::Unserialize(Value * nodeRef)
 
 	LOG(logINFO) << MESSAGE_PARSING_LAYER_NODE;
 
-	ParseInt(&id, LAYER_DEFAULT_ID, nodeRef, LAYER_ID_NODE);
+	std::function<bool(int)> condition = [](int num) { return num > 0; };
+
+	ParseInt(&id, LAYER_DEFAULT_ID, nodeRef, LAYER_ID_NODE, condition);
 
 	ParseInt(&zIndex, LAYER_DEFAULT_ZINDEX, nodeRef, LAYER_ZINDEX_NODE);
 
@@ -39,8 +41,8 @@ char* Layer::GetNodeName()
 void Layer::loadLayer()
 {
 	if (!texture.loadFromFile(imagePath)) {
-		LOG(logWARNING) << "No se pudo cargar la imagen de la capa '" << imagePath << "'. Se tomará una por defecto.";
-		//TODO: tomar por defecto
+		this->imagePath = LAYER_DEFAULT_IMAGE_PATH;
+		loadLayer();
 	}
 }
 
