@@ -66,8 +66,14 @@ void Scenario::Unserialize(Value * nodeRef)
 
 	ParseCollection<Layer>(&layers, nodeRef, SCENARIO_LAYERS_NODE);
 
+	// Order layers by z-index
+	sort(layers.begin(), layers.end());
+
 	vector<Entity> entities;
 	ParseCollection<Entity>(&entities, nodeRef, SCENARIO_ENTITIES_NODE);
+
+	// Order entities by z-index
+	sort(entities.begin(), entities.end());
 	
 	this->entities.clear();
 	for (vector<Entity>::iterator it = entities.begin(); it != entities.end(); ++it) {

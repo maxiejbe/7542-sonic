@@ -14,9 +14,11 @@ public:
 	int getZIndex();
 	string getImagePath();
 	void loadLayer();
-	void loadLayer2(string aaa);
 	void renderLayer(int x, int y, SDL_Rect* rect);
 	void destroyLayer();
+	bool operator< (const Layer &other) const {
+		return zIndex < other.zIndex;
+	}
 private:
 	int id;
 	int zIndex;

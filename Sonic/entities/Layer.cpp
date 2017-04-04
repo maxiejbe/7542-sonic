@@ -44,14 +44,6 @@ void Layer::loadLayer()
 	}
 }
 
-void Layer::loadLayer2(string aaa = "img/sprite.png")
-{
-	if (!texture.loadFromFile(aaa)) {
-		LOG(logWARNING) << "No se pudo cargar la imagen de la capa '" << imagePath << "'. Se tomará una por defecto.";
-		//TODO: tomar por defecto
-	}
-}
-
 void Layer::renderLayer(int x, int y, SDL_Rect* rect)
 {
 	texture.render(x, y, rect);

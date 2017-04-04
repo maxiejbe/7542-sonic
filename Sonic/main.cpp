@@ -37,10 +37,10 @@ int main(int argc, char* args[])
 	parser->Parse(&config);
 
 	Logger::LoggingLevel() = Logger::FromString(config.GetLogLevel());
-	
+
 	Scenario scenario;
 	parser->Parse(&scenario);
-	
+
 	int scenarioWidth = scenario.GetWidth();
 	int scenarioHeight = scenario.GetHeight();
 
@@ -51,33 +51,20 @@ int main(int argc, char* args[])
 		bool isRunning = true;
 		SDL_Event event;
 
-		// TODO: mejorar esto
-		Layer layer1 = scenario.getLayers().at(0);
-		Layer layer2 = scenario.getLayers().at(1);
-		layer1.loadLayer();
-		layer2.loadLayer();
+		// Initialize layers
+		vector<Layer> layers = scenario.getLayers();
+		for (vector<Layer>::iterator it = layers.begin(); it != layers.end(); ++it) {
+			Layer* layer = &(*it);
+			layer->loadLayer();
+		}
 
-		//gBGLayer.loadLayer2("img/sonic.png");
-
+		// Initialize player
 		Player player("img/sonic.png", 0, SDLWindow::getInstance().getScreenHeight() / 1.35, 0, 0, scenarioWidth, scenarioHeight, config.GetScrollSpeed());
 		LOG(logINFO) << "El personaje ha sido creado correctamente.";
 
+		// Initialize camera
 		Timer stepTimer;
 		SDL_Rect camera = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
-
-		/*// ESTO DEBERIA VENIR DEL JSON
-		Entity *entities[6];
-		//Crop img = rect
-		entities[0] = new Rectangle(1, "rectangulo", "rojo", Dimensions(100, 100, 0), Coordinate(100, 100), "img/sprite.png", 99);
-		//Crop img < rect
-		entities[1] = new Rectangle(1, "rectangulo", "rojo", Dimensions(300, 300, 0), Coordinate(300, 300), "img/sprite.png", 99);
-		//Crop img.h < rect.h
-		entities[2] = new Rectangle(1, "rectangulo", "rojo", Dimensions(300, 100, 0), Coordinate(700, 200), "img/sprite.png", 99);
-		//Crop img.w < rect.w
-		entities[3] = new Rectangle(1, "rectangulo", "rojo", Dimensions(60, 400, 0), Coordinate(1200, 50), "img/sprite.png", 99);
-		entities[4] = new Circle(1, "circulo", "rojo", Dimensions(0, 0, 100), Coordinate(1500, 200), "img/sprite.png", 99);
-		entities[5] = new Square(1, "cuadrado", "rojo", Dimensions(80, 80, 0), Coordinate(1300, 300), "img/sprite.png", 99);
-		// FIN ESTO DEBERIA VENIR DEL JSON*/
 
 		while (isRunning) {
 
@@ -116,12 +103,14 @@ int main(int argc, char* args[])
 			SDL_SetRenderDrawColor(Renderer::getInstance().gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 			SDL_RenderClear(Renderer::getInstance().gRenderer);
 
-			//Render background
-			// TODO: mejorar esto
-			layer1.renderLayer(0, 0, &camera);
-			layer2.renderLayer(0, 0, &camera);
+			// Render layers
+			for (size_t i = 0; i < layers.size(); i++) {
+				Layer* layer = &(layers.at(i));
+				layer->renderLayer(0, 0, &camera);
+			}
 
-			for (int i = 0; i < scenario.GetEntities().size(); i++) {
+			// Render entities
+			for (size_t i = 0; i < scenario.GetEntities().size(); i++) {
 				Entity* entity = scenario.GetEntities().at(i);
 				entity->draw(camera);
 			}
