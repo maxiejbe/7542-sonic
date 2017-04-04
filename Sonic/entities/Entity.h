@@ -30,6 +30,7 @@ protected:
 	string imagePath;
 	int zIndex;
 	Texture texture;
+	bool imageCrop;
 
 	// Inherited via Serializable
 	virtual void Unserialize(Value * nodeRef) override;

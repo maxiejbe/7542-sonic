@@ -20,7 +20,6 @@ bool Texture::loadFromFile(std::string path)
 	SDL_Surface* surface = IMG_Load(path.c_str());
 	if (surface == NULL) {
 		LOG(logERROR) << "No se pudo cargar la imagen '" << path.c_str() << "'. Se tomará una por defecto. SDL_Image Error: " << IMG_GetError();
-		// TODO: cargar img por defecto
 	}
 	else {
 		SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 0, 0xFF, 0xFF));

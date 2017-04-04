@@ -32,14 +32,14 @@
         "tipo": "rectangulo",
         "color": "rojo",
         "dimensiones": {
-          "ancho": 150,
-          "alto": 200
+          "ancho": 200,
+          "alto": 0
         },
         "coordenada": {
-          "x": 180,
-          "y": 20
+          "x": 10,
+          "y": 0
         },
-        "ruta_imagen": "/img/sprite.png",
+        "ruta_imagen": "img/asd.png",
         "index_z": 99
       },
       {
@@ -47,8 +47,8 @@
         "tipo": "cuadrado",
         "color": "verde",
         "dimensiones": {
-          "ancho": 80,
-          "alto": 80
+          "ancho": -1,
+          "alto": -50
         },
         "coordenada": {
           "x": 150,
@@ -61,10 +61,10 @@
         "id": 3,
         "tipo": "circulo",
         "color": "amarillo",
-        "dimensiones": { "radio": 150 },
+        "dimensiones": { "radio": -1 },
         "coordenada": {
-          "x": 450,
-          "y": 550
+          "x": 300,
+          "y": 400
         },
         "ruta_imagen": "/images/entidad3.png",
         "index_z": 98

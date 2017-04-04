@@ -7,8 +7,8 @@ const char* COORDINATE_Y_NODE = "y";
 const char* MESSAGE_PARSING_COORDINATE_NODE = "Inicio de parseo de nodo coordenada.";
 const char* MESSAGE_END_PARSING_COORDINATE_NODE = "Fin de parseo de nodo coordenada.";
 
-const int COORDINATE_DEFAULT_X = -1;
-const int COORDINATE_DEFAULT_Y = -1;
+const int COORDINATE_DEFAULT_X = 0;
+const int COORDINATE_DEFAULT_Y = 0;
 
 Coordinate::Coordinate(){}
 
@@ -26,9 +26,11 @@ void Coordinate::Unserialize(Value * nodeRef)
 	
 	LOG(logINFO) << MESSAGE_PARSING_COORDINATE_NODE;
 
-	ParseInt(&x, COORDINATE_DEFAULT_X, nodeRef, COORDINATE_X_NODE);
+	std::function<bool(int)> condition = [](int num) { return num >= 0; };
+
+	ParseInt(&x, COORDINATE_DEFAULT_X, nodeRef, COORDINATE_X_NODE, condition);
 	
-	ParseInt(&y, COORDINATE_DEFAULT_Y, nodeRef, COORDINATE_Y_NODE);
+	ParseInt(&y, COORDINATE_DEFAULT_Y, nodeRef, COORDINATE_Y_NODE, condition);
 
 	LOG(logINFO) << MESSAGE_END_PARSING_COORDINATE_NODE;
 }
