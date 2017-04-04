@@ -78,6 +78,9 @@
     <ClCompile Include="entities\common\Drawable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="entities\common\EntityResolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entities\Configuration.h">
@@ -141,6 +144,9 @@
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClInclude Include="entities\common\Drawable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="entities\common\EntityResolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

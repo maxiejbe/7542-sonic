@@ -6,7 +6,10 @@
 
 class Circle : public Entity {
 public:
-	virtual void draw(SDL_Rect camera);
+	Circle(Entity* entity) : Entity(entity) {
+
+	}
+	virtual void draw(SDL_Rect camera) override;
 };
 
 #endif // !CIRCLE_H

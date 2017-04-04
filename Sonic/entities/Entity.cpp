@@ -1,4 +1,7 @@
 #include "Entity.h"
+#include "common/EntityResolver.h"
+
+#include <iostream>
 
 const char* ENTITY_NODE = "entidades";
 const char* ENTITY_ID_NODE = "id";
@@ -23,8 +26,24 @@ Entity::Entity()
 {
 }
 
+Entity::Entity(Entity* entity)
+{
+	this->id = entity->id;
+	this->type = entity->type;
+	this->color = entity->color;
+	this->dimensions = entity->dimensions;
+	this->coordinate = entity->coordinate;
+	this->imagePath = entity->imagePath;
+	this->zIndex = entity->zIndex;
+}
+
 void Entity::draw(SDL_Rect camera)
 {
+}
+
+string Entity::GetType()
+{
+	return type;
 }
 
 void Entity::Unserialize(Value * nodeRef)

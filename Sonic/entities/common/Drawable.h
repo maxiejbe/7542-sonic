@@ -9,7 +9,7 @@
 #include <algorithm>
 
 class Drawable {
-protected:
+public:
 	virtual void draw(SDL_Rect camera) = 0;
 };
 

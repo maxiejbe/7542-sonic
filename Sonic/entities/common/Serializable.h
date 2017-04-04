@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "../../Logger.h"
+//#include "EntityResolver.h"
 
 using namespace rapidjson;
 using namespace std;
@@ -57,7 +58,9 @@ inline void Serializable::ParseCollection(vector<T>* collection, Value* parentNo
 		LOG(logINFO) << MESSAGE_ITERATING_OBJECT_NODE_COLLECTION << to_string(i);
 		Value& entityNode = entitiesNode[i];
 		T entity;
+		//T childEntity;
 		entity.ParseCurrentObject(&entityNode);
+		//entity.Resolve(&childEntity);
 		collection->push_back(entity);
 	}
 

@@ -14,8 +14,10 @@ using namespace std;
 class Entity : public Serializable, public Drawable {
 public:
 	Entity();
-	//TODO: create class Camera and make it a singleton
-	virtual void draw(SDL_Rect camera);
+	Entity(Entity* entity);
+	void draw(SDL_Rect camera) override;
+
+	string GetType();
 protected:
 	int id;
 	string type;

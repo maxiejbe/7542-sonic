@@ -7,8 +7,10 @@
 
 class Square : public Entity {
 public:
-	Square(int id, string type, string color, Dimensions dimensions, Coordinate coordinate, string imagePath, int zIndex);
-	virtual void draw(SDL_Rect camera);
+	Square(Entity* entity) : Entity(entity) {
+
+	}
+	virtual void draw(SDL_Rect camera) override;
 };
 
 #endif // !SQUARE_H

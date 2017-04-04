@@ -40,7 +40,7 @@ int main(int argc, char* args[])
 	
 	Scenario scenario;
 	parser->Parse(&scenario);
-
+	
 	int scenarioWidth = scenario.GetWidth();
 	int scenarioHeight = scenario.GetHeight();
 
@@ -121,9 +121,10 @@ int main(int argc, char* args[])
 			layer1.renderLayer(0, 0, &camera);
 			layer2.renderLayer(0, 0, &camera);
 
-			/*for (int i = 0; i < 6; i++) {
-				entities[i]->draw(camera);
-			}*/
+			for (int i = 0; i < scenario.GetEntities().size(); i++) {
+				Entity* entity = scenario.GetEntities().at(i);
+				entity->draw(camera);
+			}
 
 			// Render player
 			player.render(camera.x, camera.y);
