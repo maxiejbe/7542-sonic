@@ -42,7 +42,6 @@
     <ClCompile Include="SDLWindow.cpp" />
     <ClCompile Include="StreamingTexture.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="Timer.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -94,6 +93,7 @@
     <ClInclude Include="utils\DateUtils.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="SDLWindow.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sonic.rc" />
@@ -161,6 +161,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(ProjectDir)libs\SDL2_gfx-1.0.3;$(ProjectDir)libs\SDL2_image-2.0.1\include;$(ProjectDir)libs\SDL2-2.0.5\include;$(Projectdir);$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)libs\SDL2_gfx-1.0.3\lib;$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86;$(ProjectDir)libs\SDL2-2.0.5\lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -209,15 +211,25 @@ xcopy /Q /Y "$(ProjectDir)libs\SDL2_gfx-1.0.3\lib\*.dll" "$(ProjectDir)"</Comman
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)libs\SDL2_gfx-1.0.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs\SDL2_gfx-1.0.3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_gfx.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /Q /Y "$(ProjectDir)libs\SDL2-2.0.5\lib\x86\*.dll" "$(ProjectDir)Release"
+xcopy /Q /Y "$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86\*.dll" "$(ProjectDir)Release"
+xcopy /Q /Y "$(ProjectDir)libs\SDL2_gfx-1.0.3\lib\*.dll" "$(ProjectDir)Release"
+xcopy /S /E /Q /Y "$(ProjectDir)img" "$(ProjectDir)Release\img\"
+xcopy /S /E /Q /Y "$(ProjectDir)config" "$(ProjectDir)Release\config\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
