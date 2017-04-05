@@ -17,7 +17,7 @@ public:
 	Circle(Entity* entity);
 	virtual void draw(SDL_Rect camera) override;
 	
-	virtual Dimensions GetDefaultDimensions() override;
+	virtual Dimensions getDefaultDimensions() override;
 };
 
 #endif // !CIRCLE_H

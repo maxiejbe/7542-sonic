@@ -15,13 +15,13 @@ Logger::~Logger() {
 	fflush(stream);
 }
 
-void Logger::Init() {
+void Logger::init() {
 	string fileName = "log_" + DateUtils::getCurrentDate() + ".log";
 	FILE* file = fopen(fileName.c_str(), "a");
 	Logger::Stream() = file;
 
 	Logger().GetSeparator();
-	Logger().Get(logINFO) << "El juego ha sido iniciado.";
+	Logger().get(logINFO) << "El juego ha sido iniciado.";
 }
 
 std::ostringstream& Logger::GetSeparator() {
@@ -29,7 +29,7 @@ std::ostringstream& Logger::GetSeparator() {
 	return os;
 }
 
-std::ostringstream& Logger::Get(LogType type) {
+std::ostringstream& Logger::get(LogType type) {
 	os << DateUtils::getCurrentDateTime() << " ";
 
 	switch (type) {
@@ -47,7 +47,7 @@ std::ostringstream& Logger::Get(LogType type) {
 	return os;
 }
 
-LogLevel Logger::FromString(string level) {
+LogLevel Logger::fromString(string level) {
 	transform(level.begin(), level.end(), level.begin(), ::toupper);
 
 	if (level == "BAJO")
@@ -57,12 +57,12 @@ LogLevel Logger::FromString(string level) {
 	if (level == "ALTO")
 		return logHIGH;
 
-	Logger().Get(logWARNING) << "El nivel de log '" << level << "' no existe. Se tomará el nivel MEDIO por defecto.";
+	Logger().get(logWARNING) << "El nivel de log '" << level << "' no existe. Se tomará el nivel MEDIO por defecto.";
 	return logMEDIUM;
 }
 
-string Logger::ToString() {
-	switch (Logger::LoggingLevel()) {
+string Logger::toString() {
+	switch (Logger::loggingLevel()) {
 	case LogLevel::logLOW:
 		return "bajo";
 	case LogLevel::logMEDIUM:
@@ -74,7 +74,7 @@ string Logger::ToString() {
 	}
 }
 
-LogLevel& Logger::LoggingLevel()
+LogLevel& Logger::loggingLevel()
 {
 	static LogLevel loggingLevel = logMEDIUM;
 	return loggingLevel;

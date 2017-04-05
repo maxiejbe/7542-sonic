@@ -8,13 +8,13 @@ class Configuration : public Serializable {
 public:
 	Configuration();
 	
-	int GetScrollSpeed();
+	int getScrollSpeed();
 private:
 	int scrollSpeed;
 
 	// Inherited via Serializable
-	virtual void Unserialize(Value * nodeRef) override;
-	virtual char * GetNodeName() override;
+	virtual void unserialize(Value * nodeRef) override;
+	virtual char * getNodeName() override;
 };
 
 #endif

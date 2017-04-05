@@ -11,10 +11,10 @@ const char* MESSAGE_ERROR_NOT_AN_OBJECT_INNER_NODE = "El nodo encontrado no es u
 Parses serializable object from rapidjson node.
 Calls unserialize of Parent node ["node Name"]
 */
-void Serializable::ParseObject(Value* parentNodeRef)
+void Serializable::parseObject(Value* parentNodeRef)
 {
 	Value& parentNode = *parentNodeRef;
-	const char* nodeName = GetNodeName();
+	const char* nodeName = getNodeName();
 
 	if (!parentNode.HasMember(nodeName)) {
 		LOG(logWARNING) << MESSAGE_ERROR_PARSING_INNER_NODE << nodeName;
@@ -27,10 +27,10 @@ void Serializable::ParseObject(Value* parentNodeRef)
 		return;
 	}
 
-	Unserialize(&node);
+	unserialize(&node);
 }
 
-void Serializable::ParseCurrentObject(Value* nodeRef)
+void Serializable::parseCurrentObject(Value* nodeRef)
 {
 	Value& node = *nodeRef;
 	if (!node.IsObject()) {
@@ -38,10 +38,10 @@ void Serializable::ParseCurrentObject(Value* nodeRef)
 		return;
 	}
 
-	Unserialize(&node);
+	unserialize(&node);
 }
 
-void Serializable::ParseInt(int * value, int defaultValue, Value * nodeRef, const char* fieldName, function<bool(int)> condition)
+void Serializable::parseInt(int * value, int defaultValue, Value * nodeRef, const char* fieldName, function<bool(int)> condition)
 {
 	Value& node = *nodeRef;
 
@@ -56,7 +56,7 @@ void Serializable::ParseInt(int * value, int defaultValue, Value * nodeRef, cons
 	}
 }
 
-void Serializable::ParseString(string * value, string defaultValue, Value * nodeRef, const char* fieldName)
+void Serializable::parseString(string * value, string defaultValue, Value * nodeRef, const char* fieldName)
 {
 	Value& node = *nodeRef;
 

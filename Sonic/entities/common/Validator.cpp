@@ -1,16 +1,16 @@
 #include "Validator.h"
 
-bool Validator::IntGreaterThanOrEqualToZero(int number)
+bool Validator::intGreaterThanOrEqualToZero(int number)
 {
-	return IntGreaterThanZero(number) || IntEqualToZero(number);
+	return intGreaterThanZero(number) || intEqualToZero(number);
 }
 
-bool Validator::IntGreaterThanZero(int number)
+bool Validator::intGreaterThanZero(int number)
 {
 	return number > 0;
 }
 
-bool Validator::IntEqualToZero(int number)
+bool Validator::intEqualToZero(int number)
 {
 	return number == 0;
 }

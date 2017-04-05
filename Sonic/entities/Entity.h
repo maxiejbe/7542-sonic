@@ -18,11 +18,11 @@ public:
 	void draw(SDL_Rect camera) override;
 	virtual bool validate();
 
-	virtual Dimensions GetDefaultDimensions();
+	virtual Dimensions getDefaultDimensions();
 	
-	Uint32 GetColorRgba();
+	Uint32 getColorRgba();
 
-	string GetType();
+	string getType();
 	bool operator< (const Entity &other) const {
 		return zIndex < other.zIndex;
 	}
@@ -37,11 +37,11 @@ protected:
 	Texture texture;
 	bool imageCrop;
 
-	void SetColor(string color);
+	void setColor(string color);
 
 	// Inherited via Serializable
-	virtual void Unserialize(Value * nodeRef) override;
-	virtual char * GetNodeName() override;
+	virtual void unserialize(Value * nodeRef) override;
+	virtual char * getNodeName() override;
 };
 
 #endif

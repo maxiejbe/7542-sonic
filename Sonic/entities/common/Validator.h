@@ -3,9 +3,9 @@
 
 class Validator {
 public:
-	static bool IntGreaterThanOrEqualToZero(int);
-	static bool IntGreaterThanZero(int );
-	static bool IntEqualToZero(int);
+	static bool intGreaterThanOrEqualToZero(int);
+	static bool intGreaterThanZero(int );
+	static bool intEqualToZero(int);
 };
 
 #endif

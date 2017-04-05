@@ -13,23 +13,23 @@ Configuration::Configuration()
 {
 }
 
-int Configuration::GetScrollSpeed()
+int Configuration::getScrollSpeed()
 {
 	return scrollSpeed;
 }
 
-void Configuration::Unserialize(Value* nodeRef)
+void Configuration::unserialize(Value* nodeRef)
 {
 	Value& node = *nodeRef;
 
 	LOG(logINFO) << MESSAGE_PARSING_CONFIGURATION_NODE;
 
-	ParseInt(&scrollSpeed, DEFAULT_SCROLL_SPEED, nodeRef, CONFIGURATION_SCROLL_SPEED_NODE, Validator::IntGreaterThanZero);
+	parseInt(&scrollSpeed, DEFAULT_SCROLL_SPEED, nodeRef, CONFIGURATION_SCROLL_SPEED_NODE, Validator::intGreaterThanZero);
 	
 	LOG(logINFO) << MESSAGE_END_PARSING_CONFIGURATION_NODE;
 }
 
-char * Configuration::GetNodeName()
+char * Configuration::getNodeName()
 {
 	return CONFIGURATION_NODE;
 }

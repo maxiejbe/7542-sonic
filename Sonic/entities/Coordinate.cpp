@@ -20,20 +20,20 @@ int Coordinate::getY() {
 	return y;
 }
 
-void Coordinate::Unserialize(Value * nodeRef)
+void Coordinate::unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;
 	
 	LOG(logINFO) << MESSAGE_PARSING_COORDINATE_NODE;
 
-	ParseInt(&x, COORDINATE_DEFAULT_X, nodeRef, COORDINATE_X_NODE, Validator::IntGreaterThanOrEqualToZero);
+	parseInt(&x, COORDINATE_DEFAULT_X, nodeRef, COORDINATE_X_NODE, Validator::intGreaterThanOrEqualToZero);
 	
-	ParseInt(&y, COORDINATE_DEFAULT_Y, nodeRef, COORDINATE_Y_NODE, Validator::IntGreaterThanOrEqualToZero);
+	parseInt(&y, COORDINATE_DEFAULT_Y, nodeRef, COORDINATE_Y_NODE, Validator::intGreaterThanOrEqualToZero);
 
 	LOG(logINFO) << MESSAGE_END_PARSING_COORDINATE_NODE;
 }
 
-char * Coordinate::GetNodeName()
+char * Coordinate::getNodeName()
 {
 	return COORDINATE_NODE;
 }

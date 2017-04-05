@@ -17,7 +17,7 @@ Dimensions::Dimensions(int width, int height, int radio)
 	this->radio = radio;
 }
 
-void Dimensions::SetDefaults(int width, int height, int radio)
+void Dimensions::setDefaults(int width, int height, int radio)
 {
 	this->defaultWidth = width;
 	this->defaultHeight = height;
@@ -39,22 +39,22 @@ int Dimensions::getRadio()
 	return radio;
 }
 
-void Dimensions::Unserialize(Value* nodeRef)
+void Dimensions::unserialize(Value* nodeRef)
 {
 	Value& node = *nodeRef;
 
 	LOG(logINFO) << MESSAGE_PARSING_DIMENSIONS_NODE;
 
-	ParseInt(&width, defaultWidth, nodeRef, DIMENSIONS_WIDTH_NODE, Validator::IntGreaterThanZero);
+	parseInt(&width, defaultWidth, nodeRef, DIMENSIONS_WIDTH_NODE, Validator::intGreaterThanZero);
 
-	ParseInt(&height, defaultHeight, nodeRef, DIMENSIONS_HEIGHT_NODE, Validator::IntGreaterThanZero);
+	parseInt(&height, defaultHeight, nodeRef, DIMENSIONS_HEIGHT_NODE, Validator::intGreaterThanZero);
 	
-	ParseInt(&radio, defaultRadio, nodeRef, DIMENSIONS_RADIO_NODE, Validator::IntGreaterThanZero);
+	parseInt(&radio, defaultRadio, nodeRef, DIMENSIONS_RADIO_NODE, Validator::intGreaterThanZero);
 
 	LOG(logINFO) << MESSAGE_END_PARSING_DIMENSIONS_NODE;
 }
 
-char* Dimensions::GetNodeName()
+char* Dimensions::getNodeName()
 {
 	return DIMENSIONS_NODE;
 }

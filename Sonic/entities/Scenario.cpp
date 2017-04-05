@@ -21,52 +21,52 @@ Scenario::~Scenario() {
 	}
 }
 
-void Scenario::SetDimensions(Dimensions dimensions)
+void Scenario::setDimensions(Dimensions dimensions)
 {
 	this->dimensions = dimensions;
 }
 
-void Scenario::SetLayers(vector<Layer> layers)
+void Scenario::setLayers(vector<Layer> layers)
 {
 	this->layers = layers;
 }
 
-void Scenario::SetEntities(vector<Entity*> entities)
+void Scenario::setEntities(vector<Entity*> entities)
 {
 	this->entities = entities;
 }
 
-vector<Entity*> Scenario::GetEntities()
+vector<Entity*> Scenario::getEntities()
 {
 	return entities;
 }
 
-int Scenario::GetWidth()
+int Scenario::getWidth()
 {
 	return dimensions.getWidth();
 }
 
-int Scenario::GetHeight()
+int Scenario::getHeight()
 {
 	return dimensions.getHeight();
 }
 
-void Scenario::Unserialize(Value * nodeRef)
+void Scenario::unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;
 
 	LOG(logINFO) << MESSAGE_PARSING_SCENARIO_NODE;
 
-	dimensions.SetDefaults(SCENARIO_DEFAULT_WIDTH, SCENARIO_DEFAULT_HEIGHT, SCENARIO_DEFAULT_RADIO);
-	dimensions.ParseObject(nodeRef);
+	dimensions.setDefaults(SCENARIO_DEFAULT_WIDTH, SCENARIO_DEFAULT_HEIGHT, SCENARIO_DEFAULT_RADIO);
+	dimensions.parseObject(nodeRef);
 
-	ParseCollection<Layer>(&layers, nodeRef, SCENARIO_LAYERS_NODE);
+	parseCollection<Layer>(&layers, nodeRef, SCENARIO_LAYERS_NODE);
 
 	// Order layers by z-index
 	sort(layers.begin(), layers.end());
 
 	vector<Entity> entities;
-	ParseCollection<Entity>(&entities, nodeRef, SCENARIO_ENTITIES_NODE);
+	parseCollection<Entity>(&entities, nodeRef, SCENARIO_ENTITIES_NODE);
 
 	// Order entities by z-index
 	sort(entities.begin(), entities.end());
@@ -74,7 +74,7 @@ void Scenario::Unserialize(Value * nodeRef)
 	this->entities.clear();
 	for (vector<Entity>::iterator it = entities.begin(); it != entities.end(); ++it) {
 		Entity entity = &(*it);
-		Entity* toAdd = EntityResolver::Resolve(&entity);
+		Entity* toAdd = EntityResolver::resolve(&entity);
 		if (entity.validate()) {
 			this->entities.push_back(toAdd);
 		}
@@ -83,7 +83,7 @@ void Scenario::Unserialize(Value * nodeRef)
 	LOG(logINFO) << MESSAGE_END_PARSING_SCENARIO_NODE;
 }
 
-char * Scenario::GetNodeName()
+char * Scenario::getNodeName()
 {
 	return SCENARIO_NODE;
 }

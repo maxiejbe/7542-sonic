@@ -28,17 +28,17 @@ int Window::getHeight()
 	return dimensions.getHeight();
 }
 
-void Window::Unserialize(Value* nodeRef)
+void Window::unserialize(Value* nodeRef)
 {
 	LOG(logINFO) << MESSAGE_PARSING_WINDOW_NODE;
 
-	dimensions.SetDefaults(WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT, WINDOW_DEFAULT_RADIO);
-	dimensions.ParseObject(nodeRef);
+	dimensions.setDefaults(WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT, WINDOW_DEFAULT_RADIO);
+	dimensions.parseObject(nodeRef);
 
 	LOG(logINFO) << MESSAGE_END_PARSING_WINDOW_NODE;
 }
 
-char * Window::GetNodeName()
+char * Window::getNodeName()
 {
 	return WINDOW_NODE;
 }

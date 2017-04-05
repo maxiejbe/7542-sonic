@@ -10,7 +10,7 @@ public:
 	Dimensions();
 	Dimensions(int width, int height, int radio);
 
-	void SetDefaults(int width, int height, int radio);
+	void setDefaults(int width, int height, int radio);
 	
 	int getWidth();
 	int getHeight();
@@ -25,8 +25,8 @@ private:
 	int defaultRadio;
 
 	// Inherited via Serializable
-	virtual void Unserialize(Value * parentNode) override;
-	virtual char* GetNodeName() override;
+	virtual void unserialize(Value * parentNode) override;
+	virtual char* getNodeName() override;
 };
 
 #endif

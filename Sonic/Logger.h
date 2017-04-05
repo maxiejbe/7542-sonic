@@ -24,11 +24,11 @@ class Logger {
 public:
 	Logger();
 	~Logger();
-	static void Init();
-	std::ostringstream& Get(LogType level = logINFO);
-	static LogLevel FromString(string level);
-	static string ToString();
-	static LogLevel& LoggingLevel();
+	static void init();
+	std::ostringstream& get(LogType level = logINFO);
+	static LogLevel fromString(string level);
+	static string toString();
+	static LogLevel& loggingLevel();
 	static FILE*& Stream();
 protected:
 	std::ostringstream os;
@@ -41,8 +41,8 @@ private:
 };
 
 #define LOG(type) \
-	if (type > Logger::LoggingLevel() || !Logger::Stream()) ; \
-	else Logger().Get(type)
+	if (type > Logger::loggingLevel() || !Logger::Stream()) ; \
+	else Logger().get(type)
 
 #endif // !LOGGER_H
 

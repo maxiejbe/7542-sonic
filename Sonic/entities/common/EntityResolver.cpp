@@ -1,36 +1,36 @@
 #include "EntityResolver.h"	
 
-Entity* EntityResolver::Resolve(Entity* origin)
+Entity* EntityResolver::resolve(Entity* origin)
 {
 	Entity* destination = nullptr;
-	if (origin->GetType() == ToTypeString(EntityType::rectangle)) {
+	if (origin->getType() == toTypeString(EntityType::rectangle)) {
 		destination = new Rectangle(origin);
 	}
-	else if (origin->GetType() == ToTypeString(EntityType::circle)) {
+	else if (origin->getType() == toTypeString(EntityType::circle)) {
 		destination = new Circle(origin);
 	}
-	else if (origin->GetType() == ToTypeString(EntityType::square)) {
+	else if (origin->getType() == toTypeString(EntityType::square)) {
 		destination = new Square(origin);
 	}
 	return destination;
 }
 
-Dimensions EntityResolver::GetDefaultDimensions(Entity * entity)
+Dimensions EntityResolver::getDefaultDimensions(Entity * entity)
 {
 	Dimensions dimensions;
-	if (entity->GetType() == ToTypeString(EntityType::rectangle)) {
-		dimensions = Rectangle().GetDefaultDimensions();
+	if (entity->getType() == toTypeString(EntityType::rectangle)) {
+		dimensions = Rectangle().getDefaultDimensions();
 	}
-	else if (entity->GetType() == ToTypeString(EntityType::circle)) {
-		dimensions = Circle().GetDefaultDimensions();
+	else if (entity->getType() == toTypeString(EntityType::circle)) {
+		dimensions = Circle().getDefaultDimensions();
 	}
-	else if (entity->GetType() == ToTypeString(EntityType::square)) {
-		dimensions = Square().GetDefaultDimensions();
+	else if (entity->getType() == toTypeString(EntityType::square)) {
+		dimensions = Square().getDefaultDimensions();
 	}
 	return dimensions;
 }
 
-EntityType EntityResolver::FromTypeString(string entityType)
+EntityType EntityResolver::fromTypeString(string entityType)
 {
 	if (entityType == "rectangulo")
 		return EntityType::rectangle;
@@ -42,7 +42,7 @@ EntityType EntityResolver::FromTypeString(string entityType)
 		return EntityType::null;
 }
 
-string EntityResolver::ToTypeString(EntityType entityType)
+string EntityResolver::toTypeString(EntityType entityType)
 {
 	switch (entityType) {
 		case EntityType::rectangle:
@@ -56,7 +56,7 @@ string EntityResolver::ToTypeString(EntityType entityType)
 	}
 }
 
-EntityColor EntityResolver::FromColorString(string entityColor)
+EntityColor EntityResolver::fromColorString(string entityColor)
 {
 	if (entityColor == "rojo")
 		return EntityColor::red;
@@ -68,7 +68,7 @@ EntityColor EntityResolver::FromColorString(string entityColor)
 		return EntityColor::red;
 }
 
-string EntityResolver::ToColorString(EntityColor entityColor)
+string EntityResolver::toColorString(EntityColor entityColor)
 {
 	switch (entityColor) {
 	case EntityColor::red:

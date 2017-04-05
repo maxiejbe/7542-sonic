@@ -15,22 +15,22 @@ Layer::Layer()
 {
 }
 
-void Layer::Unserialize(Value * nodeRef)
+void Layer::unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;
 	
 	LOG(logINFO) << MESSAGE_PARSING_LAYER_NODE;
 
-	ParseInt(&id, LAYER_DEFAULT_ID, nodeRef, LAYER_ID_NODE, Validator::IntGreaterThanZero);
+	parseInt(&id, LAYER_DEFAULT_ID, nodeRef, LAYER_ID_NODE, Validator::intGreaterThanZero);
 
-	ParseInt(&zIndex, LAYER_DEFAULT_ZINDEX, nodeRef, LAYER_ZINDEX_NODE);
+	parseInt(&zIndex, LAYER_DEFAULT_ZINDEX, nodeRef, LAYER_ZINDEX_NODE);
 
-	ParseString(&imagePath, LAYER_DEFAULT_IMAGE_PATH, nodeRef, LAYER_IMAGE_PATH_NODE);
+	parseString(&imagePath, LAYER_DEFAULT_IMAGE_PATH, nodeRef, LAYER_IMAGE_PATH_NODE);
 
 	LOG(logINFO) << MESSAGE_END_PARSING_LAYER_NODE;
 }
 
-char* Layer::GetNodeName()
+char* Layer::getNodeName()
 {
 	return nullptr;
 }

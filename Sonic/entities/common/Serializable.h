@@ -13,18 +13,18 @@ using namespace std;
 class Serializable {
 public:
 	//TODO: Change name to parse inner object
-	void ParseObject(Value* parentNodeRef);
+	void parseObject(Value* parentNodeRef);
 
 	template <class T>
-	void ParseCollection(vector<T>* collection, Value* parentNodeRef, char* collectionNodeName);
+	void parseCollection(vector<T>* collection, Value* parentNodeRef, char* collectionNodeName);
 
-	void ParseCurrentObject(Value* nodeRef);
+	void parseCurrentObject(Value* nodeRef);
 
-	void ParseInt(int * value, int defaultValue, Value * nodeRef, const char* fieldName, function<bool(int)> condition = nullptr);
-	void ParseString(string* value, string defaultValue, Value* nodeRef, const char* fieldName);
+	void parseInt(int * value, int defaultValue, Value * nodeRef, const char* fieldName, function<bool(int)> condition = nullptr);
+	void parseString(string* value, string defaultValue, Value* nodeRef, const char* fieldName);
 
-	virtual void Unserialize(Value* nodeRef) = 0;
-	virtual char* GetNodeName() = 0;
+	virtual void unserialize(Value* nodeRef) = 0;
+	virtual char* getNodeName() = 0;
 private:
 	const char* MESSAGE_PARSING_NODE_COLLECTION = "Iterando colección: ";
 	const char* MESSAGE_NOT_FOUND_NODE_COLLECTION = "La colección no se encuentra en el nodo: ";
@@ -35,7 +35,7 @@ private:
 };
 
 template <class T>
-inline void Serializable::ParseCollection(vector<T>* collection, Value* parentNodeRef, char * collectionNodeName)
+inline void Serializable::parseCollection(vector<T>* collection, Value* parentNodeRef, char * collectionNodeName)
 {
 	Value& parentNode = *parentNodeRef;
 	if (!parentNode.HasMember(collectionNodeName)) {
@@ -58,7 +58,7 @@ inline void Serializable::ParseCollection(vector<T>* collection, Value* parentNo
 		LOG(logINFO) << MESSAGE_ITERATING_OBJECT_NODE_COLLECTION << to_string(i);
 		Value& entityNode = entitiesNode[i];
 		T entity;
-		entity.ParseCurrentObject(&entityNode);
+		entity.parseCurrentObject(&entityNode);
 		collection->push_back(entity);
 	}
 

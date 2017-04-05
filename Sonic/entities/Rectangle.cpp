@@ -14,7 +14,7 @@ void Rectangle::draw(SDL_Rect camera) {
 		int y2 = y1 + dimensions.getHeight();
 
 		Uint8 r, g, b, a;
-		SDL_GetRGBA(GetColorRgba(), SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
+		SDL_GetRGBA(getColorRgba(), SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
 		boxRGBA(gRenderer, x1, y1, x2, y2, r,g ,b,a);
 
 		// Check if there is an image
@@ -49,7 +49,7 @@ void Rectangle::draw(SDL_Rect camera) {
 	}
 }
 
-Dimensions Rectangle::GetDefaultDimensions()
+Dimensions Rectangle::getDefaultDimensions()
 {
 	return Dimensions(RECTANGLE_DEFAULT_WIDTH, RECTANGLE_DEFAULT_HEIGHT, RECTANGLE_DEFAULT_RADIO);
 }

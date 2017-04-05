@@ -12,7 +12,7 @@ void Square::draw(SDL_Rect camera) {
 	rectangle.draw(camera);
 }
 
-Dimensions Square::GetDefaultDimensions()
+Dimensions Square::getDefaultDimensions()
 {
 	return Dimensions(SQUARE_DEFAULT_WIDTH, SQUARE_DEFAULT_HEIGHT, SQUARE_DEFAULT_RADIO);
 }

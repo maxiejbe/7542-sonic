@@ -26,8 +26,8 @@ void close()
 
 int main(int argc, char* args[])
 {
-	Logger::Init();
-	Logger::LoggingLevel() = logMEDIUM; //Logger::FromString(config.GetLogLevel());
+	Logger::init();
+	Logger::loggingLevel() = logMEDIUM; //Logger::fromString(config.GetLogLevel());
 
 	//TODO: Take params from argv
 	string configPath;
@@ -36,16 +36,16 @@ int main(int argc, char* args[])
 	}
 	Parser* parser = new Parser(configPath);
 	Window window;
-	parser->Parse(&window);
+	parser->parse(&window);
 
 	Configuration config;
-	parser->Parse(&config);
+	parser->parse(&config);
 
 	Scenario scenario;
-	parser->Parse(&scenario);
+	parser->parse(&scenario);
 
-	int scenarioWidth = scenario.GetWidth();
-	int scenarioHeight = scenario.GetHeight();
+	int scenarioWidth = scenario.getWidth();
+	int scenarioHeight = scenario.getHeight();
 
 	if (!SDLWindow::getInstance().create(window.getWidth(), window.getHeight()) || !Renderer::getInstance().create()) {
 		LOG(logERROR) << "Error al inicializar el juego!";
@@ -62,7 +62,7 @@ int main(int argc, char* args[])
 		}
 
 		// Initialize player
-		Player player("img/sonic.png", 0, SDLWindow::getInstance().getScreenHeight() / 1.35, 0, 0, scenarioWidth, scenarioHeight, config.GetScrollSpeed());
+		Player player("img/sonic.png", 0, SDLWindow::getInstance().getScreenHeight() / 1.35, 0, 0, scenarioWidth, scenarioHeight, config.getScrollSpeed());
 		LOG(logINFO) << "El personaje ha sido creado correctamente.";
 
 		// Initialize camera
@@ -113,8 +113,8 @@ int main(int argc, char* args[])
 			}
 
 			// Render entities
-			for (size_t i = 0; i < scenario.GetEntities().size(); i++) {
-				Entity* entity = scenario.GetEntities().at(i);
+			for (size_t i = 0; i < scenario.getEntities().size(); i++) {
+				Entity* entity = scenario.getEntities().at(i);
 				entity->draw(camera);
 			}
 

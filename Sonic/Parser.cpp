@@ -11,11 +11,11 @@ const char* MESSAGE_CANNOT_PARSE_CONFIG_FILE = "El archivo no es un json. Utiliz
 /* Json parser para archivo de configuración inicial
 */
 
-void Parser::Parse(Serializable* serializable) {
-	serializable->ParseObject(&document);
+void Parser::parse(Serializable* serializable) {
+	serializable->parseObject(&document);
 }
 
-bool Parser::ReadConfigFileContent(string path)
+bool Parser::readConfigFileContent(string path)
 {
 	if (path.empty()) {
 		LOG(logWARNING) << MESSAGE_NO_CONFIG_FILE_PARAM;
@@ -50,7 +50,7 @@ bool Parser::ReadConfigFileContent(string path)
 	return true;
 }
 
-bool Parser::ParseDocument()
+bool Parser::parseDocument()
 {
 	const char *cstr = fileContent.c_str();
 	if (document.Parse(cstr).HasParseError()) {
@@ -62,13 +62,13 @@ bool Parser::ParseDocument()
 
 Parser::Parser(string path)
 {
-	if (!ReadConfigFileContent(path)) {
-		ReadConfigFileContent(DEFAULT_CONFIG_FILE);
+	if (!readConfigFileContent(path)) {
+		readConfigFileContent(DEFAULT_CONFIG_FILE);
 	}
 
-	if (!ParseDocument()) {
-		ReadConfigFileContent(DEFAULT_CONFIG_FILE);
-		ParseDocument();
+	if (!parseDocument()) {
+		readConfigFileContent(DEFAULT_CONFIG_FILE);
+		parseDocument();
 	}
 }
 

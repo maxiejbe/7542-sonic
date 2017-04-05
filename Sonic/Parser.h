@@ -28,13 +28,13 @@ class Parser {
 public:
 	Parser(string path);
 	~Parser();
-	void Parse(Serializable* serializable);
+	void parse(Serializable* serializable);
 private:
 	Document document;
 	Document windowNode;
 
-	bool ReadConfigFileContent(string path);
-	bool ParseDocument();
+	bool readConfigFileContent(string path);
+	bool parseDocument();
 
 	string fileContent;
 };

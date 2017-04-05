@@ -13,13 +13,13 @@ enum EntityColor {  red, yellow, green };
 
 class EntityResolver {
 public: 
-	static Entity* Resolve(Entity* origin);
-	static Dimensions GetDefaultDimensions(Entity* entity);
+	static Entity* resolve(Entity* origin);
+	static Dimensions getDefaultDimensions(Entity* entity);
 
-	static EntityType FromTypeString(string entityType);
-	static string ToTypeString(EntityType entityType);
+	static EntityType fromTypeString(string entityType);
+	static string toTypeString(EntityType entityType);
 
-	static EntityColor FromColorString(string entityColor);
-	static string ToColorString(EntityColor entityColor);
+	static EntityColor fromColorString(string entityColor);
+	static string toColorString(EntityColor entityColor);
 };
 #endif

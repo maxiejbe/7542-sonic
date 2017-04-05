@@ -19,22 +19,22 @@ public:
 	~Scenario();
 
 	vector<Layer> getLayers();
-	void SetDimensions(Dimensions);
-	void SetLayers(vector<Layer>);
-	void SetEntities(vector<Entity*>);
+	void setDimensions(Dimensions);
+	void setLayers(vector<Layer>);
+	void setEntities(vector<Entity*>);
 
-	vector<Entity*> GetEntities();
+	vector<Entity*> getEntities();
 
-	int GetWidth();
-	int GetHeight();
+	int getWidth();
+	int getHeight();
 private:
 	Dimensions dimensions;
 	vector<Layer> layers;
 	vector<Entity*> entities;
 	
 	// Inherited via Serializable
-	virtual void Unserialize(Value * nodeRef) override;
-	virtual char * GetNodeName() override;
+	virtual void unserialize(Value * nodeRef) override;
+	virtual char * getNodeName() override;
 };
 
 #endif

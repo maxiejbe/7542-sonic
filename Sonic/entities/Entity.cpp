@@ -50,19 +50,19 @@ bool Entity::validate()
 	return true;
 }
 
-Dimensions Entity::GetDefaultDimensions()
+Dimensions Entity::getDefaultDimensions()
 {
 	return Dimensions();
 }
 
-Uint32 Entity::GetColorRgba()
+Uint32 Entity::getColorRgba()
 {
 	int full = 255; //Full of one color
 	int r = 0;
 	int g = 0;
 	int b = 0;
 
-	switch (EntityResolver::FromColorString(color))
+	switch (EntityResolver::fromColorString(color))
 	{
 		case EntityColor::red:
 			r = full;
@@ -90,40 +90,40 @@ Uint32 Entity::GetColorRgba()
 	return colorCode;
 }
 
-string Entity::GetType()
+string Entity::getType()
 {
 	return type;
 }
 
-void Entity::Unserialize(Value * nodeRef)
+void Entity::unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;
-	const char* nodeName = GetNodeName();
+	const char* nodeName = getNodeName();
 
 	LOG(logINFO) << MESSAGE_PARSING_ENTITY_NODE;
 
-	ParseInt(&id, ENTITY_DEFAULT_ID, nodeRef, ENTITY_ID_NODE, Validator::IntGreaterThanZero);
+	parseInt(&id, ENTITY_DEFAULT_ID, nodeRef, ENTITY_ID_NODE, Validator::intGreaterThanZero);
 	
-	ParseString(&type, ENTITY_DEFAULT_TYPE, nodeRef, ENTITY_TYPE_NODE);
-	type = EntityResolver::ToTypeString(EntityResolver::FromTypeString(type));
+	parseString(&type, ENTITY_DEFAULT_TYPE, nodeRef, ENTITY_TYPE_NODE);
+	type = EntityResolver::toTypeString(EntityResolver::fromTypeString(type));
 
-	Dimensions defaultDimensions = EntityResolver::GetDefaultDimensions(this);
-	dimensions.SetDefaults(defaultDimensions.getWidth(), defaultDimensions.getHeight(), defaultDimensions.getRadio());
-	dimensions.ParseObject(nodeRef);
+	Dimensions defaultDimensions = EntityResolver::getDefaultDimensions(this);
+	dimensions.setDefaults(defaultDimensions.getWidth(), defaultDimensions.getHeight(), defaultDimensions.getRadio());
+	dimensions.parseObject(nodeRef);
 
-	ParseString(&color, ENTITY_DEFAULT_COLOR, nodeRef, ENTITY_COLOR_NODE);
-	color = EntityResolver::ToColorString(EntityResolver::FromColorString(color));
+	parseString(&color, ENTITY_DEFAULT_COLOR, nodeRef, ENTITY_COLOR_NODE);
+	color = EntityResolver::toColorString(EntityResolver::fromColorString(color));
 
-	coordinate.ParseObject(nodeRef);
+	coordinate.parseObject(nodeRef);
 
-	ParseString(&imagePath, ENTITY_DEFAULT_IMAGE_PATH, nodeRef, ENTITY_IMAGE_PATH_NODE);
+	parseString(&imagePath, ENTITY_DEFAULT_IMAGE_PATH, nodeRef, ENTITY_IMAGE_PATH_NODE);
 
-	ParseInt(&zIndex, ENTITY_DEFAULT_ZINDEX, nodeRef, ENTITY_ZINDEX_NODE);
+	parseInt(&zIndex, ENTITY_DEFAULT_ZINDEX, nodeRef, ENTITY_ZINDEX_NODE);
 
 	LOG(logINFO) << MESSAGE_END_PARSING_ENTITY_NODE;
 }
 
-char* Entity::GetNodeName()
+char* Entity::getNodeName()
 {
 	return nullptr;
 }
