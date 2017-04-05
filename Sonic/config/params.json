@@ -31,15 +31,15 @@
         "tipo": "rectangulo",
         "color": "rojo",
         "dimensiones": {
-          "ancho": 200,
+          "ancho": 400,
           "alto": 0
         },
         "coordenada": {
-          "x": 1000,
+          "x": 1820,
           "y": 200
         },
         "index_z": 99,
-        "ruta_imagen": "img/sonic.png"
+        "ruta_imagen": "img/sprite.png"
       },
       {
         "id": 0,
@@ -51,21 +51,21 @@
         },
         "coordenada": {
           "x": 350,
-          "y": 400
+          "y": 550
         },
         "index_z": 99,
-        "ruta_imagen": "img/sonic.png"
+        "ruta_imagen": "img/lalala.png"
       },
       {
         "id": 3,
-        "tipo": "circulo",
-        "color": "rojo",
+        "tipo": "circulo ",
+        "color": "amarillO",
         "dimensiones": { "radio": 200 },
         "coordenada": {
           "x": 0,
           "y": 0
         },
-        "ruta_imagen": "img/sonic.png",
+        "ruta_imagen": "img/sprite.png",
         "index_z": 100
       }
     ]

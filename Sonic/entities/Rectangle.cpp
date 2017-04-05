@@ -15,13 +15,13 @@ void Rectangle::draw(SDL_Rect camera) {
 
 		Uint8 r, g, b, a;
 		SDL_GetRGBA(getColorRgba(), SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
-		boxRGBA(gRenderer, x1, y1, x2, y2, r,g ,b,a);
+		boxRGBA(gRenderer, x1, y1, x2, y2, r, g, b, a);
 
 		// Check if there is an image
 		if (imagePath.empty()) return;
 
 		// Try to load image
-		if (!texture.loadFromFile(imagePath)) {
+		if (texture.getTexture() == nullptr && !texture.loadFromFile(imagePath)) {
 			this->imagePath = "img/image-not-found.png";
 			this->imageCrop = false;
 			return;

@@ -28,7 +28,7 @@ void Circle::draw(SDL_Rect camera) {
 		}
 
 		// Try to load the image
-		if (!texture.loadFromFile(imagePath)) {
+		if (texture.getTexture() == nullptr && !texture.loadFromFile(imagePath)) {
 			this->imagePath = "img/image-not-found.png";
 		}
 
