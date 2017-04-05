@@ -42,6 +42,14 @@ void Entity::draw(SDL_Rect camera)
 {
 }
 
+bool Entity::validate()
+{
+	if (type.empty()) return false;
+	if (coordinate.getX() < 0) return false;
+	if (coordinate.getY() < 0) return false;
+	return true;
+}
+
 Dimensions Entity::GetDefaultDimensions()
 {
 	return Dimensions();

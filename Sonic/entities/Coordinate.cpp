@@ -7,8 +7,8 @@ const char* COORDINATE_Y_NODE = "y";
 const char* MESSAGE_PARSING_COORDINATE_NODE = "Inicio de parseo de nodo coordenada.";
 const char* MESSAGE_END_PARSING_COORDINATE_NODE = "Fin de parseo de nodo coordenada.";
 
-const int COORDINATE_DEFAULT_X = 0;
-const int COORDINATE_DEFAULT_Y = 0;
+const int COORDINATE_DEFAULT_X = -1;
+const int COORDINATE_DEFAULT_Y = -1;
 
 Coordinate::Coordinate(){}
 

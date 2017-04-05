@@ -16,7 +16,8 @@ public:
 	Entity();
 	Entity(Entity* entity);
 	void draw(SDL_Rect camera) override;
-	
+	virtual bool validate();
+
 	virtual Dimensions GetDefaultDimensions();
 	
 	Uint32 GetColorRgba();

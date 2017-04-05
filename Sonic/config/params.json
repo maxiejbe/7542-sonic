@@ -38,7 +38,8 @@
           "x": 1000,
           "y": 200
         },
-        "index_z": 99
+        "index_z": 99,
+        "ruta_imagen": "img/sonic.png"
       },
       {
         "id": 0,
@@ -52,7 +53,8 @@
           "x": 350,
           "y": 400
         },
-        "index_z": 99
+        "index_z": 99,
+        "ruta_imagen": "img/sonic.png"
       },
       {
         "id": 3,
@@ -63,7 +65,7 @@
           "x": 0,
           "y": 0
         },
-        "ruta_imagen": "imgdsad/sonic.png",
+        "ruta_imagen": "img/sonic.png",
         "index_z": 100
       }
     ]

@@ -11,10 +11,6 @@ const int SCENARIO_DEFAULT_WIDTH = 1920;
 const int SCENARIO_DEFAULT_HEIGHT = 600;
 const int SCENARIO_DEFAULT_RADIO = 0;
 
-const string ENTITY_TYPE_RECTANGLE = "rectangulo";
-const string ENTITY_TYPE_CIRCLE = "circulo";
-const string ENTITY_TYPE_SQUARE = "cuadrado";
-
 Scenario::Scenario()
 {
 }
@@ -79,7 +75,9 @@ void Scenario::Unserialize(Value * nodeRef)
 	for (vector<Entity>::iterator it = entities.begin(); it != entities.end(); ++it) {
 		Entity entity = &(*it);
 		Entity* toAdd = EntityResolver::Resolve(&entity);
-		this->entities.push_back(toAdd);
+		if (entity.validate()) {
+			this->entities.push_back(toAdd);
+		}
 	}
 	
 	LOG(logINFO) << MESSAGE_END_PARSING_SCENARIO_NODE;
