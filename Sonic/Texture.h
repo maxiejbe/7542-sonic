@@ -22,7 +22,7 @@ public:
 	int getHeight();
 	SDL_Texture* getTexture(); // es necesario?
 
-private:
+protected:
 	SDL_Texture* texture;
 	int width;
 	int height;
