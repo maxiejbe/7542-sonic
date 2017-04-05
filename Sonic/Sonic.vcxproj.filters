@@ -149,9 +149,9 @@
     <ClInclude Include="Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClCompile Include="Timer.h">
+    <ClInclude Include="Timer.h">
       <Filter>Header Files</Filter>
-    </ClCompile>
+    </ClInclude>
     <ClInclude Include="entities\common\Drawable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
