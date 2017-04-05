@@ -19,10 +19,6 @@ const string ENTITY_DEFAULT_COLOR = "";
 const string ENTITY_DEFAULT_IMAGE_PATH = ""; // Vacio = no hay imagen (solo color)
 const int ENTITY_DEFAULT_ZINDEX = 0;
 
-const int ENTITY_DEFAULT_WIDTH = 0;
-const int ENTITY_DEFAULT_HEIGHT = 0;
-const int ENTITY_DEFAULT_RADIO = 0;
-
 Entity::Entity()
 {
 }
@@ -51,6 +47,41 @@ Dimensions Entity::GetDefaultDimensions()
 	return Dimensions();
 }
 
+Uint32 Entity::GetColorRgba()
+{
+	int full = 255; //Full of one color
+	int r = 0;
+	int g = 0;
+	int b = 0;
+
+	switch (EntityResolver::FromColorString(color))
+	{
+		case EntityColor::red:
+			r = full;
+			break;
+		case EntityColor::yellow:
+			r = full;
+			g = full;
+			break;
+		case EntityColor::green:
+			g = full;
+			break;
+		default:
+			return Uint32();
+			break;
+	}
+
+	Uint32 colorCode = 0;
+	if (SDLWindow::getInstance().gWindow != NULL) {
+		colorCode = SDL_MapRGBA(SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, r, g, b, 255);
+	}
+	else {
+		LOG(logERROR) << "No se puede recuperar el color en formato Uint32 - Error: La ventana es nula";
+	}
+
+	return colorCode;
+}
+
 string Entity::GetType()
 {
 	return type;
@@ -66,14 +97,14 @@ void Entity::Unserialize(Value * nodeRef)
 	ParseInt(&id, ENTITY_DEFAULT_ID, nodeRef, ENTITY_ID_NODE, Validator::IntGreaterThanZero);
 	
 	ParseString(&type, ENTITY_DEFAULT_TYPE, nodeRef, ENTITY_TYPE_NODE);
+	type = EntityResolver::ToTypeString(EntityResolver::FromTypeString(type));
 
 	Dimensions defaultDimensions = EntityResolver::GetDefaultDimensions(this);
 	dimensions.SetDefaults(defaultDimensions.getWidth(), defaultDimensions.getHeight(), defaultDimensions.getRadio());
 	dimensions.ParseObject(nodeRef);
 
-	string colorJson;
-	ParseString(&colorJson, ENTITY_DEFAULT_COLOR, nodeRef, ENTITY_COLOR_NODE);
-	SetColor(colorJson);
+	ParseString(&color, ENTITY_DEFAULT_COLOR, nodeRef, ENTITY_COLOR_NODE);
+	color = EntityResolver::ToColorString(EntityResolver::FromColorString(color));
 
 	coordinate.ParseObject(nodeRef);
 
@@ -87,10 +118,4 @@ void Entity::Unserialize(Value * nodeRef)
 char* Entity::GetNodeName()
 {
 	return nullptr;
-}
-
-void Entity::SetColor(string color)
-{
-	Color colorObj = Color(color);
-	this->color = colorObj;
 }

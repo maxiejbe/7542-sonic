@@ -18,7 +18,7 @@ void CircleImageCropper::free() {
 }
 
 
-bool CircleImageCropper::crop(int radio, std::string imgPath, Color backgroundColor)
+bool CircleImageCropper::crop(int radio, std::string imgPath, Uint32 backgroundColor)
 {
 	StreamingTexture imageTexture;
 	if (!imageTexture.loadFromFile(imgPath)) {
@@ -60,7 +60,7 @@ bool CircleImageCropper::crop(int radio, std::string imgPath, Color backgroundCo
 						if (imgXPos >= 0 && imgYPos >= 0 && imgYPos <= imageWidth && imgXPos <= imageHeight && currentPosition > 0 && currentPosition < pixelCount) {
 							SDL_GetRGBA(imgPixels[currentPosition], SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &imgR, &imgG, &imgB, &imgA);
 							if (imgR == 0 && imgG ==0 && imgB == 0 && imgA==255) {
-								SDL_GetRGBA(backgroundColor.GetUint32(), SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
+								SDL_GetRGBA(backgroundColor, SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
 								drawPoint(x, y, r, g, b, a);
 							}
 							else {
@@ -68,7 +68,7 @@ bool CircleImageCropper::crop(int radio, std::string imgPath, Color backgroundCo
 							}
 						}
 						else {
-							SDL_GetRGBA(backgroundColor.GetUint32(), SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
+							SDL_GetRGBA(backgroundColor, SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
 							drawPoint(x, y, r, g, b, a);
 						}
 					}

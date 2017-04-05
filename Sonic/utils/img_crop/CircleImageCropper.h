@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include "../../StreamingTexture.h"
-#include "../../entities/Color.h"
 class CircleImageCropper
 {
 private:
@@ -15,7 +14,7 @@ private:
 public:
 	CircleImageCropper();
 	~CircleImageCropper();
-	bool crop(int radio, std::string imgPath, Color backgroundColor);
+	bool crop(int radio, std::string imgPath, Uint32 backgroundColor);
 	void render(int x, int y);
 };
 

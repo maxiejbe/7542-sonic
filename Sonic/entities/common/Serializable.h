@@ -58,9 +58,7 @@ inline void Serializable::ParseCollection(vector<T>* collection, Value* parentNo
 		LOG(logINFO) << MESSAGE_ITERATING_OBJECT_NODE_COLLECTION << to_string(i);
 		Value& entityNode = entitiesNode[i];
 		T entity;
-		//T childEntity;
 		entity.ParseCurrentObject(&entityNode);
-		//entity.Resolve(&childEntity);
 		collection->push_back(entity);
 	}
 

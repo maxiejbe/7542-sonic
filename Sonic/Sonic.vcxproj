@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="entities\Color.cpp" />
     <ClCompile Include="entities\common\Validator.cpp" />
     <ClCompile Include="utils\StringUtils.cpp" />
     <ClCompile Include="utils\img_crop\CircleImageCropper.cpp" />
@@ -68,7 +67,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="entities\Color.h" />
     <ClInclude Include="entities\common\Validator.h" />
     <ClInclude Include="utils\StringUtils.h" />
     <ClInclude Include="utils\img_crop\CircleImageCropper.h" />

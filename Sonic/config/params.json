@@ -57,13 +57,13 @@
       {
         "id": 3,
         "tipo": "circulo",
-        "color": "amarillo",
+        "color": "rojo",
         "dimensiones": { "radio": 200 },
         "coordenada": {
           "x": 0,
           "y": 0
         },
-        "ruta_imagen": "img/sonic.png",
+        "ruta_imagen": "imgdsad/sonic.png",
         "index_z": 100
       }
     ]

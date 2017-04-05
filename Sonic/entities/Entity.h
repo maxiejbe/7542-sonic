@@ -7,7 +7,6 @@
 #include "Coordinate.h"
 #include "../Renderer.h"
 #include "Texture.h"
-#include "Color.h"
 #include "common/Drawable.h"
 
 using namespace std;
@@ -20,6 +19,8 @@ public:
 	
 	virtual Dimensions GetDefaultDimensions();
 	
+	Uint32 GetColorRgba();
+
 	string GetType();
 	bool operator< (const Entity &other) const {
 		return zIndex < other.zIndex;
@@ -27,7 +28,7 @@ public:
 protected:
 	int id;
 	string type;
-	Color color;
+	string color;
 	Dimensions dimensions;
 	Coordinate coordinate;
 	string imagePath;
