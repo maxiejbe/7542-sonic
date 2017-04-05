@@ -8,23 +8,31 @@ Circle::Circle()
 {
 }
 
-Circle::Circle(Entity* entity): Entity(entity) {
-		cropperInitialized = false;
+Circle::Circle(Entity* entity) : Entity(entity) {
+	cropperInitialized = false;
 }
 
 void Circle::draw(SDL_Rect camera) {
 	SDL_Renderer * gRenderer = Renderer::getInstance().gRenderer;
 	if (gRenderer != NULL) {
 
-		if (imagePath != "") {
-			drawWithImage(camera);
-		}
-		else {
+		// Check if there is an image
+		if (imagePath.empty()) {
+			// Draw color
 			int positionX = (coordinate.getX() + dimensions.getRadio()) - camera.x;
 			int positionY = (coordinate.getY() + dimensions.getRadio()) - camera.y;
-			filledCircleRGBA(gRenderer, positionX, positionY, dimensions.getRadio(), 0, 0, 0, 255);
+			filledCircleRGBA(gRenderer, positionX, positionY, dimensions.getRadio(), 0, 0, 0, 255); // TODO color
+			return;
 		}
-	}else {
+
+		// Draw image
+		// Try to load the image
+		if (!texture.loadFromFile(imagePath)) {
+			this->imagePath = "img/image-not-found.png";
+		}
+		drawWithImage(camera);
+	}
+	else {
 		//TODO: log errors
 	}
 }
@@ -33,7 +41,8 @@ void Circle::initializeCropper() {
 	if (!cropperInitialized) {
 		bool cropperInitialization = imgCropper.crop(dimensions.getRadio(), imagePath);
 		if (!cropperInitialization) {
-			throw std::exception();
+			//throw std::exception();
+			// TODO log
 		}
 		cropperInitialized = true;
 	}
@@ -49,9 +58,9 @@ void Circle::drawWithImage(SDL_Rect camera) {
 		imgCropper.render(coordinate.getX() - camera.x, coordinate.getY() - camera.y);
 	}
 	catch (std::exception e) {
-		LOG(logERROR) << "No se pudo cropear la imagen dentro del circulo'";
+		LOG(logERROR) << "No se pudo cropear la imagen dentro del circulo";
 	}
-	
+
 }
 
 Dimensions Circle::GetDefaultDimensions()

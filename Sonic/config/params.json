@@ -36,10 +36,9 @@
           "alto": 0
         },
         "coordenada": {
-          "x": 10,
-          "y": 0
+          "x": 1000,
+          "y": 200
         },
-        "ruta_imagen": "img/asd.png",
         "index_z": 99
       },
       {
@@ -51,23 +50,22 @@
           "alto": -50
         },
         "coordenada": {
-          "x": 150,
-          "y": 200
+          "x": 350,
+          "y": 400
         },
-        "ruta_imagen": "/images/entidad2.png",
         "index_z": 99
       },
       {
         "id": 3,
         "tipo": "circulo",
         "color": "amarillo",
-        "dimensiones": { "radio": -1 },
+        "dimensiones": { "radio": 200 },
         "coordenada": {
-          "x": 300,
-          "y": 400
+          "x": 0,
+          "y": 0
         },
-        "ruta_imagen": "/images/entidad3.png",
-        "index_z": 98
+        "ruta_imagen": "img/sonic.png",
+        "index_z": 100
       }
     ]
   }

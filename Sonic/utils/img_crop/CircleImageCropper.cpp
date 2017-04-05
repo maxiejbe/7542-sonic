@@ -17,13 +17,8 @@ void CircleImageCropper::free() {
 	SDL_DestroyTexture(targetTexture);
 }
 
-bool CircleImageCropper::crop(int radio, std::string imgPath) 
+bool CircleImageCropper::crop(int radio, std::string imgPath)
 {
-	if (radio <= 0) {
-		return false;
-		//TODO: LOGUEAR
-	}
-
 	StreamingTexture imageTexture;
 	if (!imageTexture.loadFromFile(imgPath)) {
 		//TODO: LOGUEAR
@@ -67,7 +62,7 @@ bool CircleImageCropper::crop(int radio, std::string imgPath)
 							drawPoint(x, y, r, g, b, a);
 						}
 						else {
-							drawPoint(x, y, 0, 0, 0, 255);
+							drawPoint(x, y, 255, 0, 0, 255);
 						}
 					}
 				}
@@ -83,9 +78,8 @@ bool CircleImageCropper::crop(int radio, std::string imgPath)
 }
 
 bool CircleImageCropper::initializeTargetTexture(int radio) {
-	//free target texture
 	free();
-	//create texture
+
 	targetTexture = SDL_CreateTexture(Renderer::getInstance().gRenderer, SDL_GetWindowPixelFormat(SDLWindow::getInstance().gWindow), SDL_TEXTUREACCESS_TARGET, radio * 2, radio * 2);
 	if (targetTexture != NULL) {
 		this->radio = radio;

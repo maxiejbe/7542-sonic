@@ -14,9 +14,9 @@ const char* MESSAGE_PARSING_ENTITY_NODE = "Inicio de parseo de nodo entidad.";
 const char* MESSAGE_END_PARSING_ENTITY_NODE = "Fin de parseo de nodo entidad.";
 
 const int ENTITY_DEFAULT_ID = 1;
-const string ENTITY_DEFAULT_TYPE = ""; // No deberia dibujarse
+const string ENTITY_DEFAULT_TYPE = "";
 const string ENTITY_DEFAULT_COLOR = "";
-const string ENTITY_DEFAULT_IMAGE_PATH = "img/image-not-found.png";
+const string ENTITY_DEFAULT_IMAGE_PATH = ""; // Vacio = no hay imagen (solo color)
 const int ENTITY_DEFAULT_ZINDEX = 0;
 
 const int ENTITY_DEFAULT_WIDTH = 0;
