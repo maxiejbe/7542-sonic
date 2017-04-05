@@ -13,8 +13,11 @@ private:
 	void initializeCropper();
 	void drawWithImage(SDL_Rect camera);
 public:
+	Circle();
 	Circle(Entity* entity);
 	virtual void draw(SDL_Rect camera) override;
+	
+	virtual Dimensions GetDefaultDimensions() override;
 };
 
 #endif // !CIRCLE_H

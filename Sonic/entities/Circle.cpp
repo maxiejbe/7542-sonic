@@ -1,5 +1,13 @@
 #include "Circle.h"
 
+const int CIRCLE_DEFAULT_WIDTH = 0;
+const int CIRCLE_DEFAULT_HEIGHT = 0;
+const int CIRCLE_DEFAULT_RADIO = 50;
+
+Circle::Circle()
+{
+}
+
 Circle::Circle(Entity* entity): Entity(entity) {
 		cropperInitialized = false;
 }
@@ -20,7 +28,6 @@ void Circle::draw(SDL_Rect camera) {
 		//TODO: log errors
 	}
 }
-
 
 void Circle::initializeCropper() {
 	if (!cropperInitialized) {
@@ -47,3 +54,7 @@ void Circle::drawWithImage(SDL_Rect camera) {
 	
 }
 
+Dimensions Circle::GetDefaultDimensions()
+{
+	return Dimensions(CIRCLE_DEFAULT_WIDTH, CIRCLE_DEFAULT_HEIGHT, CIRCLE_DEFAULT_RADIO);
+}

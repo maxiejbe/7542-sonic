@@ -16,11 +16,12 @@ const char* MESSAGE_END_PARSING_ENTITY_NODE = "Fin de parseo de nodo entidad.";
 const int ENTITY_DEFAULT_ID = 1;
 const string ENTITY_DEFAULT_TYPE = ""; // No deberia dibujarse
 const string ENTITY_DEFAULT_COLOR = "";
-const int ENTITY_DEFAULT_WIDTH = 100;
-const int ENTITY_DEFAULT_HEIGHT = 100;
-const int ENTITY_DEFAULT_RADIO = 50;
 const string ENTITY_DEFAULT_IMAGE_PATH = "img/image-not-found.png";
 const int ENTITY_DEFAULT_ZINDEX = 0;
+
+const int ENTITY_DEFAULT_WIDTH = 0;
+const int ENTITY_DEFAULT_HEIGHT = 0;
+const int ENTITY_DEFAULT_RADIO = 0;
 
 Entity::Entity()
 {
@@ -45,6 +46,11 @@ void Entity::draw(SDL_Rect camera)
 {
 }
 
+Dimensions Entity::GetDefaultDimensions()
+{
+	return Dimensions();
+}
+
 string Entity::GetType()
 {
 	return type;
@@ -63,7 +69,8 @@ void Entity::Unserialize(Value * nodeRef)
 	
 	ParseString(&color, ENTITY_DEFAULT_COLOR, nodeRef, ENTITY_COLOR_NODE);
 
-	dimensions.SetDefaults(ENTITY_DEFAULT_WIDTH, ENTITY_DEFAULT_HEIGHT, ENTITY_DEFAULT_RADIO);
+	Dimensions defaultDimensions = EntityResolver::GetDefaultDimensions(this);
+	dimensions.SetDefaults(defaultDimensions.getWidth(), defaultDimensions.getHeight(), defaultDimensions.getRadio());
 	dimensions.ParseObject(nodeRef);
 	coordinate.ParseObject(nodeRef);
 

@@ -36,10 +36,10 @@ int main(int argc, char* args[])
 	Configuration config;
 	parser->Parse(&config);
 
-	Logger::LoggingLevel() = Logger::FromString(config.GetLogLevel());
-
 	Scenario scenario;
 	parser->Parse(&scenario);
+
+	Logger::LoggingLevel() = Logger::FromString(config.GetLogLevel());
 
 	int scenarioWidth = scenario.GetWidth();
 	int scenarioHeight = scenario.GetHeight();

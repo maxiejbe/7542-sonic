@@ -13,6 +13,8 @@ public:
 	}
 
 	virtual void draw(SDL_Rect camera) override;
+
+	virtual Dimensions GetDefaultDimensions() override;
 };
 
 #endif // !RECTANGLE_H

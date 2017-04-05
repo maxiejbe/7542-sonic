@@ -8,7 +8,8 @@
 class Dimensions : public Serializable {
 public:
 	Dimensions();
-	
+	Dimensions(int width, int height, int radio);
+
 	void SetDefaults(int width, int height, int radio);
 	
 	int getWidth();
