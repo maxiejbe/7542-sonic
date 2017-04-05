@@ -7,6 +7,7 @@
 #include "Coordinate.h"
 #include "../Renderer.h"
 #include "Texture.h"
+#include "Color.h"
 #include "common/Drawable.h"
 
 using namespace std;
@@ -26,13 +27,15 @@ public:
 protected:
 	int id;
 	string type;
-	string color;
+	Color color;
 	Dimensions dimensions;
 	Coordinate coordinate;
 	string imagePath;
 	int zIndex;
 	Texture texture;
 	bool imageCrop;
+
+	void SetColor(string color);
 
 	// Inherited via Serializable
 	virtual void Unserialize(Value * nodeRef) override;

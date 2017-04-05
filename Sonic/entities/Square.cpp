@@ -9,8 +9,7 @@ Square::Square()
 }
 
 void Square::draw(SDL_Rect camera) {
-	//Rectangle rectangle = Rectangle(this);
-	//rectangle.draw(camera);
+	rectangle.draw(camera);
 }
 
 Dimensions Square::GetDefaultDimensions()

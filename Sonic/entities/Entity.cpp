@@ -64,18 +64,21 @@ void Entity::Unserialize(Value * nodeRef)
 	LOG(logINFO) << MESSAGE_PARSING_ENTITY_NODE;
 
 	ParseInt(&id, ENTITY_DEFAULT_ID, nodeRef, ENTITY_ID_NODE);
-	
+
 	ParseString(&type, ENTITY_DEFAULT_TYPE, nodeRef, ENTITY_TYPE_NODE);
-	
-	ParseString(&color, ENTITY_DEFAULT_COLOR, nodeRef, ENTITY_COLOR_NODE);
 
 	Dimensions defaultDimensions = EntityResolver::GetDefaultDimensions(this);
 	dimensions.SetDefaults(defaultDimensions.getWidth(), defaultDimensions.getHeight(), defaultDimensions.getRadio());
 	dimensions.ParseObject(nodeRef);
+
+	string colorJson;
+	ParseString(&colorJson, ENTITY_DEFAULT_COLOR, nodeRef, ENTITY_COLOR_NODE);
+	SetColor(colorJson);
+
 	coordinate.ParseObject(nodeRef);
 
 	ParseString(&imagePath, ENTITY_DEFAULT_IMAGE_PATH, nodeRef, ENTITY_IMAGE_PATH_NODE);
-	
+
 	ParseInt(&zIndex, ENTITY_DEFAULT_ZINDEX, nodeRef, ENTITY_ZINDEX_NODE);
 
 	LOG(logINFO) << MESSAGE_END_PARSING_ENTITY_NODE;
@@ -84,4 +87,10 @@ void Entity::Unserialize(Value * nodeRef)
 char* Entity::GetNodeName()
 {
 	return nullptr;
+}
+
+void Entity::SetColor(string color)
+{
+	Color colorObj = Color(color);
+	this->color = colorObj;
 }
