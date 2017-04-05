@@ -7,6 +7,7 @@
 #include "Coordinate.h"
 #include "../Renderer.h"
 #include "Texture.h"
+#include "Color.h"
 #include "common/Drawable.h"
 
 using namespace std;
