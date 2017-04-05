@@ -13,11 +13,12 @@ void Rectangle::draw(SDL_Rect camera) {
 		int y1 = coordinate.getY() - camera.y;
 		int y2 = y1 + dimensions.getHeight();
 
-		// Check if there is an image
-		if (imagePath.empty()) return;
 		Uint8 r, g, b, a;
 		SDL_GetRGBA(GetColorRgba(), SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
 		boxRGBA(gRenderer, x1, y1, x2, y2, r,g ,b,a);
+
+		// Check if there is an image
+		if (imagePath.empty()) return;
 
 		// Try to load image
 		if (!texture.loadFromFile(imagePath)) {
