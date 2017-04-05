@@ -27,13 +27,22 @@ void close()
 int main(int argc, char* args[])
 {
 	Logger::Init();
-	Logger::LoggingLevel() = logMEDIUM; //Logger::FromString(config.GetLogLevel());
+	Logger::LoggingLevel() = logMEDIUM;
 
-	//TODO: Take params from argv
 	string configPath;
-	if (argc > 1) {
-		configPath = args[1];
+	if (argc > 2) {
+		string arg = args[1];
+		if (arg == "--config") {
+			configPath = args[2];
+		}
+		else {
+			LOG(logWARNING) << "Uso: " << args[0] << " --config CONFIG_FILE.json";
+		}
 	}
+	else {
+		LOG(logWARNING) << "Uso: " << args[0] << " --config CONFIG_FILE.json";
+	}
+
 	Parser* parser = new Parser(configPath);
 	Window window;
 	parser->Parse(&window);
