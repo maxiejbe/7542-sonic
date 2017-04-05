@@ -24,12 +24,14 @@ public:
 protected:
 	int id;
 	string type;
-	string color;
+	Color color;
 	Dimensions dimensions;
 	Coordinate coordinate;
 	string imagePath;
 	int zIndex;
 	Texture texture;
+
+	void SetColor(string color);
 
 	// Inherited via Serializable
 	virtual void Unserialize(Value * nodeRef) override;

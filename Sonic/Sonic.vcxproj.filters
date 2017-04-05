@@ -87,6 +87,9 @@
     <ClCompile Include="utils\img_crop\CircleImageCropper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="entities\Color.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entities\Configuration.h">
@@ -159,6 +162,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utils\img_crop\CircleImageCropper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="entities\Color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
