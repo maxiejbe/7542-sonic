@@ -18,19 +18,21 @@ void Serializable::parseObject(Value* parentNodeRef)
 {
 	Value& parentNode = *parentNodeRef;
 	const char* nodeName = getNodeName();
+	Value* node = nullptr;
 
-	if (!parentNode.HasMember(nodeName)) {
-		LOG(logWARNING) << MESSAGE_ERROR_PARSING_INNER_NODE << nodeName;
-		return;
+	if (parentNodeRef == nullptr || !parentNode.HasMember(nodeName)) {
+		LOG(logWARNING) << MESSAGE_ERROR_PARSING_INNER_NODE << nodeName << ".";
+		//return;
+	}
+	else {
+		node = &parentNode[nodeName];
+		if (!node->IsObject()) {
+			LOG(logWARNING) << MESSAGE_ERROR_NOT_AN_OBJECT_INNER_NODE << ": " << nodeName;
+			//return;
+		}
 	}
 
-	Value& node = parentNode[nodeName];
-	if (!node.IsObject()) {
-		LOG(logWARNING) << MESSAGE_ERROR_NOT_AN_OBJECT_INNER_NODE << ": " << nodeName;
-		return;
-	}
-
-	unserialize(&node);
+	unserialize(node);
 }
 
 void Serializable::parseCurrentObject(Value* nodeRef)
@@ -38,7 +40,7 @@ void Serializable::parseCurrentObject(Value* nodeRef)
 	Value& node = *nodeRef;
 	if (!node.IsObject()) {
 		LOG(logWARNING) << MESSAGE_ERROR_NOT_AN_OBJECT_INNER_NODE;
-		return;
+		//return;
 	}
 
 	unserialize(&node);
@@ -47,10 +49,10 @@ void Serializable::parseCurrentObject(Value* nodeRef)
 void Serializable::parseInt(int * value, int defaultValue, Value * nodeRef, const char* fieldName, function<bool(int)> condition)
 {
 	Value& node = *nodeRef;
-	
+
 	LOG(logINFO) << MESSAGE_PARSING_NODE_FIELD + string(fieldName);
-	
-	if (!node.HasMember(fieldName)) {
+
+	if (nodeRef == nullptr || !node.HasMember(fieldName)) {
 		*value = defaultValue;
 		LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD_EMPTY << fieldName << MESSAGE_ERROR_PARSING_NODE_FIELD_DEFAULT << defaultValue;
 		return;
@@ -72,20 +74,20 @@ void Serializable::parseString(string * value, string defaultValue, Value * node
 	Value& node = *nodeRef;
 
 	LOG(logINFO) << MESSAGE_PARSING_NODE_FIELD + string(fieldName);
-	
-	if (!node.HasMember(fieldName)) {
+
+	if (nodeRef == nullptr || !node.HasMember(fieldName)) {
 		*value = defaultValue;
 		LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD_EMPTY << fieldName << MESSAGE_ERROR_PARSING_NODE_FIELD_DEFAULT << defaultValue;
 		return;
 	}
-	
+
 	string childNodeValue = getNodeContent(&node[fieldName]);
 	if (!node[fieldName].IsString()) {
 		*value = defaultValue;
 		LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD_INCORRECT << fieldName << "=" << childNodeValue << MESSAGE_ERROR_PARSING_NODE_FIELD_DEFAULT << defaultValue;
 		return;
 	}
-	
+
 	*value = node[fieldName].GetString();
 	LOG(logINFO) << MESSAGE_OK_PARSING_NODE_FIELD << *value;
 }

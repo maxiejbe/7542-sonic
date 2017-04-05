@@ -30,8 +30,8 @@ public:
 	virtual char* getNodeName() = 0;
 private:
 	const char* MESSAGE_PARSING_NODE_COLLECTION = "Iterando colección: ";
-	const char* MESSAGE_NOT_FOUND_NODE_COLLECTION = "La colección no se encuentra en el nodo: ";
-	const char* MESSAGE_NOT_ARRAY_NODE_COLLECTION = "La colección no es un arreglo de objetos: ";
+	const char* MESSAGE_NOT_FOUND_NODE_COLLECTION = "La siguiente colección no se encuentra: ";
+	const char* MESSAGE_NOT_ARRAY_NODE_COLLECTION = "La siguiente colección no es un arreglo de objetos: ";
 
 	const char* MESSAGE_ITERATING_OBJECT_NODE_COLLECTION = "Iterando objeto de la colección número ";
 	const char* MESSAGE_END_PARSING_NODE_COLLECTION = "Finalizó la iteración.";
