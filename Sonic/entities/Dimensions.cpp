@@ -45,12 +45,18 @@ void Dimensions::unserialize(Value* nodeRef)
 
 	LOG(logINFO) << MESSAGE_PARSING_DIMENSIONS_NODE;
 
-	parseInt(&width, defaultWidth, nodeRef, DIMENSIONS_WIDTH_NODE, Validator::intGreaterThanZero);
-
-	parseInt(&height, defaultHeight, nodeRef, DIMENSIONS_HEIGHT_NODE, Validator::intGreaterThanZero);
+	if (defaultWidth > 0) {
+		parseInt(&width, defaultWidth, nodeRef, DIMENSIONS_WIDTH_NODE, Validator::intGreaterThanZero);
+	}
 	
-	parseInt(&radio, defaultRadio, nodeRef, DIMENSIONS_RADIO_NODE, Validator::intGreaterThanZero);
-
+	if (defaultHeight > 0) {
+		parseInt(&height, defaultHeight, nodeRef, DIMENSIONS_HEIGHT_NODE, Validator::intGreaterThanZero);
+	}
+	
+	if (defaultRadio > 0) {
+		parseInt(&radio, defaultRadio, nodeRef, DIMENSIONS_RADIO_NODE, Validator::intGreaterThanZero);
+	}
+	
 	LOG(logINFO) << MESSAGE_END_PARSING_DIMENSIONS_NODE;
 }
 
