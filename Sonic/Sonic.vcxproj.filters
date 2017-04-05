@@ -180,43 +180,31 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="img\background.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\bg.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\dot.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\down.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\foo.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\left.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="img\level.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="img\level1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\loaded.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\press.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\right.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="img\up.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="img\sprite.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\image-not-found.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\layer-not-found.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\level2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\rain.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\rain_orig.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\sonic.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\sonic_orig.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
