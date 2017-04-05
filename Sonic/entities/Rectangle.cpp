@@ -23,7 +23,7 @@ void Rectangle::draw(SDL_Rect camera) {
 		// Try to load image
 		if (texture.getTexture() == nullptr && !texture.loadFromFile(imagePath)) {
 			this->imagePath = "img/image-not-found.png";
-			this->imageCrop = false;
+			this->imageCrop = true;
 			return;
 		}
 
