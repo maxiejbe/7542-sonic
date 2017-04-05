@@ -2,7 +2,7 @@
 
 const string DEFAULT_CONFIG_FILE = "config/params.json";
 const char* MESSAGE_USING_CONFIG_FILE = "Archivo de configuración utilizado: ";
-const char* MESSAGE_NO_CONFIG_FILE_PARAM = "No se especificó un archivo de configuración.";
+const char* MESSAGE_NO_CONFIG_FILE_PARAM = "No se especificó un archivo de configuración. Utilizando el default.";
 const char* MESSAGE_USING_DEFAULT_CONFIG_FILE = "El archivo no existe. Utilizando el default.";
 const char* MESSAGE_EMPTY_CONFIG_FILE = "El archivo está vacío. Utilizando el default.";
 const char* MESSAGE_CANNOT_PARSE_CONFIG_FILE = "El archivo no es un json. Utilizando el default.";

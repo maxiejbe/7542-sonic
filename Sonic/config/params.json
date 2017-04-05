@@ -27,7 +27,7 @@
     ],
     "entidades": [
       {
-        "id": -5,
+        "id": "fasda",
         "tipo": "rectangulo",
         "color": "rojo",
         "dimensiones": {
@@ -42,9 +42,9 @@
         "ruta_imagen": "img/sprite.png"
       },
       {
-        "id": 0,
+        "id": 5,
         "tipo": "cuadrado",
-        "color": "verde",
+        "color": "azul",
         "dimensiones": {
           "ancho": -1,
           "alto": -50
@@ -53,8 +53,7 @@
           "x": 350,
           "y": 550
         },
-        "index_z": 99,
-        "ruta_imagen": "img/lalala.png"
+        "index_z": 99
       },
       {
         "id": 3,

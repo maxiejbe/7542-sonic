@@ -2,7 +2,10 @@
 
 const char* MESSAGE_PARSING_NODE_FIELD = "Buscando campo: ";
 const char* MESSAGE_OK_PARSING_NODE_FIELD = "Valor procesado correctamente: ";
-const char* MESSAGE_ERROR_PARSING_NODE_FIELD = "No se encontró el campo o su valor es incorrecto. Tomando por default en valor: ";
+
+const char* MESSAGE_ERROR_PARSING_NODE_FIELD_EMPTY = "No se encontró el campo ";
+const char* MESSAGE_ERROR_PARSING_NODE_FIELD_INCORRECT = "Es incorrecto el valor del campo ";
+const char* MESSAGE_ERROR_PARSING_NODE_FIELD_DEFAULT = ". Tomando por default el valor: ";
 
 const char* MESSAGE_ERROR_PARSING_INNER_NODE = "No se encontró el nodo ";
 const char* MESSAGE_ERROR_NOT_AN_OBJECT_INNER_NODE = "El nodo encontrado no es un objeto";
@@ -44,16 +47,24 @@ void Serializable::parseCurrentObject(Value* nodeRef)
 void Serializable::parseInt(int * value, int defaultValue, Value * nodeRef, const char* fieldName, function<bool(int)> condition)
 {
 	Value& node = *nodeRef;
-
+	
 	LOG(logINFO) << MESSAGE_PARSING_NODE_FIELD + string(fieldName);
-	if (node.HasMember(fieldName) && node[fieldName].IsInt() && (condition != NULL && condition(node[fieldName].GetInt()) || condition == NULL)) {
-		*value = node[fieldName].GetInt();
-		LOG(logINFO) << MESSAGE_OK_PARSING_NODE_FIELD << to_string(*value);
-	}
-	else {
+	
+	if (!node.HasMember(fieldName)) {
 		*value = defaultValue;
-		LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD << fieldName << "=" << defaultValue;
+		LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD_EMPTY << fieldName << MESSAGE_ERROR_PARSING_NODE_FIELD_DEFAULT << defaultValue;
+		return;
 	}
+
+	string childNodeValue = getNodeContent(&node[fieldName]);
+	if (!node[fieldName].IsInt() || !(condition != NULL && condition(node[fieldName].GetInt()) || condition == NULL)) {
+		*value = defaultValue;
+		LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD_INCORRECT << fieldName << "=" << childNodeValue << MESSAGE_ERROR_PARSING_NODE_FIELD_DEFAULT << defaultValue;
+		return;
+	}
+
+	*value = node[fieldName].GetInt();
+	LOG(logINFO) << MESSAGE_OK_PARSING_NODE_FIELD << to_string(*value);
 }
 
 void Serializable::parseString(string * value, string defaultValue, Value * nodeRef, const char* fieldName)
@@ -61,13 +72,30 @@ void Serializable::parseString(string * value, string defaultValue, Value * node
 	Value& node = *nodeRef;
 
 	LOG(logINFO) << MESSAGE_PARSING_NODE_FIELD + string(fieldName);
-	if (node.HasMember(fieldName) && node[fieldName].IsString()) {
-		*value = node[fieldName].GetString();
-		LOG(logINFO) << MESSAGE_OK_PARSING_NODE_FIELD << *value;
-	}
-	else {
+	
+	if (!node.HasMember(fieldName)) {
 		*value = defaultValue;
-		LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD << fieldName << "=" << defaultValue;
+		LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD_EMPTY << fieldName << MESSAGE_ERROR_PARSING_NODE_FIELD_DEFAULT << defaultValue;
+		return;
 	}
+	
+	string childNodeValue = getNodeContent(&node[fieldName]);
+	if (!node[fieldName].IsString()) {
+		*value = defaultValue;
+		LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD_INCORRECT << fieldName << "=" << childNodeValue << MESSAGE_ERROR_PARSING_NODE_FIELD_DEFAULT << defaultValue;
+		return;
+	}
+	
+	*value = node[fieldName].GetString();
+	LOG(logINFO) << MESSAGE_OK_PARSING_NODE_FIELD << *value;
+}
+
+string Serializable::getNodeContent(Value * nodeRef)
+{
+	Value& node = *nodeRef;
+	StringBuffer sb;
+	Writer<StringBuffer> writer(sb);
+	node.Accept(writer);
+	return sb.GetString();
 }
 
