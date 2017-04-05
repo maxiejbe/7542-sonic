@@ -5,9 +5,9 @@
       "alto": 600
     }
   },
-  "CONFIGURACION": {
+  "configuracion": {
     "vel_scroll": 600,
-    "nivel_log": "medio"
+    "nivel_log": "alto"
   },
   "escenario": {
     "dimensiones": {
@@ -28,7 +28,7 @@
     ],
     "entidades": [
       {
-        "id": 1,
+        "id": -5,
         "tipo": "rectangulo",
         "color": "rojo",
         "dimensiones": {
@@ -43,7 +43,7 @@
         "index_z": 99
       },
       {
-        "id": 2,
+        "id": 0,
         "tipo": "cuadrado",
         "color": "verde",
         "dimensiones": {

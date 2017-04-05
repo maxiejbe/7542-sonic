@@ -13,7 +13,7 @@ const char* ENTITY_ZINDEX_NODE = "index_z";
 const char* MESSAGE_PARSING_ENTITY_NODE = "Inicio de parseo de nodo entidad.";
 const char* MESSAGE_END_PARSING_ENTITY_NODE = "Fin de parseo de nodo entidad.";
 
-const int ENTITY_DEFAULT_ID = 0;
+const int ENTITY_DEFAULT_ID = 1;
 const string ENTITY_DEFAULT_TYPE = ""; // No deberia dibujarse
 const string ENTITY_DEFAULT_COLOR = "";
 const int ENTITY_DEFAULT_WIDTH = 100;
@@ -57,7 +57,7 @@ void Entity::Unserialize(Value * nodeRef)
 
 	LOG(logINFO) << MESSAGE_PARSING_ENTITY_NODE;
 
-	ParseInt(&id, ENTITY_DEFAULT_ID, nodeRef, ENTITY_ID_NODE);
+	ParseInt(&id, ENTITY_DEFAULT_ID, nodeRef, ENTITY_ID_NODE, Validator::IntGreaterThanZero);
 	
 	ParseString(&type, ENTITY_DEFAULT_TYPE, nodeRef, ENTITY_TYPE_NODE);
 	
