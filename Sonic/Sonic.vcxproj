@@ -23,6 +23,7 @@
     <ClCompile Include="DateUtils.cpp" />
     <ClCompile Include="entities\Circle.cpp" />
     <ClCompile Include="entities\common\EntityResolver.cpp" />
+    <ClCompile Include="entities\common\Validator.cpp" />
     <ClCompile Include="entities\Configuration.cpp" />
     <ClCompile Include="entities\Coordinate.cpp" />
     <ClCompile Include="entities\Dimensions.cpp" />
@@ -65,6 +66,7 @@
   <ItemGroup>
     <ClInclude Include="entities\common\Drawable.h" />
     <ClInclude Include="entities\common\EntityResolver.h" />
+    <ClInclude Include="entities\common\Validator.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="entities\Circle.h" />
     <ClInclude Include="entities\Configuration.h" />

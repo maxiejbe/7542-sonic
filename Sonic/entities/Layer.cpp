@@ -18,13 +18,10 @@ Layer::Layer()
 void Layer::Unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;
-	const char* nodeName = GetNodeName();
-
+	
 	LOG(logINFO) << MESSAGE_PARSING_LAYER_NODE;
 
-	std::function<bool(int)> condition = [](int num) { return num > 0; };
-
-	ParseInt(&id, LAYER_DEFAULT_ID, nodeRef, LAYER_ID_NODE, condition);
+	ParseInt(&id, LAYER_DEFAULT_ID, nodeRef, LAYER_ID_NODE, Validator::IntGreaterThanZero);
 
 	ParseInt(&zIndex, LAYER_DEFAULT_ZINDEX, nodeRef, LAYER_ZINDEX_NODE);
 
@@ -35,7 +32,7 @@ void Layer::Unserialize(Value * nodeRef)
 
 char* Layer::GetNodeName()
 {
-	return "0";
+	return nullptr;
 }
 
 void Layer::loadLayer()

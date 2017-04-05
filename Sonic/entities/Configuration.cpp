@@ -29,9 +29,7 @@ void Configuration::Unserialize(Value* nodeRef)
 
 	LOG(logINFO) << MESSAGE_PARSING_CONFIGURATION_NODE;
 
-	std::function<bool(int)> condition = [](int num) { return num > 0; };
-
-	ParseInt(&scrollSpeed, DEFAULT_SCROLL_SPEED, nodeRef, CONFIGURATION_SCROLL_SPEED_NODE, condition);
+	ParseInt(&scrollSpeed, DEFAULT_SCROLL_SPEED, nodeRef, CONFIGURATION_SCROLL_SPEED_NODE, Validator::IntGreaterThanZero);
 	
 	ParseString(&logLevel, DEFAULT_LOG_LEVEL, nodeRef, CONFIGURATION_LOG_LEVEL_NODE);
 	

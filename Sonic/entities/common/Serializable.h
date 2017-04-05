@@ -21,7 +21,7 @@ public:
 
 	void ParseCurrentObject(Value* nodeRef);
 
-	void ParseInt(int * value, int defaultValue, Value * nodeRef, const char* fieldName, function<bool(int)> condition = NULL);
+	void ParseInt(int * value, int defaultValue, Value * nodeRef, const char* fieldName, function<bool(int)> condition = nullptr);
 	void ParseString(string* value, string defaultValue, Value* nodeRef, const char* fieldName);
 
 	virtual void Unserialize(Value* nodeRef) = 0;

@@ -38,13 +38,11 @@ void Dimensions::Unserialize(Value* nodeRef)
 
 	LOG(logINFO) << MESSAGE_PARSING_DIMENSIONS_NODE;
 
-	std::function<bool(int)> condition = [](int num) { return num > 0; };
+	ParseInt(&width, defaultWidth, nodeRef, DIMENSIONS_WIDTH_NODE, Validator::IntGreaterThanZero);
 
-	ParseInt(&width, defaultWidth, nodeRef, DIMENSIONS_WIDTH_NODE, condition);
-
-	ParseInt(&height, defaultHeight, nodeRef, DIMENSIONS_HEIGHT_NODE, condition);
+	ParseInt(&height, defaultHeight, nodeRef, DIMENSIONS_HEIGHT_NODE, Validator::IntGreaterThanZero);
 	
-	ParseInt(&radio, defaultRadio, nodeRef, DIMENSIONS_RADIO_NODE, condition);
+	ParseInt(&radio, defaultRadio, nodeRef, DIMENSIONS_RADIO_NODE, Validator::IntGreaterThanZero);
 
 	LOG(logINFO) << MESSAGE_END_PARSING_DIMENSIONS_NODE;
 }

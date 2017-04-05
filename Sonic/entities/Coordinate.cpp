@@ -26,11 +26,9 @@ void Coordinate::Unserialize(Value * nodeRef)
 	
 	LOG(logINFO) << MESSAGE_PARSING_COORDINATE_NODE;
 
-	std::function<bool(int)> condition = [](int num) { return num >= 0; };
-
-	ParseInt(&x, COORDINATE_DEFAULT_X, nodeRef, COORDINATE_X_NODE, condition);
+	ParseInt(&x, COORDINATE_DEFAULT_X, nodeRef, COORDINATE_X_NODE, Validator::IntGreaterThanOrEqualToZero);
 	
-	ParseInt(&y, COORDINATE_DEFAULT_Y, nodeRef, COORDINATE_Y_NODE, condition);
+	ParseInt(&y, COORDINATE_DEFAULT_Y, nodeRef, COORDINATE_Y_NODE, Validator::IntGreaterThanOrEqualToZero);
 
 	LOG(logINFO) << MESSAGE_END_PARSING_COORDINATE_NODE;
 }
