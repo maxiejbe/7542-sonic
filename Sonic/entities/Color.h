@@ -1,6 +1,8 @@
 #ifndef COLOR_H
 #define COLOR_H
 
+#include <SDL.h>
+#include "../SDLWindow.h"
 #include <map>
 #include "common/Serializable.h"
 
@@ -12,7 +14,7 @@ public:
 	float GetRColor();
 	float GetGColor();
 	float GetBColor();
-
+	Uint32 GetUint32();
 private:
 	string color;
 	std::map<char, float> RGB;

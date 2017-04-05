@@ -21,7 +21,9 @@ void Circle::draw(SDL_Rect camera) {
 			// Draw color
 			int positionX = (coordinate.getX() + dimensions.getRadio()) - camera.x;
 			int positionY = (coordinate.getY() + dimensions.getRadio()) - camera.y;
-			filledCircleRGBA(gRenderer, positionX, positionY, dimensions.getRadio(), 0, 0, 0, 255); // TODO color
+			Uint8 r, g, b, a;
+			SDL_GetRGBA(color.GetUint32(), SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
+			filledCircleRGBA(gRenderer, positionX, positionY, dimensions.getRadio(), r, g, b, a); // TODO color
 			return;
 		}
 
@@ -40,7 +42,7 @@ void Circle::draw(SDL_Rect camera) {
 
 void Circle::initializeCropper() {
 	if (!cropperInitialized) {
-		bool cropperInitialization = imgCropper.crop(dimensions.getRadio(), imagePath);
+		bool cropperInitialization = imgCropper.crop(dimensions.getRadio(), imagePath, color);
 		if (!cropperInitialization) {
 			//throw std::exception();
 			// TODO log

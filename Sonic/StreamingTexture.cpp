@@ -39,6 +39,7 @@ bool StreamingTexture::loadFromFile(std::string path)
 		}
 		else
 		{
+			//SDL_SetColorKey(formattedSurface, SDL_TRUE, SDL_MapRGB(formattedSurface->format, 0, 0xFF, 0xFF));
 			//Create blank streamable texture
 			newTexture = SDL_CreateTexture(Renderer::getInstance().gRenderer, SDL_GetWindowPixelFormat(SDLWindow::getInstance().gWindow), SDL_TEXTUREACCESS_STREAMING, formattedSurface->w, formattedSurface->h);
 			if (newTexture == NULL)
@@ -128,4 +129,8 @@ void * StreamingTexture::getPixels()
 int StreamingTexture::getPitch()
 {
 	return pitch;
+}
+
+void StreamingTexture::setBlendMode(SDL_BlendMode blending) {
+	SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
 }

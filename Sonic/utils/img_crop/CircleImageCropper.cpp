@@ -17,7 +17,8 @@ void CircleImageCropper::free() {
 	SDL_DestroyTexture(targetTexture);
 }
 
-bool CircleImageCropper::crop(int radio, std::string imgPath)
+
+bool CircleImageCropper::crop(int radio, std::string imgPath, Color backgroundColor)
 {
 	StreamingTexture imageTexture;
 	if (!imageTexture.loadFromFile(imgPath)) {
@@ -33,7 +34,6 @@ bool CircleImageCropper::crop(int radio, std::string imgPath)
 		else {
 			int width = radio * 2;
 			int heigth = radio * 2;
-
 			imageTexture.lockTexture();
 			Uint32* imgPixels = (Uint32*)imageTexture.getPixels();
 			int imageWidth = imageTexture.getPitch() / 4;
@@ -48,9 +48,9 @@ bool CircleImageCropper::crop(int radio, std::string imgPath)
 			int imgXPos = 0;
 			int imgYPos = 0;
 			int currentPosition = 0;
+			Uint8 imgR, imgG, imgB, imgA;
 			Uint8 r, g, b, a;
 			int currentY = 0;
-
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < heigth; y++) {
 					if (isInCircle(circleCenterX, circleCenterY, x, y)) {
@@ -58,11 +58,18 @@ bool CircleImageCropper::crop(int radio, std::string imgPath)
 						imgYPos = (imgCircleCenterX - radio) + x;
 						currentPosition = (imgXPos * imageWidth) + imgYPos;
 						if (imgXPos >= 0 && imgYPos >= 0 && imgYPos <= imageWidth && imgXPos <= imageHeight && currentPosition > 0 && currentPosition < pixelCount) {
-							SDL_GetRGBA(imgPixels[currentPosition], SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
-							drawPoint(x, y, r, g, b, a);
+							SDL_GetRGBA(imgPixels[currentPosition], SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &imgR, &imgG, &imgB, &imgA);
+							if (imgR == 0 && imgG ==0 && imgB == 0 && imgA==255) {
+								SDL_GetRGBA(backgroundColor.GetUint32(), SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
+								drawPoint(x, y, r, g, b, a);
+							}
+							else {
+								drawPoint(x, y, imgR, imgG, imgB, imgA);
+							}
 						}
 						else {
-							drawPoint(x, y, 255, 0, 0, 255);
+							SDL_GetRGBA(backgroundColor.GetUint32(), SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
+							drawPoint(x, y, r, g, b, a);
 						}
 					}
 				}
