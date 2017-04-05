@@ -13,6 +13,10 @@ const char* ENTITY_ZINDEX_NODE = "index_z";
 const char* MESSAGE_PARSING_ENTITY_NODE = "Inicio de parseo de nodo entidad.";
 const char* MESSAGE_END_PARSING_ENTITY_NODE = "Fin de parseo de nodo entidad.";
 
+const char* ERROR_ENTITY_NO_TYPE = "No puede dibujarse la entidad ya que no tiene un tipo válido.";
+const char* ERROR_ENTITY_NO_COORDINATE_X = "No puede dibujarse la entidad ya que no tiene coordenada X válida.";
+const char* ERROR_ENTITY_NO_COORDINATE_Y = "No puede dibujarse la entidad ya que no tiene coordenada Y válida.";
+
 const int ENTITY_DEFAULT_ID = 1;
 const string ENTITY_DEFAULT_TYPE = "";
 const string ENTITY_DEFAULT_COLOR = "";
@@ -44,9 +48,21 @@ void Entity::draw(SDL_Rect camera)
 
 bool Entity::validate()
 {
-	if (type.empty()) return false;
-	if (coordinate.getX() < 0) return false;
-	if (coordinate.getY() < 0) return false;
+	if (type.empty()) 
+	{
+		LOG(logERROR) << ERROR_ENTITY_NO_TYPE;
+		return false;
+	}
+
+	if (coordinate.getX() < 0) {
+		LOG(logERROR) << ERROR_ENTITY_NO_COORDINATE_X;
+		return false;
+	}
+	if (coordinate.getY() < 0)
+	{
+		LOG(logERROR) << ERROR_ENTITY_NO_COORDINATE_Y;
+		return false;
+	}
 	return true;
 }
 
