@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="entities\Color.cpp" />
     <ClCompile Include="utils\img_crop\CircleImageCropper.cpp" />
     <ClCompile Include="entities\common\Drawable.cpp" />
     <ClCompile Include="DateUtils.cpp" />
@@ -65,6 +66,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="entities\Color.h" />
     <ClInclude Include="utils\img_crop\CircleImageCropper.h" />
     <ClInclude Include="entities\common\Drawable.h" />
     <ClInclude Include="entities\common\EntityResolver.h" />
