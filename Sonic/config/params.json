@@ -13,7 +13,18 @@
       "ancho": 1920,
       "alto": 600
     },
-    
+    "capas": [
+      {
+        "id": 1,
+        "index_z": 99,
+        "ruta_imagen": "img/rain.png"
+      },
+      {
+        "id": 0,
+        "index_z": 98,
+        "ruta_imagen": "img/level2.jpg"
+      }
+    ],
     "entidades": [
       {
         "id": "fasda",
