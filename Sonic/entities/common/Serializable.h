@@ -6,6 +6,8 @@
 #include <string>
 #include "../../Logger.h"
 #include <functional>
+#include <cstdio>
+#include <rapidjson/prettywriter.h>
 
 using namespace rapidjson;
 using namespace std;
@@ -21,6 +23,8 @@ public:
 
 	void parseInt(int * value, int defaultValue, Value * nodeRef, const char* fieldName, function<bool(int)> condition = nullptr);
 	void parseString(string* value, string defaultValue, Value* nodeRef, const char* fieldName);
+
+	string getNodeContent(Value* nodeRef);
 
 	virtual void unserialize(Value* nodeRef) = 0;
 	virtual char* getNodeName() = 0;
