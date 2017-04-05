@@ -6,7 +6,6 @@
 #include <string>
 #include "../../Logger.h"
 #include <functional>
-//#include "EntityResolver.h"
 
 using namespace rapidjson;
 using namespace std;

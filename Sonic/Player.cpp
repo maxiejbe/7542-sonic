@@ -46,14 +46,14 @@ void Player::move(float timeStep)
 	if (posX < 0)
 		posX = 0;
 	else if (posX > scenarioWidth - width)
-		posX = scenarioWidth - width;
+		posX = (float)(scenarioWidth - width);
 
 	posY += velY * timeStep;
 
 	if (posY < 0)
 		posY = 0;
 	else if (posY > scenarioHeight - height)
-		posY = scenarioHeight - height;
+		posY = (float)(scenarioHeight - height);
 }
 
 void Player::render(int camX, int camY)
