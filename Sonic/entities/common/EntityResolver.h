@@ -9,7 +9,7 @@
 
 enum EntityType { rectangle, circle, square, null };
 
-enum EntityColor {  red, yellow, green };
+enum EntityColor {  red, yellow, green, blue };
 
 class EntityResolver {
 public: 

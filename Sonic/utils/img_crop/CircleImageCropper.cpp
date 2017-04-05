@@ -1,12 +1,10 @@
 #include "CircleImageCropper.h"
 
-
 CircleImageCropper::CircleImageCropper()
 {
 	radio = 0;
 	targetTexture = NULL;
 }
-
 
 CircleImageCropper::~CircleImageCropper()
 {
@@ -14,20 +12,22 @@ CircleImageCropper::~CircleImageCropper()
 }
 
 void CircleImageCropper::free() {
-	SDL_DestroyTexture(targetTexture);
+	if (targetTexture != NULL) {
+		SDL_DestroyTexture(targetTexture);
+		targetTexture = NULL;
+	}
 }
 
-
-bool CircleImageCropper::crop(int radio, std::string imgPath, Uint32 backgroundColor)
+bool CircleImageCropper::crop(int radio, string imgPath, Uint32 backgroundColor)
 {
 	StreamingTexture imageTexture;
 	if (!imageTexture.loadFromFile(imgPath)) {
-		//TODO: LOGUEAR
+		LOG(logERROR) << "No se pudo cargar la textura dentro del circulo.";
 		return false;
 	}
 	else {
 		if (!initializeTargetTexture(radio)) {
-			//TODO: LOGUEAR
+			LOG(logERROR) << "No se pudo inicializar la textura de la imagen del circulo.";
 			imageTexture.free();
 			return false;
 		}
@@ -51,6 +51,7 @@ bool CircleImageCropper::crop(int radio, std::string imgPath, Uint32 backgroundC
 			Uint8 imgR, imgG, imgB, imgA;
 			Uint8 r, g, b, a;
 			int currentY = 0;
+
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < heigth; y++) {
 					if (isInCircle(circleCenterX, circleCenterY, x, y)) {
@@ -59,7 +60,7 @@ bool CircleImageCropper::crop(int radio, std::string imgPath, Uint32 backgroundC
 						currentPosition = (imgXPos * imageWidth) + imgYPos;
 						if (imgXPos >= 0 && imgYPos >= 0 && imgYPos <= imageWidth && imgXPos <= imageHeight && currentPosition > 0 && currentPosition < pixelCount) {
 							SDL_GetRGBA(imgPixels[currentPosition], SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &imgR, &imgG, &imgB, &imgA);
-							if (imgR == 0 && imgG ==0 && imgB == 0 && imgA==255) {
+							if (imgR == 0 && imgG == 0 && imgB == 0 && imgA == 255) {
 								SDL_GetRGBA(backgroundColor, SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
 								drawPoint(x, y, r, g, b, a);
 							}
@@ -92,15 +93,13 @@ bool CircleImageCropper::initializeTargetTexture(int radio) {
 		this->radio = radio;
 		SDL_SetTextureBlendMode(targetTexture, SDL_BLENDMODE_BLEND);
 		SDL_SetRenderTarget(Renderer::getInstance().gRenderer, targetTexture);
-		//set texture transparent
+		// Set texture transparent
 		SDL_SetRenderDrawColor(Renderer::getInstance().gRenderer, 0xFF, 0xFF, 0xFF, 0);
 		SDL_RenderClear(Renderer::getInstance().gRenderer);
 		return true;
 	}
-	else {
-		return false;
-	}
 
+	return false;
 }
 
 bool CircleImageCropper::isInCircle(int cx, int cy, int x, int y) {
@@ -118,5 +117,3 @@ void CircleImageCropper::render(int x, int y) {
 		SDL_RenderCopy(Renderer::getInstance().gRenderer, targetTexture, NULL, &position);
 	}
 }
-
-

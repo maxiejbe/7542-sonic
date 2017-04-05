@@ -9,7 +9,13 @@ Square::Square()
 }
 
 void Square::draw(SDL_Rect camera) {
-	rectangle.draw(camera);
+	SDL_Renderer * gRenderer = Renderer::getInstance().gRenderer;
+	if (gRenderer != NULL) {
+		rectangle.draw(camera);
+	}
+	else {
+		LOG(logERROR) << "No se pudo dibujar el cuadrado. El renderer es nulo.";
+	}
 }
 
 Dimensions Square::getDefaultDimensions()

@@ -74,6 +74,9 @@ Uint32 Entity::getColorRgba()
 		case EntityColor::green:
 			g = full;
 			break;
+		case EntityColor::blue:
+			b = full;
+			break;
 		default:
 			return Uint32();
 			break;

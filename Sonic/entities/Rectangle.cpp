@@ -45,7 +45,7 @@ void Rectangle::draw(SDL_Rect camera) {
 		SDL_RenderCopy(Renderer::getInstance().gRenderer, texture.getTexture(), &croprect, &dstrect);
 	}
 	else {
-		//TODO: log errors
+		LOG(logERROR) << "No se pudo dibujar el rectangulo. El renderer es nulo.";
 	}
 }
 

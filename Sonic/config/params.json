@@ -59,8 +59,8 @@
       {
         "id": 3,
         "tipo": "circulo ",
-        "color": "amarillO",
-        "dimensiones": { "radio": 200 },
+        "color": "azul",
+        "dimensiones": { "radio": 100 },
         "coordenada": {
           "x": 0,
           "y": 0

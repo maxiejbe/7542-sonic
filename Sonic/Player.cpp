@@ -4,8 +4,7 @@
 Player::Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH, int scrollSpeed)
 {
 	if (!texture.loadFromFile(filePath)) {
-		LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << filePath << "'. Se tomará una por defecto.";
-		//TODO: tomar por defecto
+		LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << filePath << "'.";
 	}
 
 	this->posX = x;

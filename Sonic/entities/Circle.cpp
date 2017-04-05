@@ -23,7 +23,7 @@ void Circle::draw(SDL_Rect camera) {
 			int positionY = (coordinate.getY() + dimensions.getRadio()) - camera.y;
 			Uint8 r, g, b, a;
 			SDL_GetRGBA(getColorRgba(), SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
-			filledCircleRGBA(gRenderer, positionX, positionY, dimensions.getRadio(), r, g, b, a); // TODO color
+			filledCircleRGBA(gRenderer, positionX, positionY, dimensions.getRadio(), r, g, b, a);
 			return;
 		}
 
@@ -36,7 +36,7 @@ void Circle::draw(SDL_Rect camera) {
 		drawWithImage(camera);
 	}
 	else {
-		//TODO: log errors
+		LOG(logERROR) << "No se pudo dibujar el circulo. El renderer es nulo.";
 	}
 }
 
@@ -44,15 +44,13 @@ void Circle::initializeCropper() {
 	if (!cropperInitialized) {
 		bool cropperInitialization = imgCropper.crop(dimensions.getRadio(), imagePath, getColorRgba());
 		if (!cropperInitialization) {
-			throw std::exception();
-			// TODO log
+			throw exception();
 		}
 		cropperInitialized = true;
 	}
 }
 
 void Circle::drawWithImage(SDL_Rect camera) {
-	//crop image and render
 	try {
 		if (!cropperInitialized) {
 			initializeCropper();
@@ -60,8 +58,8 @@ void Circle::drawWithImage(SDL_Rect camera) {
 
 		imgCropper.render(coordinate.getX() - camera.x, coordinate.getY() - camera.y);
 	}
-	catch (std::exception e) {
-		LOG(logERROR) << "No se pudo cropear la imagen dentro del circulo";
+	catch (const exception& e) {
+		LOG(logERROR) << "No se pudo cropear la imagen dentro del circulo: " << e.what();
 	}
 
 }

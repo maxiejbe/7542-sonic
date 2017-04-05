@@ -64,6 +64,8 @@ EntityColor EntityResolver::fromColorString(string entityColor)
 		return EntityColor::yellow;
 	else if (entityColor == "verde")
 		return EntityColor::green;
+	else if (entityColor == "azul")
+		return EntityColor::blue;
 	else
 		return EntityColor::red;
 }
@@ -77,6 +79,8 @@ string EntityResolver::toColorString(EntityColor entityColor)
 		return "amarillo";
 	case EntityColor::green:
 		return "verde";
+	case EntityColor::blue:
+		return "azul";
 	default:
 		return "";
 	}

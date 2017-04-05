@@ -12,7 +12,6 @@ using namespace std;
 
 class Serializable {
 public:
-	//TODO: Change name to parse inner object
 	void parseObject(Value* parentNodeRef);
 
 	template <class T>

@@ -21,9 +21,6 @@
 using namespace std;
 using namespace rapidjson;
 
-//TODO Maxi: Extract to base methods ParseObject and ParseCollection with generics
-//Unserealization would be responsibility of each object
-
 class Parser {
 public:
 	Parser(string path);
