@@ -76,15 +76,19 @@ void Serializable::parseString(string * value, string defaultValue, Value * node
 	LOG(logINFO) << MESSAGE_PARSING_NODE_FIELD + string(fieldName);
 
 	if (nodeRef == nullptr || !node.HasMember(fieldName)) {
-		*value = defaultValue;
-		LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD_EMPTY << fieldName << MESSAGE_ERROR_PARSING_NODE_FIELD_DEFAULT << defaultValue;
+		if (*value != defaultValue) {
+			*value = defaultValue;
+			LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD_EMPTY << fieldName << MESSAGE_ERROR_PARSING_NODE_FIELD_DEFAULT << defaultValue;
+		}
 		return;
 	}
 
 	string childNodeValue = getNodeContent(&node[fieldName]);
 	if (!node[fieldName].IsString()) {
-		*value = defaultValue;
-		LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD_INCORRECT << fieldName << "=" << childNodeValue << MESSAGE_ERROR_PARSING_NODE_FIELD_DEFAULT << defaultValue;
+		if (*value != defaultValue) {
+			*value = defaultValue;
+			LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD_INCORRECT << fieldName << "=" << childNodeValue << MESSAGE_ERROR_PARSING_NODE_FIELD_DEFAULT << defaultValue;
+		}
 		return;
 	}
 
