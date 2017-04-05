@@ -48,7 +48,6 @@ bool CircleImageCropper::crop(int radio, string imgPath, Uint32 backgroundColor)
 			int imgXPos = 0;
 			int imgYPos = 0;
 			int currentPosition = 0;
-			Uint8 imgR, imgG, imgB, imgA;
 			Uint8 r, g, b, a;
 			int currentY = 0;
 
@@ -59,14 +58,8 @@ bool CircleImageCropper::crop(int radio, string imgPath, Uint32 backgroundColor)
 						imgYPos = (imgCircleCenterX - radio) + x;
 						currentPosition = (imgXPos * imageWidth) + imgYPos;
 						if (imgXPos >= 0 && imgYPos >= 0 && imgYPos <= imageWidth && imgXPos <= imageHeight && currentPosition > 0 && currentPosition < pixelCount) {
-							SDL_GetRGBA(imgPixels[currentPosition], SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &imgR, &imgG, &imgB, &imgA);
-							if (imgR == 0 && imgG == 0 && imgB == 0 && imgA == 255) {
-								SDL_GetRGBA(backgroundColor, SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
-								drawPoint(x, y, r, g, b, a);
-							}
-							else {
-								drawPoint(x, y, imgR, imgG, imgB, imgA);
-							}
+							SDL_GetRGBA(imgPixels[currentPosition], SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
+							drawPoint(x, y, r, g, b, a);
 						}
 						else {
 							SDL_GetRGBA(backgroundColor, SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, &r, &g, &b, &a);
