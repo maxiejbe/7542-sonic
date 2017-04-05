@@ -56,7 +56,7 @@ LogLevel Logger::FromString(string level) {
 		return logMEDIUM;
 	if (level == "ALTO")
 		return logHIGH;
-	
+
 	Logger().Get(logWARNING) << "El nivel de log '" << level << "' no existe. Se tomará el nivel MEDIO por defecto.";
 	return logMEDIUM;
 }
@@ -76,7 +76,7 @@ string Logger::ToString() {
 
 LogLevel& Logger::LoggingLevel()
 {
-	static LogLevel loggingLevel = logHIGH;
+	static LogLevel loggingLevel = logMEDIUM;
 	return loggingLevel;
 }
 

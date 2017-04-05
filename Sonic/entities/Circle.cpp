@@ -25,11 +25,12 @@ void Circle::draw(SDL_Rect camera) {
 			return;
 		}
 
-		// Draw image
 		// Try to load the image
 		if (!texture.loadFromFile(imagePath)) {
 			this->imagePath = "img/image-not-found.png";
 		}
+
+		// Draw image
 		drawWithImage(camera);
 	}
 	else {

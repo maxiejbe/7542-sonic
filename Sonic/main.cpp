@@ -27,9 +27,14 @@ void close()
 int main(int argc, char* args[])
 {
 	Logger::Init();
+	Logger::LoggingLevel() = logMEDIUM; //Logger::FromString(config.GetLogLevel());
 
 	//TODO: Take params from argv
-	Parser* parser = new Parser("config/params.json");
+	string configPath;
+	if (argc > 1) {
+		configPath = args[1];
+	}
+	Parser* parser = new Parser(configPath);
 	Window window;
 	parser->Parse(&window);
 
@@ -38,8 +43,6 @@ int main(int argc, char* args[])
 
 	Scenario scenario;
 	parser->Parse(&scenario);
-
-	Logger::LoggingLevel() = Logger::FromString(config.GetLogLevel());
 
 	int scenarioWidth = scenario.GetWidth();
 	int scenarioHeight = scenario.GetHeight();
