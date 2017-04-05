@@ -1,5 +1,9 @@
 #include "Rectangle.h"
 
+const int RECTANGLE_DEFAULT_WIDTH = 100;
+const int RECTANGLE_DEFAULT_HEIGHT = 100;
+const int RECTANGLE_DEFAULT_RADIO = 0;
+
 void Rectangle::draw(SDL_Rect camera) {
 	SDL_Renderer * gRenderer = Renderer::getInstance().gRenderer;
 	if (gRenderer != NULL) {
@@ -33,5 +37,10 @@ void Rectangle::draw(SDL_Rect camera) {
 	else {
 		//TODO: log errors
 	}
+}
+
+Dimensions Rectangle::GetDefaultDimensions()
+{
+	return Dimensions(RECTANGLE_DEFAULT_WIDTH, RECTANGLE_DEFAULT_HEIGHT, RECTANGLE_DEFAULT_RADIO);
 }
 

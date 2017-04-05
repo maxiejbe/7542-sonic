@@ -16,7 +16,9 @@ public:
 	Entity();
 	Entity(Entity* entity);
 	void draw(SDL_Rect camera) override;
-
+	
+	virtual Dimensions GetDefaultDimensions();
+	
 	string GetType();
 	bool operator< (const Entity &other) const {
 		return zIndex < other.zIndex;

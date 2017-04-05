@@ -18,3 +18,19 @@ Entity* EntityResolver::Resolve(Entity* origin)
 	}
 	return destination;
 }
+
+Dimensions EntityResolver::GetDefaultDimensions(Entity * entity)
+{
+	Dimensions dimensions;
+	if (entity->GetType() == ENTITY_TYPE_RECTANGLE) {
+		dimensions = Rectangle().GetDefaultDimensions();
+	}
+	else if (entity->GetType() == ENTITY_TYPE_CIRCLE) {
+		dimensions = Circle().GetDefaultDimensions();
+	}
+	else if (entity->GetType() == ENTITY_TYPE_SQUARE) {
+		dimensions = Square().GetDefaultDimensions();
+	}
+	return dimensions;
+}
+

@@ -10,6 +10,13 @@ const char* MESSAGE_END_PARSING_DIMENSIONS_NODE = "Fin de parseo de nodo dimensi
 
 Dimensions::Dimensions() {}
 
+Dimensions::Dimensions(int width, int height, int radio)
+{
+	this->width = width;
+	this->height = height;
+	this->radio = radio;
+}
+
 void Dimensions::SetDefaults(int width, int height, int radio)
 {
 	this->defaultWidth = width;
