@@ -47,19 +47,15 @@
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="img\background.png" />
-    <Image Include="img\bg.png" />
-    <Image Include="img\dot.bmp" />
-    <Image Include="img\down.bmp" />
-    <Image Include="img\foo.png" />
-    <Image Include="img\left.bmp" />
+    <Image Include="img\image-not-found.png" />
+    <Image Include="img\layer-not-found.png" />
     <Image Include="img\level.png" />
-    <Image Include="img\level1.png" />
-    <Image Include="img\loaded.png" />
-    <Image Include="img\press.bmp" />
-    <Image Include="img\right.bmp" />
+    <Image Include="img\level2.jpg" />
+    <Image Include="img\rain.png" />
+    <Image Include="img\rain_orig.png" />
+    <Image Include="img\sonic.png" />
+    <Image Include="img\sonic_orig.png" />
     <Image Include="img\sprite.png" />
-    <Image Include="img\up.bmp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\params.json" />

@@ -37,6 +37,7 @@ bool Parser::readConfigFileContent(string path)
 	fileContent.clear();
 	fileContent = tmp.str();
 	transform(fileContent.begin(), fileContent.end(), fileContent.begin(), ::tolower);
+	fileContent.erase(remove(fileContent.begin(), fileContent.end(), ' '), fileContent.end());
 	tmp.clear();
 
 	file.close();
