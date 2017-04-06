@@ -28,7 +28,7 @@ int main(int argc, char* args[])
 {
 
 	Logger::init();
-	Logger::loggingLevel() = logMEDIUM;
+	Logger::loggingLevel() = logHIGH;
 
 	string configPath;
 	if (argc > 2) {
