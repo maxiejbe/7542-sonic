@@ -6,7 +6,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <iostream>
-//#include <Ws2tcpip.h>
+#include <Ws2tcpip.h>
 
 //Take a look at: http://stackoverflow.com/questions/16948064/unresolved-external-symbol-lnk2019
 #pragma comment(lib, "Ws2_32.lib")
@@ -16,8 +16,6 @@ using namespace std;
 #define bzero(b,len) (memset((b), '\0', (len)), (void) 0)  
 
 DWORD WINAPI SocketHandler(void*);
-
-static int connFd;
 
 int main(int argc, char* argv[])
 {
@@ -67,17 +65,21 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
+	int* csock;
 	//Now lets to the server stuff
 	int addressSize = sizeof(clientAddress);
 	
 	while (true) {
 		printf("waiting for a connection\n");
 		
-		connFd = accept(listenFd, (struct sockaddr *)&clientAddress, &addressSize);
-		if (connFd != INVALID_SOCKET) {
-			cout << "Recieved connection" << endl;
-			//printf("Received connection from %s", clientAddress.sin_addr));
-			//CreateThread(0, 0, &SocketHandler, (void*)csock, 0, 0);
+		csock = (int*)malloc(sizeof(int));
+		*csock = accept(listenFd, (struct sockaddr *)&clientAddress, &addressSize);
+		if (*csock != INVALID_SOCKET) {
+			char stringIp[sizeof(clientAddress)];
+			inet_ntop(AF_INET, &(clientAddress.sin_addr), stringIp, INET_ADDRSTRLEN);
+			cout << "Recieved connection from " << stringIp << endl;
+
+			CreateThread(0, 0, &SocketHandler, (void*)csock, 0, 0);
 		}
 		else {
 			fprintf(stderr, "Error accepting %d\n", WSAGetLastError());	
@@ -85,9 +87,9 @@ int main(int argc, char* argv[])
 	}
 }
 
-/*DWORD WINAPI SocketHandler(void* lp){
+DWORD WINAPI SocketHandler(void* lp){
 	int *csock = (int*)lp;
-
+	
 	char buffer[1024];
 	int buffer_len = 1024;
 	int bytecount;
@@ -95,20 +97,21 @@ int main(int argc, char* argv[])
 	memset(buffer, 0, buffer_len);
 	if((bytecount = recv(*csock, buffer, buffer_len, 0))==SOCKET_ERROR){
 		fprintf(stderr, "Error receiving data %d\n", WSAGetLastError());
-		goto FINISH;
+		free(csock);
+		return 0;
 	}
 	printf("Received bytes %d\nReceived string \"%s\"\n", bytecount, buffer);
-	strcat(buffer, " SERVER ECHO");
+	strcat_s(buffer, " SERVER ECHO");
 
 	if((bytecount = send(*csock, buffer, strlen(buffer), 0))==SOCKET_ERROR){
 		fprintf(stderr, "Error sending data %d\n", WSAGetLastError());
-		goto FINISH;
+		free(csock);
+		return 0;
 	}
+
+	free(csock);
 
 	printf("Sent bytes %d\n", bytecount);
 
-	FINISH:
-	free(csock);
-	
 	return 0;
-}*/
+}
