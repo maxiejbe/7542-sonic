@@ -1,10 +1,5 @@
 #include <winsock2.h>
 #include <windows.h>
-#include <fcntl.h>
-#include <string.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <stdio.h>
 #include <iostream>
 #include <Ws2tcpip.h>
 
@@ -65,53 +60,50 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
-	int* csock;
-	//Now lets to the server stuff
 	int addressSize = sizeof(clientAddress);
 	
 	while (true) {
 		printf("waiting for a connection\n");
 		
-		csock = (int*)malloc(sizeof(int));
-		*csock = accept(listenFd, (struct sockaddr *)&clientAddress, &addressSize);
-		if (*csock != INVALID_SOCKET) {
-			char stringIp[sizeof(clientAddress)];
-			inet_ntop(AF_INET, &(clientAddress.sin_addr), stringIp, INET_ADDRSTRLEN);
-			cout << "Recieved connection from " << stringIp << endl;
+		SOCKET sd = accept(listenFd, (struct sockaddr *)&clientAddress, &addressSize);
+		if (sd == INVALID_SOCKET) {
+			fprintf(stderr, "Error accepting %d\n", WSAGetLastError());
+			return 0;
+		}
 
-			CreateThread(0, 0, &SocketHandler, (void*)csock, 0, 0);
-		}
-		else {
-			fprintf(stderr, "Error accepting %d\n", WSAGetLastError());	
-		}
+		char stringIp[sizeof(clientAddress)];
+		inet_ntop(AF_INET, &(clientAddress.sin_addr), stringIp, INET_ADDRSTRLEN);
+		cout << "Recieved connection from " << stringIp << endl;
+
+		DWORD threadId;
+		CreateThread(0, 0, &SocketHandler, (void*)sd, 0, &threadId);
 	}
 }
 
-DWORD WINAPI SocketHandler(void* lp){
-	int *csock = (int*)lp;
-	
+DWORD WINAPI SocketHandler(void* cs){
+	SOCKET clientSocket = (SOCKET) cs;
+
 	char buffer[1024];
 	int buffer_len = 1024;
 	int bytecount;
 
-	memset(buffer, 0, buffer_len);
-	if((bytecount = recv(*csock, buffer, buffer_len, 0))==SOCKET_ERROR){
-		fprintf(stderr, "Error receiving data %d\n", WSAGetLastError());
-		free(csock);
-		return 0;
-	}
-	printf("Received bytes %d\nReceived string \"%s\"\n", bytecount, buffer);
-	strcat_s(buffer, " SERVER ECHO");
+	do {
+		memset(buffer, 0, buffer_len);
+		if ((bytecount = recv(clientSocket, buffer, buffer_len, 0)) == SOCKET_ERROR) {
+			fprintf(stderr, "Error receiving data %d\n", WSAGetLastError());
+			return 0;
+		}
+		printf("Received bytes %d\nReceived string \"%s\"\n", bytecount, buffer);
 
-	if((bytecount = send(*csock, buffer, strlen(buffer), 0))==SOCKET_ERROR){
-		fprintf(stderr, "Error sending data %d\n", WSAGetLastError());
-		free(csock);
-		return 0;
-	}
+		if ((bytecount = send(clientSocket, buffer, strlen(buffer), 0)) == SOCKET_ERROR) {
+			fprintf(stderr, "Error sending data %d\n", WSAGetLastError());
+			return 0;
+		}
 
-	free(csock);
+		printf("Sent bytes %d\n", bytecount);
 
-	printf("Sent bytes %d\n", bytecount);
+	} while (bytecount > 0);
 
+	cout << "Connection closed." << endl;
 	return 0;
 }
