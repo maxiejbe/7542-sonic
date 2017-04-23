@@ -2,16 +2,20 @@
 #define CLIENT_H
 
 #include <winsock2.h>
-#include <windows.h>
 #include <iostream>
-#include <Ws2tcpip.h>
 
+using namespace std;
+
+class Server;
 class Client {
 public:
-	Client();
+	Client(Server*, SOCKET, sockaddr_in);
 
 private:
 	SOCKET socket;
+	Server* server;
+	struct sockaddr_in address;
+	DWORD threadId;
 };
 
 #endif

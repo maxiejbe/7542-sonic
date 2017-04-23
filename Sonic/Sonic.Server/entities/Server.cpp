@@ -1,12 +1,12 @@
 #include "Server.h"
 
-DWORD WINAPI socketHandler(void*);
-
 Server::Server(int portNumber, int maxAllowedClients)
 {
 	this->portNumber = portNumber;
 	this->maxAllowedClients = maxAllowedClients;
 	this->isValid = false;
+
+	clients.clear();
 
 	if (!initializeWindowsSupport()) {
 		return;
@@ -97,48 +97,18 @@ bool Server::waitForClientConnections()
 	while (true) {
 		printf("waiting for a connection\n");
 
-		SOCKET sd = accept(this->_socket, (struct sockaddr *)&clientAddress, &addressSize);
-		if (sd == INVALID_SOCKET) {
+		SOCKET clientSocket = accept(this->_socket, (struct sockaddr *)&clientAddress, &addressSize);
+		if (clientSocket == INVALID_SOCKET) {
 			fprintf(stderr, "Error accepting %d\n", WSAGetLastError());
 			return 0;
 		}
 
-		char stringIp[sizeof(clientAddress)];
-		inet_ntop(AF_INET, &(clientAddress.sin_addr), stringIp, INET_ADDRSTRLEN);
-		cout << "Recieved connection from " << stringIp << endl;
+		Client client(this, clientSocket, clientAddress);
 
-		DWORD threadId;
-		CreateThread(0, 0, &socketHandler, (void*)sd, 0, &threadId);
+		//char stringIp[sizeof(clientAddress)];
+		//inet_ntop(AF_INET, &(clientAddress.sin_addr), stringIp, INET_ADDRSTRLEN);
+		//cout << "Recieved connection from " << stringIp << endl;
 	}
-}
-
-//TODO: Move to each client
-DWORD WINAPI socketHandler(void* cs) {
-	SOCKET clientSocket = (SOCKET)cs;
-
-	char buffer[1024];
-	int buffer_len = 1024;
-	int bytecount;
-
-	do {
-		memset(buffer, 0, buffer_len);
-		if ((bytecount = recv(clientSocket, buffer, buffer_len, 0)) == SOCKET_ERROR) {
-			fprintf(stderr, "Error receiving data %d\n", WSAGetLastError());
-			return 0;
-		}
-		printf("Received bytes %d\nReceived string \"%s\"\n", bytecount, buffer);
-
-		if ((bytecount = send(clientSocket, buffer, strlen(buffer), 0)) == SOCKET_ERROR) {
-			fprintf(stderr, "Error sending data %d\n", WSAGetLastError());
-			return 0;
-		}
-
-		printf("Sent bytes %d\n", bytecount);
-
-	} while (bytecount > 0);
-
-	cout << "Connection closed." << endl;
-	return 0;
 }
 
 bool Server::validate()

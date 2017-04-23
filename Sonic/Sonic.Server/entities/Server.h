@@ -5,13 +5,16 @@
 #include <windows.h>
 #include <iostream>
 #include <Ws2tcpip.h>
+#include <vector>
+
+#include "Client.h"
 
 //Take a look at: http://stackoverflow.com/questions/16948064/unresolved-external-symbol-lnk2019
 #pragma comment(lib, "Ws2_32.lib")
 
-using namespace std;
-
 #define bzero(b,len) (memset((b), '\0', (len)), (void) 0)  
+
+using namespace std;
 
 class Server {
 
@@ -34,7 +37,11 @@ private:
 	SOCKET _socket;
 	struct sockaddr_in address;
 	int portNumber;
+
 	int maxAllowedClients;
+	int connectedClients;
+
+	vector<Client> clients;
 };
 
 #endif
