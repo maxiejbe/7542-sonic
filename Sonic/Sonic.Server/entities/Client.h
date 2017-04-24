@@ -3,15 +3,33 @@
 
 #include <winsock2.h>
 #include <iostream>
+#include "Server.h"
 
 using namespace std;
 
 class Server;
+
 class Client {
 public:
-	Client(Server*, SOCKET, sockaddr_in);
+	Client(Server*, int);
+	int getClientNumber();
 
+	bool acceptSocket();
+	void closeSocket();
+	
+	SOCKET getSocket();
 private:
+	bool parseRecievedMessage();
+	void handleRecievedMessage(char* recievedMessage);
+
+	static DWORD WINAPI runSocketHandler(void* args)
+	{
+		Client* pclient = (Client*) args;
+		return pclient->socketHandler();
+	}
+	DWORD socketHandler();
+
+	int clientNumber;
 	SOCKET socket;
 	Server* server;
 	struct sockaddr_in address;

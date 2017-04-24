@@ -1,40 +1,72 @@
 #include "Client.h"
 
-DWORD WINAPI socketHandler(void*);
-
-Client::Client(Server* server, SOCKET clientSocket, sockaddr_in clientAddress)
+Client::Client(Server* server, int clientNumber)
 {
+	this->clientNumber = clientNumber;
 	this->server = server;
-	this->socket = clientSocket;
-	this->address = clientAddress;
-
-	CreateThread(0, 0, &socketHandler, (void*)this->socket, 0, &this->threadId);
 }
 
+int Client::getClientNumber()
+{
+	return this->clientNumber;
+}
 
-DWORD WINAPI socketHandler(void* cs) {
-	SOCKET clientSocket = (SOCKET)cs;
+bool Client::acceptSocket()
+{
+	int addressSize = sizeof(address);
+	this->socket = accept(this->server->getSocket(), (struct sockaddr *)&address, &addressSize);
+	if (this->socket == INVALID_SOCKET) {
+		//TODO: Log in file
+		fprintf(stderr, "Error accepting %d\n", WSAGetLastError());
+		return false;
+	}
 
-	char buffer[1024];
-	int buffer_len = 1024;
+	CreateThread(0, 0, runSocketHandler, (void*)this, 0, &this->threadId);
+	return true;
+}
+
+void Client::closeSocket()
+{
+	closesocket(this->socket);
+}
+
+SOCKET Client::getSocket()
+{
+	return this->socket;
+}
+
+bool Client::parseRecievedMessage()
+{
+	return false;
+}
+
+void Client::handleRecievedMessage(char* recievedMessage)
+{
+	//TODO: Handle message and do certain action.
+	
+	//Then, send broadcast message
+	this->server->sendBroadcast(recievedMessage);
+}
+
+DWORD Client::socketHandler() {
+	char recievedMessage[1024];
+	int recievedMessageLen = 1024;
 	int bytecount;
 
 	do {
-		memset(buffer, 0, buffer_len);
-		if ((bytecount = recv(clientSocket, buffer, buffer_len, 0)) == SOCKET_ERROR) {
+		memset(recievedMessage, 0, recievedMessageLen);
+		if ((bytecount = recv(this->socket, recievedMessage, recievedMessageLen, 0)) == SOCKET_ERROR) {
+			//TODO: Log in file
 			fprintf(stderr, "Error receiving data %d\n", WSAGetLastError());
 			return 0;
 		}
-		printf("Received bytes %d\nReceived string \"%s\"\n", bytecount, buffer);
-
-		if ((bytecount = send(clientSocket, buffer, strlen(buffer), 0)) == SOCKET_ERROR) {
-			fprintf(stderr, "Error sending data %d\n", WSAGetLastError());
-			return 0;
-		}
-
-		printf("Sent bytes %d\n", bytecount);
+		printf("Received bytes %d\nReceived string \"%s\"\n", bytecount, recievedMessage);
+		
+		this->handleRecievedMessage(recievedMessage);
 
 	} while (bytecount > 0);
+
+	this->server->removeClientConnection(this->clientNumber);
 
 	cout << "Connection closed." << endl;
 	return 0;

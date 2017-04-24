@@ -16,12 +16,18 @@
 
 using namespace std;
 
+class Client;
 class Server {
 
 public:
+	~Server();
 	Server(int portNumber, int maxAllowedClients);
 	bool validate();
-	bool waitForClientConnections();
+	void waitForClientConnections();
+	void sendBroadcast(char* message);
+	void removeClientConnection(int clientNumber);
+
+	SOCKET getSocket();
 
 private:
 	/*
@@ -33,6 +39,10 @@ private:
 	bool bindSocket();
 	bool startListening();
 	
+	int getAvailableIndex();
+
+	void acceptClientConnection();
+	
 	bool isValid;
 	SOCKET _socket;
 	struct sockaddr_in address;
@@ -41,7 +51,7 @@ private:
 	int maxAllowedClients;
 	int connectedClients;
 
-	vector<Client> clients;
+	vector<Client*> clients;
 };
 
 #endif

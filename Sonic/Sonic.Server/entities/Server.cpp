@@ -1,12 +1,28 @@
 #include "Server.h"
 
+Server::~Server()
+{
+	for (vector<Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	{
+		if (*it != NULL) {
+			closesocket((*it)->getSocket());
+			delete *it;
+		}
+	}
+}
+
 Server::Server(int portNumber, int maxAllowedClients)
 {
 	this->portNumber = portNumber;
 	this->maxAllowedClients = maxAllowedClients;
 	this->isValid = false;
 
+	this->connectedClients = 0;
 	clients.clear();
+
+	for (int i = 0; i < this->maxAllowedClients; i++) {
+		clients.insert(clients.begin() + i, NULL);
+	}
 
 	if (!initializeWindowsSupport()) {
 		return;
@@ -89,25 +105,75 @@ bool Server::startListening()
 	return true;
 }
 
-bool Server::waitForClientConnections()
+int Server::getAvailableIndex()
 {
-	struct sockaddr_in clientAddress;
-	int addressSize = sizeof(clientAddress);
+	for (size_t i = 0; i < clients.size(); i++)
+	{
+		if (clients[i] == NULL) return i;
+	}
+	return 0;
+}
 
-	while (true) {
+void Server::acceptClientConnection()
+{
+	int index = getAvailableIndex();
+	int clientNumber = index + 1;
+
+	Client* client = new Client(this, clientNumber);
+	if (!client->acceptSocket()) {
+		delete client;
+		return;
+	}
+
+	clients[index] = client;
+	this->connectedClients++;
+}
+
+void Server::removeClientConnection(int clientNumber)
+{
+	int index = clientNumber - 1;
+	
+	Client* clientPointer = clients[index];
+	clientPointer->closeSocket();
+	delete clientPointer;
+
+	clients[index] = NULL;
+
+	this->connectedClients--;
+}
+
+SOCKET Server::getSocket()
+{
+	return this->_socket;
+}
+
+void Server::waitForClientConnections()
+{
+	bool keepWaiting = true;
+
+	while (this->connectedClients < this->maxAllowedClients) {
 		printf("waiting for a connection\n");
 
-		SOCKET clientSocket = accept(this->_socket, (struct sockaddr *)&clientAddress, &addressSize);
-		if (clientSocket == INVALID_SOCKET) {
-			fprintf(stderr, "Error accepting %d\n", WSAGetLastError());
-			return 0;
-		}
-
-		Client client(this, clientSocket, clientAddress);
-
+		this->acceptClientConnection();
+		
 		//char stringIp[sizeof(clientAddress)];
 		//inet_ntop(AF_INET, &(clientAddress.sin_addr), stringIp, INET_ADDRSTRLEN);
 		//cout << "Recieved connection from " << stringIp << endl;
+	}
+}
+
+void Server::sendBroadcast(char* message)
+{
+	for (vector<Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	{
+		if (*it == NULL) continue;
+
+		int bytecount;
+		if ((bytecount = send((*it)->getSocket(), message, strlen(message), 0)) == SOCKET_ERROR) {
+			fprintf(stderr, "Error sending data %d\n", WSAGetLastError());
+			continue;
+		}
+		printf("Sent bytes %d\n", bytecount);
 	}
 }
 
