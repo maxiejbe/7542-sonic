@@ -7,10 +7,13 @@ int main(int argc, char* args[])
 	Logger::init();
 	Logger::loggingLevel() = logHIGH;
 
-	string configPath;
+	string configParamName = "--config";
+	string configPath = "";
+
+	//Take config file from param
 	if (argc > 2) {
 		string arg = args[1];
-		if (arg == "--config") {
+		if (arg == configParamName) {
 			configPath = args[2];
 		}
 	}
