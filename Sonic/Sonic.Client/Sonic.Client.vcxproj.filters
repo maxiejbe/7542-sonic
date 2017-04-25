@@ -75,9 +75,6 @@
     <ClCompile Include="utils\img_crop\CircleImageCropper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="entities\common\Validator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entities\Configuration.h">
@@ -140,9 +137,6 @@
     <ClInclude Include="utils\img_crop\CircleImageCropper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="entities\common\Validator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\level.png">
@@ -174,8 +168,8 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="config\params.json" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sonic.rc">

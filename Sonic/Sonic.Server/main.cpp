@@ -1,13 +1,26 @@
 #include "entities/Server.h"
+#include "Parser.h"
+#include "entities\common\ServerConfiguration.h"
 
-int main(int argc, char* argv[])
+int main(int argc, char* args[])
 {
-	//TODO: Read from file
-	int portNumber = 65535;
-	int maxAllowedClients = 2;
+	Logger::init();
+	Logger::loggingLevel() = logHIGH;
+
+	string configPath;
+	if (argc > 2) {
+		string arg = args[1];
+		if (arg == "--config") {
+			configPath = args[2];
+		}
+	}
+
+	Parser* parser = new Parser(configPath);
+	ServerConfiguration config;
+	parser->parse(&config);
 
 	cout << "Trying to start server" << endl;
-	Server server(portNumber, maxAllowedClients);
+	Server server(config.getPortNumber(), config.getMaxAllowedClients());
 	if (!server.validate()) {
 		//TODO: Move to log
 		cout << "Could not start server" << endl;

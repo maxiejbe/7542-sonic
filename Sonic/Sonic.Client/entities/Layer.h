@@ -3,7 +3,7 @@
 
 #include <string>
 #include "entities/Serializable.h"
-#include "common/Validator.h"
+#include "entities/Validator.h"
 #include "Texture.h"
 
 using namespace std;
