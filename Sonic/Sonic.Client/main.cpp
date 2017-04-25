@@ -5,13 +5,11 @@
 #include <cmath>
 #include "Timer.h"
 #include "Player.h"
-#include "Logger.h"
 #include "Parser.h"
 #include "Entities/Window.h"
 #include "Renderer.h"
-#include "entities/Rectangle.h"
-#include "entities/Circle.h"
-#include "entities/Square.h"
+#include "entities/Configuration.h"
+#include "entities/Scenario.h"
 
 void close();
 

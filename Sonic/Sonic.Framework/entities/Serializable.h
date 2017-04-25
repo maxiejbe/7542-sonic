@@ -4,7 +4,7 @@
 #include "rapidjson/document.h"
 #include <vector>
 #include <string>
-#include "../../Logger.h"
+#include "../Logger.h"
 #include <functional>
 #include <cstdio>
 #include <rapidjson/prettywriter.h>

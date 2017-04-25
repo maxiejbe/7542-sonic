@@ -2,7 +2,7 @@
 #define LAYER_H
 
 #include <string>
-#include "common/Serializable.h"
+#include "entities/Serializable.h"
 #include "common/Validator.h"
 #include "Texture.h"
 

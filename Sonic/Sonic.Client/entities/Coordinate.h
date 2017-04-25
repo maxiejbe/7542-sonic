@@ -1,7 +1,7 @@
 #ifndef COORDINATE_H
 #define COORDINATE_H
 
-#include "common/Serializable.h"
+#include "entities/Serializable.h"
 #include "common/Validator.h"
 
 class Coordinate : public Serializable {

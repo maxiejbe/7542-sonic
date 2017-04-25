@@ -1,7 +1,7 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
-#include "common/Serializable.h"
+#include "entities/Serializable.h"
 #include "common/Validator.h"
 
 class Configuration : public Serializable {

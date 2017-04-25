@@ -1,7 +1,7 @@
 #ifndef DIMENSIONS_H
 #define DIMENSIONS_H
 
-#include "common/Serializable.h"
+#include "entities/Serializable.h"
 #include "common/Validator.h"
 #include <Logger.h>
 

@@ -89,6 +89,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Projects\facu\taller\Sonic\Sonic.Framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,6 +154,11 @@
   <ItemGroup>
     <ClInclude Include="entities\Client.h" />
     <ClInclude Include="entities\Server.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sonic.Framework\Sonic.Framework.vcxproj">
+      <Project>{e64ffe73-794b-4014-b67f-458b633431d6}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

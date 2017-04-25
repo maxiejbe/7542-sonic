@@ -20,10 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="entities\common\Validator.cpp" />
-    <ClCompile Include="utils\StringUtils.cpp" />
     <ClCompile Include="utils\img_crop\CircleImageCropper.cpp" />
     <ClCompile Include="entities\common\Drawable.cpp" />
-    <ClCompile Include="utils\DateUtils.cpp" />
     <ClCompile Include="entities\Circle.cpp" />
     <ClCompile Include="entities\common\EntityResolver.cpp" />
     <ClCompile Include="entities\Configuration.cpp" />
@@ -35,14 +33,11 @@
     <ClCompile Include="entities\Scenario.cpp" />
     <ClCompile Include="entities\Square.cpp" />
     <ClCompile Include="entities\Window.cpp" />
-    <ClCompile Include="entities\common\Serializable.cpp" />
-    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SDLWindow.cpp" />
     <ClCompile Include="StreamingTexture.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
@@ -63,7 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entities\common\Validator.h" />
-    <ClInclude Include="utils\StringUtils.h" />
     <ClInclude Include="utils\img_crop\CircleImageCropper.h" />
     <ClInclude Include="entities\common\Drawable.h" />
     <ClInclude Include="entities\common\EntityResolver.h" />
@@ -77,20 +71,21 @@
     <ClInclude Include="entities\Rectangle.h" />
     <ClInclude Include="entities\Scenario.h" />
     <ClInclude Include="entities\Square.h" />
-    <ClInclude Include="entities\common\Serializable.h" />
     <ClInclude Include="StreamingTexture.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="Parser.h" />
     <ClInclude Include="entities\Window.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="utils\DateUtils.h" />
-    <ClInclude Include="Logger.h" />
     <ClInclude Include="SDLWindow.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sonic.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sonic.Framework\Sonic.Framework.vcxproj">
+      <Project>{e64ffe73-794b-4014-b67f-458b633431d6}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A3F8E1A0-5C50-4336-A742-6CAFA67F93A0}</ProjectGuid>
@@ -170,7 +165,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)libs\SDL2_gfx-1.0.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Projects\facu\taller\Sonic\Sonic.Framework;$(ProjectDir)libs\SDL2_gfx-1.0.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

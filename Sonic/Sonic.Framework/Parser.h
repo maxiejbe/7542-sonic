@@ -9,11 +9,7 @@
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
-#include "entities/Window.h"
-#include "entities/Configuration.h"
-#include "entities/Scenario.h"
-#include "entities/Coordinate.h"
-#include "entities/common/Serializable.h"
+#include "entities/Serializable.h"
 #include <vector>
 #include "Logger.h"
 #include <algorithm>
