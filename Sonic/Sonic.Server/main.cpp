@@ -1,6 +1,6 @@
 #include "entities/Server.h"
 #include "Parser.h"
-#include "entities\common\ServerConfiguration.h"
+#include "entities/common/ServerConfiguration.h"
 
 int main(int argc, char* args[])
 {
