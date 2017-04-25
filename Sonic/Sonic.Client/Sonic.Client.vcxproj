@@ -145,6 +145,7 @@
     <LibraryPath>$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86;$(ProjectDir)libs\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
     <IncludePath>$(ProjectDir)libs\SDL2_gfx-1.0.3;$(ProjectDir)libs\SDL2_image-2.0.1\include;$(ProjectDir)libs\SDL2-2.0.5\include;$(Projectdir);$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)libs\SDL2_gfx-1.0.3\lib;$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86;$(ProjectDir)libs\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
+    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -153,6 +154,7 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir)libs\SDL2_gfx-1.0.3;$(ProjectDir)libs\SDL2_image-2.0.1\include;$(ProjectDir)libs\SDL2-2.0.5\include;$(Projectdir);$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)libs\SDL2_gfx-1.0.3\lib;$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86;$(ProjectDir)libs\SDL2-2.0.5\lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -176,7 +178,12 @@
     <PostBuildEvent>
       <Command>xcopy /Q /Y "$(ProjectDir)libs\SDL2-2.0.5\lib\x86\*.dll" "$(ProjectDir)"
 xcopy /Q /Y "$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86\*.dll" "$(ProjectDir)"
-xcopy /Q /Y "$(ProjectDir)libs\SDL2_gfx-1.0.3\lib\*.dll" "$(ProjectDir)"</Command>
+xcopy /Q /Y "$(ProjectDir)libs\SDL2_gfx-1.0.3\lib\*.dll" "$(ProjectDir)"
+xcopy /Q /Y "$(ProjectDir)libs\SDL2-2.0.5\lib\x86\*.dll" "$(ProjectDir)$(Configuration)"
+xcopy /Q /Y "$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86\*.dll" "$(ProjectDir)$(Configuration)"
+xcopy /Q /Y "$(ProjectDir)libs\SDL2_gfx-1.0.3\lib\*.dll" "$(ProjectDir)$(Configuration)"
+xcopy /S /E /Q /Y "$(ProjectDir)img" "$(ProjectDir)$(Configuration)\img\"
+xcopy /S /E /Q /Y "$(ProjectDir)config" "$(ProjectDir)$(Configuration)\config\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -214,11 +221,14 @@ xcopy /Q /Y "$(ProjectDir)libs\SDL2_gfx-1.0.3\lib\*.dll" "$(ProjectDir)"</Comman
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_gfx.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Q /Y "$(ProjectDir)libs\SDL2-2.0.5\lib\x86\*.dll" "$(ProjectDir)Release"
-xcopy /Q /Y "$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86\*.dll" "$(ProjectDir)Release"
-xcopy /Q /Y "$(ProjectDir)libs\SDL2_gfx-1.0.3\lib\*.dll" "$(ProjectDir)Release"
-xcopy /S /E /Q /Y "$(ProjectDir)img" "$(ProjectDir)Release\img\"
-xcopy /S /E /Q /Y "$(ProjectDir)config" "$(ProjectDir)Release\config\"</Command>
+      <Command>xcopy /Q /Y "$(ProjectDir)libs\SDL2-2.0.5\lib\x86\*.dll" "$(ProjectDir)"
+xcopy /Q /Y "$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86\*.dll" "$(ProjectDir)"
+xcopy /Q /Y "$(ProjectDir)libs\SDL2_gfx-1.0.3\lib\*.dll" "$(ProjectDir)"
+xcopy /Q /Y "$(ProjectDir)libs\SDL2-2.0.5\lib\x86\*.dll" "$(ProjectDir)$(Configuration)"
+xcopy /Q /Y "$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86\*.dll" "$(ProjectDir)$(Configuration)"
+xcopy /Q /Y "$(ProjectDir)libs\SDL2_gfx-1.0.3\lib\*.dll" "$(ProjectDir)$(Configuration)"
+xcopy /S /E /Q /Y "$(ProjectDir)img" "$(ProjectDir)$(Configuration)\img\"
+xcopy /S /E /Q /Y "$(ProjectDir)config" "$(ProjectDir)$(Configuration)\config\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
