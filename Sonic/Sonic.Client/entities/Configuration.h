@@ -2,7 +2,7 @@
 #define CONFIGURATION_H
 
 #include "entities/Serializable.h"
-#include "common/Validator.h"
+#include "entities/Validator.h"
 
 class Configuration : public Serializable {
 public:

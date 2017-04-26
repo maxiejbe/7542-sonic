@@ -24,6 +24,9 @@
     <ClCompile Include="entities\Server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="entities\common\ServerConfiguration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entities\Client.h">
@@ -32,5 +35,12 @@
     <ClInclude Include="entities\Server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="entities\common\ServerConfiguration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="config\params.json" />
   </ItemGroup>
 </Project>

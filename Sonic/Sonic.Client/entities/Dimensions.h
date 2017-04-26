@@ -2,7 +2,7 @@
 #define DIMENSIONS_H
 
 #include "entities/Serializable.h"
-#include "common/Validator.h"
+#include "entities/Validator.h"
 #include <Logger.h>
 
 class Dimensions : public Serializable {

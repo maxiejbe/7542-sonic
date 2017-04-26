@@ -28,18 +28,15 @@ int main(int argc, char* args[])
 	Logger::init();
 	Logger::loggingLevel() = logHIGH;
 
-	string configPath;
+	string configParamName = "--config";
+	string configPath = "";
+
+	//Take config file from param
 	if (argc > 2) {
 		string arg = args[1];
-		if (arg == "--config") {
+		if (arg == configParamName) {
 			configPath = args[2];
 		}
-		else {
-			LOG(logWARNING) << "Uso: " << args[0] << " --config CONFIG_FILE.json";
-		}
-	}
-	else {
-		LOG(logWARNING) << "Uso: " << args[0] << " --config CONFIG_FILE.json";
 	}
 
 	Parser* parser = new Parser(configPath);
