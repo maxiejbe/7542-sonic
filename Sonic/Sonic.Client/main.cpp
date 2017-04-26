@@ -6,6 +6,7 @@
 #include "Timer.h"
 #include "Player.h"
 #include "Parser.h"
+#include "Menu.h"
 #include "Entities/Window.h"
 #include "Renderer.h"
 #include "entities/Configuration.h"
@@ -74,10 +75,21 @@ int main(int argc, char* args[])
 		Timer stepTimer;
 		SDL_Rect camera = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
 
+		//Initialize menu
+		Menu menu = Menu();
+		int i = menu.ShowMenu();
+		if (i == 1) { isRunning = false; }
+
 		while (isRunning) {
 
 			// Check event type
 			while (SDL_PollEvent(&event) != 0) {
+				if (event.key.keysym.sym == SDLK_ESCAPE)
+				{
+					i = menu.ShowMenu();
+					if (i == 1) { isRunning = false; }
+					LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
+				}
 				if (event.type == SDL_QUIT) {
 					isRunning = false;
 					LOG(logINFO) << "El usuario ha solicitado la terminación del juego.";
