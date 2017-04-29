@@ -187,7 +187,8 @@ xcopy /Q /Y "$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86\*.dll" "$(ProjectDir)$(C
 xcopy /Q /Y "$(ProjectDir)libs\SDL2_ttf-2.0.14\lib\x86\*.dll" "$(ProjectDir)$(Configuration)"
 xcopy /Q /Y "$(ProjectDir)libs\SDL2_gfx-1.0.3\lib\*.dll" "$(ProjectDir)$(Configuration)"
 xcopy /S /E /Q /Y "$(ProjectDir)img" "$(ProjectDir)$(Configuration)\img\"
-xcopy /S /E /Q /Y "$(ProjectDir)config" "$(ProjectDir)$(Configuration)\config\"</Command>
+xcopy /S /E /Q /Y "$(ProjectDir)config" "$(ProjectDir)$(Configuration)\config\"
+xcopy /S /E /Q /Y "$(ProjectDir)fonts" "$(ProjectDir)$(Configuration)\fonts\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -233,7 +234,8 @@ xcopy /Q /Y "$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86\*.dll" "$(ProjectDir)$(C
 xcopy /Q /Y "$(ProjectDir)libs\SDL2_ttf-2.0.14\lib\x86\*.dll" "$(ProjectDir)$(Configuration)"
 xcopy /Q /Y "$(ProjectDir)libs\SDL2_gfx-1.0.3\lib\*.dll" "$(ProjectDir)$(Configuration)"
 xcopy /S /E /Q /Y "$(ProjectDir)img" "$(ProjectDir)$(Configuration)\img\"
-xcopy /S /E /Q /Y "$(ProjectDir)config" "$(ProjectDir)$(Configuration)\config\"</Command>
+xcopy /S /E /Q /Y "$(ProjectDir)config" "$(ProjectDir)$(Configuration)\config\"
+xcopy /S /E /Q /Y "$(ProjectDir)fonts" "$(ProjectDir)$(Configuration)\fonts\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
