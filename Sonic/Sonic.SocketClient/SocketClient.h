@@ -9,6 +9,8 @@
 
 #define bzero(b,len) (memset((b), '\0', (len)), (void) 0) 
 
+using namespace std;
+
 class SocketClient
 {
 public:
@@ -17,7 +19,7 @@ public:
 	bool isInitialized();
 	bool sendMessage(char * message);
 private:
-	SOCKET socket;
+	SOCKET _socket;
 	char* host;
 	int port;
 	struct addrinfo * addressInfo;

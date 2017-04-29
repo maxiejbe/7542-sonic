@@ -96,4 +96,5 @@ int main(int argc, char* argv[])
 
 	SocketClient* sc = new SocketClient("127.0.0.1", 5000);
 	sc->sendMessage("sarlanga");
+	delete sc;
 }

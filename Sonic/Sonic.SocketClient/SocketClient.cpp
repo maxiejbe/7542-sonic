@@ -1,12 +1,12 @@
 #include "SocketClient.h"
-using namespace std;
+
 
 SocketClient::SocketClient(char * host, int port)
 {
 	this->host = host;
 	this->port = port;
 	this->addressInfo = NULL;
-	this->socket = INVALID_SOCKET;
+	this->_socket = INVALID_SOCKET;
 	this->initialized = true;
 
 	if (!this->initializeWindowsSupport()) { return; }
@@ -31,15 +31,16 @@ bool SocketClient::sendMessage(char * message)
 {	
 	char buffer[1024];
 	int bufferSize = 1024;
+	memset(buffer, 0, bufferSize);
 	int byteCount;
-	if (byteCount = send(this->socket, message, strlen(message), 0) == SOCKET_ERROR) {
+	if (byteCount = send(this->_socket, message, strlen(message), 0) == SOCKET_ERROR) {
 		//TODO: Log in file
 		this->freeResources();
 		fprintf(stderr, "Error sending data %d\n", WSAGetLastError());
 		return false;
 	}
 
-	if (byteCount = recv(this->socket, buffer, bufferSize, 0) == SOCKET_ERROR) {
+	if (byteCount = recv(this->_socket, buffer, bufferSize, 0) == SOCKET_ERROR) {
 		this->freeResources();
 		fprintf(stderr, "Error receiving data %d\n", WSAGetLastError());
 		return false;
@@ -68,12 +69,12 @@ bool SocketClient::initializeAddressInfo(char * host, int port)
 	struct addrinfo * addrInfoResult = NULL, hints;
 
 	ZeroMemory(&hints, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;
+	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 
 	char portString[33];
-	_itoa(port, portString, 10);
+	_itoa_s(port, portString, 10);
 
 	int err = getaddrinfo(host, portString, &hints, &addrInfoResult);
 	if (err != 0) {
@@ -88,8 +89,8 @@ bool SocketClient::initializeAddressInfo(char * host, int port)
 
 bool SocketClient::initializeSocket()
 {
-	this->socket = socket(addressInfo->ai_family, addressInfo->ai_socktype, addressInfo->ai_protocol);
-	if (this->socket == INVALID_SOCKET) {
+	this->_socket = socket(addressInfo->ai_family, addressInfo->ai_socktype, addressInfo->ai_protocol);
+	if (this->_socket == INVALID_SOCKET) {
 		//TODO: Log in file
 		this->freeResources();
 		return false;
@@ -100,7 +101,7 @@ bool SocketClient::initializeSocket()
 
 bool SocketClient::connectToSocket()
 {
-	if (connect(socket, addressInfo->ai_addr, (int)addressInfo->ai_addrlen) == SOCKET_ERROR) {
+	if (connect(_socket, addressInfo->ai_addr, (int)addressInfo->ai_addrlen) == SOCKET_ERROR) {
 		//TODO: Log in file
 		this->freeResources();
 		return false;
@@ -112,10 +113,10 @@ bool SocketClient::connectToSocket()
 void SocketClient::freeResources() 
 {
 	if (this->addressInfo) { freeaddrinfo(this->addressInfo); }
-	if(this->socket) 
+	if(this->_socket) 
 	{ 
-		closesocket(this->socket); 
-		this->socket = INVALID_SOCKET;
+		closesocket(this->_socket); 
+		this->_socket = INVALID_SOCKET;
 	}
 
 	WSACleanup();
