@@ -1,7 +1,9 @@
 #include <winsock2.h>
 #include <windows.h>
 #include <iostream>
+#include <string>
 #include <Ws2tcpip.h>
+#include "SocketClient.h"
 
 //Take a look at: http://stackoverflow.com/questions/16948064/unresolved-external-symbol-lnk2019
 #pragma comment(lib, "Ws2_32.lib")
@@ -12,7 +14,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	bool shutdown = false;
+	/*bool shutdown = false;
 	int bytecount = 0;
 	char buffer[1024];
 	int buffer_len = 1024;
@@ -90,5 +92,8 @@ int main(int argc, char* argv[])
 	}
 
 
-	} while (!shutdown &&  bytecount > 0);
+	} while (!shutdown &&  bytecount > 0);*/
+
+	SocketClient* sc = new SocketClient("127.0.0.1", 5000);
+	sc->sendMessage("sarlanga");
 }
