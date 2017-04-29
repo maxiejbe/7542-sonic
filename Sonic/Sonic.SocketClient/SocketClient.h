@@ -17,6 +17,8 @@ public:
 	SocketClient(char* host, int port);
 	~SocketClient();
 	bool isInitialized();
+	bool isConnected();
+	bool reconnect();
 	bool sendMessage(char * message);
 private:
 	SOCKET _socket;
@@ -24,13 +26,16 @@ private:
 	int port;
 	struct addrinfo * addressInfo;
 	bool initialized;
-	/*** INITIALIZATION ***/
+	bool connected;
 
+	/*** INITIALIZATION ***/
 	bool initializeWindowsSupport();
-	bool initializeAddressInfo(char* host, int port);
+	bool initializeAddressInfo();
 	bool initializeSocket();
+
 	bool connectToSocket();
 	
+	void freeSocket();
 	void freeResources();
 };
 

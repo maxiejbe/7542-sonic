@@ -95,6 +95,31 @@ int main(int argc, char* argv[])
 	} while (!shutdown &&  bytecount > 0);*/
 
 	SocketClient* sc = new SocketClient("127.0.0.1", 5000);
-	sc->sendMessage("sarlanga");
+	bool socketConnected = sc->isConnected();
+	int reconectionAttemps = 10;
+	int i = 1;
+
+	if (!sc->isInitialized()) {
+		delete sc;
+		return 0;
+	}
+
+	while (!socketConnected && i <= reconectionAttemps) {
+		printf("Attempting reconection: %d\n", i);
+		Sleep(5000);
+		sc->reconnect();
+		socketConnected = sc->isConnected();
+		i++;
+	}
+
+	
+	if (socketConnected) {
+		printf("Socket connected\n");
+		sc->sendMessage("sarlanga");
+	}
+	else {
+		printf("cant connect to Socket\n");
+	}
+	
 	delete sc;
 }
