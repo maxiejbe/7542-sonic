@@ -18,6 +18,7 @@ public:
 	void handleEvent(SDL_Event& e);
 	void move(float timeStep);
 	void render(int camX, int camY);
+	void render(int camX, int camY, int frame);
 
 	float getPosX();
 	float getPosY();

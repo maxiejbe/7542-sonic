@@ -68,7 +68,7 @@ int main(int argc, char* args[])
 		}
 
 		// Initialize player
-		Player player("img/sonic.png", 0, SDLWindow::getInstance().getScreenHeight() / 1.35, 0, 0, scenarioWidth, scenarioHeight, config.getScrollSpeed());
+		Player player("img/foo22.png", 0, SDLWindow::getInstance().getScreenHeight() / 1.35, 0, 0, scenarioWidth, scenarioHeight, config.getScrollSpeed());
 		LOG(logINFO) << "El personaje ha sido creado correctamente.";
 
 		// Initialize camera
@@ -80,21 +80,27 @@ int main(int argc, char* args[])
 		int i = menu.ShowMenu();
 		if (i == 1) { isRunning = false; }
 
+		int frame = 0;
+
 		while (isRunning) {
 
 			// Check event type
 			while (SDL_PollEvent(&event) != 0) {
-				if (event.key.keysym.sym == SDLK_ESCAPE)
-				{
-					i = menu.ShowMenu();
-					if (i == 1) { isRunning = false; }
-					LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
-				}
-				if (event.type == SDL_QUIT) {
+				switch (event.type) {
+				case SDL_QUIT:
 					isRunning = false;
 					LOG(logINFO) << "El usuario ha solicitado la terminación del juego.";
+					break;
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym) {
+					case SDLK_ESCAPE:
+					case SDLK_q:
+						i = menu.ShowMenu();
+						if (i == 1) { isRunning = false; }
+						LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
+						break;
+					}
 				}
-
 				player.handleEvent(event);
 			}
 
@@ -137,6 +143,15 @@ int main(int argc, char* args[])
 
 			// Render player
 			player.render(camera.x, camera.y);
+
+			////Go to next frame
+			//++frame;
+
+			////Cycle animation
+			//if (frame / 4 >= 4)
+			//{
+			//	frame = 0;
+			//}
 
 			SDL_RenderPresent(Renderer::getInstance().gRenderer);
 		}
