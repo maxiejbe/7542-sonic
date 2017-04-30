@@ -15,6 +15,8 @@ bool Client::acceptSocket()
 {
 	int addressSize = sizeof(address);
 	this->socket = accept(this->server->getSocket(), (struct sockaddr *)&address, &addressSize);
+	cout << SocketUtils::getIpFromAddress(address) << endl;
+
 	if (this->socket == INVALID_SOCKET) {
 		//TODO: Log in file
 		fprintf(stderr, "Error accepting %d\n", WSAGetLastError());

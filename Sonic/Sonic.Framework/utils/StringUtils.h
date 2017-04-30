@@ -5,6 +5,8 @@
 #include <functional> 
 #include <cctype>
 #include <locale>
+#include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -13,6 +15,8 @@ public:
 	static string &ltrim(string &str);
 	static string &rtrim(string &str);
 	static string &trim(string &str);
+	static void split(vector<string>* items, string str, string delimiter);
+	//static string &join(vector<string>, string delimiter);
 };
 
 #endif // !STRINGUTILS_H

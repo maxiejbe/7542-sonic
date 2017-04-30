@@ -13,3 +13,19 @@ string& StringUtils::rtrim(string &str) {
 string& StringUtils::trim(string &str) {
 	return ltrim(rtrim(str));
 }
+
+void StringUtils::split(vector<string>* items, string str, string delimiter)
+{
+	istringstream iss(str);
+	string item;
+	while (getline(iss, item, *delimiter.c_str())) {
+		string itemToInsert = item;
+		items->push_back(itemToInsert);
+	}
+}
+
+/*string & StringUtils::join(vector<string>, string delimiter)
+{
+	// TODO: insert return statement here
+}*/
+

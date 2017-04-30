@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="entities\Message.cpp" />
     <ClCompile Include="entities\Serializable.cpp" />
     <ClCompile Include="entities\Validator.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="utils\StringUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="entities\Message.h" />
     <ClInclude Include="entities\Serializable.h" />
     <ClInclude Include="entities\Validator.h" />
     <ClInclude Include="Logger.h" />
