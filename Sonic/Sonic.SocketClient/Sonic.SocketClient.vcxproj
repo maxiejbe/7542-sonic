@@ -115,11 +115,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ConnectionHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SocketClient.cpp" />
+    <ClCompile Include="SonicConnectionHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConnectionHandler.h" />
     <ClInclude Include="SocketClient.h" />
+    <ClInclude Include="SonicConnectionHandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

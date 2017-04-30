@@ -1,13 +1,14 @@
 #include "SocketClient.h"
 
 
-SocketClient::SocketClient(char * host, int port)
+SocketClient::SocketClient(char * host, int port, SocketHandler* sHandler)
 {
 	this->host = host;
 	this->port = port;
 	this->addressInfo = NULL;
 	this->_socket = INVALID_SOCKET;
 	this->initialized = false;
+	this->sHandler = sHandler;
 
 	if (!this->initializeWindowsSupport()) { return; }
 	if (!this->initializeAddressInfo()) { return; }
@@ -22,7 +23,7 @@ SocketClient::SocketClient(char * host, int port)
 
 SocketClient::~SocketClient()
 {
-	this->freeSocket();
+	this->disconnectSocket();
 	this->freeResources();
 }
 
@@ -49,13 +50,6 @@ bool SocketClient::sendMessage(char * message)
 		return false;
 	}
 
-	if (byteCount = recv(this->_socket, buffer, bufferSize, 0) == SOCKET_ERROR) {
-		this->freeResources();
-		fprintf(stderr, "Error receiving data %d\n", WSAGetLastError());
-		return false;
-	}
-
-	printf("Received: (%d) %s", byteCount, buffer);
 	return true;
 }
 
@@ -109,15 +103,45 @@ bool SocketClient::initializeSocket()
 	return true;
 }
 
-bool SocketClient::connectToSocket()
+void SocketClient::connectToSocket()
 {
-	this->connected = true;
-	if (connect(_socket, addressInfo->ai_addr, (int)addressInfo->ai_addrlen) == SOCKET_ERROR) {
+	this->connected = (connect(_socket, addressInfo->ai_addr, (int)addressInfo->ai_addrlen) == SOCKET_ERROR);
+	//failed to connect to socket
+	if (!this->connected) {
 		//TODO: Log in file
-		this->connected = false;
+		return;
 	}
 
-	return this->connected;
+	CreateThread(0, 0, runSocketRecvHandling, (void*)this, 0, &this->threadId);
+}
+
+DWORD SocketClient::runSocketRecvHandling(void * args)
+{
+	SocketClient * sc = (SocketClient*)args;
+	return sc->socketRecvHandler();
+}
+
+DWORD SocketClient::socketRecvHandler()
+{
+	char recievedMessage[1024];
+	int recievedMessageLen = 1024;
+	int bytecount;
+
+	do {
+		memset(recievedMessage, 0, recievedMessageLen);
+		if ((bytecount = recv(this->_socket, recievedMessage, recievedMessageLen, 0)) == SOCKET_ERROR) {
+			//TODO: Log in file
+			//TODO: handle error
+			fprintf(stderr, "Error receiving data %d\n", WSAGetLastError());
+			return 0;
+		}
+
+		this->sHandler->onMessage(recievedMessage);
+
+	} while (bytecount > 0);
+
+	this->disconnectSocket();
+	return 0;
 }
 
 
@@ -128,20 +152,18 @@ bool SocketClient::reconnect()
 		return false; 
 	}
 
-	return this->connectToSocket();
+	this->connectToSocket();
+	return this->connected;
 }
 
-void SocketClient::freeSocket() 
+void SocketClient::disconnectSocket() 
 {
-	if (this->_socket)
-	{
-		closesocket(this->_socket);
-		this->_socket = INVALID_SOCKET;
-	}
+	if (this->_socket){closesocket(this->_socket);}
 }
 
 void SocketClient::freeResources()
 {
+	if (this->_socket) { this->_socket = INVALID_SOCKET; }
 	if (this->addressInfo) { freeaddrinfo(this->addressInfo); }
 	WSACleanup();
 }
