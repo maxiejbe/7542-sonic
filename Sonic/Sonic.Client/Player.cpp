@@ -3,6 +3,7 @@
 
 enum Animation
 {
+	IDLE,
 	WALK,
 	RUN,
 	JUMP
@@ -10,11 +11,12 @@ enum Animation
 
 //Walking animation
 const int WALKING_ANIMATION_FRAMES = 8;
-SDL_Rect gSpriteClips[3][WALKING_ANIMATION_FRAMES];
+SDL_Rect gSpriteClips[4][WALKING_ANIMATION_FRAMES];
 
-int sprite_index = WALK;  // Current animation
+int sprite_index = IDLE;  // Current animation
 int frameDiv = 8;
-int frame = 0;
+SDL_RendererFlip flip = SDL_FLIP_NONE;
+bool run = false;
 
 
 Player::Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH, int scrollSpeed)
@@ -24,6 +26,12 @@ Player::Player(string filePath, float x, float y, float velX, float velY, int sc
 	}
 	else
 	{
+		// IDLE
+		gSpriteClips[IDLE][0].x = 5;
+		gSpriteClips[IDLE][0].y = 12;
+		gSpriteClips[IDLE][0].w = 25;
+		gSpriteClips[IDLE][0].h = 39;
+
 		// WALK
 		gSpriteClips[WALK][0].x = 191;
 		gSpriteClips[WALK][0].y = 109;
@@ -65,7 +73,7 @@ Player::Player(string filePath, float x, float y, float velX, float velY, int sc
 		gSpriteClips[WALK][7].w = 39;
 		gSpriteClips[WALK][7].h = 39;
 
-		//Set sprite clips
+		// RUN
 		gSpriteClips[RUN][0].x = 10;
 		gSpriteClips[RUN][0].y = 155;
 		gSpriteClips[RUN][0].w = 28;
@@ -86,7 +94,7 @@ Player::Player(string filePath, float x, float y, float velX, float velY, int sc
 		gSpriteClips[RUN][3].w = 29;
 		gSpriteClips[RUN][3].h = 36;
 
-		//Set sprite clips
+		// JUMP
 		gSpriteClips[JUMP][0].x = 386;
 		gSpriteClips[JUMP][0].y = 74;
 		gSpriteClips[JUMP][0].w = 27;
@@ -130,29 +138,61 @@ void Player::handleEvent(SDL_Event& e)
 				sprite_index = JUMP;
 				frameDiv = 4;
 				break;
-			case SDLK_DOWN:
-				velY += scrollSpeed;
-				sprite_index = RUN;
-				frameDiv = 4;
-				break;
+				//case SDLK_DOWN:
+				//	velY += scrollSpeed;
+				//	sprite_index = RUN;
+				//	frameDiv = 4;
+				//	break;
 			case SDLK_LEFT:
 				velX -= scrollSpeed;
-				sprite_index = WALK;
-				frameDiv = 8;
+				sprite_index = run ? RUN : WALK;
+				frameDiv = run ? 4 : 8;
+				flip = SDL_FLIP_HORIZONTAL;
 				break;
 			case SDLK_RIGHT:
 				velX += scrollSpeed;
-				sprite_index = WALK;
-				frameDiv = 8;
+				sprite_index = run ? RUN : WALK;
+				frameDiv = run ? 4 : 8;
+				flip = SDL_FLIP_NONE;
+				break;
+			case SDLK_SPACE:
+				run = true;
+				if (sprite_index == WALK) {
+					sprite_index = RUN;
+					frameDiv = 4;
+				}
 				break;
 			}
 			break;
 		case SDL_KEYUP:
 			switch (e.key.keysym.sym) {
-			case SDLK_UP: velY += scrollSpeed; break;
-			case SDLK_DOWN: velY -= scrollSpeed; break;
-			case SDLK_LEFT: velX += scrollSpeed; break;
-			case SDLK_RIGHT: velX -= scrollSpeed; break;
+			case SDLK_UP:
+				velY += scrollSpeed;
+				sprite_index = IDLE;
+				frameDiv = 1;
+				break;
+				//case SDLK_DOWN:
+				//	velY -= scrollSpeed;
+				//	sprite_index = IDLE;
+				//	frameDiv = 1;
+				//	break;
+			case SDLK_LEFT:
+				velX += scrollSpeed;
+				sprite_index = IDLE;
+				frameDiv = 1;
+				break;
+			case SDLK_RIGHT:
+				velX -= scrollSpeed;
+				sprite_index = IDLE;
+				frameDiv = 1;
+				break;
+			case SDLK_SPACE:
+				run = false;
+				if (sprite_index == RUN) {
+					sprite_index = WALK;
+					frameDiv = 8;
+				}
+				break;
 			}
 			break;
 		}
@@ -178,42 +218,19 @@ void Player::move(float timeStep)
 
 void Player::render(int camX, int camY)
 {
-	++frame;
-	if (frame / frameDiv >= frameDiv)
-	{
-		frame = 0;
-	}
+	Uint32 ticks = SDL_GetTicks();
+	Uint32 sprite = (ticks / 100) % frameDiv;
 
-	SDL_Rect* currentClip = &gSpriteClips[sprite_index][frame / frameDiv];
+	SDL_Rect* currentClip = &gSpriteClips[sprite_index][sprite];
 
 	// Scale
-	//SDL_Rect dest = { (int)(posX - camX), (int)(posY - camY), currentClip->w * 2, currentClip->h * 2 };
+	SDL_Rect dest = { (int)(posX - camX), (int)(posY - camY), currentClip->w * 2, currentClip->h * 2 };
 	//SDL_RenderCopy(Renderer::getInstance().gRenderer, texture.getTexture(), currentClip, &dest);
 
-	this->width = currentClip->w;
-	this->height = currentClip->h;
+	this->width = dest.w;
+	this->height = dest.h;
 
-	texture.render((int)(posX - camX), (int)(posY - camY), currentClip);
-}
-
-void Player::render(int camX, int camY, int frame)
-{
-	++frame;
-	if (frame / 4 >= frameDiv)
-	{
-		frame = 0;
-	}
-
-	SDL_Rect* currentClip = &gSpriteClips[sprite_index][frame / frameDiv];
-
-	// Scale
-	//SDL_Rect dest = { (int)(posX - camX), (int)(posY - camY), currentClip->w * 2, currentClip->h * 2 };
-	//SDL_RenderCopy(Renderer::getInstance().gRenderer, texture.getTexture(), currentClip, &dest);
-
-	this->width = currentClip->w;
-	this->height = currentClip->h;
-
-	texture.render((int)(posX - camX), (int)(posY - camY), currentClip);
+	texture.render((int)(posX - camX), (int)(posY - camY), currentClip, dest, 0, NULL, flip);
 }
 
 float Player::getPosX()

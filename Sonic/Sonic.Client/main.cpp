@@ -80,8 +80,6 @@ int main(int argc, char* args[])
 		int i = menu.ShowMenu();
 		if (i == 1) { isRunning = false; }
 
-		int frame = 0;
-
 		while (isRunning) {
 
 			// Check event type
@@ -143,15 +141,6 @@ int main(int argc, char* args[])
 
 			// Render player
 			player.render(camera.x, camera.y);
-
-			////Go to next frame
-			//++frame;
-
-			////Cycle animation
-			//if (frame / 4 >= 4)
-			//{
-			//	frame = 0;
-			//}
 
 			SDL_RenderPresent(Renderer::getInstance().gRenderer);
 		}
