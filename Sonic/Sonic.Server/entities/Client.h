@@ -4,6 +4,7 @@
 #include <winsock2.h>
 #include <iostream>
 #include "Server.h"
+#include "../utils/SocketUtils.h"
 
 using namespace std;
 

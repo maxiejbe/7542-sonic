@@ -154,11 +154,7 @@ void Server::waitForClientConnections()
 	while (this->connectedClients < this->maxAllowedClients) {
 		printf("waiting for a connection\n");
 
-		this->acceptClientConnection();
-		
-		//char stringIp[sizeof(clientAddress)];
-		//inet_ntop(AF_INET, &(clientAddress.sin_addr), stringIp, INET_ADDRSTRLEN);
-		//cout << "Recieved connection from " << stringIp << endl;
+		this->acceptClientConnection();	
 	}
 }
 
