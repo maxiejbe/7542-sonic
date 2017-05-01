@@ -23,16 +23,12 @@ int main(int argc, char* args[])
 	ServerConfiguration config;
 	parser->parse(&config);
 
-	cout << "Trying to start server" << endl;
 	Server server(config.getPortNumber(), config.getMaxAllowedClients());
 	if (!server.validate()) {
-		//TODO: Move to log
-		cout << "Could not start server" << endl;
 		return 0;
 	}
 	server.waitForClientConnections();
 	
-	getchar();
 	return 0;
 }
 

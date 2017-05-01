@@ -63,6 +63,8 @@ DWORD Client::socketHandler() {
 			continue;
 			//return 0;
 		}
+		
+		
 		string strMessage(recievedMessage);
 		Message message(strMessage);
 		

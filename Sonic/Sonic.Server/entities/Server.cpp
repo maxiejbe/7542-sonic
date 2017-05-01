@@ -1,5 +1,16 @@
 #include "Server.h"
 
+const char* MESSAGE_STARTING_SERVER = "Intentando arrancar servidor: ";
+const char* MESSAGE_STARTING_SERVER_FAIL = "No se pudo arrancar el servidor.";
+const char* MESSAGE_STARTING_SERVER_OK = "Servidor corriendo correctamente.";
+const char* MESSAGE_SERVER_EXECUTION_END = "Se finalizó la ejecución del servidor. No se recibirán nuevos clientes.";
+const char* MESSAGE_SERVER_CANNOT_FIND_DLL = "No se encontró una dll para sockets utilizable. ";
+const char* MESSAGE_SERVER_CANNOT_OPEN_SOCKET = "No se pudo abrir el socket. ";
+const char* MESSAGE_SERVER_CANNOT_BIND_SOCKET = "No se pudo bindear el socket a la dirección.";
+const char* MESSAGE_SERVER_CANNOT_LISTEN = "No se pudo arrancar a escuchar conexiones en puerto.";
+const char* MESSAGE_SERVER_WAITING_CONNECTIONS = "Esperando nuevas conexiones...";
+const char* MESSAGE_SERVER_ERROR_CODE = "Código de error: ";
+
 Server::~Server()
 {
 	for (vector<Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
@@ -9,6 +20,8 @@ Server::~Server()
 			delete *it;
 		}
 	}
+
+	LOG(logINFO) << MESSAGE_SERVER_EXECUTION_END;
 }
 
 Server::Server(int portNumber, int maxAllowedClients)
@@ -16,6 +29,8 @@ Server::Server(int portNumber, int maxAllowedClients)
 	this->portNumber = portNumber;
 	this->maxAllowedClients = maxAllowedClients;
 	this->isValid = false;
+
+	LOG(logINFO) << MESSAGE_STARTING_SERVER << "El Puerto es " << this->portNumber << ". La máxima cantidad de clientes es: " << this->maxAllowedClients;
 
 	this->connectedClients = 0;
 	clients.clear();
@@ -40,6 +55,8 @@ Server::Server(int portNumber, int maxAllowedClients)
 		return;
 	}
 
+	LOG(logINFO) << MESSAGE_STARTING_SERVER_OK;
+
 	this->isValid = true;
 }
 
@@ -50,8 +67,7 @@ bool Server::initializeWindowsSupport()
 	int initResult = WSAStartup(wVersionRequested, &wsaData);
 	if (initResult != 0 || (LOBYTE(wsaData.wVersion) != 2 ||
 		HIBYTE(wsaData.wVersion) != 2)) {
-		//TODO: Log in file
-		fprintf(stderr, "Could not find useable sock dll %d\n", WSAGetLastError());
+		LOG(logERROR) << MESSAGE_SERVER_CANNOT_FIND_DLL << MESSAGE_SERVER_ERROR_CODE << WSAGetLastError();
 		return false;
 	}
 	return true;
@@ -64,9 +80,7 @@ bool Server::initSocket()
 
 	if (this->_socket == INVALID_SOCKET)
 	{
-		//TODO: Log in file
-		cout << "Cannot open socket" << endl;
-		cout << WSAGetLastError() << endl;
+		LOG(logERROR) << MESSAGE_SERVER_CANNOT_OPEN_SOCKET << MESSAGE_SERVER_ERROR_CODE << WSAGetLastError();
 		return false;
 	}
 	return true;
@@ -86,11 +100,9 @@ bool Server::configureAddress()
 
 bool Server::bindSocket()
 {
-	//bind socket
 	if (::bind(_socket, (struct sockaddr *)&this->address, sizeof(this->address)) < 0)
 	{
-		//TODO: Log in file
-		cerr << "Cannot bind" << endl;
+		LOG(logERROR) << MESSAGE_SERVER_CANNOT_BIND_SOCKET;
 		return false;
 	}
 	return true;
@@ -99,7 +111,7 @@ bool Server::bindSocket()
 bool Server::startListening()
 {
 	if (listen(_socket, 5) < 0) {
-		fprintf(stderr, "Error listening %d\n", WSAGetLastError());
+		LOG(logERROR) << MESSAGE_SERVER_CANNOT_LISTEN << MESSAGE_SERVER_ERROR_CODE << WSAGetLastError();
 		return false;
 	}
 	return true;
@@ -152,8 +164,7 @@ void Server::waitForClientConnections()
 	bool keepWaiting = true;
 
 	while (this->connectedClients < this->maxAllowedClients) {
-		printf("waiting for a connection\n");
-
+		LOG(logINFO) << MESSAGE_SERVER_WAITING_CONNECTIONS;
 		this->acceptClientConnection();	
 	}
 }
