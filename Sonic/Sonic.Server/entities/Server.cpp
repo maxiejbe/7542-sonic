@@ -87,7 +87,7 @@ bool Server::configureAddress()
 bool Server::bindSocket()
 {
 	//bind socket
-	if (bind(_socket, (struct sockaddr *)&this->address, sizeof(this->address)) < 0)
+	if (::bind(_socket, (struct sockaddr *)&this->address, sizeof(this->address)) < 0)
 	{
 		//TODO: Log in file
 		cerr << "Cannot bind" << endl;

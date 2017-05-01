@@ -60,12 +60,18 @@ DWORD Client::socketHandler() {
 		if ((bytecount = recv(this->socket, recievedMessage, recievedMessageLen, 0)) == SOCKET_ERROR) {
 			//TODO: Log in file
 			fprintf(stderr, "Error receiving data %d\n", WSAGetLastError());
-			return 0;
+			continue;
+			//return 0;
 		}
-		printf("Received bytes %d\nReceived string \"%s\"\n", bytecount, recievedMessage);
+		string strMessage(recievedMessage);
+		Message message(strMessage);
 		
-		this->handleRecievedMessage(recievedMessage);
+		string convertedMessage;
+		message.toString(&convertedMessage);
 
+		printf("Received bytes %d\nReceived string \"%s\"\n", bytecount, convertedMessage.c_str());
+		this->handleRecievedMessage(recievedMessage);
+		
 	} while (bytecount > 0);
 
 	this->server->removeClientConnection(this->clientNumber);
