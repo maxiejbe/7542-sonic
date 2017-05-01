@@ -53,9 +53,9 @@ void Client::handleRecievedMessage(char* recievedMessage)
 DWORD Client::socketHandler() {
 	char recievedMessage[1024];
 	int recievedMessageLen = 1024;
-	int bytecount;
+	int bytecount = INT_MAX;
 
-	do {
+	while (bytecount > 0) {
 		memset(recievedMessage, 0, recievedMessageLen);
 		if ((bytecount = recv(this->socket, recievedMessage, recievedMessageLen, 0)) == SOCKET_ERROR) {
 			//TODO: Log in file
@@ -72,7 +72,7 @@ DWORD Client::socketHandler() {
 		printf("Received bytes %d\nReceived string \"%s\"\n", bytecount, convertedMessage.c_str());
 		this->handleRecievedMessage(recievedMessage);
 		
-	} while (bytecount > 0);
+	};
 
 	this->server->removeClientConnection(this->clientNumber);
 
