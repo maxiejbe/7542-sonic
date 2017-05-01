@@ -6,7 +6,7 @@
     }
   },
   "configuracion": {
-    "vel_scroll": 600
+    "vel_scroll": 300
   },
   "escenario": {
     "dimensiones": {

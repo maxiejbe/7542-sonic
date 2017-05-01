@@ -7,6 +7,7 @@
 #include "Renderer.h"
 #include "Logger.h"
 #include "Texture.h"
+#include "Vector2.h"
 
 using namespace std;
 
@@ -25,8 +26,10 @@ public:
 	int getHeight();
 private:
 	Texture texture;
-	float posX, posY;
-	float velX, velY;
+	Vector2 position;
+	//float posX, posY;
+	Vector2 velocity;
+	//float velX, velY;
 	int width, height;
 	int scenarioWidth, scenarioHeight;
 	int scrollSpeed;

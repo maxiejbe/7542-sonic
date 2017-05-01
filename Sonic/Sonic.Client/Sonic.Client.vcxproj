@@ -40,6 +40,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\image-not-found.png" />
@@ -80,6 +81,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="SDLWindow.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sonic.rc" />
