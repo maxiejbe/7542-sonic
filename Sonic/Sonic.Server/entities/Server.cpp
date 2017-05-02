@@ -2,7 +2,7 @@
 
 const char* MESSAGE_STARTING_SERVER = "Intentando arrancar servidor: ";
 const char* MESSAGE_STARTING_SERVER_FAIL = "No se pudo arrancar el servidor.";
-const char* MESSAGE_STARTING_SERVER_OK = "Servidor corriendo correctamente.";
+const char* MESSAGE_STARTING_SERVER_OK = "Servidor corriendo correctamente en: ";
 const char* MESSAGE_SERVER_EXECUTION_END = "Se finalizó la ejecución del servidor. No se recibirán nuevos clientes.";
 const char* MESSAGE_SERVER_CANNOT_FIND_DLL = "No se encontró una dll para sockets utilizable. ";
 const char* MESSAGE_SERVER_CANNOT_OPEN_SOCKET = "No se pudo abrir el socket. ";
@@ -10,6 +10,10 @@ const char* MESSAGE_SERVER_CANNOT_BIND_SOCKET = "No se pudo bindear el socket a 
 const char* MESSAGE_SERVER_CANNOT_LISTEN = "No se pudo arrancar a escuchar conexiones en puerto.";
 const char* MESSAGE_SERVER_WAITING_CONNECTIONS = "Esperando nuevas conexiones...";
 const char* MESSAGE_SERVER_ERROR_CODE = "Código de error: ";
+
+const char* MESSAGE_SERVER_SEND_MESSAGE_ERROR = "No se pudo enviar el mensaje ";
+const char* MESSAGE_SERVER_SEND_MESSAGE_SUCCESS = "Se envió correctamente el mensaje ";
+
 
 Server::~Server()
 {
@@ -30,7 +34,7 @@ Server::Server(int portNumber, int maxAllowedClients)
 	this->maxAllowedClients = maxAllowedClients;
 	this->isValid = false;
 
-	LOG(logINFO) << MESSAGE_STARTING_SERVER << "El Puerto es " << this->portNumber << ". La máxima cantidad de clientes es: " << this->maxAllowedClients;
+	LOG(logINFO) << MESSAGE_STARTING_SERVER << "El Puerto es " << this->portNumber << ". La máxima cantidad de clientes es " << this->maxAllowedClients;
 
 	this->connectedClients = 0;
 	clients.clear();
@@ -55,7 +59,7 @@ Server::Server(int portNumber, int maxAllowedClients)
 		return;
 	}
 
-	LOG(logINFO) << MESSAGE_STARTING_SERVER_OK;
+	LOG(logINFO) << MESSAGE_STARTING_SERVER_OK << SocketUtils::getIpFromAddress(this->address) << ":" << this->portNumber;
 
 	this->isValid = true;
 }
@@ -177,10 +181,12 @@ void Server::sendBroadcast(char* message)
 
 		int bytecount;
 		if ((bytecount = send((*it)->getSocket(), message, strlen(message), 0)) == SOCKET_ERROR) {
-			fprintf(stderr, "Error sending data %d\n", WSAGetLastError());
+			LOG(logERROR) << MESSAGE_SERVER_SEND_MESSAGE_ERROR << message << ". " << MESSAGE_SERVER_ERROR_CODE << WSAGetLastError() 
+				<< " (Cliente " << (*it)->getClientNumber() << ")";
 			continue;
 		}
-		printf("Sent bytes %d\n", bytecount);
+
+		LOG(logINFO) << MESSAGE_SERVER_SEND_MESSAGE_SUCCESS << message << " (Cliente " << (*it)->getClientNumber() << ")";
 	}
 }
 
