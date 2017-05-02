@@ -1,23 +1,10 @@
 #include "Player.h"
 #include "SDLWindow.h"
 
-enum Animation
-{
-	IDLE,
-	WALK,
-	RUN,
-	JUMP
-};
-
+const float gravity = 0.38f;
 const int ANIMATION_STATES = 4;
 const int ANIMATION_FRAMES = 8;
 SDL_Rect spriteClips[ANIMATION_STATES][ANIMATION_FRAMES];
-
-int spriteState = IDLE;
-int framesCount = 1;
-SDL_RendererFlip flip = SDL_FLIP_NONE;
-
-float gravity = 0.38f;
 
 
 Player::Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH, int scrollSpeed)
@@ -25,96 +12,95 @@ Player::Player(string filePath, float x, float y, float velX, float velY, int sc
 	if (!texture.loadFromFile(filePath)) {
 		LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << filePath << "'.";
 	}
-	else
-	{
-		// IDLE
-		spriteClips[IDLE][0].x = 5;
-		spriteClips[IDLE][0].y = 12;
-		spriteClips[IDLE][0].w = 25;
-		spriteClips[IDLE][0].h = 39;
+	else {
+		// PlayerStatus::idle
+		spriteClips[PlayerStatus::idle][0].x = 5;
+		spriteClips[PlayerStatus::idle][0].y = 12;
+		spriteClips[PlayerStatus::idle][0].w = 25;
+		spriteClips[PlayerStatus::idle][0].h = 39;
 
-		// WALK
-		spriteClips[WALK][0].x = 191;
-		spriteClips[WALK][0].y = 109;
-		spriteClips[WALK][0].w = 23;
-		spriteClips[WALK][0].h = 39;
+		// PlayerStatus::walking
+		spriteClips[PlayerStatus::walking][0].x = 191;
+		spriteClips[PlayerStatus::walking][0].y = 109;
+		spriteClips[PlayerStatus::walking][0].w = 23;
+		spriteClips[PlayerStatus::walking][0].h = 39;
 
-		spriteClips[WALK][1].x = 221;
-		spriteClips[WALK][1].y = 109;
-		spriteClips[WALK][1].w = 29;
-		spriteClips[WALK][1].h = 40;
+		spriteClips[PlayerStatus::walking][1].x = 221;
+		spriteClips[PlayerStatus::walking][1].y = 109;
+		spriteClips[PlayerStatus::walking][1].w = 29;
+		spriteClips[PlayerStatus::walking][1].h = 40;
 
-		spriteClips[WALK][2].x = 263;
-		spriteClips[WALK][2].y = 109;
-		spriteClips[WALK][2].w = 39;
-		spriteClips[WALK][2].h = 40;
+		spriteClips[PlayerStatus::walking][2].x = 263;
+		spriteClips[PlayerStatus::walking][2].y = 109;
+		spriteClips[PlayerStatus::walking][2].w = 39;
+		spriteClips[PlayerStatus::walking][2].h = 40;
 
-		spriteClips[WALK][3].x = 308;
-		spriteClips[WALK][3].y = 109;
-		spriteClips[WALK][3].w = 39;
-		spriteClips[WALK][3].h = 39;
+		spriteClips[PlayerStatus::walking][3].x = 308;
+		spriteClips[PlayerStatus::walking][3].y = 109;
+		spriteClips[PlayerStatus::walking][3].w = 39;
+		spriteClips[PlayerStatus::walking][3].h = 39;
 
-		spriteClips[WALK][4].x = 352;
-		spriteClips[WALK][4].y = 109;
-		spriteClips[WALK][4].w = 23;
-		spriteClips[WALK][4].h = 39;
+		spriteClips[PlayerStatus::walking][4].x = 352;
+		spriteClips[PlayerStatus::walking][4].y = 109;
+		spriteClips[PlayerStatus::walking][4].w = 23;
+		spriteClips[PlayerStatus::walking][4].h = 39;
 
-		spriteClips[WALK][5].x = 378;
-		spriteClips[WALK][5].y = 109;
-		spriteClips[WALK][5].w = 25;
-		spriteClips[WALK][5].h = 40;
+		spriteClips[PlayerStatus::walking][5].x = 378;
+		spriteClips[PlayerStatus::walking][5].y = 109;
+		spriteClips[PlayerStatus::walking][5].w = 25;
+		spriteClips[PlayerStatus::walking][5].h = 40;
 
-		spriteClips[WALK][6].x = 411;
-		spriteClips[WALK][6].y = 109;
-		spriteClips[WALK][6].w = 40;
-		spriteClips[WALK][6].h = 38;
+		spriteClips[PlayerStatus::walking][6].x = 411;
+		spriteClips[PlayerStatus::walking][6].y = 109;
+		spriteClips[PlayerStatus::walking][6].w = 40;
+		spriteClips[PlayerStatus::walking][6].h = 38;
 
-		spriteClips[WALK][7].x = 460;
-		spriteClips[WALK][7].y = 109;
-		spriteClips[WALK][7].w = 39;
-		spriteClips[WALK][7].h = 39;
+		spriteClips[PlayerStatus::walking][7].x = 460;
+		spriteClips[PlayerStatus::walking][7].y = 109;
+		spriteClips[PlayerStatus::walking][7].w = 39;
+		spriteClips[PlayerStatus::walking][7].h = 39;
 
-		// RUN
-		spriteClips[RUN][0].x = 10;
-		spriteClips[RUN][0].y = 155;
-		spriteClips[RUN][0].w = 28;
-		spriteClips[RUN][0].h = 36;
+		// PlayerStatus::running
+		spriteClips[PlayerStatus::running][0].x = 10;
+		spriteClips[PlayerStatus::running][0].y = 155;
+		spriteClips[PlayerStatus::running][0].w = 28;
+		spriteClips[PlayerStatus::running][0].h = 36;
 
-		spriteClips[RUN][1].x = 44;
-		spriteClips[RUN][1].y = 154;
-		spriteClips[RUN][1].w = 29;
-		spriteClips[RUN][1].h = 36;
+		spriteClips[PlayerStatus::running][1].x = 44;
+		spriteClips[PlayerStatus::running][1].y = 154;
+		spriteClips[PlayerStatus::running][1].w = 29;
+		spriteClips[PlayerStatus::running][1].h = 36;
 
-		spriteClips[RUN][2].x = 82;
-		spriteClips[RUN][2].y = 154;
-		spriteClips[RUN][2].w = 28;
-		spriteClips[RUN][2].h = 36;
+		spriteClips[PlayerStatus::running][2].x = 82;
+		spriteClips[PlayerStatus::running][2].y = 154;
+		spriteClips[PlayerStatus::running][2].w = 28;
+		spriteClips[PlayerStatus::running][2].h = 36;
 
-		spriteClips[RUN][3].x = 116;
-		spriteClips[RUN][3].y = 154;
-		spriteClips[RUN][3].w = 29;
-		spriteClips[RUN][3].h = 36;
+		spriteClips[PlayerStatus::running][3].x = 116;
+		spriteClips[PlayerStatus::running][3].y = 154;
+		spriteClips[PlayerStatus::running][3].w = 29;
+		spriteClips[PlayerStatus::running][3].h = 36;
 
-		// JUMP
-		spriteClips[JUMP][0].x = 386;
-		spriteClips[JUMP][0].y = 74;
-		spriteClips[JUMP][0].w = 27;
-		spriteClips[JUMP][0].h = 30;
+		// PlayerStatus::jumping
+		spriteClips[PlayerStatus::jumping][0].x = 386;
+		spriteClips[PlayerStatus::jumping][0].y = 74;
+		spriteClips[PlayerStatus::jumping][0].w = 27;
+		spriteClips[PlayerStatus::jumping][0].h = 30;
 
-		spriteClips[JUMP][1].x = 417;
-		spriteClips[JUMP][1].y = 77;
-		spriteClips[JUMP][1].w = 30;
-		spriteClips[JUMP][1].h = 27;
+		spriteClips[PlayerStatus::jumping][1].x = 417;
+		spriteClips[PlayerStatus::jumping][1].y = 77;
+		spriteClips[PlayerStatus::jumping][1].w = 30;
+		spriteClips[PlayerStatus::jumping][1].h = 27;
 
-		spriteClips[JUMP][2].x = 452;
-		spriteClips[JUMP][2].y = 75;
-		spriteClips[JUMP][2].w = 27;
-		spriteClips[JUMP][2].h = 30;
+		spriteClips[PlayerStatus::jumping][2].x = 452;
+		spriteClips[PlayerStatus::jumping][2].y = 75;
+		spriteClips[PlayerStatus::jumping][2].w = 27;
+		spriteClips[PlayerStatus::jumping][2].h = 30;
 
-		spriteClips[JUMP][3].x = 481;
-		spriteClips[JUMP][3].y = 77;
-		spriteClips[JUMP][3].w = 30;
-		spriteClips[JUMP][3].h = 27;
+		spriteClips[PlayerStatus::jumping][3].x = 481;
+		spriteClips[PlayerStatus::jumping][3].y = 77;
+		spriteClips[PlayerStatus::jumping][3].w = 30;
+		spriteClips[PlayerStatus::jumping][3].h = 27;
 	}
 
 	this->position = Vector2(x, y);
@@ -124,6 +110,8 @@ Player::Player(string filePath, float x, float y, float velX, float velY, int sc
 	this->scrollSpeed = scrollSpeed;
 	this->groundPos = y;
 	this->isJumping = false;
+	this->flip = SDL_FLIP_NONE;
+	this->spriteState = PlayerStatus::idle;
 }
 
 void Player::update(float dt)
@@ -141,38 +129,33 @@ void Player::updateInput()
 	float turbo = 2;
 
 	if (input->isKeyPressed(KEY_LEFT)) {
-		flip = SDL_FLIP_HORIZONTAL;
+		this->flip = SDL_FLIP_HORIZONTAL;
 		this->targetVelX = -scrollSpeed;
 		if (!this->isJumping) {
-			spriteState = WALK;
-			framesCount = 8;
+			this->spriteState = PlayerStatus::walking;
 			if (input->isKeyPressed(KEY_SPACE)) {
 				this->targetVelX *= turbo;
-				spriteState = RUN;
-				framesCount = 4;
+				this->spriteState = PlayerStatus::running;
 			}
 		}
 	}
 
 	if (input->isKeyPressed(KEY_RIGHT)) {
-		flip = SDL_FLIP_NONE;
+		this->flip = SDL_FLIP_NONE;
 		this->targetVelX = scrollSpeed;
 		if (!this->isJumping) {
-			spriteState = WALK;
-			framesCount = 8;
+			this->spriteState = PlayerStatus::walking;
 			if (input->isKeyPressed(KEY_SPACE)) {
 				this->targetVelX *= turbo;
-				spriteState = RUN;
-				framesCount = 4;
+				this->spriteState = PlayerStatus::running;
 			}
 		}
 	}
 
 	if (input->isKeyPressed(KEY_UP)) {
-		// TODO: extraer a jump()
+		// TODO: extraer a PlayerStatus::jumping()
 		if (!this->isJumping) {
-			spriteState = JUMP;
-			framesCount = 4;
+			this->spriteState = PlayerStatus::jumping;
 			this->isJumping = true;
 			velocity.y -= 10;
 		}
@@ -181,8 +164,7 @@ void Player::updateInput()
 	// En caso que se suelten a la vez la flecha y el space.
 	if (input->isKeyUp(KEY_LEFT) || input->isKeyUp(KEY_RIGHT)) {
 		if (input->isKeyPressed(KEY_SPACE) || input->isKeyUp(KEY_SPACE)) {
-			spriteState = WALK;
-			framesCount = 8;
+			this->spriteState = PlayerStatus::walking;
 		}
 	}
 }
@@ -195,9 +177,8 @@ void Player::move(float dt)
 
 	// TODO: extraer a isStopping()
 	if (fabs(this->velocity.x) < 0.4) {
-		if (this->velocity.x == 0 && spriteState == WALK) {
-			spriteState = IDLE;
-			framesCount = 1;
+		if (this->velocity.x == 0 && this->spriteState == PlayerStatus::walking) {
+			this->spriteState = PlayerStatus::idle;
 		}
 		this->velocity.x = 0;
 	}
@@ -210,15 +191,14 @@ void Player::move(float dt)
 	else if (position.x > scenarioWidth - width)
 		position.x = (float)(scenarioWidth - width);
 
-	// Jump
+	// PlayerStatus::jumping
 	if (this->isJumping) {
 		velocity.y += gravity;
 
 		if ((position.y + velocity.y) >= this->groundPos) {
 			velocity.y = 0;
 			this->isJumping = false;
-			spriteState = IDLE;
-			framesCount = 1;
+			this->spriteState = PlayerStatus::idle;
 		}
 
 		position.y += velocity.y * 1.6;
@@ -228,9 +208,9 @@ void Player::move(float dt)
 void Player::render(int camX, int camY)
 {
 	Uint32 ticks = SDL_GetTicks();
-	Uint32 sprite = (ticks / 100) % framesCount;
+	Uint32 sprite = (ticks / 100) % getFramesCount(this->spriteState);
 
-	SDL_Rect* currentClip = &spriteClips[spriteState][sprite];
+	SDL_Rect* currentClip = &spriteClips[this->spriteState][sprite];
 
 	// Scale
 	SDL_Rect dest = { (int)(position.x - camX), (int)(position.y - camY), currentClip->w * 2, currentClip->h * 2 };
@@ -239,7 +219,7 @@ void Player::render(int camX, int camY)
 	this->width = dest.w;
 	this->height = dest.h;
 
-	texture.render((int)(position.x - camX), (int)(position.y - camY), currentClip, dest, 0, NULL, flip);
+	texture.render((int)(position.x - camX), (int)(position.y - camY), currentClip, dest, 0, NULL, this->flip);
 }
 
 float Player::getPosX()
@@ -260,4 +240,20 @@ int Player::getWidth()
 int Player::getHeight()
 {
 	return this->texture.getHeight();
+}
+
+int Player::getFramesCount(PlayerStatus status)
+{
+	switch (status) {
+	case idle:
+		return 1;
+	case walking:
+		return 8;
+	case running:
+		return 4;
+	case jumping:
+		return 4;
+	default:
+		return 1;
+	}
 }

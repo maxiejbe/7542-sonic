@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "Vector2.h"
 #include "InputManager.h"
+#include "entities/Message.h"
 
 using namespace std;
 
@@ -27,6 +28,7 @@ public:
 	int getWidth();
 	int getHeight();
 private:
+	int getFramesCount(PlayerStatus status);
 	Texture texture;
 	Vector2 position;
 	Vector2 velocity;
@@ -36,6 +38,8 @@ private:
 	float groundPos;
 	bool isJumping;
 	float targetVelX;
+	SDL_RendererFlip flip;
+	PlayerStatus spriteState;
 };
 
 #endif // !PLAYER_H

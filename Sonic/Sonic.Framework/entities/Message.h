@@ -5,7 +5,7 @@
 #include <typeinfo>
 
 enum ConnectionStatus { assign, connected, disconnected };
-enum PlayerStatus { walking, running, jumping };
+enum PlayerStatus { idle, walking, running, jumping };
 
 class Message {
 public:

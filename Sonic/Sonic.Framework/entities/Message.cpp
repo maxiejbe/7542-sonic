@@ -1,6 +1,4 @@
 #include "Message.h"
-#include "Message.h"
-#include "Message.h"
 
 Message::Message(string message)
 {

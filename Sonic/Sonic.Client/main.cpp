@@ -137,6 +137,10 @@ int main(int argc, char* args[])
 			// Render player
 			player.render(camera.x, camera.y);
 
+			// TODO: render other players
+			// foreach player in players:
+			//		player.render(camera.x, camera.y);
+
 			SDL_RenderPresent(Renderer::getInstance().gRenderer);
 		}
 	}
