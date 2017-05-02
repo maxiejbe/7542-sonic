@@ -160,11 +160,13 @@
     <ClCompile Include="entities\common\ServerConfiguration.cpp" />
     <ClCompile Include="entities\Server.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="utils\SocketUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entities\Client.h" />
     <ClInclude Include="entities\common\ServerConfiguration.h" />
     <ClInclude Include="entities\Server.h" />
+    <ClInclude Include="utils\SocketUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sonic.Framework\Sonic.Framework.vcxproj">

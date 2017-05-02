@@ -6,6 +6,7 @@
 #include <iostream>
 #include <Ws2tcpip.h>
 #include <vector>
+#include <Logger.h>
 
 #include "Client.h"
 
