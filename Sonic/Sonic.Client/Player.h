@@ -8,6 +8,7 @@
 #include "Logger.h"
 #include "Texture.h"
 #include "Vector2.h"
+#include "InputManager.h"
 
 using namespace std;
 
@@ -16,7 +17,8 @@ class Player
 public:
 	Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH, int scrollSpeed);
 
-	void handleEvent(SDL_Event& e);
+	void update(float dt);
+	void updateInput();
 	void move(float timeStep);
 	void render(int camX, int camY);
 
@@ -27,12 +29,13 @@ public:
 private:
 	Texture texture;
 	Vector2 position;
-	//float posX, posY;
 	Vector2 velocity;
-	//float velX, velY;
 	int width, height;
 	int scenarioWidth, scenarioHeight;
 	int scrollSpeed;
+	float groundPos;
+	bool isJumping;
+	float targetVelX;
 };
 
 #endif // !PLAYER_H

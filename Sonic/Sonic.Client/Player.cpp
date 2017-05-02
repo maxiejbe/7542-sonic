@@ -14,15 +14,10 @@ const int ANIMATION_FRAMES = 8;
 SDL_Rect spriteClips[ANIMATION_STATES][ANIMATION_FRAMES];
 
 int spriteState = IDLE;
-int framesCount = 8;
+int framesCount = 1;
 SDL_RendererFlip flip = SDL_FLIP_NONE;
-bool isRunning = false;
 
 float gravity = 0.38f;
-bool isJumping = false;
-
-int runSpeed = 0;
-float ground;
 
 
 Player::Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH, int scrollSpeed)
@@ -121,113 +116,107 @@ Player::Player(string filePath, float x, float y, float velX, float velY, int sc
 		spriteClips[JUMP][3].w = 30;
 		spriteClips[JUMP][3].h = 27;
 	}
+
 	this->position = Vector2(x, y);
 	this->velocity = Vector2(velX, velY);
-	//this->width = texture.getWidth();
-	//this->height = texture.getHeight();
 	this->scenarioWidth = scenW;
 	this->scenarioHeight = scenH;
 	this->scrollSpeed = scrollSpeed;
-	runSpeed = scrollSpeed * 2;
-	ground = y;
+	this->groundPos = y;
+	this->isJumping = false;
 }
 
-void Player::handleEvent(SDL_Event& e)
+void Player::update(float dt)
 {
-	if (e.key.repeat == 0) {
-		switch (e.type) {
-		case SDL_KEYDOWN:
-			switch (e.key.keysym.sym) {
-			case SDLK_UP:
-				if (!isJumping) {
-					spriteState = JUMP;
-					framesCount = 4;
-					isJumping = true;
-					velocity.y -= 10;
-				}
-				break;
-			case SDLK_LEFT:
-				velocity.x -= isRunning ? runSpeed : scrollSpeed;
-				if (!isJumping) {
-					spriteState = isRunning ? RUN : WALK;
-					framesCount = isRunning ? 4 : 8;
-				}
-				flip = SDL_FLIP_HORIZONTAL;
-				break;
-			case SDLK_RIGHT:
-				velocity.x += isRunning ? runSpeed : scrollSpeed;
-				if (!isJumping) {
-					spriteState = isRunning ? RUN : WALK;
-					framesCount = isRunning ? 4 : 8;
-				}
-				flip = SDL_FLIP_NONE;
-				break;
-			case SDLK_SPACE:
-				isRunning = true;
-				if (spriteState == WALK) {
-					spriteState = RUN;
-					framesCount = 4;
-					if (velocity.x < 0)
-						velocity.x -= scrollSpeed;
-					else if (velocity.x > 0)
-						velocity.x += scrollSpeed;
-				}
-				break;
+	this->targetVelX = 0;
+
+	updateInput();
+	move(dt);
+}
+
+void Player::updateInput()
+{
+	InputManager* input = InputManager::getInstance();
+
+	float turbo = 2;
+
+	if (input->isKeyPressed(KEY_LEFT)) {
+		flip = SDL_FLIP_HORIZONTAL;
+		this->targetVelX = -scrollSpeed;
+		if (!this->isJumping) {
+			spriteState = WALK;
+			framesCount = 8;
+			if (input->isKeyPressed(KEY_SPACE)) {
+				this->targetVelX *= turbo;
+				spriteState = RUN;
+				framesCount = 4;
 			}
-			break;
-		case SDL_KEYUP:
-			switch (e.key.keysym.sym) {
-			case SDLK_LEFT:
-				if (velocity.x < 0) {
-					velocity.x += isRunning ? runSpeed : scrollSpeed;
-				}
-				if (!isJumping) {
-					spriteState = IDLE;
-					framesCount = 1;
-				}
-				break;
-			case SDLK_RIGHT:
-				if (velocity.x > 0) {
-					velocity.x -= isRunning ? runSpeed : scrollSpeed;
-				}
-				if (!isJumping) {
-					spriteState = IDLE;
-					framesCount = 1;
-				}
-				break;
-			case SDLK_SPACE:
-				isRunning = false;
-				if (spriteState == RUN) {
-					spriteState = WALK;
-					framesCount = 8;
-					if (velocity.x < 0)
-						velocity.x += scrollSpeed;
-					else if (velocity.x > 0)
-						velocity.x -= scrollSpeed;
-				}
-				break;
+		}
+	}
+
+	if (input->isKeyPressed(KEY_RIGHT)) {
+		flip = SDL_FLIP_NONE;
+		this->targetVelX = scrollSpeed;
+		if (!this->isJumping) {
+			spriteState = WALK;
+			framesCount = 8;
+			if (input->isKeyPressed(KEY_SPACE)) {
+				this->targetVelX *= turbo;
+				spriteState = RUN;
+				framesCount = 4;
 			}
-			break;
+		}
+	}
+
+	if (input->isKeyPressed(KEY_UP)) {
+		// TODO: extraer a jump()
+		if (!this->isJumping) {
+			spriteState = JUMP;
+			framesCount = 4;
+			this->isJumping = true;
+			velocity.y -= 10;
+		}
+	}
+
+	// En caso que se suelten a la vez la flecha y el space.
+	if (input->isKeyUp(KEY_LEFT) || input->isKeyUp(KEY_RIGHT)) {
+		if (input->isKeyPressed(KEY_SPACE) || input->isKeyUp(KEY_SPACE)) {
+			spriteState = WALK;
+			framesCount = 8;
 		}
 	}
 }
 
-void Player::move(float timeStep)
+void Player::move(float dt)
 {
-	position.x += velocity.x * timeStep;
+	// Weighted averaging acceleration method
+	float a = 0.08;
+	this->velocity.x = (a * this->targetVelX * dt) + ((1 - a) * this->velocity.x);
 
+	// TODO: extraer a isStopping()
+	if (fabs(this->velocity.x) < 0.4) {
+		if (this->velocity.x == 0 && spriteState == WALK) {
+			spriteState = IDLE;
+			framesCount = 1;
+		}
+		this->velocity.x = 0;
+	}
+
+	this->position.x += this->velocity.x;
+
+	// Que no se salga de los limites
 	if (position.x < 0)
 		position.x = 0;
 	else if (position.x > scenarioWidth - width)
 		position.x = (float)(scenarioWidth - width);
 
 	// Jump
-	if (isJumping) {
+	if (this->isJumping) {
 		velocity.y += gravity;
 
-		if ((position.y + velocity.y) >= ground) {
+		if ((position.y + velocity.y) >= this->groundPos) {
 			velocity.y = 0;
-			isJumping = false;
+			this->isJumping = false;
 			spriteState = IDLE;
 			framesCount = 1;
 		}

@@ -11,6 +11,7 @@
 #include "Renderer.h"
 #include "entities/Configuration.h"
 #include "entities/Scenario.h"
+#include "InputManager.h"
 
 void close();
 
@@ -75,36 +76,30 @@ int main(int argc, char* args[])
 		Timer stepTimer;
 		SDL_Rect camera = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
 
-		//Initialize menu
+		// Initialize menu
 		Menu menu = Menu();
 		int i = menu.ShowMenu();
 		if (i == 1) { isRunning = false; }
 
 		while (isRunning) {
 
-			// Check event type
-			while (SDL_PollEvent(&event) != 0) {
-				switch (event.type) {
-				case SDL_QUIT:
-					isRunning = false;
-					LOG(logINFO) << "El usuario ha solicitado la terminación del juego.";
-					break;
-				case SDL_KEYDOWN:
-					switch (event.key.keysym.sym) {
-					case SDLK_ESCAPE:
-					case SDLK_q:
-						i = menu.ShowMenu();
-						if (i == 1) { isRunning = false; }
-						LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
-						break;
-					}
-				}
-				player.handleEvent(event);
+			InputManager* input = InputManager::getInstance();
+			input->update();
+
+			if (input->quitRequested()) {
+				isRunning = false;
+				LOG(logINFO) << "El usuario ha solicitado la terminación del juego.";
+			}
+
+			if (input->isKeyDown(KEY_ESCAPE) || input->isKeyDown(KEY_Q)) {
+				i = menu.ShowMenu();
+				if (i == 1) { isRunning = false; }
+				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
 			}
 
 			float timeStep = stepTimer.getTicks() / 1000.f;
 
-			player.move(timeStep);
+			player.update(timeStep);
 
 			stepTimer.start();
 
