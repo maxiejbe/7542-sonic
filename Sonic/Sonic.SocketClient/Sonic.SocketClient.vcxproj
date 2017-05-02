@@ -115,15 +115,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ConnectionHandler.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MultiplayerManager.cpp" />
     <ClCompile Include="SocketClient.cpp" />
-    <ClCompile Include="SonicConnectionHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ConnectionHandler.h" />
+    <ClInclude Include="MultiplayerManager.h" />
     <ClInclude Include="SocketClient.h" />
-    <ClInclude Include="SonicConnectionHandler.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sonic.Framework\Sonic.Framework.vcxproj">
+      <Project>{e64ffe73-794b-4014-b67f-458b633431d6}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

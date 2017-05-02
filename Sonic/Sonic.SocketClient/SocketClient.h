@@ -5,7 +5,6 @@
 #include <windows.h>
 #include <iostream>
 #include <Ws2tcpip.h>
-#include "SocketHandler.h"
 #pragma comment(lib, "Ws2_32.lib")
 
 #define bzero(b,len) (memset((b), '\0', (len)), (void) 0) 
@@ -15,12 +14,13 @@ using namespace std;
 class SocketClient
 {
 public:
-	SocketClient(char* host, int port, SocketHandler* cHandler);
+	SocketClient(char* host, int port);
 	~SocketClient();
 	bool isInitialized();
 	bool isConnected();
 	bool reconnect();
 	bool sendMessage(char * message);
+	bool receiveMessage(char * receivedMessage, int receivedMessageLength);
 private:
 	SOCKET _socket;
 	char* host;
@@ -28,8 +28,6 @@ private:
 	struct addrinfo * addressInfo;
 	bool initialized;
 	bool connected;
-	DWORD threadId;
-	SocketHandler * sHandler;
 
 	/*** INITIALIZATION ***/
 	bool initializeWindowsSupport();
@@ -38,8 +36,6 @@ private:
 
 	/* SOCKET CONNECTION*/
 	void connectToSocket();
-	static DWORD WINAPI runSocketRecvHandling(void * args);
-	DWORD socketRecvHandler();
 
 	void disconnectSocket();
 	void freeResources();
