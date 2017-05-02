@@ -7,6 +7,9 @@
 #include "Renderer.h"
 #include "Logger.h"
 #include "Texture.h"
+#include "Vector2.h"
+#include "InputManager.h"
+#include "entities/Message.h"
 
 using namespace std;
 
@@ -15,7 +18,8 @@ class Player
 public:
 	Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH, int scrollSpeed);
 
-	void handleEvent(SDL_Event& e);
+	void update(float dt);
+	void updateInput();
 	void move(float timeStep);
 	void render(int camX, int camY);
 
@@ -24,12 +28,18 @@ public:
 	int getWidth();
 	int getHeight();
 private:
+	int getFramesCount(PlayerStatus status);
 	Texture texture;
-	float posX, posY;
-	float velX, velY;
+	Vector2 position;
+	Vector2 velocity;
 	int width, height;
 	int scenarioWidth, scenarioHeight;
 	int scrollSpeed;
+	float groundPos;
+	bool isJumping;
+	float targetVelX;
+	SDL_RendererFlip flip;
+	PlayerStatus spriteState;
 };
 
 #endif // !PLAYER_H

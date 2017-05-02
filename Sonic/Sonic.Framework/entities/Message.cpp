@@ -18,6 +18,11 @@ void Message::setPosition(int positionX, int positionY)
 	this->positionY = positionY;
 }
 
+void Message::setConnectionStatus(ConnectionStatus connectionStatus)
+{
+	this->connectionStatus = connectionStatus;
+}
+
 //http://stackoverflow.com/questions/5888022/split-string-by-single-spaces
 void Message::fromString(string message)
 {
@@ -45,6 +50,12 @@ void Message::toString(string* message)
 		ss << DELIMITER;
 	}
 	*message = ss.str();
+}
+
+bool Message::validate()
+{
+	//if (this->playerNumber < 0) return false;
+	return true;
 }
 
 void Message::initializeProperties()

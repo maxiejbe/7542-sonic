@@ -17,6 +17,8 @@ public:
 	//void setBlendMode(SDL_BlendMode blending);
 	//void setAlpha(Uint8 alpha);
 	void render(int x, int y, SDL_Rect* clip = NULL);
+	//void render(int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip);
+	void Texture::render(int x, int y, SDL_Rect* clip, SDL_Rect dest, double angle, SDL_Point* center, SDL_RendererFlip flip);
 
 	int getWidth();
 	int getHeight();

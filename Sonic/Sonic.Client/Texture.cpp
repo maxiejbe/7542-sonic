@@ -62,6 +62,12 @@ void Texture::render(int x, int y, SDL_Rect* clip)
 	SDL_RenderCopy(Renderer::getInstance().gRenderer, texture, clip, &renderQuad);
 }
 
+void Texture::render(int x, int y, SDL_Rect* clip, SDL_Rect dest, double angle, SDL_Point* center, SDL_RendererFlip flip)
+{
+	SDL_RenderCopyEx(Renderer::getInstance().gRenderer, texture, clip, &dest, angle, center, flip);
+}
+
+
 int Texture::getWidth()
 {
 	return width;
