@@ -42,7 +42,7 @@ void Message::toString(string* message)
 	{
 		ss << to_string(*((int*)properties[i]));
 		if (i == (propertiesSize - 1)) continue;
-		ss << "|";
+		ss << DELIMITER;
 	}
 	*message = ss.str();
 }

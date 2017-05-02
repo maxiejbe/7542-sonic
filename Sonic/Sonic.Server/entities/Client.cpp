@@ -1,5 +1,16 @@
 #include "Client.h"
 
+const char* MESSAGE_CLIENT_INCOMING_CONNECTION = "Conexión entrante desde IP: ";
+const char* MESSAGE_CLIENT_REJECTED_CONNECTION = "Error aceptando conexión. ";
+const char* MESSAGE_CLIENT_ACCEPTED_CONNECTION = "Conexión aceptada. Asignado el número de cliente ";
+
+const char* MESSAGE_CLIENT_CONNECTION_CLOSED = "Se cerró la conexión con el cliente ";
+
+const char* MESSAGE_CLIENT_ERROR_CODE = "Código de error: ";
+
+const char* MESSAGE_CLIENT_DATA_RECV_INCORRECT = "No se pudo recibir correctamente el mensaje. ";
+const char* MESSAGE_CLIENT_DATA_RECV_SUCCESS = "Se recibió correctamente el mensaje: ";
+
 Client::Client(Server* server, int clientNumber)
 {
 	this->clientNumber = clientNumber;
@@ -15,13 +26,16 @@ bool Client::acceptSocket()
 {
 	int addressSize = sizeof(address);
 	this->socket = accept(this->server->getSocket(), (struct sockaddr *)&address, &addressSize);
-	cout << SocketUtils::getIpFromAddress(address) << endl;
-
+	
+	string clientIp = SocketUtils::getIpFromAddress(address);
+	LOG(logINFO) << MESSAGE_CLIENT_INCOMING_CONNECTION << clientIp;
+	
 	if (this->socket == INVALID_SOCKET) {
-		//TODO: Log in file
-		fprintf(stderr, "Error accepting %d\n", WSAGetLastError());
+		LOG(logERROR) << MESSAGE_CLIENT_REJECTED_CONNECTION << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError() << " (IP: " << clientIp << ")";
 		return false;
 	}
+
+	LOG(logINFO) << MESSAGE_CLIENT_ACCEPTED_CONNECTION << this->clientNumber;
 
 	CreateThread(0, 0, runSocketHandler, (void*)this, 0, &this->threadId);
 	return true;
@@ -53,23 +67,32 @@ void Client::handleRecievedMessage(char* recievedMessage)
 DWORD Client::socketHandler() {
 	char recievedMessage[1024];
 	int recievedMessageLen = 1024;
-	int bytecount;
+	int bytecount = INT_MAX;
 
-	do {
+	while (bytecount > 0) {
 		memset(recievedMessage, 0, recievedMessageLen);
 		if ((bytecount = recv(this->socket, recievedMessage, recievedMessageLen, 0)) == SOCKET_ERROR) {
-			//TODO: Log in file
-			fprintf(stderr, "Error receiving data %d\n", WSAGetLastError());
+			LOG(logERROR) << MESSAGE_CLIENT_DATA_RECV_INCORRECT << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError() << " (Cliente " << this->clientNumber << ")";
 			return 0;
 		}
-		printf("Received bytes %d\nReceived string \"%s\"\n", bytecount, recievedMessage);
+		
+		LOG(logINFO) << MESSAGE_CLIENT_DATA_RECV_SUCCESS << recievedMessage << " (Cliente " << this->clientNumber << ")";
+
+		//string strMessage(recievedMessage);
+		//Message message(strMessage);
+		
+		//string convertedMessage;
+		//message.toString(&convertedMessage);
+
+		//printf("Received bytes %d\nReceived string \"%s\"\n", bytecount, recievedMessage /*convertedMessage.c_str()*/);
 		
 		this->handleRecievedMessage(recievedMessage);
+		
+	};
 
-	} while (bytecount > 0);
+	LOG(logINFO) << MESSAGE_CLIENT_CONNECTION_CLOSED << this->clientNumber;
 
 	this->server->removeClientConnection(this->clientNumber);
 
-	cout << "Connection closed." << endl;
 	return 0;
 }
