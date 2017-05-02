@@ -11,6 +11,10 @@ const char* MESSAGE_CLIENT_ERROR_CODE = "Código de error: ";
 const char* MESSAGE_CLIENT_DATA_RECV_INCORRECT = "No se pudo recibir correctamente el mensaje. ";
 const char* MESSAGE_CLIENT_DATA_RECV_SUCCESS = "Se recibió correctamente el mensaje: ";
 
+const char* MESSAGE_CLIENT_SEND_MESSAGE_ERROR = "No se pudo enviar el mensaje ";
+const char* MESSAGE_CLIENT_SEND_MESSAGE_SUCCESS = "Se envió correctamente el mensaje ";
+
+
 Client::Client(Server* server, int clientNumber)
 {
 	this->clientNumber = clientNumber;
@@ -36,6 +40,18 @@ bool Client::acceptSocket()
 	}
 
 	LOG(logINFO) << MESSAGE_CLIENT_ACCEPTED_CONNECTION << this->clientNumber;
+
+	int bytecount;
+	Message message(this->clientNumber);
+	message.setConnectionStatus(ConnectionStatus::assign);
+	string stringMessage;
+	message.toString(&stringMessage);
+
+	if ((bytecount = send(this->socket, stringMessage.c_str(), strlen(stringMessage.c_str()), 0)) == SOCKET_ERROR) {
+		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << stringMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
+			<< " (Cliente " << this->clientNumber << ")";
+		return false;
+	}
 
 	CreateThread(0, 0, runSocketHandler, (void*)this, 0, &this->threadId);
 	return true;
@@ -78,16 +94,17 @@ DWORD Client::socketHandler() {
 		
 		LOG(logINFO) << MESSAGE_CLIENT_DATA_RECV_SUCCESS << recievedMessage << " (Cliente " << this->clientNumber << ")";
 
-		//string strMessage(recievedMessage);
-		//Message message(strMessage);
+		string strMessage(recievedMessage);
+		Message message(strMessage);
+		
+		if (message.validate()) {
+			this->handleRecievedMessage(recievedMessage);
+		}
 		
 		//string convertedMessage;
 		//message.toString(&convertedMessage);
 
 		//printf("Received bytes %d\nReceived string \"%s\"\n", bytecount, recievedMessage /*convertedMessage.c_str()*/);
-		
-		this->handleRecievedMessage(recievedMessage);
-		
 	};
 
 	LOG(logINFO) << MESSAGE_CLIENT_CONNECTION_CLOSED << this->clientNumber;

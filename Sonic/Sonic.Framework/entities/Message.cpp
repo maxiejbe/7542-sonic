@@ -1,4 +1,6 @@
 #include "Message.h"
+#include "Message.h"
+#include "Message.h"
 
 Message::Message(string message)
 {
@@ -16,6 +18,11 @@ void Message::setPosition(int positionX, int positionY)
 {
 	this->positionX = positionX;
 	this->positionY = positionY;
+}
+
+void Message::setConnectionStatus(ConnectionStatus connectionStatus)
+{
+	this->connectionStatus = connectionStatus;
 }
 
 //http://stackoverflow.com/questions/5888022/split-string-by-single-spaces
@@ -45,6 +52,12 @@ void Message::toString(string* message)
 		ss << DELIMITER;
 	}
 	*message = ss.str();
+}
+
+bool Message::validate()
+{
+	//if (this->playerNumber < 0) return false;
+	return true;
 }
 
 void Message::initializeProperties()
