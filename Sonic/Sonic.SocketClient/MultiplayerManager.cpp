@@ -161,6 +161,7 @@ vector<MockPlayer*> MultiplayerManager::getRivals()
 	while (it != this->rivals->end()) {
 		//delete all players
 		rivalsList.push_back(it->second);
+		it++;
 	}
 
 	return rivalsList;
