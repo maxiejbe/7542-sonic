@@ -103,6 +103,7 @@ Player::Player(string filePath, float x, float y, float velX, float velY, int sc
 		spriteClips[PlayerStatus::jumping][3].h = 27;
 	}
 
+	this->number = -1;
 	this->position = Vector2(x, y);
 	this->velocity = Vector2(velX, velY);
 	this->scenarioWidth = scenW;
@@ -222,14 +223,44 @@ void Player::render(int camX, int camY)
 	texture.render((int)(position.x - camX), (int)(position.y - camY), currentClip, dest, 0, NULL, this->flip);
 }
 
+void Player::setNumber(int number)
+{
+	this->number = number;
+}
+
+int Player::getNumber()
+{
+	return this->number;
+}
+
 float Player::getPosX()
 {
 	return this->position.x;
 }
 
+void Player::setPosX(float x)
+{
+	this->position.x = x;
+}
+
 float Player::getPosY()
 {
 	return this->position.y;
+}
+
+void Player::setPosY(float y)
+{
+	this->position.y = y;
+}
+
+void Player::setPlayerStatus(PlayerStatus status)
+{
+	this->spriteState = status;
+}
+
+PlayerStatus Player::getPlayerStatus()
+{
+	return this->spriteState;
 }
 
 int Player::getWidth()

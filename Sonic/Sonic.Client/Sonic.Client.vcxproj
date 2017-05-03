@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Banner.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="utils\img_crop\CircleImageCropper.cpp" />
     <ClCompile Include="entities\common\Drawable.cpp" />
@@ -63,6 +64,7 @@
   <ItemGroup>
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="InputTable.h" />
+    <ClInclude Include="Banner.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="utils\img_crop\CircleImageCropper.h" />
     <ClInclude Include="entities\common\Drawable.h" />

@@ -23,8 +23,17 @@ public:
 	void move(float timeStep);
 	void render(int camX, int camY);
 
+	void setNumber(int number);
+	int getNumber();
+
 	float getPosX();
+	void setPosX(float x);
 	float getPosY();
+	void setPosY(float y);
+
+	void setPlayerStatus(PlayerStatus status);
+	PlayerStatus getPlayerStatus();
+
 	int getWidth();
 	int getHeight();
 private:
@@ -38,6 +47,7 @@ private:
 	float groundPos;
 	bool isJumping;
 	float targetVelX;
+	int number;
 	SDL_RendererFlip flip;
 	PlayerStatus spriteState;
 };

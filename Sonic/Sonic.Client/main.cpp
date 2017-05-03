@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Parser.h"
 #include "Menu.h"
+#include "Banner.h"
 #include "Entities/Window.h"
 #include "Renderer.h"
 #include "entities/Configuration.h"
@@ -82,19 +83,28 @@ int main(int argc, char* args[])
 		if (i == 1) { isRunning = false; }
 
 		while (isRunning) {
+			// Check event type
+			while (SDL_PollEvent(&event) != 0) {
+				if (event.key.keysym.sym == SDLK_ESCAPE)
+				{
+					i = menu.ShowMenu();
+					if (i == 1) { isRunning = false; }
+					LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
+				}
+				//TODO: When is not connect (change if)
+				if (event.key.keysym.sym == SDLK_DELETE)
+				{
+					Banner banner = Banner();
+					i = banner.ShowBanner();
+					if (i == 1) { isRunning = false; }
+					LOG(logINFO) << "El usuario ha solicitado ingresar al banner del juego.";
+				}
+				if (event.type == SDL_QUIT) {
+					isRunning = false;
+					LOG(logINFO) << "El usuario ha solicitado la terminación del juego.";
+				}
 
-			InputManager* input = InputManager::getInstance();
-			input->update();
-
-			if (input->quitRequested()) {
-				isRunning = false;
-				LOG(logINFO) << "El usuario ha solicitado la terminación del juego.";
-			}
-
-			if (input->isKeyDown(KEY_ESCAPE) || input->isKeyDown(KEY_Q)) {
-				i = menu.ShowMenu();
-				if (i == 1) { isRunning = false; }
-				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
+				player.handleEvent(event);
 			}
 
 			float timeStep = stepTimer.getTicks() / 1000.f;

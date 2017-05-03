@@ -18,9 +18,34 @@ void Message::setPosition(int positionX, int positionY)
 	this->positionY = positionY;
 }
 
+int Message::getXPosition()
+{
+	return this->positionX;
+}
+
+int Message::getYPosition()
+{
+	return this->positionY;
+}
+
 void Message::setConnectionStatus(ConnectionStatus connectionStatus)
 {
 	this->connectionStatus = connectionStatus;
+}
+
+ConnectionStatus Message::getConnectionStatus()
+{
+	return this->connectionStatus;
+}
+
+void Message::setPlayerNumber(int number)
+{
+	this->playerNumber = number;
+}
+
+int Message::getNumber()
+{
+	return this->playerNumber;
 }
 
 //http://stackoverflow.com/questions/5888022/split-string-by-single-spaces

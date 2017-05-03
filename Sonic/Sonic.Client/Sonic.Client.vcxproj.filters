@@ -82,6 +82,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
+    <ClCompile Include="Banner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -156,6 +157,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InputTable.h">
+    <ClInclude Include="Banner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
