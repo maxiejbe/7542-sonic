@@ -18,6 +18,7 @@ public:
 	~SocketClient();
 	bool isInitialized();
 	bool isConnected();
+	bool isTerminated();
 	bool reconnect();
 	bool sendMessage(char * message);
 	bool receiveMessage(char * receivedMessage, int receivedMessageLength);
@@ -27,6 +28,7 @@ private:
 	int port;
 	struct addrinfo * addressInfo;
 	bool initialized;
+	bool terminated;
 	bool connected;
 
 	/*** INITIALIZATION ***/
@@ -37,6 +39,7 @@ private:
 	/* SOCKET CONNECTION*/
 	void connectToSocket();
 
+	void terminateConnection();
 	void disconnectSocket();
 	void freeResources();
 };

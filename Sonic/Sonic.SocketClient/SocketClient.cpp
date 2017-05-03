@@ -7,6 +7,7 @@ SocketClient::SocketClient(char * host, int port)
 	this->port = port;
 	this->addressInfo = NULL;
 	this->_socket = INVALID_SOCKET;
+	this->terminated = false;
 	this->initialized = false;
 
 	if (!this->initializeWindowsSupport()) { return; }
@@ -36,8 +37,17 @@ bool SocketClient::isConnected()
 	return this->connected;
 }
 
+bool SocketClient::isTerminated() 
+{
+	return this->terminated;
+}
+
 bool SocketClient::sendMessage(char * message)
 {	
+	if (!this->initialized || !this->connected || this->terminated) {
+		return false;
+	}
+
 	char buffer[1024];
 	int bufferSize = 1024;
 	memset(buffer, 0, bufferSize);
@@ -56,17 +66,22 @@ bool SocketClient::sendMessage(char * message)
 }
 
 bool SocketClient::receiveMessage(char * receivedMessage, int receivedMessageLength) {
+	if (!this->initialized || !this->connected || this->terminated) {
+		return false;
+	}
+
 	memset(receivedMessage, 0, receivedMessageLength);
 	int bytecount = recv(this->_socket, receivedMessage, receivedMessageLength, 0);
 	if (bytecount == SOCKET_ERROR) {
 		//TODO: Log in file
-		//TODO: handle error
 		//fprintf(stderr, "Error receiving data %d\n", WSAGetLastError());
+		this->terminateConnection();
 		return false;
 	}
 
 	if (bytecount == 0) {
 		this->disconnectSocket();
+		return false;
 	}
 
 	return true;
@@ -142,13 +157,22 @@ bool SocketClient::reconnect()
 	return this->connected;
 }
 
+
+void SocketClient::terminateConnection() 
+{
+	this->terminated = true;
+	this->disconnectSocket();
+}
+
 void SocketClient::disconnectSocket() 
 {
+	this->connected = false;
 	if (this->_socket){closesocket(this->_socket);}
 }
 
 void SocketClient::freeResources()
 {
+	this->initialized = false;
 	if (this->_socket) { this->_socket = INVALID_SOCKET; }
 	if (this->addressInfo) { freeaddrinfo(this->addressInfo); }
 	WSACleanup();

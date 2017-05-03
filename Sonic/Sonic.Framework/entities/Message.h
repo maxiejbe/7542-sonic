@@ -11,8 +11,16 @@ class Message {
 public:
 	Message(string);
 	Message(int);
+
 	void setPosition(int, int);
+	int getXPosition();
+	int getYPosition();
+
 	void setConnectionStatus(ConnectionStatus);
+	ConnectionStatus getConnectionStatus();
+
+	void setPlayerNumber(int);
+	int getNumber();
 
 	void fromString(string);
 	void toString(string*);
