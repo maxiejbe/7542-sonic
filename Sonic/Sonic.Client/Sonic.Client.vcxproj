@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Banner.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="utils\img_crop\CircleImageCropper.cpp" />
     <ClCompile Include="entities\common\Drawable.cpp" />
@@ -59,6 +60,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Banner.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="utils\img_crop\CircleImageCropper.h" />
     <ClInclude Include="entities\common\Drawable.h" />
