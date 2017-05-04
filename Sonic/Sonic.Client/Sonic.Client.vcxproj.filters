@@ -48,13 +48,22 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="entities\common\Drawable.cpp">
+    <ClCompile Include="views\common\Drawable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="entities\EntityView.cpp">
+    <ClCompile Include="views\CircleView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="entities\CircleView.cpp">
+    <ClCompile Include="views\EntityView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="views\SquareView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="views\RectangleView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="views\LayerView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -95,13 +104,22 @@
     <ClInclude Include="InputTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="entities\common\Drawable.h">
+    <ClInclude Include="views\common\Drawable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="entities\EntityView.h">
+    <ClInclude Include="views\CircleView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="entities\CircleView.h">
+    <ClInclude Include="views\EntityView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="views\SquareView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="views\RectangleView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="views\LayerView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

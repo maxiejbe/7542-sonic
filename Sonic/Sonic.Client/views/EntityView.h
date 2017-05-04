@@ -13,6 +13,7 @@ using namespace std;
 
 class EntityView : public Drawable {
 public:
+	EntityView();
 	EntityView(Entity* entity);
 
 	void draw(SDL_Rect camera) override;

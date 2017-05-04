@@ -13,6 +13,7 @@ public:
 
 	int getZIndex();
 	string getImagePath();
+	void setImagePath(string imagePath);
 	bool operator< (const Layer &other) const {
 		return zIndex < other.zIndex;
 	}

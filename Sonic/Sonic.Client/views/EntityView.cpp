@@ -2,6 +2,10 @@
 
 const string ENTITY_VIEW_EMPTY_IMAGE_PATH = ""; // Vacio = no hay imagen (solo color)
 
+EntityView::EntityView()
+{
+}
+
 EntityView::EntityView(Entity * entity)
 {
 	this->entity = entity;

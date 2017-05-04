@@ -1,12 +1,17 @@
-#include "Rectangle.h"
+#include "RectangleView.h"
 
-const int RECTANGLE_DEFAULT_WIDTH = 200;
-const int RECTANGLE_DEFAULT_HEIGHT = 250;
-const int RECTANGLE_DEFAULT_RADIO = 0;
+RectangleView::RectangleView()
+{
+}
 
-void Rectangle::draw(SDL_Rect camera) {
+void RectangleView::draw(SDL_Rect camera) {
 	SDL_Renderer * gRenderer = Renderer::getInstance().gRenderer;
 	if (gRenderer != NULL) {
+		
+		Coordinate coordinate = this->entity->getCoordinate();
+		Dimensions dimensions = this->entity->getDimensions();
+		string imagePath = this->entity->getImagePath();
+
 		// Draw color
 		int x1 = coordinate.getX() - camera.x;
 		int x2 = x1 + dimensions.getWidth();
@@ -22,7 +27,7 @@ void Rectangle::draw(SDL_Rect camera) {
 
 		// Try to load image
 		if (texture.getTexture() == nullptr && !texture.loadFromFile(imagePath)) {
-			this->imagePath = "img/image-not-found.png";
+			this->entity->setImagePath("img/image-not-found.png");
 			this->imageCrop = true;
 			return;
 		}
@@ -47,10 +52,5 @@ void Rectangle::draw(SDL_Rect camera) {
 	else {
 		LOG(logERROR) << "No se pudo dibujar el rectangulo. El renderer es nulo.";
 	}
-}
-
-Dimensions Rectangle::getDefaultDimensions()
-{
-	return Dimensions(RECTANGLE_DEFAULT_WIDTH, RECTANGLE_DEFAULT_HEIGHT, RECTANGLE_DEFAULT_RADIO);
 }
 

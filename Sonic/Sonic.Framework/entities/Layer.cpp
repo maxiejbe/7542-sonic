@@ -45,3 +45,8 @@ string Layer::getImagePath()
 	return imagePath;
 }
 
+void Layer::setImagePath(string imagePath)
+{
+	this->imagePath = imagePath;
+}
+
