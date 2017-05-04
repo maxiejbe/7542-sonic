@@ -80,7 +80,7 @@ void Entity::setImagePath(string imagePath)
 
 string Entity::getImagePath()
 {
-	return color;
+	return imagePath;
 }
 
 Coordinate Entity::getCoordinate()

@@ -56,7 +56,7 @@
       },
       {
         "id": 3,
-        "tiponnn": "rectangulo",
+        "tipo": "rectangulo",
         "color": "rojo",
         "dimensiones": {
           "ancho": 300,

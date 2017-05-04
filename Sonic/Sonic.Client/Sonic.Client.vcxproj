@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="views\CircleView.cpp" />
     <ClCompile Include="views\common\Drawable.cpp" />
+    <ClCompile Include="views\common\EntityViewResolver.cpp" />
     <ClCompile Include="views\EntityView.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -57,6 +58,7 @@
   <ItemGroup>
     <ClInclude Include="views\CircleView.h" />
     <ClInclude Include="views\common\Drawable.h" />
+    <ClInclude Include="views\common\EntityViewResolver.h" />
     <ClInclude Include="views\EntityView.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="InputTable.h" />

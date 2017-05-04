@@ -66,6 +66,9 @@
     <ClCompile Include="views\LayerView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="views\common\EntityViewResolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -120,6 +123,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="views\LayerView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="views\common\EntityViewResolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

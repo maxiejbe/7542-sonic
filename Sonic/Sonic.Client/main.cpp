@@ -13,6 +13,11 @@
 #include "entities/Scenario.h"
 #include "InputManager.h"
 
+#include "views/LayerView.h"
+#include "views/EntityView.h"
+
+#include "views/common/EntityViewResolver.h"
+
 void close();
 
 void close()
@@ -54,6 +59,24 @@ int main(int argc, char* args[])
 	int scenarioWidth = scenario.getWidth();
 	int scenarioHeight = scenario.getHeight();
 
+	// Initialize layers
+	vector<Layer> layers = scenario.getLayers();
+	vector<LayerView> layerViews;
+	for (vector<Layer>::iterator it = layers.begin(); it != layers.end(); ++it) {
+		Layer* layer = &(*it);
+		LayerView layerView(layer);
+		layerViews.push_back(layerView);
+	}
+
+	//Initialize entities
+	vector<Entity*> entities = scenario.getEntities();
+	vector<EntityView*> entityViews;
+	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it) {
+		Entity* entity = *it;
+		EntityView* entityView = EntityViewResolver::resolve(entity);
+		entityViews.push_back(entityView);
+	}
+	
 	if (!SDLWindow::getInstance().create(window.getWidth(), window.getHeight()) || !Renderer::getInstance().create()) {
 		LOG(logERROR) << "Error al inicializar el juego!";
 	}
@@ -61,11 +84,10 @@ int main(int argc, char* args[])
 		bool isRunning = true;
 		SDL_Event event;
 
-		// Initialize layers
-		vector<Layer> layers = scenario.getLayers();
-		for (vector<Layer>::iterator it = layers.begin(); it != layers.end(); ++it) {
-			Layer* layer = &(*it);
-			//layer->loadLayer();
+		//Load layers
+		for (vector<LayerView>::iterator it = layerViews.begin(); it != layerViews.end(); ++it) {
+			LayerView* layerView = &(*it);
+			layerView->loadLayer();
 		}
 
 		// Initialize player
@@ -123,15 +145,15 @@ int main(int argc, char* args[])
 			SDL_RenderClear(Renderer::getInstance().gRenderer);
 
 			// Render layers
-			for (size_t i = 0; i < layers.size(); i++) {
-				Layer* layer = &(layers.at(i));
-				//layer->renderLayer(0, 0, &camera);
+			for (vector<LayerView>::iterator it = layerViews.begin(); it != layerViews.end(); ++it) {
+				LayerView* layerView = &(*it);
+				layerView->renderLayer(0, 0, &camera);
 			}
-
+			
 			// Render entities
-			for (size_t i = 0; i < scenario.getEntities().size(); i++) {
-				Entity* entity = scenario.getEntities().at(i);
-				//entity->draw(camera);
+			for (vector<EntityView*>::iterator it = entityViews.begin(); it != entityViews.end(); ++it) {
+				EntityView* entityView = *it;
+				entityView->draw(camera);
 			}
 
 			// Render player
@@ -143,6 +165,12 @@ int main(int argc, char* args[])
 
 			SDL_RenderPresent(Renderer::getInstance().gRenderer);
 		}
+	}
+
+	//Dispose entity views
+	for (vector<EntityView*>::iterator it = entityViews.begin(); it != entityViews.end(); ++it) {
+		EntityView* entityView = *it;
+		delete entityView;
 	}
 
 	close();
