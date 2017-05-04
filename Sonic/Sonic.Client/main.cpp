@@ -12,6 +12,7 @@
 #include "entities/Configuration.h"
 #include "entities/Scenario.h"
 #include "InputManager.h"
+#include "network\NetworkManager.h"
 
 #include "views/LayerView.h"
 #include "views/EntityView.h"
@@ -24,6 +25,7 @@ void close()
 {
 	SDLWindow::getInstance().close();
 	Renderer::getInstance().close();
+	NetworkManager::getInstance().close();
 
 	IMG_Quit();
 	SDL_Quit();
@@ -76,6 +78,10 @@ int main(int argc, char* args[])
 		EntityView* entityView = EntityViewResolver::resolve(entity);
 		entityViews.push_back(entityView);
 	}
+
+	//Initialize network manager
+	//TODO: inicializar cliente desde config
+	NetworkManager::getInstance().startClient("127.0.0.1",5000);
 
 	if (!SDLWindow::getInstance().create(window.getWidth(), window.getHeight()) || !Renderer::getInstance().create()) {
 		LOG(logERROR) << "Error al inicializar el juego!";

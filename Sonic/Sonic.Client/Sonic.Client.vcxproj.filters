@@ -21,6 +21,7 @@
     <ClCompile Include="views\RectangleView.cpp" />
     <ClCompile Include="views\SquareView.cpp" />
     <ClCompile Include="network\SocketClient.cpp" />
+    <ClCompile Include="network\NetworkManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="views\CircleView.h" />
@@ -44,6 +45,7 @@
     <ClInclude Include="views\RectangleView.h" />
     <ClInclude Include="views\SquareView.h" />
     <ClInclude Include="network\SocketClient.h" />
+    <ClInclude Include="network\NetworkManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sonic.rc" />

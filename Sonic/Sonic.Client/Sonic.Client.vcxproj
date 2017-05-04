@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="network\NetworkManager.cpp" />
     <ClCompile Include="network\SocketClient.cpp" />
     <ClCompile Include="views\CircleView.cpp" />
     <ClCompile Include="views\common\Drawable.cpp" />
@@ -58,6 +59,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="network\NetworkManager.h" />
     <ClInclude Include="network\SocketClient.h" />
     <ClInclude Include="views\CircleView.h" />
     <ClInclude Include="views\common\Drawable.h" />
