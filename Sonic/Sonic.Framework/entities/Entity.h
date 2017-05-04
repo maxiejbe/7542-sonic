@@ -18,6 +18,13 @@ public:
 	virtual Dimensions getDefaultDimensions();
 	
 	string getType();
+	string getColor();
+	string getImagePath();
+	void setImagePath(string);
+
+	Coordinate getCoordinate();
+	Dimensions getDimensions();
+
 	bool operator< (const Entity &other) const {
 		return zIndex < other.zIndex;
 	}
@@ -29,8 +36,7 @@ protected:
 	Coordinate coordinate;
 	string imagePath;
 	int zIndex;
-	bool imageCrop;
-
+	
 	void setColor(string color);
 
 	// Inherited via Serializable

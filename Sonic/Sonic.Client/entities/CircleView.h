@@ -1,23 +1,23 @@
-#ifndef CIRCLE_H
-#define CIRCLE_H
+#ifndef CIRCLE_VIEW_H
+#define CIRCLE_VIEW_H
 
-#include "Entity.h"
+#include "EntityView.h"
 #include "common/Drawable.h"
 #include "../utils/img_crop/CircleImageCropper.h"
 #include <exception>
 
-class Circle : public Entity {
+class CircleView : public EntityView {
 private:
 	CircleImageCropper imgCropper;
 	bool cropperInitialized;
 	void initializeCropper();
 	void drawWithImage(SDL_Rect camera);
 public:
-	Circle();
-	Circle(Entity* entity);
-	virtual void draw(SDL_Rect camera) override;
+	CircleView(Entity* entity) : EntityView(entity) {
+		cropperInitialized = false;
+	}
 	
-	virtual Dimensions getDefaultDimensions() override;
+	virtual void draw(SDL_Rect camera) override;
 };
 
 #endif // !CIRCLE_H

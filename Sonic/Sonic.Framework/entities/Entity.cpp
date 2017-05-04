@@ -35,10 +35,6 @@ Entity::Entity(Entity* entity)
 	this->dimensions = entity->dimensions;
 	this->coordinate = entity->coordinate;
 	this->imagePath = entity->imagePath;
-	this->imageCrop = true;
-	if (this->imagePath == ENTITY_DEFAULT_IMAGE_PATH) {
-		this->imageCrop = false;
-	}
 	this->zIndex = entity->zIndex;
 }
 
@@ -70,6 +66,31 @@ Dimensions Entity::getDefaultDimensions()
 string Entity::getType()
 {
 	return type;
+}
+
+string Entity::getColor()
+{
+	return color;
+}
+
+void Entity::setImagePath(string imagePath)
+{
+	this->imagePath = imagePath;
+}
+
+string Entity::getImagePath()
+{
+	return color;
+}
+
+Coordinate Entity::getCoordinate()
+{
+	return coordinate;
+}
+
+Dimensions Entity::getDimensions()
+{
+	return dimensions;
 }
 
 void Entity::unserialize(Value * nodeRef)
