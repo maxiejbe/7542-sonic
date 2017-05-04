@@ -1,8 +1,8 @@
 #ifndef SERVER_CONFIGURATION_H
 #define SERVER_CONFIGURATION_H
 
-#include "entities/Serializable.h"
-#include "entities/Validator.h"
+#include "entities/common/Serializable.h"
+#include "entities/common/Validator.h"
 
 class ServerConfiguration: public Serializable {
 public:

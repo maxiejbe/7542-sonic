@@ -65,7 +65,7 @@ int main(int argc, char* args[])
 		vector<Layer> layers = scenario.getLayers();
 		for (vector<Layer>::iterator it = layers.begin(); it != layers.end(); ++it) {
 			Layer* layer = &(*it);
-			layer->loadLayer();
+			//layer->loadLayer();
 		}
 
 		// Initialize player
@@ -125,13 +125,13 @@ int main(int argc, char* args[])
 			// Render layers
 			for (size_t i = 0; i < layers.size(); i++) {
 				Layer* layer = &(layers.at(i));
-				layer->renderLayer(0, 0, &camera);
+				//layer->renderLayer(0, 0, &camera);
 			}
 
 			// Render entities
 			for (size_t i = 0; i < scenario.getEntities().size(); i++) {
 				Entity* entity = scenario.getEntities().at(i);
-				entity->draw(camera);
+				//entity->draw(camera);
 			}
 
 			// Render player
