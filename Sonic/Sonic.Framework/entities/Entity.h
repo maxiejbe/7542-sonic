@@ -2,27 +2,29 @@
 #define ENTITY_H
 
 #include <string>
-#include <SDL.h>
 #include "Dimensions.h"
 #include "Coordinate.h"
-#include "../Renderer.h"
-#include "Texture.h"
-#include "common/Drawable.h"
+#include "common/Serializable.h"
+#include "common/Validator.h"
 
 using namespace std;
 
-class Entity : public Serializable, public Drawable {
+class Entity : public Serializable {
 public:
 	Entity();
 	Entity(Entity* entity);
-	void draw(SDL_Rect camera) override;
 	virtual bool validate();
 
 	virtual Dimensions getDefaultDimensions();
 	
-	Uint32 getColorRgba();
-
 	string getType();
+	string getColor();
+	string getImagePath();
+	void setImagePath(string);
+
+	Coordinate getCoordinate();
+	Dimensions getDimensions();
+
 	bool operator< (const Entity &other) const {
 		return zIndex < other.zIndex;
 	}
@@ -34,9 +36,7 @@ protected:
 	Coordinate coordinate;
 	string imagePath;
 	int zIndex;
-	Texture texture;
-	bool imageCrop;
-
+	
 	void setColor(string color);
 
 	// Inherited via Serializable

@@ -7,14 +7,18 @@
 #include "Player.h"
 #include "Parser.h"
 #include "Menu.h"
-#include "Banner.h"
 #include "Entities/Window.h"
 #include "Renderer.h"
 #include "entities/Configuration.h"
 #include "entities/Scenario.h"
 #include "InputManager.h"
 
-void close();
+#include "views/LayerView.h"
+#include "views/EntityView.h"
+
+#include "views/common/EntityViewResolver.h"
+
+	void close();
 
 void close()
 {
@@ -55,6 +59,24 @@ int main(int argc, char* args[])
 	int scenarioWidth = scenario.getWidth();
 	int scenarioHeight = scenario.getHeight();
 
+	// Initialize layers
+	vector<Layer> layers = scenario.getLayers();
+	vector<LayerView> layerViews;
+	for (vector<Layer>::iterator it = layers.begin(); it != layers.end(); ++it) {
+		Layer* layer = &(*it);
+		LayerView layerView(layer);
+		layerViews.push_back(layerView);
+	}
+
+	//Initialize entities
+	vector<Entity*> entities = scenario.getEntities();
+	vector<EntityView*> entityViews;
+	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it) {
+		Entity* entity = *it;
+		EntityView* entityView = EntityViewResolver::resolve(entity);
+		entityViews.push_back(entityView);
+	}
+
 	if (!SDLWindow::getInstance().create(window.getWidth(), window.getHeight()) || !Renderer::getInstance().create()) {
 		LOG(logERROR) << "Error al inicializar el juego!";
 	}
@@ -62,11 +84,10 @@ int main(int argc, char* args[])
 		bool isRunning = true;
 		SDL_Event event;
 
-		// Initialize layers
-		vector<Layer> layers = scenario.getLayers();
-		for (vector<Layer>::iterator it = layers.begin(); it != layers.end(); ++it) {
-			Layer* layer = &(*it);
-			layer->loadLayer();
+		//Load layers
+		for (vector<LayerView>::iterator it = layerViews.begin(); it != layerViews.end(); ++it) {
+			LayerView* layerView = &(*it);
+			layerView->loadLayer();
 		}
 
 		// Initialize player
@@ -83,28 +104,19 @@ int main(int argc, char* args[])
 		if (i == 1) { isRunning = false; }
 
 		while (isRunning) {
-			// Check event type
-			while (SDL_PollEvent(&event) != 0) {
-				if (event.key.keysym.sym == SDLK_ESCAPE)
-				{
-					i = menu.ShowMenu();
-					if (i == 1) { isRunning = false; }
-					LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
-				}
-				//TODO: When is not connect (change if)
-				if (event.key.keysym.sym == SDLK_DELETE)
-				{
-					Banner banner = Banner();
-					i = banner.ShowBanner();
-					if (i == 1) { isRunning = false; }
-					LOG(logINFO) << "El usuario ha solicitado ingresar al banner del juego.";
-				}
-				if (event.type == SDL_QUIT) {
-					isRunning = false;
-					LOG(logINFO) << "El usuario ha solicitado la terminación del juego.";
-				}
 
-				player.handleEvent(event);
+			InputManager* input = InputManager::getInstance();
+			input->update();
+
+			if (input->quitRequested()) {
+				isRunning = false;
+				LOG(logINFO) << "El usuario ha solicitado la terminación del juego.";
+			}
+
+			if (input->isKeyDown(KEY_ESCAPE) || input->isKeyDown(KEY_Q)) {
+				i = menu.ShowMenu();
+				if (i == 1) { isRunning = false; }
+				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
 			}
 
 			float timeStep = stepTimer.getTicks() / 1000.f;
@@ -133,15 +145,15 @@ int main(int argc, char* args[])
 			SDL_RenderClear(Renderer::getInstance().gRenderer);
 
 			// Render layers
-			for (size_t i = 0; i < layers.size(); i++) {
-				Layer* layer = &(layers.at(i));
-				layer->renderLayer(0, 0, &camera);
+			for (vector<LayerView>::iterator it = layerViews.begin(); it != layerViews.end(); ++it) {
+				LayerView* layerView = &(*it);
+				layerView->renderLayer(0, 0, &camera);
 			}
 
 			// Render entities
-			for (size_t i = 0; i < scenario.getEntities().size(); i++) {
-				Entity* entity = scenario.getEntities().at(i);
-				entity->draw(camera);
+			for (vector<EntityView*>::iterator it = entityViews.begin(); it != entityViews.end(); ++it) {
+				EntityView* entityView = *it;
+				entityView->draw(camera);
 			}
 
 			// Render player
@@ -153,6 +165,12 @@ int main(int argc, char* args[])
 
 			SDL_RenderPresent(Renderer::getInstance().gRenderer);
 		}
+	}
+
+	//Dispose entity views
+	for (vector<EntityView*>::iterator it = entityViews.begin(); it != entityViews.end(); ++it) {
+		EntityView* entityView = *it;
+		delete entityView;
 	}
 
 	close();

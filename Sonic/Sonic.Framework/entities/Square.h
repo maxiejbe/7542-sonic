@@ -3,7 +3,6 @@
 
 #include "Entity.h"
 #include "Rectangle.h"
-#include "common/Drawable.h"
 
 class Square : public Entity {
 private:
@@ -13,8 +12,7 @@ public:
 	Square(Entity* entity) : Entity(entity) {
 		rectangle = Rectangle(entity);
 	}
-	virtual void draw(SDL_Rect camera) override;
-
+	
 	virtual Dimensions getDefaultDimensions() override;
 };
 

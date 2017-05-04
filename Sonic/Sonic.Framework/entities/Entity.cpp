@@ -35,15 +35,7 @@ Entity::Entity(Entity* entity)
 	this->dimensions = entity->dimensions;
 	this->coordinate = entity->coordinate;
 	this->imagePath = entity->imagePath;
-	this->imageCrop = true;
-	if (this->imagePath == ENTITY_DEFAULT_IMAGE_PATH) {
-		this->imageCrop = false;
-	}
 	this->zIndex = entity->zIndex;
-}
-
-void Entity::draw(SDL_Rect camera)
-{
 }
 
 bool Entity::validate()
@@ -71,47 +63,34 @@ Dimensions Entity::getDefaultDimensions()
 	return Dimensions();
 }
 
-Uint32 Entity::getColorRgba()
-{
-	int full = 255; //Full of one color
-	int r = 0;
-	int g = 0;
-	int b = 0;
-
-	switch (EntityResolver::fromColorString(color))
-	{
-		case EntityColor::red:
-			r = full;
-			break;
-		case EntityColor::yellow:
-			r = full;
-			g = full;
-			break;
-		case EntityColor::green:
-			g = full;
-			break;
-		case EntityColor::blue:
-			b = full;
-			break;
-		default:
-			return Uint32();
-			break;
-	}
-
-	Uint32 colorCode = 0;
-	if (SDLWindow::getInstance().gWindow != NULL) {
-		colorCode = SDL_MapRGBA(SDL_GetWindowSurface(SDLWindow::getInstance().gWindow)->format, r, g, b, 255);
-	}
-	else {
-		LOG(logERROR) << "No se puede recuperar el color en formato Uint32 - Error: La ventana es nula";
-	}
-
-	return colorCode;
-}
-
 string Entity::getType()
 {
 	return type;
+}
+
+string Entity::getColor()
+{
+	return color;
+}
+
+void Entity::setImagePath(string imagePath)
+{
+	this->imagePath = imagePath;
+}
+
+string Entity::getImagePath()
+{
+	return imagePath;
+}
+
+Coordinate Entity::getCoordinate()
+{
+	return coordinate;
+}
+
+Dimensions Entity::getDimensions()
+{
+	return dimensions;
 }
 
 void Entity::unserialize(Value * nodeRef)

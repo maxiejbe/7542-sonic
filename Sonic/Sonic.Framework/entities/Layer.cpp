@@ -35,24 +35,6 @@ char* Layer::getNodeName()
 	return nullptr;
 }
 
-void Layer::loadLayer()
-{
-	if (!texture.loadFromFile(imagePath)) {
-		this->imagePath = LAYER_DEFAULT_IMAGE_PATH;
-		loadLayer();
-	}
-}
-
-void Layer::renderLayer(int x, int y, SDL_Rect* rect)
-{
-	texture.render(x, y, rect);
-}
-
-void Layer::destroyLayer()
-{
-	texture.free();
-}
-
 int Layer::getZIndex()
 {
 	return zIndex;
@@ -61,5 +43,10 @@ int Layer::getZIndex()
 string Layer::getImagePath()
 {
 	return imagePath;
+}
+
+void Layer::setImagePath(string imagePath)
+{
+	this->imagePath = imagePath;
 }
 

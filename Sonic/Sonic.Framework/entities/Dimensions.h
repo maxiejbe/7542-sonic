@@ -1,9 +1,9 @@
 #ifndef DIMENSIONS_H
 #define DIMENSIONS_H
 
-#include "entities/Serializable.h"
-#include "entities/Validator.h"
-#include <Logger.h>
+#include "common/Serializable.h"
+#include "common/Validator.h"
+#include "../Logger.h"
 
 class Dimensions : public Serializable {
 public:

@@ -1,20 +1,12 @@
-#include "Circle.h"
+#include "CircleView.h"
 
-const int CIRCLE_DEFAULT_WIDTH = 0;
-const int CIRCLE_DEFAULT_HEIGHT = 0;
-const int CIRCLE_DEFAULT_RADIO = 50;
-
-Circle::Circle()
-{
-}
-
-Circle::Circle(Entity* entity) : Entity(entity) {
-	cropperInitialized = false;
-}
-
-void Circle::draw(SDL_Rect camera) {
+void CircleView::draw(SDL_Rect camera) {
 	SDL_Renderer * gRenderer = Renderer::getInstance().gRenderer;
 	if (gRenderer != NULL) {
+
+		Coordinate coordinate = this->entity->getCoordinate();
+		Dimensions dimensions = this->entity->getDimensions();
+		string imagePath = this->entity->getImagePath();
 
 		// Check if there is an image
 		if (imagePath.empty()) {
@@ -29,7 +21,7 @@ void Circle::draw(SDL_Rect camera) {
 
 		// Try to load the image
 		if (texture.getTexture() == nullptr && !texture.loadFromFile(imagePath)) {
-			this->imagePath = "img/image-not-found.png";
+			this->entity->setImagePath("img/image-not-found.png");
 		}
 
 		// Draw image
@@ -40,7 +32,10 @@ void Circle::draw(SDL_Rect camera) {
 	}
 }
 
-void Circle::initializeCropper() {
+void CircleView::initializeCropper() {
+	Dimensions dimensions = this->entity->getDimensions();
+	string imagePath = this->entity->getImagePath();
+
 	if (!cropperInitialized) {
 		bool cropperInitialization = imgCropper.crop(dimensions.getRadio(), imagePath, getColorRgba());
 		if (!cropperInitialization) {
@@ -50,21 +45,17 @@ void Circle::initializeCropper() {
 	}
 }
 
-void Circle::drawWithImage(SDL_Rect camera) {
+void CircleView::drawWithImage(SDL_Rect camera) {
 	try {
 		if (!cropperInitialized) {
 			initializeCropper();
 		}
 
+		Coordinate coordinate = this->entity->getCoordinate();
 		imgCropper.render(coordinate.getX() - camera.x, coordinate.getY() - camera.y);
 	}
 	catch (const exception& e) {
 		LOG(logERROR) << "No se pudo cropear la imagen dentro del circulo: " << e.what();
 	}
 
-}
-
-Dimensions Circle::getDefaultDimensions()
-{
-	return Dimensions(CIRCLE_DEFAULT_WIDTH, CIRCLE_DEFAULT_HEIGHT, CIRCLE_DEFAULT_RADIO);
 }

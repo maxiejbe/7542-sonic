@@ -19,22 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="network\SocketClient.cpp" />
+    <ClCompile Include="views\CircleView.cpp" />
+    <ClCompile Include="views\common\Drawable.cpp" />
+    <ClCompile Include="views\common\EntityViewResolver.cpp" />
+    <ClCompile Include="views\EntityView.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Banner.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="utils\img_crop\CircleImageCropper.cpp" />
-    <ClCompile Include="entities\common\Drawable.cpp" />
-    <ClCompile Include="entities\Circle.cpp" />
-    <ClCompile Include="entities\common\EntityResolver.cpp" />
-    <ClCompile Include="entities\Configuration.cpp" />
-    <ClCompile Include="entities\Coordinate.cpp" />
-    <ClCompile Include="entities\Dimensions.cpp" />
-    <ClCompile Include="entities\Entity.cpp" />
-    <ClCompile Include="entities\Layer.cpp" />
-    <ClCompile Include="entities\Rectangle.cpp" />
-    <ClCompile Include="entities\Scenario.cpp" />
-    <ClCompile Include="entities\Square.cpp" />
-    <ClCompile Include="entities\Window.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SDLWindow.cpp" />
     <ClCompile Include="StreamingTexture.cpp" />
@@ -43,6 +36,9 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="views\LayerView.cpp" />
+    <ClCompile Include="views\RectangleView.cpp" />
+    <ClCompile Include="views\SquareView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\image-not-found.png" />
@@ -62,31 +58,27 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="network\SocketClient.h" />
+    <ClInclude Include="views\CircleView.h" />
+    <ClInclude Include="views\common\Drawable.h" />
+    <ClInclude Include="views\common\EntityViewResolver.h" />
+    <ClInclude Include="views\EntityView.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="InputTable.h" />
     <ClInclude Include="Banner.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="utils\img_crop\CircleImageCropper.h" />
-    <ClInclude Include="entities\common\Drawable.h" />
-    <ClInclude Include="entities\common\EntityResolver.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="entities\Circle.h" />
-    <ClInclude Include="entities\Configuration.h" />
-    <ClInclude Include="entities\Coordinate.h" />
-    <ClInclude Include="entities\Dimensions.h" />
-    <ClInclude Include="entities\Entity.h" />
-    <ClInclude Include="entities\Layer.h" />
-    <ClInclude Include="entities\Rectangle.h" />
-    <ClInclude Include="entities\Scenario.h" />
-    <ClInclude Include="entities\Square.h" />
     <ClInclude Include="StreamingTexture.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="entities\Window.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SDLWindow.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vector2.h" />
+    <ClInclude Include="views\LayerView.h" />
+    <ClInclude Include="views\RectangleView.h" />
+    <ClInclude Include="views\SquareView.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sonic.rc" />

@@ -2,9 +2,8 @@
 #define LAYER_H
 
 #include <string>
-#include "entities/Serializable.h"
-#include "entities/Validator.h"
-#include "Texture.h"
+#include "common/Serializable.h"
+#include "common/Validator.h"
 
 using namespace std;
 
@@ -14,9 +13,7 @@ public:
 
 	int getZIndex();
 	string getImagePath();
-	void loadLayer();
-	void renderLayer(int x, int y, SDL_Rect* rect);
-	void destroyLayer();
+	void setImagePath(string imagePath);
 	bool operator< (const Layer &other) const {
 		return zIndex < other.zIndex;
 	}
@@ -24,8 +21,7 @@ private:
 	int id;
 	int zIndex;
 	string imagePath;
-	Texture texture;
-
+	
 	// Inherited via Serializable
 	virtual void unserialize(Value * nodeRef) override;
 	virtual char * getNodeName() override;

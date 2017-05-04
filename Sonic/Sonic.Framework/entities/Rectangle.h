@@ -12,8 +12,6 @@ public:
 
 	}
 
-	virtual void draw(SDL_Rect camera) override;
-
 	virtual Dimensions getDefaultDimensions() override;
 };
 

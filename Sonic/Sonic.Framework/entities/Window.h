@@ -2,7 +2,7 @@
 #define WINDOW_H
 
 #include "Dimensions.h"
-#include "entities/Serializable.h"
+#include "common/Serializable.h"
 
 class Window: public Serializable {
 public:
