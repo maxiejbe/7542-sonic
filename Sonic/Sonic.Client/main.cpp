@@ -12,6 +12,7 @@
 #include "entities/Scenario.h"
 #include "entities/Player.h"
 #include "InputManager.h"
+#include "network/NetworkManager.h"
 
 #include "views/LayerView.h"
 #include "views/EntityView.h"
@@ -25,6 +26,7 @@ void close()
 {
 	SDLWindow::getInstance().close();
 	Renderer::getInstance().close();
+	NetworkManager::getInstance().close();
 
 	IMG_Quit();
 	SDL_Quit();
@@ -93,6 +95,10 @@ int main(int argc, char* args[])
 		Player player("img/foo22.png", 0, SDLWindow::getInstance().getScreenHeight() / 1.35, 0, 0, scenarioWidth, scenarioHeight, config.getScrollSpeed());
 		LOG(logINFO) << "El personaje ha sido creado correctamente.";
 
+		//Initialize network manager
+		//TODO: inicializar cliente desde config
+		NetworkManager::getInstance().startClient("127.0.0.1", 5000, &player);
+
 		// Initialize camera
 		Timer stepTimer;
 		SDL_Rect camera = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
@@ -124,13 +130,13 @@ int main(int argc, char* args[])
 
 			stepTimer.start();
 
-			/*	UNCOMMENT WHEN PLAYERS ARE DONE 
+			/*	UNCOMMENT WHEN PLAYERS ARE DONE
 			// Center the camera
 			//camera.x = ((int)player.getPosition().x + player.getWidth() / 2) - SDLWindow::getInstance().getScreenWidth() / 2;
 			//camera.y = ((int)player.getPosition().y + player.getHeight() / 2) - SDLWindow::getInstance().getScreenHeight() / 2;
 				UNCOMMENT WHEN PLAYERS ARE DONE */
 
-			// Keep the camera in bounds
+				// Keep the camera in bounds
 			if (camera.x < 0)
 				camera.x = 0;
 			if (camera.y < 0)
