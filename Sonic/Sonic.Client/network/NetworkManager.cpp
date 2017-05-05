@@ -136,7 +136,7 @@ DWORD NetworkManager::sendSocketHandler()
 	return 0;
 }
 
-void NetworkManager::sendMessage(Message * message)
+void NetworkManager::sendMessage(Message* message)
 {
 	if (!this->online()) {
 		return;

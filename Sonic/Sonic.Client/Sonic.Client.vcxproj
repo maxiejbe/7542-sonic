@@ -127,6 +127,8 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
     <Import Project="..\packages\rapidjson.1.0.2\build\native\rapidjson.targets" Condition="Exists('..\packages\rapidjson.1.0.2\build\native\rapidjson.targets')" />
+    <Import Project="..\packages\boost.1.64.0.0\build\native\boost.targets" Condition="Exists('..\packages\boost.1.64.0.0\build\native\boost.targets')" />
+    <Import Project="..\packages\boost_serialization-vc140.1.64.0.0\build\native\boost_serialization-vc140.targets" Condition="Exists('..\packages\boost_serialization-vc140.1.64.0.0\build\native\boost_serialization-vc140.targets')" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -143,9 +145,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)libs\SDL2_image-2.0.1\include;$(ProjectDir)libs\SDL2-2.0.5\include;$(Projectdir);$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)libs\SDL2_ttf-2.0.14\include;$(ProjectDir)libs\SDL2_image-2.0.1\include;$(ProjectDir)libs\SDL2-2.0.5\include;$(ProjectDir)libs\SDL2_gfx-1.0.3;$(Projectdir);$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86;$(ProjectDir)libs\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(ProjectDir)libs\SDL2_ttf-2.0.14\include;$(ProjectDir)libs\SDL2_gfx-1.0.3;$(ProjectDir)libs\SDL2_image-2.0.1\include;$(ProjectDir)libs\SDL2-2.0.5\include;$(Projectdir);$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)libs\SDL2_ttf-2.0.14\lib\x86;$(ProjectDir)libs\SDL2_gfx-1.0.3\lib;$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86;$(ProjectDir)libs\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
     <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
   </PropertyGroup>
@@ -175,7 +176,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;SDL2_gfx.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)libs\SDL2_gfx-1.0.3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)packages\boost_serialization-vc140.1.64.0.0\lib;$(ProjectDir)libs\SDL2_gfx-1.0.3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /Q /Y "$(ProjectDir)libs\SDL2-2.0.5\lib\x86\*.dll" "$(ProjectDir)"
@@ -261,5 +262,7 @@ xcopy /S /E /Q /Y "$(ProjectDir)fonts" "$(ProjectDir)$(Configuration)\fonts\"</C
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\rapidjson.1.0.2\build\native\rapidjson.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\rapidjson.1.0.2\build\native\rapidjson.targets'))" />
+    <Error Condition="!Exists('..\packages\boost.1.64.0.0\build\native\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.64.0.0\build\native\boost.targets'))" />
+    <Error Condition="!Exists('..\packages\boost_serialization-vc140.1.64.0.0\build\native\boost_serialization-vc140.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_serialization-vc140.1.64.0.0\build\native\boost_serialization-vc140.targets'))" />
   </Target>
 </Project>

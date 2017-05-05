@@ -127,8 +127,30 @@ int main(int argc, char* args[])
 			float timeStep = stepTimer.getTicks() / 1000.f;
 
 			//Message msg("hola");
-			/*NetworkManager::getInstance().sendMessage(&msg);*/
+			//NetworkManager::getInstance().sendMessage(&msg);
 			// TODO: player.update(timeStep);
+
+			Message msg(1, true, false, true, false, true, false, true);
+
+
+
+			std::vector<Message*> messages;
+			messages.push_back(&msg);
+
+			std::string outputBuffer;
+			BoostSerializable::serialize_save(messages, outputBuffer);
+
+			// Se manda outputBuffer al server.
+
+			// EN EL SERVER
+			// Intento recuperarlo
+			std::vector<Message*> messages2;
+			//string receiveBuffer;
+			BoostSerializable::serialize_load(messages2, outputBuffer.c_str(), outputBuffer.size());
+
+
+
+
 
 			stepTimer.start();
 

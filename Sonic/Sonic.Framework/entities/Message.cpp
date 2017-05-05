@@ -1,5 +1,9 @@
 #include "Message.h"
 
+Message::Message()
+{
+}
+
 Message::Message(string message)
 {
 	this->playerNumber = 0;
@@ -30,7 +34,6 @@ Message::Message(float dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool i
 	this->position.y = 0;
 	this->connectionStatus = ConnectionStatus::connected;
 	this->playerStatus = PlayerStatus::walking;
-
 	this->dt = dt;
 	this->isKPLeft = isKPLeft;
 	this->isKPSpace = isKPSpace;
@@ -39,9 +42,9 @@ Message::Message(float dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool i
 	this->isKULeft = isKULeft;
 	this->isKURight = isKURight;
 	this->isKUSpace = isKUSpace;
-
-	initializeProperties();
 }
+
+
 
 void Message::setPosition(Vector2 position)
 {
@@ -124,4 +127,9 @@ void Message::initializeProperties()
 	properties.push_back(&this->isKULeft);
 	properties.push_back(&this->isKURight);
 	properties.push_back(&this->isKUSpace);
+}
+
+string Message::getBinaryData()
+{
+	return this->binaryMsg;
 }
