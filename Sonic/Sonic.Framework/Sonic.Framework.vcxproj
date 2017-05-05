@@ -145,7 +145,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="entities\Circle.cpp" />
-    <ClCompile Include="entities\common\BoostSerializable.cpp" />
     <ClCompile Include="entities\common\EntityResolver.cpp" />
     <ClCompile Include="entities\common\Serializable.cpp" />
     <ClCompile Include="entities\common\Validator.cpp" />
