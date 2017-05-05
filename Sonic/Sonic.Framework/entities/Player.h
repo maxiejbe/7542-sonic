@@ -17,6 +17,8 @@ public:
 
 	Vector2 getPosition();
 	Vector2 getVelocity();
+	void setNumber(int number);
+	int getNumber();
 	int getWidth();
 	int getHeight();
 	void setWidth(int w);
@@ -24,7 +26,6 @@ public:
 	FacingDirection getFacingDirection();
 	PlayerStatus getSpriteState();
 	string getFilePath();
-
 private:
 	Vector2 position;
 	Vector2 velocity;
@@ -35,6 +36,7 @@ private:
 	bool isJumping;
 	float targetVelX;
 	FacingDirection facingDirection;
+	int number;
 	PlayerStatus spriteState;
 	string filePath;
 };

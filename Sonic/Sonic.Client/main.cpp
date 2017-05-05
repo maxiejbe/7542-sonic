@@ -120,7 +120,7 @@ int main(int argc, char* args[])
 
 			float timeStep = stepTimer.getTicks() / 1000.f;
 
-			// TODO: foreach() -> player.update(timeStep);
+			// TODO: player.update(timeStep);
 
 			stepTimer.start();
 

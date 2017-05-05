@@ -24,6 +24,14 @@ void StringUtils::split(vector<string>* items, string str, string delimiter)
 	}
 }
 
+char * StringUtils::convert(string & str)
+{
+	char * cstr = new char[str.length() + 1];
+	strcpy(cstr, str.c_str());
+	return cstr;
+}
+
+
 /*string & StringUtils::join(vector<string>, string delimiter)
 {
 	// TODO: insert return statement here

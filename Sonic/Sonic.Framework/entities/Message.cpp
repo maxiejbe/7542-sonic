@@ -12,15 +12,34 @@ Message::Message(int playerNumber)
 	this->playerNumber = playerNumber;
 }
 
-void Message::setPosition(int positionX, int positionY)
+void Message::setPosition(Vector2 position)
 {
-	this->positionX = positionX;
-	this->positionY = positionY;
+	this->position = position;
+}
+
+Vector2 Message::getPosition()
+{
+	return this->position;
 }
 
 void Message::setConnectionStatus(ConnectionStatus connectionStatus)
 {
 	this->connectionStatus = connectionStatus;
+}
+
+ConnectionStatus Message::getConnectionStatus()
+{
+	return this->connectionStatus;
+}
+
+void Message::setPlayerNumber(int number)
+{
+	this->playerNumber = number;
+}
+
+int Message::getNumber()
+{
+	return this->playerNumber;
 }
 
 //http://stackoverflow.com/questions/5888022/split-string-by-single-spaces
@@ -61,18 +80,14 @@ bool Message::validate()
 void Message::initializeProperties()
 {
 	this->playerNumber = 0;
-	this->positionX = 0;
-	this->positionY = 0;
+	this->position.x = 0;
+	this->position.y = 0;
 	this->connectionStatus = ConnectionStatus::connected;
 	this->playerStatus = PlayerStatus::walking;
 
 	properties.push_back(&this->playerNumber);
-	properties.push_back(&this->positionX);
-	properties.push_back(&this->positionY);
+	properties.push_back(&this->position.x);
+	properties.push_back(&this->position.y);
 	properties.push_back(&this->connectionStatus);
 	properties.push_back(&this->playerStatus);
 }
-
-
-
-

@@ -2,6 +2,7 @@
 #define MESSAGE_H
 
 #include "../utils/StringUtils.h"
+#include "../Vector2.h"
 #include <typeinfo>
 
 enum ConnectionStatus { assign, connected, disconnected };
@@ -11,8 +12,15 @@ class Message {
 public:
 	Message(string);
 	Message(int);
-	void setPosition(int, int);
+
+	void setPosition(Vector2 position);
+	Vector2 getPosition();
+
 	void setConnectionStatus(ConnectionStatus);
+	ConnectionStatus getConnectionStatus();
+
+	void setPlayerNumber(int);
+	int getNumber();
 
 	void fromString(string);
 	void toString(string*);
@@ -22,14 +30,9 @@ public:
 	void initializeProperties();
 private:
 	const string DELIMITER = "|";
-	
 	vector<void*> properties;
-	
 	int playerNumber;
-	
-	int positionX;
-	int positionY;
-
+	Vector2 position;
 	ConnectionStatus connectionStatus;
 	PlayerStatus playerStatus;
 };

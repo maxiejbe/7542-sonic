@@ -16,6 +16,7 @@ public:
 	static string &rtrim(string &str);
 	static string &trim(string &str);
 	static void split(vector<string>* items, string str, string delimiter);
+	static char* convert(string &str);
 	//static string &join(vector<string>, string delimiter);
 };
 

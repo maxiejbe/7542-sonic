@@ -48,3 +48,13 @@ string Player::getFilePath()
 {
 	return filePath;
 }
+
+int Player::getNumber()
+{
+	return this->number;
+}
+
+void Player::setNumber(int number)
+{
+	this->number = number;
+}
