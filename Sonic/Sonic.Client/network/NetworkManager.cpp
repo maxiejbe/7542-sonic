@@ -46,29 +46,12 @@ bool NetworkManager::online()
 	return (this->client && this->client->isConnected());
 }
 
-bool NetworkManager::sendMessage(Message * message)
-{
-	if (!this->online()) {
-		return false;
-	}
-
-	string strMsg = "";
-	message->toString(&strMsg);
-	char* msgToSend = StringUtils::convert(strMsg);
-	delete message;
-	if (!this->client->sendMessage(msgToSend)) {
-		//LOG: Failed send
-		return false;
-	}
-
-	return true;
-}
-
 void NetworkManager::startConnectionHandlers()
 {
 	//Receive Handler
 	//TODO: kill theads
 	CreateThread(0, 0, runRecvSocketHandler, (void*)this, 0, &this->recvThreadId);
+	CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
 }
 
 DWORD WINAPI NetworkManager::runRecvSocketHandler(void * args)
@@ -125,5 +108,48 @@ void NetworkManager::playerAssignment(Message * msg)
 void NetworkManager::updateRival(Message * msg)
 {
 	//muestro mensaje
+	if (msg->getNumber() == this->player->getNumber()) return;
 	LOG(logINFO) << "Network Manager: Recibida data de rival #" << msg->getNumber() << ": x->" << msg->getXPosition() << " y->" << msg->getYPosition();
+}
+
+DWORD WINAPI NetworkManager::runSendSocketHandler(void * args)
+{
+	NetworkManager * nManager = (NetworkManager*)args;
+	return nManager->sendSocketHandler();
+}
+
+DWORD NetworkManager::sendSocketHandler()
+{
+	//send new message
+	while (this->online() && this->player != NULL) {
+		//wait till user gets number
+		if (this->player->getNumber() > 0) {
+			Message * msg = new Message(this->player->getNumber());
+			msg->setPosition(this->player->getPosX(), this->player->getPosY());
+			this->sendMessage(msg);
+			delete msg;
+		}
+		//wait 3 seconds;
+		Sleep(3000);
+	}
+
+	return 0;
+}
+
+void NetworkManager::sendMessage(Message * message)
+{
+	if (!this->online()) {
+		return;
+	}
+
+	string strMsg = "";
+	message->toString(&strMsg);
+	char* msgToSend = StringUtils::convert(strMsg);
+	
+	if (this->client->sendMessage(msgToSend)) {
+		LOG(logINFO) << "Network Manager: Se envio mensaje -> " << strMsg;
+	}
+	else {
+		LOG(logERROR) << "Network Manager: Falló envio de mensaje -> " << strMsg;
+	}
 }

@@ -29,7 +29,7 @@ void MultiplayerManager::startConnectionHandlers()
 {
 	//Receive Handler
 	CreateThread(0, 0, runRecvSocketHandler, (void*)this, 0, &this->recvThreadId);
-	CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
+	//CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
 }
 
 DWORD WINAPI MultiplayerManager::runRecvSocketHandler(void * args)

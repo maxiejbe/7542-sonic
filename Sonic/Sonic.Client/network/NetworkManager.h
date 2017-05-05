@@ -16,8 +16,7 @@ public:
 
 	bool startClient(char * host, int port, Player * player);
 	bool online();
-	bool sendMessage(Message * message);
-
+	void sendMessage(Message * message);
 private:
 	NetworkManager();
 	static NetworkManager * instance;
@@ -26,6 +25,7 @@ private:
 
 	/*HANDLERS*/
 	void startConnectionHandlers();
+
 	//receive handler
 	DWORD recvThreadId;
 	static DWORD WINAPI runRecvSocketHandler(void* args);
@@ -34,5 +34,9 @@ private:
 	void playerAssignment(Message * msg);
 	void updateRival(Message * msg);
 
+	//send handler
+	DWORD sendThreadId;
+	static DWORD WINAPI runSendSocketHandler(void* args);
+	DWORD sendSocketHandler();
 };
 
