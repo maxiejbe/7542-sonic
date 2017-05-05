@@ -79,10 +79,7 @@ int main(int argc, char* args[])
 		entityViews.push_back(entityView);
 	}
 
-	//Initialize network manager
-	//TODO: inicializar cliente desde config
-	NetworkManager::getInstance().startClient("127.0.0.1",5000);
-
+	
 	if (!SDLWindow::getInstance().create(window.getWidth(), window.getHeight()) || !Renderer::getInstance().create()) {
 		LOG(logERROR) << "Error al inicializar el juego!";
 	}
@@ -99,6 +96,10 @@ int main(int argc, char* args[])
 		// Initialize player
 		Player player("img/foo22.png", 0, SDLWindow::getInstance().getScreenHeight() / 1.35, 0, 0, scenarioWidth, scenarioHeight, config.getScrollSpeed());
 		LOG(logINFO) << "El personaje ha sido creado correctamente.";
+
+		//Initialize network manager
+		//TODO: inicializar cliente desde config
+		NetworkManager::getInstance().startClient("127.0.0.1", 5000, &player);
 
 		// Initialize camera
 		Timer stepTimer;

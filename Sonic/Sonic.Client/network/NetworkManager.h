@@ -1,4 +1,5 @@
 #pragma once
+#include "../Player.h"
 #include "SocketClient.h"
 #include "entities\Message.h"
 #include "Logger.h"
@@ -13,15 +14,25 @@ public:
 	}
 	void close();
 
-	bool startClient(char * host, int port);
+	bool startClient(char * host, int port, Player * player);
 	bool online();
 	bool sendMessage(Message * message);
 
 private:
 	NetworkManager();
 	static NetworkManager * instance;
-
+	Player * player;
 	SocketClient * client;
+
+	/*HANDLERS*/
+	void startConnectionHandlers();
+	//receive handler
+	DWORD recvThreadId;
+	static DWORD WINAPI runRecvSocketHandler(void* args);
+	DWORD recvSocketHandler();
+	void handleMessage(char*);
+	void playerAssignment(Message * msg);
+	void updateRival(Message * msg);
 
 };
 
