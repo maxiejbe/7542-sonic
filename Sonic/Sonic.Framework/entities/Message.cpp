@@ -42,7 +42,7 @@ void Message::toString(string* message)
 {
 	std::stringstream ss;
 
-	int propertiesSize = properties.size();
+	size_t propertiesSize = properties.size();
 	for (size_t i = 0; i < propertiesSize; i++)
 	{
 		ss << to_string(*((int*)properties[i]));

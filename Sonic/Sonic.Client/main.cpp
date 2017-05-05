@@ -4,17 +4,18 @@
 #include <string>
 #include <cmath>
 #include "Timer.h"
-#include "Player.h"
 #include "Parser.h"
 #include "Menu.h"
 #include "Entities/Window.h"
 #include "Renderer.h"
 #include "entities/Configuration.h"
 #include "entities/Scenario.h"
+#include "entities/Player.h"
 #include "InputManager.h"
 
 #include "views/LayerView.h"
 #include "views/EntityView.h"
+#include "views/PlayerView.h"
 
 #include "views/common/EntityViewResolver.h"
 
@@ -31,7 +32,6 @@ void close()
 
 int main(int argc, char* args[])
 {
-
 	Logger::init();
 	Logger::loggingLevel() = logHIGH;
 
@@ -76,13 +76,12 @@ int main(int argc, char* args[])
 		EntityView* entityView = EntityViewResolver::resolve(entity);
 		entityViews.push_back(entityView);
 	}
-	
+
 	if (!SDLWindow::getInstance().create(window.getWidth(), window.getHeight()) || !Renderer::getInstance().create()) {
 		LOG(logERROR) << "Error al inicializar el juego!";
 	}
 	else {
 		bool isRunning = true;
-		SDL_Event event;
 
 		//Load layers
 		for (vector<LayerView>::iterator it = layerViews.begin(); it != layerViews.end(); ++it) {
@@ -121,13 +120,15 @@ int main(int argc, char* args[])
 
 			float timeStep = stepTimer.getTicks() / 1000.f;
 
-			player.update(timeStep);
+			// TODO: foreach() -> player.update(timeStep);
 
 			stepTimer.start();
 
+			/*	UNCOMMENT WHEN PLAYERS ARE DONE 
 			// Center the camera
-			camera.x = ((int)player.getPosX() + player.getWidth() / 2) - SDLWindow::getInstance().getScreenWidth() / 2;
-			camera.y = ((int)player.getPosY() + player.getHeight() / 2) - SDLWindow::getInstance().getScreenHeight() / 2;
+			//camera.x = ((int)player.getPosition().x + player.getWidth() / 2) - SDLWindow::getInstance().getScreenWidth() / 2;
+			//camera.y = ((int)player.getPosition().y + player.getHeight() / 2) - SDLWindow::getInstance().getScreenHeight() / 2;
+				UNCOMMENT WHEN PLAYERS ARE DONE */
 
 			// Keep the camera in bounds
 			if (camera.x < 0)
@@ -149,19 +150,15 @@ int main(int argc, char* args[])
 				LayerView* layerView = &(*it);
 				layerView->renderLayer(0, 0, &camera);
 			}
-			
+
 			// Render entities
 			for (vector<EntityView*>::iterator it = entityViews.begin(); it != entityViews.end(); ++it) {
 				EntityView* entityView = *it;
 				entityView->draw(camera);
 			}
 
-			// Render player
-			player.render(camera.x, camera.y);
-
-			// TODO: render other players
-			// foreach player in players:
-			//		player.render(camera.x, camera.y);
+			// Render players
+			// TODO: foreach() -> playerView.render(camera.x, camera.y);
 
 			SDL_RenderPresent(Renderer::getInstance().gRenderer);
 		}

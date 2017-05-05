@@ -26,15 +26,14 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="utils\img_crop\CircleImageCropper.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="SDLWindow.cpp" />
     <ClCompile Include="StreamingTexture.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="views\LayerView.cpp" />
+    <ClCompile Include="views\PlayerView.cpp" />
     <ClCompile Include="views\RectangleView.cpp" />
     <ClCompile Include="views\SquareView.cpp" />
   </ItemGroup>
@@ -64,15 +63,14 @@
     <ClInclude Include="InputTable.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="utils\img_crop\CircleImageCropper.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="StreamingTexture.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SDLWindow.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="Vector2.h" />
     <ClInclude Include="views\LayerView.h" />
+    <ClInclude Include="views\PlayerView.h" />
     <ClInclude Include="views\RectangleView.h" />
     <ClInclude Include="views\SquareView.h" />
   </ItemGroup>

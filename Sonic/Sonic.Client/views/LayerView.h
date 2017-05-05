@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class LayerView  {
+class LayerView {
 public:
 	LayerView(Layer* layer);
 	void loadLayer();

@@ -1,35 +1,31 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <SDL.h>
-#include <SDL_image.h>
 #include <string>
-#include "Renderer.h"
-#include "Logger.h"
-#include "Texture.h"
-#include "Vector2.h"
-#include "InputManager.h"
-#include "entities/Message.h"
+#include "../Logger.h"
+#include "../Vector2.h"
+#include "Message.h"
 
 using namespace std;
+
+enum FacingDirection { FACING_LEFT, FACING_RIGHT };
 
 class Player
 {
 public:
 	Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH, int scrollSpeed);
 
-	void update(float dt);
-	void updateInput();
-	void move(float timeStep);
-	void render(int camX, int camY);
-
-	float getPosX();
-	float getPosY();
+	Vector2 getPosition();
+	Vector2 getVelocity();
 	int getWidth();
 	int getHeight();
+	void setWidth(int w);
+	void setHeight(int h);
+	FacingDirection getFacingDirection();
+	PlayerStatus getSpriteState();
+	string getFilePath();
+
 private:
-	int getFramesCount(PlayerStatus status);
-	Texture texture;
 	Vector2 position;
 	Vector2 velocity;
 	int width, height;
@@ -38,8 +34,9 @@ private:
 	float groundPos;
 	bool isJumping;
 	float targetVelX;
-	SDL_RendererFlip flip;
+	FacingDirection facingDirection;
 	PlayerStatus spriteState;
+	string filePath;
 };
 
 #endif // !PLAYER_H
