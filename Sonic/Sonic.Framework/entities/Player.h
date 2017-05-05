@@ -16,7 +16,11 @@ public:
 	Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH, int scrollSpeed);
 
 	Vector2 getPosition();
+	void setXPosition(float x);
+	void setYPosition(float y);
 	Vector2 getVelocity();
+	void setXVelocity(float x);
+	void setYVelocity(float y);
 	void setNumber(int number);
 	int getNumber();
 	int getWidth();
@@ -24,8 +28,18 @@ public:
 	void setWidth(int w);
 	void setHeight(int h);
 	FacingDirection getFacingDirection();
+	void setFacingDirection(FacingDirection facingDirection);
 	PlayerStatus getSpriteState();
+	void setSpriteState(PlayerStatus spriteState);
 	string getFilePath();
+	float getTargetVelX();
+	void setTargetVelX(float targetVelX);
+	int getScenarioWidth();
+	int getScenarioHeight();
+	void setIsJumping(bool isJumping);
+	bool getIsJumping();
+	float getGroundPos();
+	int getScrollSpeed();
 private:
 	Vector2 position;
 	Vector2 velocity;

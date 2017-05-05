@@ -12,6 +12,7 @@ class Message {
 public:
 	Message(string);
 	Message(int);
+	Message::Message(float dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKULeft, bool isKURight, bool isKUSpace);
 
 	void setPosition(Vector2 position);
 	Vector2 getPosition();
@@ -35,6 +36,9 @@ private:
 	Vector2 position;
 	ConnectionStatus connectionStatus;
 	PlayerStatus playerStatus;
+
+	float dt;
+	bool isKPLeft, isKPRight, isKPUp, isKPSpace, isKULeft, isKURight, isKUSpace;
 };
 
 #endif

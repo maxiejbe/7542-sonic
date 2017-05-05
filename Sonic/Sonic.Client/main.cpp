@@ -126,6 +126,8 @@ int main(int argc, char* args[])
 
 			float timeStep = stepTimer.getTicks() / 1000.f;
 
+			//Message msg("hola");
+			/*NetworkManager::getInstance().sendMessage(&msg);*/
 			// TODO: player.update(timeStep);
 
 			stepTimer.start();
