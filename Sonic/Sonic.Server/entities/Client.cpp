@@ -42,13 +42,13 @@ bool Client::acceptSocket()
 
 	LOG(logINFO) << MESSAGE_CLIENT_ACCEPTED_CONNECTION << this->clientNumber;
 
-	if (!this->sendClientNumber()) {
-		return false;
-	}
+	//if (!this->sendClientNumber()) {
+	//	return false;
+	//}
 
-	if (!this->sendFileContent()) {
-		return false;
-	}
+	//if (!this->sendFileContent()) {
+	//	return false;
+	//}
 	
 	CreateThread(0, 0, runSocketHandler, (void*)this, 0, &this->threadId);
 	return true;
