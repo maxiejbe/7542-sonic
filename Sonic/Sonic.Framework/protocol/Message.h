@@ -3,16 +3,17 @@
 
 #include "../utils/StringUtils.h"
 #include "../Vector2.h"
-#include "common/BoostSerializable.h"
+//#include "common/BoostSerializable.h"
+#include "../entities/common/Serializable.h";
 #include <typeinfo>
 
 enum ConnectionStatus { assign, connected, disconnected };
 enum PlayerStatus { idle, walking, running, jumping };
 
-struct Message {
+struct Message: public Serializable {
 public:
 
-	template <class ArchiveT>
+	/*template <class ArchiveT>
 	void serialize(ArchiveT& ar, const unsigned int)
 	{
 		ar & boost::serialization::make_nvp("playerNumber", playerNumber);
@@ -24,7 +25,7 @@ public:
 		ar & boost::serialization::make_nvp("isKULeft", isKULeft);
 		ar & boost::serialization::make_nvp("isKURight", isKURight);
 		ar & boost::serialization::make_nvp("isKUSpace", isKUSpace);
-	}
+	}*/
 
 	Message::Message();
 	Message::Message(float dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKULeft, bool isKURight, bool isKUSpace);
@@ -38,6 +39,10 @@ public:
 	bool validate();
 
 	string getBinaryData();
+
+	/*Serializable*/
+	void unserialize(Value* nodeRef);
+	char* getNodeName();
 
 private:
 	const string DELIMITER = "|";

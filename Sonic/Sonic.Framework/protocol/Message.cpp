@@ -49,3 +49,13 @@ string Message::getBinaryData()
 {
 	return this->binaryMsg;
 }
+
+void Message::unserialize(Value * nodeRef)
+{
+	return;
+}
+
+char * Message::getNodeName()
+{
+	return nullptr;
+}

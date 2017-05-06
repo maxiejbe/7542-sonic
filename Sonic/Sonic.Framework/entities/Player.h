@@ -4,7 +4,7 @@
 #include <string>
 #include "../Logger.h"
 #include "../Vector2.h"
-#include "Message.h"
+#include "../protocol/Message.h"
 
 using namespace std;
 

@@ -140,7 +140,7 @@ void NetworkManager::sendMessage(Message* message)
 	vector<Message*> messages;
 	messages.push_back(message);
 
-	string stringMessage;
+	/*string stringMessage;
 	BoostSerializable::serialize_save(messages, stringMessage);
 	
 	vector<Message*> messages2;
@@ -151,7 +151,7 @@ void NetworkManager::sendMessage(Message* message)
 	}
 	else {
 		LOG(logERROR) << "Network Manager: Falló envio de mensaje -> " << stringMessage;
-	}
+	}*/
 }
 
 int NetworkManager::getPlayerNumber()

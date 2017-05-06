@@ -8,7 +8,7 @@
 #include "Texture.h"
 #include "Vector2.h"
 #include "InputManager.h"
-#include "entities/Message.h"
+#include "protocol/Message.h"
 #include "entities/Player.h"
 
 using namespace std;
