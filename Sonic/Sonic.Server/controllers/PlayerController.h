@@ -4,7 +4,7 @@
 #include <string>
 #include "Logger.h"
 #include "entities/Player.h"
-#include "entities/Message.h"
+#include "protocol/Message.h"
 
 using namespace std;
 

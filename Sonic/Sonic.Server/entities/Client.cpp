@@ -115,9 +115,9 @@ DWORD Client::socketHandler() {
 		LOG(logINFO) << MESSAGE_CLIENT_DATA_RECV_SUCCESS << recievedMessage << " (Cliente " << this->clientNumber << ")";
 
 		string strMessage(recievedMessage);
-		vector<Message*> messages;
-		BoostSerializable::serialize_load(messages, strMessage.c_str(), strMessage.size());
-		
+		Message message;
+		message.unserialize(strMessage);
+
 		//if (message.validate()) {
 		//	this->handleRecievedMessage(recievedMessage);
 		//}

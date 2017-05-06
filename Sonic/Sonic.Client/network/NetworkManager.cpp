@@ -137,8 +137,6 @@ void NetworkManager::sendMessage(Message* message)
 	}
 
 	//Serialize message before sending to server
-	vector<Message*> messages;
-	messages.push_back(message);
 	string stringMessage = message->serialize();
 
 	if (this->client->sendMessage(stringMessage)) {
