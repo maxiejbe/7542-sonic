@@ -50,12 +50,11 @@ int main(int argc, char* args[])
 
 	Parser* parser = new Parser(configPath);
 	Window window;
-	parser->parse(&window);
-
 	Configuration config;
-	parser->parse(&config);
-
 	Scenario scenario;
+
+	parser->parse(&window);
+	parser->parse(&config);
 	parser->parse(&scenario);
 
 	int scenarioWidth = scenario.getWidth();
@@ -203,6 +202,8 @@ int main(int argc, char* args[])
 	close();
 
 	LOG(logINFO) << "El juego ha finalizado.";
+
+	delete parser;
 
 	return 0;
 }

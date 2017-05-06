@@ -2,9 +2,6 @@
 #define SCENARIO_H
 
 #include "Dimensions.h"
-#include "Rectangle.h"
-#include "Circle.h"
-#include "Square.h"
 #include "common/EntityResolver.h"
 #include "Entity.h"
 #include "Layer.h"

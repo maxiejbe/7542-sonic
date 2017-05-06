@@ -2,6 +2,9 @@
 #include "entities/Server.h"
 #include "Parser.h"
 #include "entities/common/ServerConfiguration.h"
+#include "entities/Window.h"
+#include "entities/Configuration.h"
+#include "entities/Scenario.h"
 
 int main(int argc, char* args[])
 {
@@ -20,15 +23,23 @@ int main(int argc, char* args[])
 	}
 
 	Parser* parser = new Parser(configPath);
-	ServerConfiguration config;
-	parser->parse(&config);
+	ServerConfiguration serverConfig;
+	Window window;
+	Configuration config;
+	Scenario scenario;
 
-	Server server(config.getPortNumber(), config.getMaxAllowedClients());
+	parser->parse(&serverConfig);
+	parser->parse(&window);
+	parser->parse(&config);
+	parser->parse(&scenario);
+
+	Server server(serverConfig.getPortNumber(), serverConfig.getMaxAllowedClients());
 	if (!server.validate()) {
 		return 0;
 	}
 	server.waitForClientConnections();
 	
+	delete parser;
 	return 0;
 }
 
