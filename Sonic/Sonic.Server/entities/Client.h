@@ -4,6 +4,7 @@
 #include <winsock2.h>
 #include <iostream>
 #include "Server.h"
+#include "protocol/ServerMessage.h"
 #include "protocol/Message.h"
 #include "entities/Player.h"
 #include "../utils/SocketUtils.h"

@@ -161,6 +161,8 @@
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="entities\Player.cpp" />
     <ClCompile Include="protocol\Message.cpp" />
+    <ClCompile Include="protocol\SerializableMessage.cpp" />
+    <ClCompile Include="protocol\ServerMessage.cpp" />
     <ClCompile Include="utils\DateUtils.cpp" />
     <ClCompile Include="utils\StringUtils.cpp" />
     <ClCompile Include="Vector2.cpp" />
@@ -184,6 +186,8 @@
     <ClInclude Include="Parser.h" />
     <ClInclude Include="entities\Player.h" />
     <ClInclude Include="protocol\Message.h" />
+    <ClInclude Include="protocol\SerializableMessage.h" />
+    <ClInclude Include="protocol\ServerMessage.h" />
     <ClInclude Include="utils\DateUtils.h" />
     <ClInclude Include="utils\StringUtils.h" />
     <ClInclude Include="Vector2.h" />

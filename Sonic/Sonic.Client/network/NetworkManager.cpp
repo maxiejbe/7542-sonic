@@ -3,6 +3,7 @@
 NetworkManager::NetworkManager()
 {
 	this->client = NULL;
+	this->playerNumber = -1;
 }
 
 NetworkManager::~NetworkManager()
@@ -74,18 +75,26 @@ DWORD NetworkManager::recvSocketHandler()
 
 void NetworkManager::handleMessage(char * receivedMessage)
 {
-	string strMessage(receivedMessage);
-	cout << strMessage << endl;
+	/*string strMessage(receivedMessage);
+	cout << strMessage << endl;*/
 
-	//Message* message = new Message(/*strMessage*/);
-	//if (message->getConnectionStatus() == assign)
-	//{
-	//	playerAssignment(message);
-	//}
-	//else {
-	//	updateRival(message);
-	//}
-	//delete message;
+	const char * constRMessage = receivedMessage;
+	ServerMessage * sMessage = new ServerMessage();
+	if (!sMessage->fromJson(string(constRMessage))){
+		LOG(logERROR) << "Network Manager: no se pudo deserializar el mensaje";
+		return;
+	}
+
+	switch (sMessage->getType()) {
+		case player_assign:
+			this->playerNumber = sMessage->getPlayerNumber();
+			break;
+		default:
+			LOG(logERROR) << "Network Manager: Mensaje invalido -> " << receivedMessage;
+			break;
+	}
+		
+	delete sMessage;
 }
 
 void NetworkManager::playerAssignment(Message * message)

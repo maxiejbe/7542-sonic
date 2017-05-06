@@ -1,7 +1,8 @@
 #pragma once
 #include "entities/Player.h"
 #include "SocketClient.h"
-#include "protocol\Message.h"
+#include "protocol/Message.h"
+#include "protocol/ServerMessage.h"
 #include "Logger.h"
 
 class NetworkManager

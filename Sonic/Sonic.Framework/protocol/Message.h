@@ -4,14 +4,14 @@
 #include "../utils/StringUtils.h"
 #include "../Vector2.h"
 //#include "common/BoostSerializable.h"
-#include "../entities/common/Serializable.h";
+#include "SerializableMessage.h";
 #include "../entities/common/Validator.h";
 #include <typeinfo>
 
 enum ConnectionStatus { assign, connected, disconnected };
 enum PlayerStatus { idle, walking, running, jumping };
 
-struct Message: public Serializable {
+struct Message : public SerializableMessage {
 public:
 
 	/*template <class ArchiveT>

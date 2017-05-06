@@ -48,9 +48,9 @@ bool Client::acceptSocket()
 
 	LOG(logINFO) << MESSAGE_CLIENT_ACCEPTED_CONNECTION << this->clientNumber;
 
-	//if (!this->sendClientNumber()) {
-	//	return false;
-	//}
+	if (!this->sendClientNumber()) {
+		return false;
+	}
 
 	//if (!this->sendFileContent()) {
 	//	return false;
@@ -68,10 +68,14 @@ void Client::closeSocket()
 bool Client::sendClientNumber()
 {
 	int bytecount;
-	string stringMessage = to_string(this->clientNumber);
+	ServerMessage sMessage;
+	sMessage.setType(player_assign);
+	sMessage.setPlayerNumber(this->clientNumber);
+	string serializedMsg = sMessage.serialize();
+	const char* messageToSend = serializedMsg.c_str();
 	
-	if ((bytecount = send(this->socket, stringMessage.c_str(), strlen(stringMessage.c_str()), 0)) == SOCKET_ERROR) {
-		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << stringMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
+	if ((bytecount = send(this->socket, messageToSend, strlen(messageToSend), 0)) == SOCKET_ERROR) {
+		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << messageToSend << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->clientNumber << ")";
 		return false;
 	}
@@ -107,7 +111,7 @@ void Client::handleRecievedMessage(char* recievedMessage)
 {
 	string strMessage(recievedMessage);
 	Message* message = new Message();
-	message->unserialize(strMessage);
+	message->fromJson(strMessage);
 
 	PlayerController::update(message, this->player);
 
@@ -131,7 +135,16 @@ DWORD Client::socketHandler() {
 		
 		LOG(logINFO) << MESSAGE_CLIENT_DATA_RECV_SUCCESS << recievedMessage << " (Cliente " << this->clientNumber << ")";
 
+
 		this->handleRecievedMessage(recievedMessage);
+		//if (message.validate()) {
+		//	this->handleRecievedMessage(recievedMessage);
+		//}
+		
+		//string convertedMessage;
+		//message.toString(&convertedMessage);
+
+		//printf("Received bytes %d\nReceived string \"%s\"\n", bytecount, recievedMessage /*convertedMessage.c_str()*/);
 	};
 
 	LOG(logINFO) << MESSAGE_CLIENT_CONNECTION_CLOSED << this->clientNumber;

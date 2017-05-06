@@ -75,6 +75,12 @@
     <ClCompile Include="protocol\Message.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="protocol\ServerMessage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="protocol\SerializableMessage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parser.h">
@@ -138,6 +144,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="protocol\Message.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="protocol\ServerMessage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="protocol\SerializableMessage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

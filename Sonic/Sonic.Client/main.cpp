@@ -47,11 +47,11 @@ int main(int argc, char* args[])
 	NetworkManager networkManager = NetworkManager::getInstance(); 
 	networkManager.startClient(SERVER_IP, SERVER_PORT);
 
-	/*while (networkManager.getPlayerNumber() < 0) {
+	while (networkManager.getPlayerNumber() < 0) {
 		Sleep(3000);
 	}
 
-	while (networkManager.getFileContent().empty()) {
+	/*while (networkManager.getFileContent().empty()) {
 		Sleep(3000);
 	}*/
 
