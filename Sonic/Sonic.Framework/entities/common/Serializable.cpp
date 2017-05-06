@@ -96,6 +96,60 @@ void Serializable::parseString(string * value, string defaultValue, Value * node
 	LOG(logINFO) << MESSAGE_OK_PARSING_NODE_FIELD << *value;
 }
 
+void Serializable::parseDouble(double * value, double defaultValue, Value * nodeRef, const char * fieldName)
+{
+	Value& node = *nodeRef;
+
+	LOG(logINFO) << MESSAGE_PARSING_NODE_FIELD + string(fieldName);
+
+	if (nodeRef == nullptr || !node.HasMember(fieldName)) {
+		if (*value != defaultValue) {
+			*value = defaultValue;
+			LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD_EMPTY << fieldName << MESSAGE_ERROR_PARSING_NODE_FIELD_DEFAULT << defaultValue;
+		}
+		return;
+	}
+
+	string childNodeValue = getNodeContent(&node[fieldName]);
+	if (!node[fieldName].IsDouble()) {
+		if (*value != defaultValue) {
+			*value = defaultValue;
+			LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD_INCORRECT << fieldName << "=" << childNodeValue << MESSAGE_ERROR_PARSING_NODE_FIELD_DEFAULT << defaultValue;
+		}
+		return;
+	}
+
+	*value = node[fieldName].GetDouble();
+	LOG(logINFO) << MESSAGE_OK_PARSING_NODE_FIELD << *value;
+}
+
+void Serializable::parseBool(bool * value, bool defaultValue, Value * nodeRef, const char * fieldName)
+{
+	Value& node = *nodeRef;
+
+	LOG(logINFO) << MESSAGE_PARSING_NODE_FIELD + string(fieldName);
+
+	if (nodeRef == nullptr || !node.HasMember(fieldName)) {
+		if (*value != defaultValue) {
+			*value = defaultValue;
+			LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD_EMPTY << fieldName << MESSAGE_ERROR_PARSING_NODE_FIELD_DEFAULT << defaultValue;
+		}
+		return;
+	}
+
+	string childNodeValue = getNodeContent(&node[fieldName]);
+	if (!node[fieldName].IsBool()) {
+		if (*value != defaultValue) {
+			*value = defaultValue;
+			LOG(logWARNING) << MESSAGE_ERROR_PARSING_NODE_FIELD_INCORRECT << fieldName << "=" << childNodeValue << MESSAGE_ERROR_PARSING_NODE_FIELD_DEFAULT << defaultValue;
+		}
+		return;
+	}
+
+	*value = node[fieldName].GetBool();
+	LOG(logINFO) << MESSAGE_OK_PARSING_NODE_FIELD << *value;
+}
+
 string Serializable::getNodeContent(Value * nodeRef)
 {
 	Value& node = *nodeRef;
@@ -103,5 +157,10 @@ string Serializable::getNodeContent(Value * nodeRef)
 	Writer<StringBuffer> writer(sb);
 	node.Accept(writer);
 	return sb.GetString();
+}
+
+string Serializable::serialize()
+{
+	return string();
 }
 

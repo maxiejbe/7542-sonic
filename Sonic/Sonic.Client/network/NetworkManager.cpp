@@ -139,19 +139,14 @@ void NetworkManager::sendMessage(Message* message)
 	//Serialize message before sending to server
 	vector<Message*> messages;
 	messages.push_back(message);
-
-	/*string stringMessage;
-	BoostSerializable::serialize_save(messages, stringMessage);
-	
-	vector<Message*> messages2;
-	BoostSerializable::serialize_load(messages2, stringMessage.c_str(), stringMessage.size());
+	string stringMessage = message->serialize();
 
 	if (this->client->sendMessage(stringMessage)) {
 		LOG(logINFO) << "Network Manager: Se envio mensaje -> " << stringMessage;
 	}
 	else {
 		LOG(logERROR) << "Network Manager: Falló envio de mensaje -> " << stringMessage;
-	}*/
+	}
 }
 
 int NetworkManager::getPlayerNumber()

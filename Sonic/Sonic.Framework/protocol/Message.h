@@ -5,6 +5,7 @@
 #include "../Vector2.h"
 //#include "common/BoostSerializable.h"
 #include "../entities/common/Serializable.h";
+#include "../entities/common/Validator.h";
 #include <typeinfo>
 
 enum ConnectionStatus { assign, connected, disconnected };
@@ -28,7 +29,7 @@ public:
 	}*/
 
 	Message::Message();
-	Message::Message(float dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKULeft, bool isKURight, bool isKUSpace);
+	Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKULeft, bool isKURight, bool isKUSpace);
 
 	void setConnectionStatus(ConnectionStatus);
 	ConnectionStatus getConnectionStatus();
@@ -40,10 +41,12 @@ public:
 
 	string getBinaryData();
 
-	/*Serializable*/
-	void unserialize(Value* nodeRef);
-	char* getNodeName();
+	bool unserialize(string json);
 
+	// Inherited via Serializable
+	void unserialize(Value* nodeRef) override;
+	char* getNodeName() override;
+	string serialize() override;
 private:
 	const string DELIMITER = "|";
 	vector<void*> properties;
@@ -52,10 +55,12 @@ private:
 	ConnectionStatus connectionStatus;
 	PlayerStatus playerStatus;
 
-	float dt;
+	double dt;
 	bool isKPLeft, isKPRight, isKPUp, isKPSpace, isKULeft, isKURight, isKUSpace;
 
 	string binaryMsg;
+
+	void performSerialization(Writer<StringBuffer>& writer);
 };
 
 #endif

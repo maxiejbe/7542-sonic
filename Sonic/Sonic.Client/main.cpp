@@ -51,9 +51,9 @@ int main(int argc, char* args[])
 		Sleep(3000);
 	}
 
-	while (networkManager.getFileContent().empty()) {
+	/*while (networkManager.getFileContent().empty()) {
 		Sleep(3000);
-	}
+	}*/
 
 	Parser* parser = new Parser(configPath, networkManager.getFileContent());
 	Window window;
@@ -126,7 +126,7 @@ int main(int argc, char* args[])
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
 			}
 
-			float timeStep = stepTimer.getTicks() / 1000.f;
+			double timeStep = stepTimer.getTicks() / 1000.;
 
 			//Handle player input
 			bool isKPLeft = input->isKeyPressed(KEY_LEFT);
@@ -139,7 +139,6 @@ int main(int argc, char* args[])
 			bool isKUSpace = input->isKeyUp(KEY_SPACE);
 
 			Message message(timeStep, isKPLeft, isKPSpace, isKPRight, isKPUp, isKULeft, isKURight, isKUSpace);
-			
 			NetworkManager::getInstance().sendMessage(&message);
 
 			stepTimer.start();

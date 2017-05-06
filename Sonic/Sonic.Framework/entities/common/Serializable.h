@@ -23,11 +23,14 @@ public:
 
 	void parseInt(int * value, int defaultValue, Value * nodeRef, const char* fieldName, function<bool(int)> condition = nullptr);
 	void parseString(string* value, string defaultValue, Value* nodeRef, const char* fieldName);
+	void parseDouble(double* value, double defaultValue, Value* nodeRef, const char* fieldName);
+	void parseBool(bool* value, bool defaultValue, Value* nodeRef, const char* fieldName);
 
 	string getNodeContent(Value* nodeRef);
 
 	virtual void unserialize(Value* nodeRef) = 0;
 	virtual char* getNodeName() = 0;
+	virtual string serialize();
 private:
 	const char* MESSAGE_PARSING_NODE_COLLECTION = "Iterando colección: ";
 	const char* MESSAGE_NOT_FOUND_NODE_COLLECTION = "La siguiente colección no se encuentra: ";
