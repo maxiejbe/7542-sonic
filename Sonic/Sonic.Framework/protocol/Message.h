@@ -41,6 +41,17 @@ public:
 
 	string getBinaryData();
 
+	double getTimeStep();
+	
+	bool getIsKPLeft();
+	bool getIsKPSpace();
+	bool getIsKPRight();
+	bool getIsKPUp();
+	
+	bool getIsKULeft();
+	bool getIsKURight();
+	bool getIsKUSpace();
+
 	bool unserialize(string json);
 
 	// Inherited via Serializable

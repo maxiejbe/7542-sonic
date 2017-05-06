@@ -1,5 +1,9 @@
 #include "Player.h"
 
+Player::Player() {
+
+}
+
 Player::Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH, int scrollSpeed)
 {
 	this->position = Vector2(x, y);

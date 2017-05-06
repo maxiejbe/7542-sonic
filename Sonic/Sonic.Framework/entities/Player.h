@@ -13,6 +13,7 @@ enum FacingDirection { FACING_LEFT, FACING_RIGHT };
 class Player
 {
 public:
+	Player();
 	Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH, int scrollSpeed);
 
 	Vector2 getPosition();

@@ -2,43 +2,47 @@
 
 const float gravity = 0.38f;
 
-void PlayerController::update(Player* player, float dt)
+PlayerController::PlayerController()
+{
+}
+
+void PlayerController::update(Message* message, Player* player)
 {
 	player->setTargetVelX(0);
 
-	updateInput(player);
-	move(player, dt);
+	updateInput(message, player);
+	move(player, message->getTimeStep());
 }
 
-void PlayerController::updateInput(Player* player)
+void PlayerController::updateInput(Message* message, Player* player)
 {
-	/*float turbo = 2;
+	float turbo = 2;
 
-	if (input->isKeyPressed(KEY_LEFT)) {
+	if (message->getIsKPLeft()) {
 		player->setFacingDirection(FACING_LEFT);
 		player->setTargetVelX(player->getScrollSpeed() * -1);
 		if (!player->getIsJumping()) {
 			player->setSpriteState(PlayerStatus::walking);
-			if (input->isKeyPressed(KEY_SPACE)) {
+			if (message->getIsKPSpace()) {
 				player->setTargetVelX(player->getTargetVelX() * turbo);
 				player->setSpriteState(PlayerStatus::running);
 			}
 		}
 	}
 
-	if (input->isKeyPressed(KEY_RIGHT)) {
+	if (message->getIsKPRight()) {
 		player->setFacingDirection(FACING_RIGHT);
 		player->setTargetVelX(player->getScrollSpeed());
 		if (!player->getIsJumping()) {
 			player->setSpriteState(PlayerStatus::walking);
-			if (input->isKeyPressed(KEY_SPACE)) {
+			if (message->getIsKPSpace()) {
 				player->setTargetVelX(player->getTargetVelX() * turbo);
 				player->setSpriteState(PlayerStatus::running);
 			}
 		}
 	}
 
-	if (input->isKeyPressed(KEY_UP)) {
+	if (message->getIsKPUp()) {
 		// TODO: extraer a PlayerStatus::jumping()
 		if (!player->getIsJumping()) {
 			player->setSpriteState(PlayerStatus::jumping);
@@ -48,14 +52,14 @@ void PlayerController::updateInput(Player* player)
 	}
 
 	// En caso que se suelten a la vez la flecha y el space.
-	if (input->isKeyUp(KEY_LEFT) || input->isKeyUp(KEY_RIGHT)) {
-		if (input->isKeyPressed(KEY_SPACE) || input->isKeyUp(KEY_SPACE)) {
+	if (message->getIsKULeft() || message->getIsKURight()) {
+		if (message->getIsKPSpace() || message->getIsKUSpace()) {
 			player->setSpriteState(PlayerStatus::walking);
 		}
-	}*/
+	}
 }
 
-void PlayerController::move(Player* player, float dt)
+void PlayerController::move(Player* player, double dt)
 {
 	// Weighted averaging acceleration method
 	float a = 0.08;

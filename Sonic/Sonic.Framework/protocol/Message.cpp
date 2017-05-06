@@ -62,6 +62,46 @@ string Message::getBinaryData()
 	return this->binaryMsg;
 }
 
+double Message::getTimeStep() 
+{
+	return this->dt;
+}
+
+bool Message::getIsKPLeft() 
+{
+	return this->isKPLeft;
+}
+
+bool Message::getIsKPSpace()
+{
+	return this->isKPSpace;
+}
+
+bool Message::getIsKPRight()
+{
+	return this->isKPRight;
+}
+
+bool Message::getIsKPUp()
+{
+	return this->isKPUp;
+}
+
+bool Message::getIsKULeft()
+{
+	return this->isKULeft;
+}
+
+bool Message::getIsKURight()
+{
+	return this->isKURight;
+}
+
+bool Message::getIsKUSpace()
+{
+	return this->isKUSpace;
+}
+
 bool Message::unserialize(string json)
 {
 	Document document;

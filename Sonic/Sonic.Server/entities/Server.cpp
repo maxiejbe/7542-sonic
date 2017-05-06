@@ -14,7 +14,6 @@ const char* MESSAGE_SERVER_ERROR_CODE = "Código de error: ";
 const char* MESSAGE_SERVER_SEND_MESSAGE_ERROR = "No se pudo enviar el mensaje ";
 const char* MESSAGE_SERVER_SEND_MESSAGE_SUCCESS = "Se envió correctamente el mensaje ";
 
-
 Server::~Server()
 {
 	for (vector<Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
@@ -150,9 +149,9 @@ void Server::removeClientConnection(int clientNumber)
 {
 	int index = clientNumber - 1;
 	
-	Client* clientPointer = clients[index];
-	clientPointer->closeSocket();
-	delete clientPointer;
+	Client* client = clients[index];
+	client->closeSocket();
+	delete client;
 
 	clients[index] = NULL;
 

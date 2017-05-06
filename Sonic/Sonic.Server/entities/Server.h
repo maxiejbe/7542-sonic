@@ -9,6 +9,7 @@
 #include <Logger.h>
 
 #include "Client.h"
+#include "entities/Player.h"
 
 //Take a look at: http://stackoverflow.com/questions/16948064/unresolved-external-symbol-lnk2019
 #pragma comment(lib, "Ws2_32.lib")

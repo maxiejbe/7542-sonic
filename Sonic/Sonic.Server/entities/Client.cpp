@@ -20,6 +20,12 @@ Client::Client(Server* server, int clientNumber)
 {
 	this->clientNumber = clientNumber;
 	this->server = server;
+	this->player = new Player();
+}
+
+Client::~Client()
+{
+	delete this->player;
 }
 
 int Client::getClientNumber()
@@ -82,6 +88,11 @@ bool Client::sendFileContent()
 	}
 }
 
+Player* Client::getPlayer()
+{
+	return this->player;
+}
+
 SOCKET Client::getSocket()
 {
 	return this->socket;
@@ -94,10 +105,16 @@ bool Client::parseRecievedMessage()
 
 void Client::handleRecievedMessage(char* recievedMessage)
 {
-	//TODO: Handle message and do certain action.
-	
+	string strMessage(recievedMessage);
+	Message* message = new Message();
+	message->unserialize(strMessage);
+
+	PlayerController::update(message, this->player);
+
+	delete message;
+
 	//Then, send broadcast message
-	this->server->sendBroadcast(recievedMessage);
+	//this->server->sendBroadcast(recievedMessage);
 }
 
 DWORD Client::socketHandler() {
@@ -114,18 +131,7 @@ DWORD Client::socketHandler() {
 		
 		LOG(logINFO) << MESSAGE_CLIENT_DATA_RECV_SUCCESS << recievedMessage << " (Cliente " << this->clientNumber << ")";
 
-		string strMessage(recievedMessage);
-		Message message;
-		message.unserialize(strMessage);
-
-		//if (message.validate()) {
-		//	this->handleRecievedMessage(recievedMessage);
-		//}
-		
-		//string convertedMessage;
-		//message.toString(&convertedMessage);
-
-		//printf("Received bytes %d\nReceived string \"%s\"\n", bytecount, recievedMessage /*convertedMessage.c_str()*/);
+		this->handleRecievedMessage(recievedMessage);
 	};
 
 	LOG(logINFO) << MESSAGE_CLIENT_CONNECTION_CLOSED << this->clientNumber;

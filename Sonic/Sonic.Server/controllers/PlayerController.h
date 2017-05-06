@@ -11,10 +11,11 @@ using namespace std;
 class PlayerController
 {
 public:
-	void update(Player* player, float dt);
+	PlayerController();
+	static void update(Message* message, Player* player);
 private:
-	void updateInput(Player* player);
-	void move(Player* player, float timeStep);
+	static void updateInput(Message* message, Player* player);
+	static void move(Player* player, double timeStep);
 };
 
 #endif // !PLAYERCONTROLLER_H
