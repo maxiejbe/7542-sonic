@@ -1,21 +1,23 @@
 #include "Player.h"
 
-Player::Player() {
-
-}
-
-Player::Player(string filePath, float x, float y, float velX, float velY, int scenW, int scenH, int scrollSpeed)
+Player::Player(int windowHeight, int scenarioWidth, int scenarioHeight, int scrollSpeed)
 {
-	this->position = Vector2(x, y);
-	this->velocity = Vector2(velX, velY);
-	this->scenarioWidth = scenW;
-	this->scenarioHeight = scenH;
+	//TODO: Get player image by index.
+	this->filePath = "img/foo22.png";
+
+	this->groundPos = windowHeight / 1.35;
+
+	this->position = Vector2(0, this->groundPos);
+	this->velocity = Vector2(0, 0);
+
+	this->scenarioWidth = scenarioWidth;
+	this->scenarioHeight = scenarioHeight;
+	
 	this->scrollSpeed = scrollSpeed;
-	this->groundPos = y;
+	
 	this->isJumping = false;
 	this->facingDirection = FACING_RIGHT;
 	this->spriteState = PlayerStatus::idle;
-	this->filePath = filePath;
 }
 
 Vector2 Player::getPosition()

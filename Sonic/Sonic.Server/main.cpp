@@ -1,15 +1,11 @@
 #include "protocol/Message.h"
 #include "entities/Server.h"
 #include "Parser.h"
-#include "entities/common/ServerConfiguration.h"
-#include "entities/Window.h"
-#include "entities/Configuration.h"
-#include "entities/Scenario.h"
 
 int main(int argc, char* args[])
 {
 	Logger::init();
-	Logger::loggingLevel() = logHIGH;
+	Logger::loggingLevel() = logLOW;
 
 	string configParamName = "--config";
 	string configPath = "";
@@ -33,7 +29,7 @@ int main(int argc, char* args[])
 	parser->parse(&config);
 	parser->parse(&scenario);
 
-	Server server(serverConfig.getPortNumber(), serverConfig.getMaxAllowedClients(), parser->getFileContent());
+	Server server(&serverConfig, parser->getFileContent(), &window, &config, &scenario);
 	if (!server.validate()) {
 		return 0;
 	}

@@ -47,11 +47,11 @@ int main(int argc, char* args[])
 	NetworkManager networkManager = NetworkManager::getInstance(); 
 	networkManager.startClient(SERVER_IP, SERVER_PORT);
 
-	while (networkManager.getPlayerNumber() < 0) {
+	/*while (networkManager.getPlayerNumber() < 0) {
 		Sleep(3000);
 	}
 
-	/*while (networkManager.getFileContent().empty()) {
+	while (networkManager.getFileContent().empty()) {
 		Sleep(3000);
 	}*/
 
@@ -98,8 +98,9 @@ int main(int argc, char* args[])
 		}
 
 		// Initialize player
-		Player player("img/foo22.png", 0, SDLWindow::getInstance().getScreenHeight() / 1.35, 0, 0, scenarioWidth, scenarioHeight, config.getScrollSpeed());
+		Player player(window.getHeight(), scenarioWidth, scenarioHeight, config.getScrollSpeed());
 		LOG(logINFO) << "El personaje ha sido creado correctamente.";
+		PlayerView playerView(&player);
 
 		// Initialize camera
 		Timer stepTimer;
@@ -177,6 +178,7 @@ int main(int argc, char* args[])
 				entityView->draw(camera);
 			}
 
+			playerView.render(camera.x, camera.y);
 			// Render players
 			// TODO: foreach() -> playerView.render(camera.x, camera.y);
 

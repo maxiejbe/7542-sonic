@@ -27,19 +27,24 @@ Server::~Server()
 	LOG(logINFO) << MESSAGE_SERVER_EXECUTION_END;
 }
 
-Server::Server(int portNumber, int maxAllowedClients, string fileContent)
+Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario)
 {
-	this->portNumber = portNumber;
-	this->maxAllowedClients = maxAllowedClients;
+	this->portNumber = serverConfig->getPortNumber();
+	
+	this->serverConfig = serverConfig;
 	this->fileContent = fileContent;
+	this->window = window;
+	this->config = config;
+	this->scenario = scenario;
+	
 	this->isValid = false;
 
-	LOG(logINFO) << MESSAGE_STARTING_SERVER << "El Puerto es " << this->portNumber << ". La máxima cantidad de clientes es " << this->maxAllowedClients;
+	LOG(logINFO) << MESSAGE_STARTING_SERVER << "El Puerto es " << this->portNumber << ". La máxima cantidad de clientes es " << this->serverConfig->getMaxAllowedClients();
 
 	this->connectedClients = 0;
 	clients.clear();
 
-	for (int i = 0; i < this->maxAllowedClients; i++) {
+	for (int i = 0; i < this->serverConfig->getMaxAllowedClients(); i++) {
 		clients.insert(clients.begin() + i, NULL);
 	}
 
@@ -168,11 +173,26 @@ string Server::getFileContent()
 	return this->fileContent;
 }
 
+Window * Server::getWindow()
+{
+	return this->window;
+}
+
+Configuration * Server::getConfiguration()
+{
+	return this->config;
+}
+
+Scenario * Server::getScenario()
+{
+	return this->scenario;
+}
+
 void Server::waitForClientConnections()
 {
 	bool keepWaiting = true;
 
-	while (this->connectedClients < this->maxAllowedClients) {
+	while (this->connectedClients < this->serverConfig->getMaxAllowedClients()) {
 		LOG(logINFO) << MESSAGE_SERVER_WAITING_CONNECTIONS;
 		this->acceptClientConnection();	
 	}

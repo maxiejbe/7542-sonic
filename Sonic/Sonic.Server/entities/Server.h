@@ -11,6 +11,11 @@
 #include "Client.h"
 #include "entities/Player.h"
 
+#include "entities/Window.h"
+#include "entities/Configuration.h"
+#include "entities/Scenario.h"
+#include "common/ServerConfiguration.h"
+
 //Take a look at: http://stackoverflow.com/questions/16948064/unresolved-external-symbol-lnk2019
 #pragma comment(lib, "Ws2_32.lib")
 
@@ -23,7 +28,7 @@ class Server {
 
 public:
 	~Server();
-	Server(int portNumber, int maxAllowedClients, string fileContent);
+	Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario);
 	bool validate();
 	void waitForClientConnections();
 	void sendBroadcast(char* message);
@@ -31,6 +36,10 @@ public:
 
 	SOCKET getSocket();
 	string getFileContent();
+
+	Window* getWindow();
+	Configuration* getConfiguration();
+	Scenario* getScenario();
 
 private:
 	/*
@@ -51,9 +60,13 @@ private:
 	struct sockaddr_in address;
 	int portNumber;
 
-	int maxAllowedClients;
 	int connectedClients;
 	string fileContent;
+
+	ServerConfiguration* serverConfig;
+	Window* window;
+	Configuration* config;
+	Scenario* scenario;
 
 	vector<Client*> clients;
 };

@@ -20,7 +20,13 @@ Client::Client(Server* server, int clientNumber)
 {
 	this->clientNumber = clientNumber;
 	this->server = server;
-	this->player = new Player();
+
+	int windowHeight = this->server->getWindow()->getHeight();
+	int scenarioWidht = this->server->getScenario()->getWidth();
+	int scenarioHeight = this->server->getScenario()->getHeight();
+	int scrollSpeed = this->server->getConfiguration()->getScrollSpeed();
+
+	this->player = new Player(windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
 }
 
 Client::~Client()
@@ -79,6 +85,8 @@ bool Client::sendClientNumber()
 			<< " (Cliente " << this->clientNumber << ")";
 		return false;
 	}
+
+	return true;
 }
 
 bool Client::sendFileContent()
@@ -90,6 +98,7 @@ bool Client::sendFileContent()
 			<< " (Cliente " << this->clientNumber << ")";
 		return false;
 	}
+	return true;
 }
 
 Player* Client::getPlayer()
