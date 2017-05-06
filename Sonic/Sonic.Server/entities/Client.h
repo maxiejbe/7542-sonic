@@ -20,6 +20,9 @@ public:
 	bool acceptSocket();
 	void closeSocket();
 	
+	bool sendClientNumber();
+	bool sendFileContent();
+
 	SOCKET getSocket();
 private:
 	bool parseRecievedMessage();
@@ -33,6 +36,7 @@ private:
 	DWORD socketHandler();
 
 	int clientNumber;
+	
 	SOCKET socket;
 	Server* server;
 	struct sockaddr_in address;

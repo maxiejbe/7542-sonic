@@ -15,6 +15,10 @@ void Parser::parse(Serializable* serializable) {
 	serializable->parseObject(&document);
 }
 
+string Parser::getFileContent() {
+	return this->fileContent;
+}
+
 bool Parser::readConfigFileContent(string path)
 {
 	if (path.empty()) {
@@ -61,8 +65,13 @@ bool Parser::parseDocument()
 	return true;
 }
 
-Parser::Parser(string path)
+Parser::Parser(string path, string content)
 {
+	if (!content.empty()) {
+		this->fileContent = content;
+		parseDocument();
+	}
+
 	if (!readConfigFileContent(path)) {
 		readConfigFileContent(DEFAULT_CONFIG_FILE);
 	}

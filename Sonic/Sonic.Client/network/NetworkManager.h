@@ -14,14 +14,19 @@ public:
 	}
 	void close();
 
-	bool startClient(char * host, int port, Player * player);
+	bool startClient(char * host, int port);
 	bool online();
 	void sendMessage(Message * message);
+
+	int getPlayerNumber();
+	string getFileContent();
 private:
 	NetworkManager();
 	static NetworkManager * instance;
-	Player * player;
 	SocketClient * client;
+
+	int playerNumber;
+	string fileContent;
 
 	/*HANDLERS*/
 	void startConnectionHandlers();
@@ -31,8 +36,8 @@ private:
 	static DWORD WINAPI runRecvSocketHandler(void* args);
 	DWORD recvSocketHandler();
 	void handleMessage(char*);
-	void playerAssignment(Message * msg);
-	void updateRival(Message * msg);
+	void playerAssignment(Message * message);
+	void updateRival(Message * message);
 
 	//send handler
 	DWORD sendThreadId;

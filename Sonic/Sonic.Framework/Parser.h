@@ -19,9 +19,11 @@ using namespace rapidjson;
 
 class Parser {
 public:
-	Parser(string path);
+	Parser(string path, string content);
 	~Parser();
 	void parse(Serializable* serializable);
+
+	string getFileContent();
 private:
 	Document document;
 	Document windowNode;

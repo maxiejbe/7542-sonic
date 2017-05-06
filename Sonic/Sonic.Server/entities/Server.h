@@ -22,13 +22,14 @@ class Server {
 
 public:
 	~Server();
-	Server(int portNumber, int maxAllowedClients);
+	Server(int portNumber, int maxAllowedClients, string fileContent);
 	bool validate();
 	void waitForClientConnections();
 	void sendBroadcast(char* message);
 	void removeClientConnection(int clientNumber);
 
 	SOCKET getSocket();
+	string getFileContent();
 
 private:
 	/*
@@ -51,6 +52,7 @@ private:
 
 	int maxAllowedClients;
 	int connectedClients;
+	string fileContent;
 
 	vector<Client*> clients;
 };

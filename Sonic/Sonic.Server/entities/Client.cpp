@@ -12,6 +12,7 @@ const char* MESSAGE_CLIENT_DATA_RECV_INCORRECT = "No se pudo recibir correctamen
 const char* MESSAGE_CLIENT_DATA_RECV_SUCCESS = "Se recibió correctamente el mensaje: ";
 
 const char* MESSAGE_CLIENT_SEND_MESSAGE_ERROR = "No se pudo enviar el mensaje ";
+const char* MESSAGE_CLIENT_SEND_FILE_CONTENT_ERROR = "No se pudo enviar el contenido del archivo de configuración";
 const char* MESSAGE_CLIENT_SEND_MESSAGE_SUCCESS = "Se envió correctamente el mensaje ";
 
 
@@ -41,18 +42,14 @@ bool Client::acceptSocket()
 
 	LOG(logINFO) << MESSAGE_CLIENT_ACCEPTED_CONNECTION << this->clientNumber;
 
-	int bytecount;
-	Message message(this->clientNumber);
-	message.setConnectionStatus(ConnectionStatus::assign);
-	string stringMessage;
-	message.toString(&stringMessage);
-
-	if ((bytecount = send(this->socket, stringMessage.c_str(), strlen(stringMessage.c_str()), 0)) == SOCKET_ERROR) {
-		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << stringMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
-			<< " (Cliente " << this->clientNumber << ")";
+	if (!this->sendClientNumber()) {
 		return false;
 	}
 
+	if (!this->sendFileContent()) {
+		return false;
+	}
+	
 	CreateThread(0, 0, runSocketHandler, (void*)this, 0, &this->threadId);
 	return true;
 }
@@ -60,6 +57,29 @@ bool Client::acceptSocket()
 void Client::closeSocket()
 {
 	closesocket(this->socket);
+}
+
+bool Client::sendClientNumber()
+{
+	int bytecount;
+	string stringMessage = to_string(this->clientNumber);
+	
+	if ((bytecount = send(this->socket, stringMessage.c_str(), strlen(stringMessage.c_str()), 0)) == SOCKET_ERROR) {
+		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << stringMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
+			<< " (Cliente " << this->clientNumber << ")";
+		return false;
+	}
+}
+
+bool Client::sendFileContent()
+{
+	int bytecount;
+	string fileContent = this->server->getFileContent();
+	if ((bytecount = send(this->socket, fileContent.c_str(), strlen(fileContent.c_str()), 0)) == SOCKET_ERROR) {
+		LOG(logERROR) << MESSAGE_CLIENT_SEND_FILE_CONTENT_ERROR << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
+			<< " (Cliente " << this->clientNumber << ")";
+		return false;
+	}
 }
 
 SOCKET Client::getSocket()
@@ -95,11 +115,12 @@ DWORD Client::socketHandler() {
 		LOG(logINFO) << MESSAGE_CLIENT_DATA_RECV_SUCCESS << recievedMessage << " (Cliente " << this->clientNumber << ")";
 
 		string strMessage(recievedMessage);
-		Message message(strMessage);
+		vector<Message*> messages;
+		BoostSerializable::serialize_load(messages, strMessage.c_str(), strMessage.size());
 		
-		if (message.validate()) {
-			this->handleRecievedMessage(recievedMessage);
-		}
+		//if (message.validate()) {
+		//	this->handleRecievedMessage(recievedMessage);
+		//}
 		
 		//string convertedMessage;
 		//message.toString(&convertedMessage);

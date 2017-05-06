@@ -20,7 +20,7 @@ public:
 	bool isConnected();
 	bool isTerminated();
 	bool reconnect();
-	bool sendMessage(char * message);
+	bool sendMessage(string message);
 	bool receiveMessage(char * receivedMessage, int receivedMessageLength);
 private:
 	SOCKET _socket;

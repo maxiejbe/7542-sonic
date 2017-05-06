@@ -28,10 +28,11 @@ Server::~Server()
 	LOG(logINFO) << MESSAGE_SERVER_EXECUTION_END;
 }
 
-Server::Server(int portNumber, int maxAllowedClients)
+Server::Server(int portNumber, int maxAllowedClients, string fileContent)
 {
 	this->portNumber = portNumber;
 	this->maxAllowedClients = maxAllowedClients;
+	this->fileContent = fileContent;
 	this->isValid = false;
 
 	LOG(logINFO) << MESSAGE_STARTING_SERVER << "El Puerto es " << this->portNumber << ". La máxima cantidad de clientes es " << this->maxAllowedClients;
@@ -161,6 +162,11 @@ void Server::removeClientConnection(int clientNumber)
 SOCKET Server::getSocket()
 {
 	return this->_socket;
+}
+
+string Server::getFileContent()
+{
+	return this->fileContent;
 }
 
 void Server::waitForClientConnections()

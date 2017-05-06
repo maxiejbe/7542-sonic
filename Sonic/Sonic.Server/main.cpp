@@ -22,7 +22,7 @@ int main(int argc, char* args[])
 		}
 	}
 
-	Parser* parser = new Parser(configPath);
+	Parser* parser = new Parser(configPath, "");
 	ServerConfiguration serverConfig;
 	Window window;
 	Configuration config;
@@ -33,7 +33,7 @@ int main(int argc, char* args[])
 	parser->parse(&config);
 	parser->parse(&scenario);
 
-	Server server(serverConfig.getPortNumber(), serverConfig.getMaxAllowedClients());
+	Server server(serverConfig.getPortNumber(), serverConfig.getMaxAllowedClients(), parser->getFileContent());
 	if (!server.validate()) {
 		return 0;
 	}

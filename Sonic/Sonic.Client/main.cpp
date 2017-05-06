@@ -20,6 +20,9 @@
 
 #include "views/common/EntityViewResolver.h"
 
+char* SERVER_IP = "127.0.0.1";
+const int SERVER_PORT = 5000;
+
 void close();
 
 void close()
@@ -40,15 +43,19 @@ int main(int argc, char* args[])
 	string configParamName = "--config";
 	string configPath = "";
 
-	//Take config file from param
-	if (argc > 2) {
-		string arg = args[1];
-		if (arg == configParamName) {
-			configPath = args[2];
-		}
+	//Initialize network manager
+	NetworkManager networkManager = NetworkManager::getInstance(); 
+	networkManager.startClient(SERVER_IP, SERVER_PORT);
+
+	while (networkManager.getPlayerNumber() < 0) {
+		Sleep(3000);
 	}
 
-	Parser* parser = new Parser(configPath);
+	while (networkManager.getFileContent().empty()) {
+		Sleep(3000);
+	}
+
+	Parser* parser = new Parser(configPath, networkManager.getFileContent());
 	Window window;
 	Configuration config;
 	Scenario scenario;
@@ -94,10 +101,6 @@ int main(int argc, char* args[])
 		Player player("img/foo22.png", 0, SDLWindow::getInstance().getScreenHeight() / 1.35, 0, 0, scenarioWidth, scenarioHeight, config.getScrollSpeed());
 		LOG(logINFO) << "El personaje ha sido creado correctamente.";
 
-		//Initialize network manager
-		//TODO: inicializar cliente desde config
-		NetworkManager::getInstance().startClient("127.0.0.1", 5000, &player);
-
 		// Initialize camera
 		Timer stepTimer;
 		SDL_Rect camera = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
@@ -125,31 +128,19 @@ int main(int argc, char* args[])
 
 			float timeStep = stepTimer.getTicks() / 1000.f;
 
-			//Message msg("hola");
-			//NetworkManager::getInstance().sendMessage(&msg);
-			// TODO: player.update(timeStep);
+			//Handle player input
+			bool isKPLeft = input->isKeyPressed(KEY_LEFT);
+			bool isKPSpace = input->isKeyPressed(KEY_SPACE);
+			bool isKPRight = input->isKeyPressed(KEY_RIGHT);
+			bool isKPUp = input->isKeyPressed(KEY_UP);
 
-			Message msg(1, true, false, true, false, true, false, true);
+			bool isKULeft = input->isKeyUp(KEY_LEFT);
+			bool isKURight = input->isKeyUp(KEY_RIGHT);
+			bool isKUSpace = input->isKeyUp(KEY_SPACE);
 
-
-
-			std::vector<Message*> messages;
-			messages.push_back(&msg);
-
-			std::string outputBuffer;
-			BoostSerializable::serialize_save(messages, outputBuffer);
-
-			// Se manda outputBuffer al server.
-
-			// EN EL SERVER
-			// Intento recuperarlo
-			std::vector<Message*> messages2;
-			//string receiveBuffer;
-			BoostSerializable::serialize_load(messages2, outputBuffer.c_str(), outputBuffer.size());
-
-
-
-
+			Message message(timeStep, isKPLeft, isKPSpace, isKPRight, isKPUp, isKULeft, isKURight, isKUSpace);
+			
+			NetworkManager::getInstance().sendMessage(&message);
 
 			stepTimer.start();
 

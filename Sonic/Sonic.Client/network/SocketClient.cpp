@@ -5,6 +5,7 @@ SocketClient::SocketClient(char * host, int port)
 {
 	this->host = host;
 	this->port = port;
+
 	this->addressInfo = NULL;
 	this->_socket = INVALID_SOCKET;
 	this->terminated = false;
@@ -42,16 +43,13 @@ bool SocketClient::isTerminated()
 	return this->terminated;
 }
 
-bool SocketClient::sendMessage(char * message)
+bool SocketClient::sendMessage(string message)
 {	
 	if (!this->initialized || !this->connected || this->terminated) {
 		return false;
 	}
 
-	char buffer[1024];
-	int bufferSize = 1024;
-	memset(buffer, 0, bufferSize);
-	int byteCount = send(this->_socket, message, strlen(message), 0);
+	int byteCount = send(this->_socket, message.c_str(), message.size(), 0);
 	if (byteCount == SOCKET_ERROR) {
 		//TODO: Log in file
 		//fprintf(stderr, "Error sending data %d\n", WSAGetLastError());

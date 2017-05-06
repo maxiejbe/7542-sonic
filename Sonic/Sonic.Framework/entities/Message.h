@@ -26,26 +26,16 @@ public:
 		ar & boost::serialization::make_nvp("isKUSpace", isKUSpace);
 	}
 
-	Message();
-	Message(string);
-	Message(int);
+	Message::Message();
 	Message::Message(float dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKULeft, bool isKURight, bool isKUSpace);
-
-	void setPosition(Vector2 position);
-	Vector2 getPosition();
 
 	void setConnectionStatus(ConnectionStatus);
 	ConnectionStatus getConnectionStatus();
 
 	void setPlayerNumber(int);
-	int getNumber();
-
-	void fromString(string);
-	void toString(string*);
+	int getPlayerNumber();
 
 	bool validate();
-
-	void initializeProperties();
 
 	string getBinaryData();
 
@@ -53,7 +43,7 @@ private:
 	const string DELIMITER = "|";
 	vector<void*> properties;
 	int playerNumber;
-	Vector2 position;
+	
 	ConnectionStatus connectionStatus;
 	PlayerStatus playerStatus;
 
