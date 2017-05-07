@@ -3,7 +3,7 @@
 
 #include <string>
 #include "SerializableMessage.h"
-#include "../entities/common/Validator.h";
+#include "../entities/common/Validator.h"
 
 enum ServerMessageType {player_assign, content, start_game, players_status, typeless};
 

@@ -44,7 +44,7 @@ int main(int argc, char* args[])
 	string configPath = "";
 
 	//Initialize network manager
-	NetworkManager networkManager = NetworkManager::getInstance(); 
+	NetworkManager networkManager = NetworkManager::getInstance();
 	networkManager.startClient(SERVER_IP, SERVER_PORT);
 
 	/*while (networkManager.getPlayerNumber() < 0) {

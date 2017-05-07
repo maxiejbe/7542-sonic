@@ -62,7 +62,7 @@ void PlayerController::updateInput(Message* message, Player* player)
 void PlayerController::move(Player* player, double dt)
 {
 	// Weighted averaging acceleration method
-	float a = 0.08;
+	float a = 0.08f;
 	player->setXVelocity((a * player->getTargetVelX() * dt) + ((1 - a) * player->getVelocity().x));
 
 	// TODO: extraer a isStopping()

@@ -1,4 +1,5 @@
 #include "Logger.h"
+#include <thread>
 
 using namespace std;
 
@@ -43,6 +44,9 @@ std::ostringstream& Logger::get(LogType type) {
 		os << "[ERROR] ";
 		break;
 	}
+
+	thread::id threadId = this_thread::get_id();
+	os << "[T-" << threadId << "] ";
 
 	return os;
 }

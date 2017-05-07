@@ -16,7 +16,7 @@ SocketClient::SocketClient(char * host, int port)
 	if (!this->initializeSocket()) { return; }
 
 	this->initialized = true;
-	
+
 	//perform socket connection
 	this->connectToSocket();
 }
@@ -38,13 +38,13 @@ bool SocketClient::isConnected()
 	return this->connected;
 }
 
-bool SocketClient::isTerminated() 
+bool SocketClient::isTerminated()
 {
 	return this->terminated;
 }
 
 bool SocketClient::sendMessage(string message)
-{	
+{
 	if (!this->initialized || !this->connected || this->terminated) {
 		return false;
 	}
@@ -131,7 +131,7 @@ bool SocketClient::initializeSocket()
 		this->freeResources();
 		return false;
 	}
-	
+
 	return true;
 }
 
@@ -146,9 +146,9 @@ void SocketClient::connectToSocket()
 
 bool SocketClient::reconnect()
 {
-	if (!this->initialized) { 
+	if (!this->initialized) {
 		//TODO: Log in file
-		return false; 
+		return false;
 	}
 
 	this->connectToSocket();
@@ -156,16 +156,16 @@ bool SocketClient::reconnect()
 }
 
 
-void SocketClient::terminateConnection() 
+void SocketClient::terminateConnection()
 {
 	this->terminated = true;
 	this->disconnectSocket();
 }
 
-void SocketClient::disconnectSocket() 
+void SocketClient::disconnectSocket()
 {
 	this->connected = false;
-	if (this->_socket){closesocket(this->_socket);}
+	if (this->_socket) { closesocket(this->_socket); }
 }
 
 void SocketClient::freeResources()
