@@ -149,7 +149,7 @@ void NetworkManager::sendMessage(Message* message)
 	string stringMessage = message->serialize();
 
 	if (this->client->sendMessage(stringMessage)) {
-		LOG(logINFO) << "Network Manager: Se envio mensaje -> " << stringMessage;
+		//LOG(logINFO) << "Network Manager: Se envio mensaje -> " << stringMessage;
 	}
 	else {
 		LOG(logERROR) << "Network Manager: Falló envio de mensaje -> " << stringMessage;

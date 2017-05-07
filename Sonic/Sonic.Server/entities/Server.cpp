@@ -200,22 +200,48 @@ void Server::waitForClientConnections()
 
 void Server::sendBroadcast(char* message)
 {
+	ServerMessage * playersUpdateStatusMessage = this->makePlayersStatusUpdateMessage();
+	char * broadcast = StringUtils::convert(playersUpdateStatusMessage->serialize());
+	delete playersUpdateStatusMessage;
+
 	for (vector<Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
 		if (*it == NULL) continue;
 
 		int bytecount;
-		if ((bytecount = send((*it)->getSocket(), message, strlen(message), 0)) == SOCKET_ERROR) {
-			LOG(logERROR) << MESSAGE_SERVER_SEND_MESSAGE_ERROR << message << ". " << MESSAGE_SERVER_ERROR_CODE << WSAGetLastError() 
+		if ((bytecount = send((*it)->getSocket(), broadcast, strlen(broadcast), 0)) == SOCKET_ERROR) {
+			LOG(logERROR) << MESSAGE_SERVER_SEND_MESSAGE_ERROR << broadcast << ". " << MESSAGE_SERVER_ERROR_CODE << WSAGetLastError()
 				<< " (Cliente " << (*it)->getClientNumber() << ")";
 			continue;
 		}
 
 		LOG(logINFO) << MESSAGE_SERVER_SEND_MESSAGE_SUCCESS << message << " (Cliente " << (*it)->getClientNumber() << ")";
 	}
+
+	
 }
 
 bool Server::validate()
 {
 	return this->isValid;
+}
+
+ServerMessage* Server::makePlayersStatusUpdateMessage() 
+{
+	//TODO: ADD MUTEX
+	vector<Player*> playersUpdates = vector<Player*>();
+	for (vector<Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	{
+		if ((*it) != nullptr && (*it)->getPlayer() != nullptr) {
+			//copy player to avoid problems (will be deleted in ServerMessage destructor)
+			Player * playerUpdate = new Player(*(*it)->getPlayer());
+			playersUpdates.push_back(playerUpdate);
+		}
+	}
+
+	ServerMessage * message = new ServerMessage();
+	message->setType(players_status);
+	message->setPlayers(playersUpdates);
+
+	return message;
 }
