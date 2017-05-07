@@ -10,6 +10,7 @@
 
 #include "Client.h"
 #include "entities/Player.h"
+#include "protocol/ServerMessage.h"
 
 #include "entities/Window.h"
 #include "entities/Configuration.h"
@@ -54,6 +55,7 @@ private:
 	int getAvailableIndex();
 
 	void acceptClientConnection();
+	ServerMessage* makePlayersStatusUpdateMessage();
 	
 	bool isValid;
 	SOCKET _socket;

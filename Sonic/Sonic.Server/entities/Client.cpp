@@ -127,7 +127,7 @@ void Client::handleRecievedMessage(char* recievedMessage)
 	delete message;
 
 	//Then, send broadcast message
-	//this->server->sendBroadcast(recievedMessage);
+	this->server->sendBroadcast(recievedMessage);
 }
 
 DWORD Client::socketHandler() {

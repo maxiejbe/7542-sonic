@@ -164,6 +164,7 @@ void ServerMessage::freePlayers()
 		Player * currentPlayer = (*it);
 		if (currentPlayer == nullptr) continue;
 		delete(currentPlayer);
+		it++;
 	}
 
 	this->players.clear();
