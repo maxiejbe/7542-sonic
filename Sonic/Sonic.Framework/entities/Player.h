@@ -10,17 +10,19 @@ using namespace std;
 
 enum FacingDirection { FACING_LEFT, FACING_RIGHT };
 
-class Player
+class Player: public Serializable
 {
 public:
+	Player();
 	Player(int windowHeight, int scenarioWidth, int scenarioHeight, int scrollSpeed);
+	Player(Player& anotherPlayer);
 
 	Vector2 getPosition();
-	void setXPosition(float x);
-	void setYPosition(float y);
+	void setXPosition(double x);
+	void setYPosition(double y);
 	Vector2 getVelocity();
-	void setXVelocity(float x);
-	void setYVelocity(float y);
+	void setXVelocity(double x);
+	void setYVelocity(double y);
 	void setNumber(int number);
 	int getNumber();
 	int getWidth();
@@ -31,24 +33,34 @@ public:
 	void setFacingDirection(FacingDirection facingDirection);
 	PlayerStatus getSpriteState();
 	void setSpriteState(PlayerStatus spriteState);
+	void setFilePath(string filePath);
 	string getFilePath();
-	float getTargetVelX();
-	void setTargetVelX(float targetVelX);
+	double getTargetVelX();
+	void setTargetVelX(double targetVelX);
 	int getScenarioWidth();
+	void setScenarioWidth(int sw);
 	int getScenarioHeight();
+	void setScenarioHeight(int sh);
 	void setIsJumping(bool isJumping);
 	bool getIsJumping();
-	float getGroundPos();
+	double getGroundPos();
+	void setGroundPos(double gPos);
 	int getScrollSpeed();
+	void setScrollSpeed(int scSpeed);
+
+	// Inherited via Serializable
+	void unserialize(Value* nodeRef) override;
+	char* getNodeName() override;
+	string serialize() override;
 private:
 	Vector2 position;
 	Vector2 velocity;
 	int width, height;
 	int scenarioWidth, scenarioHeight;
 	int scrollSpeed;
-	float groundPos;
+	double groundPos;
 	bool isJumping;
-	float targetVelX;
+	double targetVelX;
 	FacingDirection facingDirection;
 	int number;
 	PlayerStatus spriteState;
