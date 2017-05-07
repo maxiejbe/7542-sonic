@@ -3,7 +3,7 @@
 Player::Player(int windowHeight, int scenarioWidth, int scenarioHeight, int scrollSpeed)
 {
 	//TODO: Get player image by index.
-	this->filePath = "img/sonic-spritesheet.png";
+	this->filePath = "img/tails-spritesheet.png";
 
 	this->groundPos = windowHeight / 1.35;
 
