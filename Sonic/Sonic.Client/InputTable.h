@@ -5,7 +5,7 @@
 
 // Fuente: https://wiki.libsdl.org/SDLScancodeLookup
 
-#define KEYBOARD_SIZE 284
+#define KEYBOARD_SIZE 283
 
 enum KeyboardKey
 {
@@ -122,7 +122,7 @@ enum KeyboardKey
 	KEY_F22 = SDL_SCANCODE_F22,
 	KEY_F23 = SDL_SCANCODE_F23,
 	KEY_F24 = SDL_SCANCODE_F24,
-	KEY_EXECUTE = SDL_SCANCODE_EXECUTE,
+	//KEY_EXECUTE = SDL_SCANCODE_EXECUTE,
 	KEY_HELP = SDL_SCANCODE_HELP,
 	KEY_MENU = SDL_SCANCODE_MENU,
 	KEY_SELECT = SDL_SCANCODE_SELECT,
@@ -253,4 +253,3 @@ enum KeyboardKey
 };
 
 #endif // !INPUTTABLE_H
-#pragma once

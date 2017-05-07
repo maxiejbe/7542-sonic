@@ -17,7 +17,7 @@ class PlayerView
 {
 public:
 	PlayerView(Player* player);
-
+	~PlayerView();
 	void render(int camX, int camY);
 private:
 	int getFramesCount(PlayerStatus status);

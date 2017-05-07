@@ -4,8 +4,6 @@
 #include <SDL.h>
 #include "InputTable.h"
 
-#define KEYBOARD_SIZE 284 // Fuente: https://wiki.libsdl.org/SDLScancodeLookup
-
 class InputManager {
 public:
 	static InputManager* getInstance();

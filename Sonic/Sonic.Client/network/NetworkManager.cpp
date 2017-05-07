@@ -4,6 +4,7 @@ NetworkManager::NetworkManager()
 {
 	this->client = NULL;
 	this->playerNumber = -1;
+	this->playerViews = vector<PlayerView*>();
 }
 
 NetworkManager::~NetworkManager()
@@ -43,6 +44,7 @@ bool NetworkManager::online()
 {
 	return (this->client && this->client->isConnected());
 }
+
 
 void NetworkManager::startConnectionHandlers()
 {
@@ -87,7 +89,12 @@ void NetworkManager::handleMessage(char * receivedMessage)
 
 	switch (sMessage->getType()) {
 		case player_assign:
+			LOG(logINFO) << "Network Manager: Assignación de numero de usuario -> " << sMessage->getPlayerNumber();
+			//TODO: MUTEX HERE
 			this->playerNumber = sMessage->getPlayerNumber();
+			break;
+		case players_status:
+			this->updatePlayerViews(sMessage->getPlayers());
 			break;
 		default:
 			LOG(logERROR) << "Network Manager: Mensaje invalido -> " << receivedMessage;
@@ -97,24 +104,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 	delete sMessage;
 }
 
-void NetworkManager::playerAssignment(Message * message)
-{
-	//if (this->playerNumber < 0) {
-	//	LOG(logERROR) << "Network Manager: El jugador fue borrado no se puede asignar un id";
-	//	return;
-	//}
-	
-	//Assign number to player
-	//this->playerNumber = message->getPlayerNumber();
-	//LOG(logINFO) << "Network Manager: Se asigno id #" << msg->getPlayerNumber() << " a jugador";
-}
 
-void NetworkManager::updateRival(Message * message)
-{
-	//muestro mensaje
-	if (message->getPlayerNumber() == this->playerNumber) return;
-	LOG(logINFO) << "Network Manager: Recibida data de rival #" << message->getPlayerNumber();
-}
 
 DWORD WINAPI NetworkManager::runSendSocketHandler(void * args)
 {
@@ -156,12 +146,50 @@ void NetworkManager::sendMessage(Message* message)
 	}
 }
 
+vector<PlayerView*> NetworkManager::getPlayerViews()
+{
+	return this->playerViews;
+}
+
 int NetworkManager::getPlayerNumber()
 {
+	//TODO: MUTEX HERE
 	return this->playerNumber;
 }
 
 string NetworkManager::getFileContent()
 {
 	return this->fileContent;
+}
+
+void NetworkManager::updatePlayerViews(vector<Player*> playerStatus)
+{
+	//TODO: MUTEX HERE
+	//delete player views
+	freePlayerViews();
+	vector<Player*>::iterator it = playerStatus.begin();
+	while (it != playerStatus.end()) {
+		//copy player
+		Player * currentPlayer = new Player(*(*it));
+		playerViews.push_back(new PlayerView(currentPlayer));
+		it++;
+	}
+}
+
+void NetworkManager::freePlayerViews()
+{
+	if (this->playerViews.empty()) {
+		return;
+	}
+
+	vector<PlayerView*>::iterator it = this->playerViews.begin();
+	while (it != this->playerViews.end())
+	{
+		PlayerView * currentPlayerView = (*it);
+		if (currentPlayerView == nullptr) continue;
+		delete(currentPlayerView);
+		it++;
+	}
+
+	this->playerViews.clear();
 }
