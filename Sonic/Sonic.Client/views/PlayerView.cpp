@@ -99,6 +99,12 @@ PlayerView::PlayerView(Player* player)
 	spriteClips[PlayerStatus::jumping][3].h = 27;
 }
 
+PlayerView::~PlayerView()
+{
+	if (this->player == nullptr) return;
+	delete this->player;
+}
+
 void PlayerView::render(int camX, int camY)
 {
 	// Check texture

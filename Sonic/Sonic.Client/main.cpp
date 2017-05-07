@@ -178,9 +178,17 @@ int main(int argc, char* args[])
 				entityView->draw(camera);
 			}
 
-			playerView.render(camera.x, camera.y);
+			//playerView.render(camera.x, camera.y);
 			// Render players
-			// TODO: foreach() -> playerView.render(camera.x, camera.y);
+			// TODO: MUTEX HERE?!?!?!
+			vector<PlayerView*> playerViews = networkManager.getPlayerViews();
+			if (!playerViews.empty()) {
+				for (vector<PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it) {
+					PlayerView* playerView = *it;
+					playerView->render(camera.x, camera.y);
+				}
+			}
+				
 
 			SDL_RenderPresent(Renderer::getInstance().gRenderer);
 		}
