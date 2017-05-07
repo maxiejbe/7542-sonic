@@ -49,9 +49,9 @@ Player::Player(int windowHeight, int scenarioWidth, int scenarioHeight, int scro
 
 	this->scenarioWidth = scenarioWidth;
 	this->scenarioHeight = scenarioHeight;
-	
+
 	this->scrollSpeed = scrollSpeed;
-	
+
 	this->isJumping = false;
 	this->facingDirection = FACING_RIGHT;
 	this->spriteState = PlayerStatus::idle;
@@ -112,7 +112,7 @@ void Player::setWidth(int w)
 	this->width = w;
 }
 
-int Player::getWidth() 
+int Player::getWidth()
 {
 	return this->width;
 }
@@ -122,7 +122,7 @@ void Player::setHeight(int h)
 	this->height = h;
 }
 
-int Player::getHeight() 
+int Player::getHeight()
 {
 	return this->height;
 }
@@ -174,7 +174,7 @@ int Player::getScenarioWidth()
 
 void Player::setScenarioWidth(int sw)
 {
-	this->scenarioWidth= sw;
+	this->scenarioWidth = sw;
 }
 
 int Player::getScenarioHeight()
@@ -251,19 +251,13 @@ void Player::unserialize(Value * nodeRef)
 	parseDouble(&tvx, 0, nodeRef, PLAYER_TARGET_VEL_X_NODE);
 	this->setTargetVelX(tvx);
 	//facing direction
-	parseInt((int*) &facingDirection, 0, nodeRef, PLAYER_FACING_DIRECTION_NODE, Validator::intGreaterThanOrEqualToZero);
+	parseInt((int*)&facingDirection, 0, nodeRef, PLAYER_FACING_DIRECTION_NODE, Validator::intGreaterThanOrEqualToZero);
 	//number
 	parseInt(&number, -1, nodeRef, PLAYER_NUMBER_NODE, Validator::intGreaterThanOrEqualToZero);
 	//sprite state
 	parseInt((int*)&spriteState, 0, nodeRef, PLAYER_SPRITE_STATE_NODE, Validator::intGreaterThanOrEqualToZero);
 	//file path
-	parseString(&filePath, "img/sonic-spritesheet.png", nodeRef, PLAYER_FILE_PATH_NODE);
-}
-	
-
-char * Player::getNodeName()
-{
-	return nullptr;
+	parseString(&filePath, "img/foo22.png", nodeRef, PLAYER_FILE_PATH_NODE);
 }
 
 string Player::serialize()
@@ -277,7 +271,7 @@ string Player::serialize()
 	writer.String(PLAYER_Y_POSITION_NODE);
 	writer.Double(this->position.y);
 	writer.String(PLAYER_X_VELOCITY_NODE);
-	writer.Double(this->velocity.x);	
+	writer.Double(this->velocity.x);
 	writer.String(PLAYER_Y_VELOCITY_NODE);
 	writer.Double(this->velocity.y);
 	writer.String(PLAYER_WIDTH_NODE);
@@ -308,6 +302,11 @@ string Player::serialize()
 
 	writer.EndObject();
 	return s.GetString();
+}
+
+char * Player::getNodeName()
+{
+	return nullptr;
 }
 
 int Player::getNumber()
