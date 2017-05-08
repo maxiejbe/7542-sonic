@@ -122,13 +122,6 @@ int main(int argc, char* args[])
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
 			}
 
-			// Initialize player
-			PlayerView* playerView = networkManager.getOwnPlayerView();
-			Player* player = nullptr;
-			if (playerView != nullptr) {
-				player = playerView->getPlayer();
-			}
-
 			double timeStep = stepTimer.getTicks() / 1000.;
 
 			//Handle player input
@@ -147,23 +140,31 @@ int main(int argc, char* args[])
 
 			stepTimer.start();
 
+			// Initialize player
+			PlayerView* playerView = networkManager.getOwnPlayerView();
+			Player* player = nullptr;
+			if (playerView != nullptr) {
+				player = playerView->getPlayer();
+			}
+
 			// UNCOMMENT WHEN PLAYERS ARE DONE
 			// Center the camera
 			if (player != nullptr) {
 				camera.x = ((int)player->getPosition().x + player->getWidth() / 2) - SDLWindow::getInstance().getScreenWidth() / 2;
 				camera.y = ((int)player->getPosition().y + player->getHeight() / 2) - SDLWindow::getInstance().getScreenHeight() / 2;
-			}
+			
 				// Keep the camera in bounds
-			if (camera.x < 0)
-				camera.x = 0;
-			if (camera.y < 0)
-				camera.y = 0;
+				if (camera.x < 0)
+					camera.x = 0;
+				if (camera.y < 0)
+					camera.y = 0;
 
-			if (camera.x > scenarioWidth - camera.w)
-				camera.x = scenarioWidth - camera.w;
-			if (camera.y > scenarioHeight - camera.h)
-				camera.y = scenarioHeight - camera.h;
-
+				if (camera.x > scenarioWidth - camera.w)
+					camera.x = scenarioWidth - camera.w;
+				if (camera.y > scenarioHeight - camera.h)
+					camera.y = scenarioHeight - camera.h;
+			}
+			
 			// Clear screen
 			SDL_SetRenderDrawColor(Renderer::getInstance().gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 			SDL_RenderClear(Renderer::getInstance().gRenderer);

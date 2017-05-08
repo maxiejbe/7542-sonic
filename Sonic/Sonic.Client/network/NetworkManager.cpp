@@ -8,7 +8,11 @@ NetworkManager::NetworkManager()
 
 NetworkManager::~NetworkManager()
 {
-
+	for (map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it)
+	{
+		delete it->second->getPlayer();
+		delete it->second;
+	}
 }
 
 void NetworkManager::close()
@@ -147,8 +151,9 @@ map<int, PlayerView*> NetworkManager::getPlayerViews()
 
 PlayerView * NetworkManager::getOwnPlayerView()
 {
-	if (!playerViews.count(this->playerNumber)) return nullptr;
-	return playerViews[this->playerNumber];
+	int index = this->playerNumber - 1;
+	if (!playerViews.count(index)) return nullptr;
+	return playerViews[index];
 }
 
 int NetworkManager::getPlayerNumber()
@@ -167,7 +172,7 @@ void NetworkManager::updatePlayerViews(vector<Player*> players)
 	//TODO: MUTEX HERE
 	for (vector<Player*>::iterator it = players.begin(); it != players.end(); ++it)
 	{
-		int playerNumber = (*it)->getNumber();
+		int index = (*it)->getNumber() - 1;
 		if (!playerViews.count(playerNumber)) {
 			//Create new player view and include in map
 			Player* player = new Player(*(*it));
