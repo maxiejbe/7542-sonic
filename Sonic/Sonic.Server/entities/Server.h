@@ -7,6 +7,9 @@
 #include <Ws2tcpip.h>
 #include <vector>
 #include <Logger.h>
+	
+#include <iostream>
+#include <map>
 
 #include "Client.h"
 #include "entities/Player.h"
@@ -70,7 +73,7 @@ private:
 	Configuration* config;
 	Scenario* scenario;
 
-	vector<Client*> clients;
+	map<int, Client*> clients;
 };
 
 #endif

@@ -97,11 +97,6 @@ int main(int argc, char* args[])
 			layerView->loadLayer();
 		}
 
-		// Initialize player
-		Player player(window.getHeight(), scenarioWidth, scenarioHeight, config.getScrollSpeed());
-		LOG(logINFO) << "El personaje ha sido creado correctamente.";
-		PlayerView playerView(&player);
-
 		// Initialize camera
 		Timer stepTimer;
 		SDL_Rect camera = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
@@ -127,6 +122,13 @@ int main(int argc, char* args[])
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
 			}
 
+			// Initialize player
+			PlayerView* playerView = networkManager.getOwnPlayerView();
+			Player* player = nullptr;
+			if (playerView != nullptr) {
+				player = playerView->getPlayer();
+			}
+
 			double timeStep = stepTimer.getTicks() / 1000.;
 
 			//Handle player input
@@ -145,12 +147,12 @@ int main(int argc, char* args[])
 
 			stepTimer.start();
 
-			/*	UNCOMMENT WHEN PLAYERS ARE DONE
+			// UNCOMMENT WHEN PLAYERS ARE DONE
 			// Center the camera
-			//camera.x = ((int)player.getPosition().x + player.getWidth() / 2) - SDLWindow::getInstance().getScreenWidth() / 2;
-			//camera.y = ((int)player.getPosition().y + player.getHeight() / 2) - SDLWindow::getInstance().getScreenHeight() / 2;
-				UNCOMMENT WHEN PLAYERS ARE DONE */
-
+			if (player != nullptr) {
+				camera.x = ((int)player->getPosition().x + player->getWidth() / 2) - SDLWindow::getInstance().getScreenWidth() / 2;
+				camera.y = ((int)player->getPosition().y + player->getHeight() / 2) - SDLWindow::getInstance().getScreenHeight() / 2;
+			}
 				// Keep the camera in bounds
 			if (camera.x < 0)
 				camera.x = 0;
@@ -178,18 +180,15 @@ int main(int argc, char* args[])
 				entityView->draw(camera);
 			}
 
-			//playerView.render(camera.x, camera.y);
 			// Render players
 			// TODO: MUTEX HERE?!?!?!
-			vector<PlayerView*> playerViews = networkManager.getPlayerViews();
+			map<int, PlayerView*> playerViews = networkManager.getPlayerViews();
 			if (!playerViews.empty()) {
-				for (vector<PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it) {
-					PlayerView* playerView = *it;
-					playerView->render(camera.x, camera.y);
+				for (map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it) {
+					it->second->render(camera.x, camera.y);
 				}
 			}
-				
-
+			
 			SDL_RenderPresent(Renderer::getInstance().gRenderer);
 		}
 	}

@@ -16,12 +16,10 @@ const char* MESSAGE_SERVER_SEND_MESSAGE_SUCCESS = "Se envió correctamente el men
 
 Server::~Server()
 {
-	for (vector<Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	for (map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		if (*it != NULL) {
-			closesocket((*it)->getSocket());
-			delete *it;
-		}
+		closesocket((it->second)->getSocket());
+		delete it->second;
 	}
 
 	LOG(logINFO) << MESSAGE_SERVER_EXECUTION_END;
@@ -43,10 +41,6 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 
 	this->connectedClients = 0;
 	clients.clear();
-
-	for (int i = 0; i < this->serverConfig->getMaxAllowedClients(); i++) {
-		clients.insert(clients.begin() + i, NULL);
-	}
 
 	if (!initializeWindowsSupport()) {
 		return;
@@ -158,7 +152,7 @@ void Server::removeClientConnection(int clientNumber)
 	client->closeSocket();
 	delete client;
 
-	clients[index] = NULL;
+	clients.erase(index);
 
 	this->connectedClients--;
 }
@@ -204,18 +198,16 @@ void Server::sendBroadcast(char* message)
 	char * broadcast = StringUtils::convert(playersUpdateStatusMessage->serialize());
 	delete playersUpdateStatusMessage;
 
-	for (vector<Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	for (map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		if (*it == NULL) continue;
-
 		int bytecount;
-		if ((bytecount = send((*it)->getSocket(), broadcast, strlen(broadcast), 0)) == SOCKET_ERROR) {
+		if ((bytecount = send(it->second->getSocket(), broadcast, strlen(broadcast), 0)) == SOCKET_ERROR) {
 			LOG(logERROR) << MESSAGE_SERVER_SEND_MESSAGE_ERROR << broadcast << ". " << MESSAGE_SERVER_ERROR_CODE << WSAGetLastError()
-				<< " (Cliente " << (*it)->getClientNumber() << ")";
+				<< " (Cliente " << it->second->getClientNumber() << ")";
 			continue;
 		}
 
-		LOG(logINFO) << MESSAGE_SERVER_SEND_MESSAGE_SUCCESS << message << " (Cliente " << (*it)->getClientNumber() << ")";
+		LOG(logINFO) << MESSAGE_SERVER_SEND_MESSAGE_SUCCESS << message << " (Cliente " << it->second->getClientNumber() << ")";
 	}
 
 	
@@ -230,13 +222,11 @@ ServerMessage* Server::makePlayersStatusUpdateMessage()
 {
 	//TODO: ADD MUTEX
 	vector<Player*> playersUpdates = vector<Player*>();
-	for (vector<Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	for (map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		if ((*it) != nullptr && (*it)->getPlayer() != nullptr) {
-			//copy player to avoid problems (will be deleted in ServerMessage destructor)
-			Player * playerUpdate = new Player(*(*it)->getPlayer());
-			playersUpdates.push_back(playerUpdate);
-		}
+		//copy player to avoid problems (will be deleted in ServerMessage destructor)
+		Player * playerUpdate = new Player(*it->second->getPlayer());
+		playersUpdates.push_back(playerUpdate);
 	}
 
 	ServerMessage * message = new ServerMessage();

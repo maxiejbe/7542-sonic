@@ -19,9 +19,11 @@ public:
 	PlayerView(Player* player);
 	~PlayerView();
 	void render(int camX, int camY);
+	Player* getPlayer();
+
 private:
 	int getFramesCount(PlayerStatus status);
-
+	
 	Texture texture;
 	Player* player;
 };

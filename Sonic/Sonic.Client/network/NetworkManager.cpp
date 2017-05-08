@@ -4,7 +4,6 @@ NetworkManager::NetworkManager()
 {
 	this->client = NULL;
 	this->playerNumber = -1;
-	this->playerViews = vector<PlayerView*>();
 }
 
 NetworkManager::~NetworkManager()
@@ -77,9 +76,6 @@ DWORD NetworkManager::recvSocketHandler()
 
 void NetworkManager::handleMessage(char * receivedMessage)
 {
-	/*string strMessage(receivedMessage);
-	cout << strMessage << endl;*/
-
 	const char * constRMessage = receivedMessage;
 	ServerMessage * sMessage = new ServerMessage();
 	if (!sMessage->fromJson(string(constRMessage))){
@@ -103,8 +99,6 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		
 	delete sMessage;
 }
-
-
 
 DWORD WINAPI NetworkManager::runSendSocketHandler(void * args)
 {
@@ -146,9 +140,15 @@ void NetworkManager::sendMessage(Message* message)
 	}
 }
 
-vector<PlayerView*> NetworkManager::getPlayerViews()
+map<int, PlayerView*> NetworkManager::getPlayerViews()
 {
 	return this->playerViews;
+}
+
+PlayerView * NetworkManager::getOwnPlayerView()
+{
+	if (!playerViews.count(this->playerNumber)) return nullptr;
+	return playerViews[this->playerNumber];
 }
 
 int NetworkManager::getPlayerNumber()
@@ -162,34 +162,30 @@ string NetworkManager::getFileContent()
 	return this->fileContent;
 }
 
-void NetworkManager::updatePlayerViews(vector<Player*> playerStatus)
+void NetworkManager::updatePlayerViews(vector<Player*> players)
 {
 	//TODO: MUTEX HERE
-	//delete player views
-	freePlayerViews();
-	vector<Player*>::iterator it = playerStatus.begin();
+	for (vector<Player*>::iterator it = players.begin(); it != players.end(); ++it)
+	{
+		int playerNumber = (*it)->getNumber();
+		if (!playerViews.count(playerNumber)) {
+			//Create new player view and include in map
+			Player* player = new Player(*(*it));
+			PlayerView* playerView = new PlayerView(player);
+			playerViews[player->getNumber()] = playerView;
+			continue;
+		}
+		
+		//Player view already exists, just update
+		Player* player = playerViews[playerNumber]->getPlayer();
+		player->copyFrom(*(*it));
+	}
+	
+	/*vector<Player*>::iterator it = playerStatus.begin();
 	while (it != playerStatus.end()) {
 		//copy player
 		Player * currentPlayer = new Player(*(*it));
 		playerViews.push_back(new PlayerView(currentPlayer));
 		it++;
-	}
-}
-
-void NetworkManager::freePlayerViews()
-{
-	if (this->playerViews.empty()) {
-		return;
-	}
-
-	vector<PlayerView*>::iterator it = this->playerViews.begin();
-	while (it != this->playerViews.end())
-	{
-		PlayerView * currentPlayerView = (*it);
-		if (currentPlayerView == nullptr) continue;
-		delete(currentPlayerView);
-		it++;
-	}
-
-	this->playerViews.clear();
+	}*/
 }

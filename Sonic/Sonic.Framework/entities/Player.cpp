@@ -20,6 +20,7 @@ const char* PLAYER_FILE_PATH_NODE = "fp";
 
 Player::Player()
 {
+	//TODO: Get player image by index.
 	this->filePath = "img/sonic-spritesheet.png";
 	this->groundPos = 0.0;
 
@@ -36,28 +37,11 @@ Player::Player()
 	this->spriteState = PlayerStatus::idle;
 }
 
-Player::Player(int windowHeight, int scenarioWidth, int scenarioHeight, int scrollSpeed)
-{
-	//TODO: Get player image by index.
-	this->filePath = "img/sonic-spritesheet.png";
-	//this->filePath = "img/tails-spritesheet.png";
-
-	this->groundPos = windowHeight / 1.35;
-
-	this->position = Vector2(0, this->groundPos);
-	this->velocity = Vector2(0, 0);
-
-	this->scenarioWidth = scenarioWidth;
-	this->scenarioHeight = scenarioHeight;
-
-	this->scrollSpeed = scrollSpeed;
-
-	this->isJumping = false;
-	this->facingDirection = FACING_RIGHT;
-	this->spriteState = PlayerStatus::idle;
+Player::Player(Player & anotherPlayer) {
+	this->copyFrom(anotherPlayer);
 }
 
-Player::Player(Player & anotherPlayer)
+void Player::copyFrom(Player & anotherPlayer)
 {
 	this->setFilePath(anotherPlayer.getFilePath());
 	this->setGroundPos(anotherPlayer.getGroundPos());
