@@ -14,8 +14,8 @@ public:
 	Banner();
 	~Banner();
 
-	int ShowBanner();
-	void FreeSurfaceBanner();
+	void showBanner();
+	void freeSurfaceBanner();
 
 private:
 	TTF_Font* font;

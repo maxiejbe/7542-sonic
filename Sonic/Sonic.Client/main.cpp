@@ -103,7 +103,7 @@ int main(int argc, char* args[])
 
 		// Initialize menu
 		Menu menu = Menu();
-		int i = menu.ShowMenu();
+		int i = menu.showMenu();
 		if (i == 1) { isRunning = false; }
 
 		while (isRunning) {
@@ -117,7 +117,7 @@ int main(int argc, char* args[])
 			}
 
 			if (input->isKeyDown(KEY_ESCAPE) || input->isKeyDown(KEY_Q)) {
-				i = menu.ShowMenu();
+				i = menu.showMenu();
 				if (i == 1) { isRunning = false; }
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
 			}
@@ -150,8 +150,12 @@ int main(int argc, char* args[])
 			// UNCOMMENT WHEN PLAYERS ARE DONE
 			// Center the camera
 			if (player != nullptr) {
-				camera.x = ((int)player->getPosition().x + player->getWidth() / 2) - SDLWindow::getInstance().getScreenWidth() / 2;
+				int bordeR = camera.x + SDLWindow::getInstance().getScreenWidth() - 100;
+				int bordeL = camera.x + 100;
+
 				camera.y = ((int)player->getPosition().y + player->getHeight() / 2) - SDLWindow::getInstance().getScreenHeight() / 2;
+				if (player->getPosition().x > bordeR) { camera.x = camera.x + player->getPosition().x - bordeR; }
+				if (player->getPosition().x < bordeL) { camera.x = camera.x + player->getPosition().x - bordeL; }
 			
 				// Keep the camera in bounds
 				if (camera.x < 0)
