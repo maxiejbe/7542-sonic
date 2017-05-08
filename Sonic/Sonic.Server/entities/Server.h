@@ -9,7 +9,7 @@
 #include <Logger.h>
 	
 #include <iostream>
-#include <map>
+#include <unordered_map>
 
 #include "Client.h"
 #include "entities/Player.h"
@@ -73,7 +73,7 @@ private:
 	Configuration* config;
 	Scenario* scenario;
 
-	map<int, Client*> clients;
+	unordered_map<int, Client*> clients;
 };
 
 #endif

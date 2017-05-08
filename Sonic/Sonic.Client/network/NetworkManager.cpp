@@ -8,7 +8,7 @@ NetworkManager::NetworkManager()
 
 NetworkManager::~NetworkManager()
 {
-	for (map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it)
+	for (unordered_map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it)
 	{
 		delete it->second->getPlayer();
 		delete it->second;
@@ -144,7 +144,7 @@ void NetworkManager::sendMessage(Message* message)
 	}
 }
 
-map<int, PlayerView*> NetworkManager::getPlayerViews()
+unordered_map<int, PlayerView*> NetworkManager::getPlayerViews()
 {
 	return this->playerViews;
 }

@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <map>
+#include <unordered_map>
 
 class NetworkManager
 {
@@ -21,7 +22,7 @@ public:
 	bool startClient(char * host, int port);
 	bool online();
 	void sendMessage(Message * message);
-	map<int, PlayerView*> getPlayerViews();
+	unordered_map<int, PlayerView*> getPlayerViews();
 
 	PlayerView* getOwnPlayerView();
 
@@ -31,7 +32,7 @@ private:
 	NetworkManager();
 	static NetworkManager * instance;
 	SocketClient * client;
-	map<int, PlayerView*> playerViews;
+	unordered_map<int, PlayerView*> playerViews;
 
 	int playerNumber;
 	string fileContent;

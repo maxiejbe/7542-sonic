@@ -19,6 +19,7 @@
 #include "views/PlayerView.h"
 
 #include "views/common/EntityViewResolver.h"
+#include <unordered_map>
 
 char* SERVER_IP = "127.0.0.1";
 const int SERVER_PORT = 5000;
@@ -38,7 +39,7 @@ void close()
 int main(int argc, char* args[])
 {
 	Logger::init();
-	Logger::loggingLevel() = logHIGH;
+	Logger::loggingLevel() = logLOW;
 
 	string configParamName = "--config";
 	string configPath = "";
@@ -149,22 +150,22 @@ int main(int argc, char* args[])
 
 			// UNCOMMENT WHEN PLAYERS ARE DONE
 			// Center the camera
-			if (player != nullptr) {
-				camera.x = ((int)player->getPosition().x + player->getWidth() / 2) - SDLWindow::getInstance().getScreenWidth() / 2;
-				camera.y = ((int)player->getPosition().y + player->getHeight() / 2) - SDLWindow::getInstance().getScreenHeight() / 2;
-			
-				// Keep the camera in bounds
-				if (camera.x < 0)
-					camera.x = 0;
-				if (camera.y < 0)
-					camera.y = 0;
+			//if (player != nullptr) {
+			//	camera.x = ((int)player->getPosition().x + player->getWidth() / 2) - SDLWindow::getInstance().getScreenWidth() / 2;
+			//	camera.y = ((int)player->getPosition().y + player->getHeight() / 2) - SDLWindow::getInstance().getScreenHeight() / 2;
+			//
+			//	// Keep the camera in bounds
+			//	if (camera.x < 0)
+			//		camera.x = 0;
+			//	if (camera.y < 0)
+			//		camera.y = 0;
 
-				if (camera.x > scenarioWidth - camera.w)
-					camera.x = scenarioWidth - camera.w;
-				if (camera.y > scenarioHeight - camera.h)
-					camera.y = scenarioHeight - camera.h;
-			}
-			
+			//	if (camera.x > scenarioWidth - camera.w)
+			//		camera.x = scenarioWidth - camera.w;
+			//	if (camera.y > scenarioHeight - camera.h)
+			//		camera.y = scenarioHeight - camera.h;
+			//}
+
 			// Clear screen
 			SDL_SetRenderDrawColor(Renderer::getInstance().gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 			SDL_RenderClear(Renderer::getInstance().gRenderer);
@@ -183,13 +184,13 @@ int main(int argc, char* args[])
 
 			// Render players
 			// TODO: MUTEX HERE?!?!?!
-			map<int, PlayerView*> playerViews = networkManager.getPlayerViews();
+			unordered_map<int, PlayerView*> playerViews = networkManager.getPlayerViews();
 			if (!playerViews.empty()) {
-				for (map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it) {
+				for (unordered_map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it) {
 					it->second->render(camera.x, camera.y);
 				}
 			}
-			
+
 			SDL_RenderPresent(Renderer::getInstance().gRenderer);
 		}
 	}

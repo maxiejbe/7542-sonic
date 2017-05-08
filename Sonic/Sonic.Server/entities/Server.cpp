@@ -16,7 +16,7 @@ const char* MESSAGE_SERVER_SEND_MESSAGE_SUCCESS = "Se envió correctamente el men
 
 Server::~Server()
 {
-	for (map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
 		closesocket((it->second)->getSocket());
 		delete it->second;
@@ -28,13 +28,13 @@ Server::~Server()
 Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario)
 {
 	this->portNumber = serverConfig->getPortNumber();
-	
+
 	this->serverConfig = serverConfig;
 	this->fileContent = fileContent;
 	this->window = window;
 	this->config = config;
 	this->scenario = scenario;
-	
+
 	this->isValid = false;
 
 	LOG(logINFO) << MESSAGE_STARTING_SERVER << "El Puerto es " << this->portNumber << ". La máxima cantidad de clientes es " << this->serverConfig->getMaxAllowedClients();
@@ -147,7 +147,7 @@ void Server::acceptClientConnection()
 void Server::removeClientConnection(int clientNumber)
 {
 	int index = clientNumber - 1;
-	
+
 	Client* client = clients[index];
 	client->closeSocket();
 	delete client;
@@ -188,7 +188,7 @@ void Server::waitForClientConnections()
 
 	while (this->connectedClients < this->serverConfig->getMaxAllowedClients()) {
 		LOG(logINFO) << MESSAGE_SERVER_WAITING_CONNECTIONS;
-		this->acceptClientConnection();	
+		this->acceptClientConnection();
 	}
 }
 
@@ -198,7 +198,7 @@ void Server::sendBroadcast(char* message)
 	char * broadcast = StringUtils::convert(playersUpdateStatusMessage->serialize());
 	delete playersUpdateStatusMessage;
 
-	for (map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
 		int bytecount;
 		if ((bytecount = send(it->second->getSocket(), broadcast, strlen(broadcast), 0)) == SOCKET_ERROR) {
@@ -210,7 +210,7 @@ void Server::sendBroadcast(char* message)
 		LOG(logINFO) << MESSAGE_SERVER_SEND_MESSAGE_SUCCESS << message << " (Cliente " << it->second->getClientNumber() << ")";
 	}
 
-	
+
 }
 
 bool Server::validate()
@@ -218,11 +218,11 @@ bool Server::validate()
 	return this->isValid;
 }
 
-ServerMessage* Server::makePlayersStatusUpdateMessage() 
+ServerMessage* Server::makePlayersStatusUpdateMessage()
 {
 	//TODO: ADD MUTEX
 	vector<Player*> playersUpdates = vector<Player*>();
-	for (map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
 		//copy player to avoid problems (will be deleted in ServerMessage destructor)
 		Player * playerUpdate = new Player(*it->second->getPlayer());
