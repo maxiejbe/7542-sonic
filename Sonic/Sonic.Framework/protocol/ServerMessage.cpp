@@ -63,7 +63,7 @@ void ServerMessage::unserialize(Value * nodeRef)
 		parsePlayersStatus(nodeRef);
 		break;
 	case camera_position:
-		parseCameraStatus(nodeRef);
+		//parseCameraStatus(nodeRef);
 		break;
 	default:
 		break;
@@ -98,7 +98,7 @@ string ServerMessage::serialize()
 	case players_status:
 		this->serializePlayers(writer);
 	case camera_position:
-		this->serializeCamera(writer);
+		//this->serializeCamera(writer);
 	default:
 		break;
 	}
@@ -108,7 +108,7 @@ string ServerMessage::serialize()
 	return s.GetString();
 }
 
-void ServerMessage::serializeCamera(Writer<StringBuffer>& writer)
+/*void ServerMessage::serializeCamera(Writer<StringBuffer>& writer)
 {
 	writer.String(SERVER_MESSAGE_CAMERA_NODE);
 	writer.StartArray();
@@ -117,7 +117,7 @@ void ServerMessage::serializeCamera(Writer<StringBuffer>& writer)
 	writer.String(serializedcamera.c_str());
 
 	writer.EndArray();
-}
+}*/
 
 void ServerMessage::serializePlayers(Writer<StringBuffer>& writer)
 {
@@ -134,7 +134,7 @@ void ServerMessage::serializePlayers(Writer<StringBuffer>& writer)
 	writer.EndArray();
 }
 
-void ServerMessage::parseCameraStatus(Value * nodeRef)
+/*void ServerMessage::parseCameraStatus(Value * nodeRef)
 {
 	Value& node = *nodeRef;
 
@@ -149,7 +149,7 @@ void ServerMessage::parseCameraStatus(Value * nodeRef)
 	Document jsonCamera;
 	Camera * newCamera = new Camera();
 	newCamera->unserialize(&jsonCamera);
-}
+}*/
 
 void ServerMessage::parsePlayersStatus(Value * nodeRef)
 {

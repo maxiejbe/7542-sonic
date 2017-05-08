@@ -18,13 +18,13 @@ public:
 	void setPlayerNumber(int);
 	int getPlayerNumber();
 	vector<Player*> getPlayers();
-	Camera getCamera();
+	//Camera getCamera();
 	void setPlayers(vector<Player*> players);
 
 	void serializePlayers(Writer<StringBuffer>& writer);
-	void serializeCamera(Writer<StringBuffer>& writer);
+	//void serializeCamera(Writer<StringBuffer>& writer);
 	void parsePlayersStatus(Value *);
-	void parseCameraStatus(Value *);
+	//void parseCameraStatus(Value *);
 	// Inherited via Serializable
 	void unserialize(Value* nodeRef) override;
 	char* getNodeName() override;
@@ -32,7 +32,7 @@ public:
 private:
 	ServerMessageType type;
 	vector<Player*> players;
-	Camera camera;
+	//Camera camera;
 	int playerNumber;
 	void freePlayers();
 };
