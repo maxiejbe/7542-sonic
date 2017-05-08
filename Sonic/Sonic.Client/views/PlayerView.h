@@ -23,7 +23,8 @@ public:
 
 private:
 	int getFramesCount(PlayerStatus status);
-	
+	void loadSpriteClips();
+
 	Texture texture;
 	Player* player;
 };

@@ -37,7 +37,7 @@ bool NetworkManager::startClient(char * host, int port)
 
 	//TODO: inicializar receiver
 	LOG(logINFO) << "Network Manager: Se inicializo el cliente correctamente - host: " << host << " puerto: " << port;
-	
+
 	//start handlers
 	this->startConnectionHandlers();
 	return true;
@@ -67,7 +67,7 @@ DWORD NetworkManager::recvSocketHandler()
 {
 	char receivedMsg[1024];
 	int receivedMsgLen = 1024;
-	while (this->online()) 
+	while (this->online())
 	{
 		if (!this->client->receiveMessage(receivedMsg, receivedMsgLen))
 		{
@@ -82,25 +82,25 @@ void NetworkManager::handleMessage(char * receivedMessage)
 {
 	const char * constRMessage = receivedMessage;
 	ServerMessage * sMessage = new ServerMessage();
-	if (!sMessage->fromJson(string(constRMessage))){
+	if (!sMessage->fromJson(string(constRMessage))) {
 		LOG(logERROR) << "Network Manager: no se pudo deserializar el mensaje";
 		return;
 	}
 
 	switch (sMessage->getType()) {
-		case player_assign:
-			LOG(logINFO) << "Network Manager: Assignación de numero de usuario -> " << sMessage->getPlayerNumber();
-			//TODO: MUTEX HERE
-			this->playerNumber = sMessage->getPlayerNumber();
-			break;
-		case players_status:
-			this->updatePlayerViews(sMessage->getPlayers());
-			break;
-		default:
-			LOG(logERROR) << "Network Manager: Mensaje invalido -> " << receivedMessage;
-			break;
+	case player_assign:
+		LOG(logINFO) << "Network Manager: Assignación de numero de usuario -> " << sMessage->getPlayerNumber();
+		//TODO: MUTEX HERE
+		this->playerNumber = sMessage->getPlayerNumber();
+		break;
+	case players_status:
+		this->updatePlayerViews(sMessage->getPlayers());
+		break;
+	default:
+		LOG(logERROR) << "Network Manager: Mensaje invalido -> " << receivedMessage;
+		break;
 	}
-		
+
 	delete sMessage;
 }
 
@@ -172,25 +172,17 @@ void NetworkManager::updatePlayerViews(vector<Player*> players)
 	//TODO: MUTEX HERE
 	for (vector<Player*>::iterator it = players.begin(); it != players.end(); ++it)
 	{
-		int index = (*it)->getNumber() - 1;
-		if (!playerViews.count(playerNumber)) {
+		int index = (*it)->getNumber();
+		if (!playerViews.count(index)) {
 			//Create new player view and include in map
 			Player* player = new Player(*(*it));
 			PlayerView* playerView = new PlayerView(player);
 			playerViews[player->getNumber()] = playerView;
 			continue;
 		}
-		
+
 		//Player view already exists, just update
-		Player* player = playerViews[playerNumber]->getPlayer();
+		Player* player = playerViews[index]->getPlayer();
 		player->copyFrom(*(*it));
 	}
-	
-	/*vector<Player*>::iterator it = playerStatus.begin();
-	while (it != playerStatus.end()) {
-		//copy player
-		Player * currentPlayer = new Player(*(*it));
-		playerViews.push_back(new PlayerView(currentPlayer));
-		it++;
-	}*/
 }

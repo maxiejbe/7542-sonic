@@ -21,7 +21,8 @@ const char* PLAYER_FILE_PATH_NODE = "fp";
 Player::Player()
 {
 	//TODO: Get player image by index.
-	this->filePath = "img/sonic-spritesheet.png";
+	/*this->filePath = "img/sonic-spritesheet.png";*/
+	this->filePath = "img/tails-spritesheet.png";
 	this->groundPos = 0.0;
 
 	this->position = Vector2(0, 0);
