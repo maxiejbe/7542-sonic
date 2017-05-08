@@ -156,7 +156,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="controllers\PlayerController.cpp" />
     <ClCompile Include="entities\Client.cpp" />
     <ClCompile Include="entities\common\ServerConfiguration.cpp" />
@@ -165,7 +164,6 @@
     <ClCompile Include="utils\SocketUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="controllers\PlayerController.h" />
     <ClInclude Include="entities\Client.h" />
     <ClInclude Include="entities\common\ServerConfiguration.h" />
