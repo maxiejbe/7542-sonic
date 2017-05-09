@@ -151,8 +151,17 @@ void ServerMessage::parseCameraStatus(Value * nodeRef)
 
 	const Value& cameraStatus = node[SERVER_MESSAGE_CAMERA_NODE];
 	//Check cameraStatus
+	if (!cameraStatus.IsString()) {
+		LOG(logWARNING) << "Server Message: Campo incorrecto de camera" << SERVER_MESSAGE_PLAYERS_STATUS_NODE;
+		return;
+	}
 
 	Document jsonCamera;
+	if (jsonCamera.Parse(cameraStatus.GetString()).HasParseError()) {
+		LOG(logERROR) << "Server Message: Error al parsear camera";
+		return ;
+	}
+
 	if (this->camera) delete this->camera;
 	this->camera = new Camera();
 	this->camera->unserialize(&jsonCamera);

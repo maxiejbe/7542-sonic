@@ -94,7 +94,6 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		this->playerNumber = sMessage->getPlayerNumber();
 		break;
 	case players_status:
-		LOG(logINFO) << "Network Manager: Player Status-> " << constRMessage;
 		this->updatePlayerViews(sMessage->getPlayers());
 		break;
 	default:
