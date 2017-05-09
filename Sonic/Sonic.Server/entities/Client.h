@@ -28,6 +28,7 @@ public:
 	bool sendFileContent();
 
 	Player* getPlayer();
+	Message* getLastMessage();
 
 	SOCKET getSocket();
 private:
@@ -43,7 +44,8 @@ private:
 
 	int clientNumber;
 	Player* player;
-	
+	Message * lastReceivedMessage;
+
 	SOCKET socket;
 	Server* server;
 	struct sockaddr_in address;

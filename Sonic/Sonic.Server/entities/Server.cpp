@@ -62,7 +62,7 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 
 	LOG(logINFO) << MESSAGE_STARTING_SERVER_OK << SocketUtils::getIpFromAddress(this->address) << ":" << this->portNumber;
 
-	//CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
+	CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
 	
 	this->isValid = true;
 }
@@ -272,8 +272,13 @@ DWORD WINAPI Server::runSendSocketHandler(void * args)
 DWORD Server::sendSocketHandler()
 {
 	while (true) {
+		for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+		{
+			PlayerController::update(it->second->getLastMessage(), it->second->getPlayer());
+		}
+
 		this->sendBroadcast();
-		Sleep(10);
+		Sleep(20);
 	}
 
 	return 0;

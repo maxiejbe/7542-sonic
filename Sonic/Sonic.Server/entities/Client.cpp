@@ -27,6 +27,7 @@ Client::Client(Server* server, int clientNumber)
 	int scrollSpeed = this->server->getConfiguration()->getScrollSpeed();
 
 	this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
+	this->lastReceivedMessage = nullptr;
 }
 
 Client::~Client()
@@ -93,6 +94,9 @@ bool Client::sendFileContent()
 {
 	int bytecount;
 	string fileContent = this->server->getFileContent();
+	/*ServerMessage * message = new ServerMessage();
+	message->setType(content);
+	message->setFileContent()*/
 	if ((bytecount = send(this->socket, fileContent.c_str(), strlen(fileContent.c_str()), 0)) == SOCKET_ERROR) {
 		LOG(logERROR) << MESSAGE_CLIENT_SEND_FILE_CONTENT_ERROR << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->clientNumber << ")";
@@ -104,6 +108,11 @@ bool Client::sendFileContent()
 Player* Client::getPlayer()
 {
 	return this->player;
+}
+
+Message * Client::getLastMessage()
+{
+	return this->lastReceivedMessage;
 }
 
 SOCKET Client::getSocket()
@@ -124,14 +133,17 @@ void Client::handleRecievedMessage(char* recievedMessage)
 
 	//this->server->lock();
 
-	PlayerController::update(message, this->player);
+	//PlayerController::update(message, this->player);
 
 	//this->server->unlock();
 
-	delete message;
+	//delete message;
 
 	//Then, send broadcast message
-	this->server->sendBroadcast();
+	//this->server->sendBroadcast();
+	if (this->lastReceivedMessage != nullptr) delete this->lastReceivedMessage;
+
+	this->lastReceivedMessage = message;
 }
 
 DWORD Client::socketHandler() {

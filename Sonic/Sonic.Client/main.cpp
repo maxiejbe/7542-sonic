@@ -68,6 +68,7 @@ int main(int argc, char* args[])
 	int scenarioWidth = scenario.getWidth();
 	int scenarioHeight = scenario.getHeight();
 
+	Message * lastMessage = nullptr;
 	// Initialize layers
 	vector<Layer> layers = scenario.getLayers();
 	vector<LayerView> layerViews;
@@ -136,8 +137,18 @@ int main(int argc, char* args[])
 			bool isKUSpace = input->isKeyUp(KEY_SPACE);
 
 			Message* message = new Message(timeStep, isKPLeft, isKPSpace, isKPRight, isKPUp, isKULeft, isKURight, isKUSpace);
-			networkManager.sendMessage(message);
-			delete message;
+			if (lastMessage == nullptr) {
+				networkManager.sendMessage(message);
+				lastMessage = message;
+			}
+			else if (!lastMessage->equals(*message)) {
+				networkManager.sendMessage(message);
+				delete lastMessage;
+				lastMessage = message;
+			}
+			else {
+				delete message;
+			}
 
 			stepTimer.start();
 
