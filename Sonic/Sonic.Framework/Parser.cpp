@@ -70,6 +70,7 @@ Parser::Parser(string path, string content)
 	if (!content.empty()) {
 		this->fileContent = content;
 		parseDocument();
+		return;
 	}
 
 	if (!readConfigFileContent(path)) {

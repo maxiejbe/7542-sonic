@@ -52,9 +52,9 @@ int main(int argc, char* args[])
 		Sleep(3000);
 	}
 
-	/*while (networkManager.getFileContent().empty()) {
+	while (networkManager.getFileContent().empty()) {
 		Sleep(3000);
-	}*/
+	}
 
 	Parser* parser = new Parser(configPath, networkManager.getFileContent());
 	Window window;

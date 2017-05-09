@@ -64,8 +64,8 @@ DWORD WINAPI NetworkManager::runRecvSocketHandler(void * args)
 
 DWORD NetworkManager::recvSocketHandler()
 {
-	char receivedMsg[1024];
-	int receivedMsgLen = 1024;
+	char receivedMsg[4096];
+	int receivedMsgLen = 4096;
 	while (this->online())
 	{
 		if (!this->client->receiveMessage(receivedMsg, receivedMsgLen))
@@ -94,6 +94,9 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		break;
 	case players_status:
 		this->updatePlayerViews(sMessage->getPlayers());
+		break;
+	case content:
+		this->fileContent = sMessage->getFileContent();
 		break;
 	default:
 		LOG(logERROR) << "Network Manager: Mensaje invalido -> " << receivedMessage;

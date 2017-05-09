@@ -26,7 +26,7 @@ public:
 	
 	bool sendClientNumber();
 	bool sendFileContent();
-
+	
 	Player* getPlayer();
 	Message* getLastMessage();
 
