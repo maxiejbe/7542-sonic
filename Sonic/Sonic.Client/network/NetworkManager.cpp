@@ -95,6 +95,9 @@ void NetworkManager::handleMessage(char * receivedMessage)
 	case players_status:
 		this->updatePlayerViews(sMessage->getPlayers());
 		break;
+	case content:
+		this->fileContent = sMessage->getFileContent();
+		break;
 	default:
 		LOG(logERROR) << "Network Manager: Mensaje invalido -> " << receivedMessage;
 		break;

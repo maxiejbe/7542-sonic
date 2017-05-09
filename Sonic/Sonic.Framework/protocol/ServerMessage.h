@@ -21,6 +21,8 @@ public:
 	Camera * getCamera();
 	void setCamera(Camera * camera);
 	void setPlayers(vector<Player*> players);
+	void setFileContent(string content);
+	string getFileContent();
 
 	void serializePlayers(Writer<StringBuffer>& writer);
 	void serializeCamera(Writer<StringBuffer>& writer);
@@ -34,6 +36,7 @@ private:
 	ServerMessageType type;
 	vector<Player*> players;
 	Camera * camera;
+	string fileContent;
 	int playerNumber;
 	void freePlayers();
 };

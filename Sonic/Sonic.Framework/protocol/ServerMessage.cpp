@@ -4,6 +4,7 @@ const char* SERVER_MESSAGE_TYPE_NODE = "t";
 const char* SERVER_MESSAGE_PLAYER_NUMBER_NODE = "pn";
 const char* SERVER_MESSAGE_PLAYERS_STATUS_NODE = "ps";
 const char* SERVER_MESSAGE_CAMERA_NODE = "ca";
+const char* SERVER_MESSAGE_FILE_CONTENT_NODE = "fc";
 
 ServerMessage::ServerMessage()
 {
@@ -11,6 +12,7 @@ ServerMessage::ServerMessage()
 	this->type = typeless;
 	this->players = vector<Player*>();
 	this->camera = nullptr;
+	this->fileContent = "";
 }
 
 ServerMessage::~ServerMessage()
@@ -60,6 +62,16 @@ void ServerMessage::setPlayers(vector<Player*> players)
 	this->players = players;
 }
 
+void ServerMessage::setFileContent(string content)
+{
+	this->fileContent = content;
+}
+
+string ServerMessage::getFileContent()
+{
+	return this->fileContent;
+}
+
 
 void ServerMessage::unserialize(Value* nodeRef)
 {
@@ -74,6 +86,9 @@ void ServerMessage::unserialize(Value* nodeRef)
 	case players_status:
 		parsePlayersStatus(nodeRef);
 		parseCameraStatus(nodeRef);
+		break;
+	case content:
+		parseString(&this->fileContent, "", nodeRef, SERVER_MESSAGE_FILE_CONTENT_NODE);
 		break;
 	default:
 		break;
@@ -108,6 +123,9 @@ string ServerMessage::serialize()
 	case players_status:
 		this->serializePlayers(writer);
 		this->serializeCamera(writer);
+	case content:
+		writer.String(SERVER_MESSAGE_FILE_CONTENT_NODE);
+		writer.String(this->fileContent.c_str());
 	default:
 		break;
 	}
