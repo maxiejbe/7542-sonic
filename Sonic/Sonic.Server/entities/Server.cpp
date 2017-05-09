@@ -63,7 +63,7 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 	LOG(logINFO) << MESSAGE_STARTING_SERVER_OK << SocketUtils::getIpFromAddress(this->address) << ":" << this->portNumber;
 
 	CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
-	
+
 	this->isValid = true;
 }
 
@@ -214,8 +214,7 @@ void Server::sendBroadcast()
 	char * serializedMessage = StringUtils::convert(message->serialize());
 	delete message;
 
-	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
-	{
+	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
 		int bytecount;
 		if ((bytecount = send(it->second->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
 			LOG(logERROR) << MESSAGE_SERVER_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_SERVER_ERROR_CODE << WSAGetLastError()
@@ -272,13 +271,12 @@ DWORD WINAPI Server::runSendSocketHandler(void * args)
 DWORD Server::sendSocketHandler()
 {
 	while (true) {
-		for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
-		{
+		for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
 			PlayerController::update(it->second->getLastMessage(), it->second->getPlayer());
 		}
 
 		this->sendBroadcast();
-		Sleep(20);
+		Sleep(15);
 	}
 
 	return 0;
