@@ -10,14 +10,13 @@ NetworkManager::~NetworkManager()
 {
 	for (unordered_map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it)
 	{
-		delete it->second->getPlayer();
-		delete it->second;
+		if (it->second) delete it->second;
 	}
 }
 
 void NetworkManager::close()
 {
-	if (this->client) { delete client; }
+	if (this->client != NULL) { delete client; }
 }
 
 bool NetworkManager::startClient(char * host, int port)
