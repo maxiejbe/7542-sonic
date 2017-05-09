@@ -36,12 +36,13 @@ public:
 	void setScenarioHeight(int sh);
 	int getScenarioHeight();
 
+	void copyFrom(Camera& camera);
 	// Inherited via Serializable
 	void unserialize(Value* nodeRef) override;
 	char* getNodeName() override;
 	string serialize() override;
 private:
-	void copyFromCamera(Camera& camera);
+	
 	Vector2 position;
 	float width, height;
 	int screenWidth, screenHeight, scenarioWidth, scenarioHeight;

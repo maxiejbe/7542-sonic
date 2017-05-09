@@ -22,21 +22,25 @@ public:
 	bool online();
 	void sendMessage(Message * message);
 	map<int, PlayerView*> getPlayerViews();
+	Camera * getCamera();
 
 	PlayerView* getOwnPlayerView();
 
 	int getPlayerNumber();
 	string getFileContent();
+
 private:
 	NetworkManager();
 	static NetworkManager * instance;
 	SocketClient * client;
 	map<int, PlayerView*> playerViews;
+	Camera * camera;
 
 	int playerNumber;
 	string fileContent;
 
 	void updatePlayerViews(vector<Player*> playerStatus);
+	void updateCamera(Camera* camera);
 	
 	/*HANDLERS*/
 	void startConnectionHandlers();

@@ -59,6 +59,7 @@ int main(int argc, char* args[])
 	Window window;
 	Configuration config;
 	Scenario scenario;
+	Camera * cameraModel;
 
 	parser->parse(&window);
 	parser->parse(&config);
@@ -100,7 +101,7 @@ int main(int argc, char* args[])
 		// Initialize camera
 		Timer stepTimer;
 		SDL_Rect camera = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
-
+		
 		// Initialize menu
 		Menu menu = Menu();
 		int i = menu.showMenu();
@@ -147,10 +148,17 @@ int main(int argc, char* args[])
 				player = playerView->getPlayer();
 			}
 
+			cameraModel = networkManager.getCamera();
+			if (cameraModel) {
+				camera.x = cameraModel->getPosition().x;
+				camera.y = cameraModel->getPosition().y;
+			}
+			
+
 			// UNCOMMENT WHEN PLAYERS ARE DONE
 			// Center the camera
 			if (player != nullptr) {
-				int bordeR = camera.x + SDLWindow::getInstance().getScreenWidth() - 100;
+				/*int bordeR = camera.x + SDLWindow::getInstance().getScreenWidth() - 100;
 				int bordeL = camera.x + 100;
 
 				camera.y = ((int)player->getPosition().y + player->getHeight() / 2) - SDLWindow::getInstance().getScreenHeight() / 2;
@@ -166,7 +174,7 @@ int main(int argc, char* args[])
 				if (camera.x > scenarioWidth - camera.w)
 					camera.x = scenarioWidth - camera.w;
 				if (camera.y > scenarioHeight - camera.h)
-					camera.y = scenarioHeight - camera.h;
+					camera.y = scenarioHeight - camera.h;*/
 			}
 			
 			// Clear screen

@@ -4,6 +4,7 @@ NetworkManager::NetworkManager()
 {
 	this->client = NULL;
 	this->playerNumber = -1;
+	this->camera = new Camera();
 }
 
 NetworkManager::~NetworkManager()
@@ -13,6 +14,8 @@ NetworkManager::~NetworkManager()
 		delete it->second->getPlayer();
 		delete it->second;
 	}
+
+	if (this->camera) delete this->camera;
 }
 
 void NetworkManager::close()
@@ -95,6 +98,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		break;
 	case players_status:
 		this->updatePlayerViews(sMessage->getPlayers());
+		this->updateCamera(sMessage->getCamera());
 		break;
 	default:
 		LOG(logERROR) << "Network Manager: Mensaje invalido -> " << receivedMessage;
@@ -149,6 +153,11 @@ map<int, PlayerView*> NetworkManager::getPlayerViews()
 	return this->playerViews;
 }
 
+Camera * NetworkManager::getCamera()
+{
+	return this->camera;
+}
+
 PlayerView * NetworkManager::getOwnPlayerView()
 {
 	int index = this->playerNumber - 1;
@@ -185,4 +194,10 @@ void NetworkManager::updatePlayerViews(vector<Player*> players)
 		Player* player = playerViews[index]->getPlayer();
 		player->copyFrom(*(*it));
 	}
+}
+
+void NetworkManager::updateCamera(Camera * camera)
+{
+	//TODO MUTEX HERE;
+	this->camera->copyFrom(*camera);
 }

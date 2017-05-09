@@ -31,6 +31,8 @@ int main(int argc, char* args[])
 	parser->parse(&config);
 	parser->parse(&scenario);
 
+	camera = Camera(0,0,window.getWidth(),window.getHeight(),window.getWidth(), window.getHeight(), scenario.getWidth(), scenario.getHeight());
+
 	Server server(&serverConfig, parser->getFileContent(), &window, &config, &scenario, &camera);
 	if (!server.validate()) {
 		return 0;

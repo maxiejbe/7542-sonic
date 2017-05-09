@@ -18,7 +18,7 @@ Camera::Camera()
 Camera::Camera(Camera & camera)
 {
 	this->position = Vector2(0, 0);
-	this->copyFromCamera(camera);
+	this->copyFrom(camera);
 }
 
 Camera::~Camera()
@@ -80,7 +80,7 @@ string Camera::serialize()
 	return s.GetString();
 }
 
-void Camera::copyFromCamera(Camera & camera)
+void Camera::copyFrom(Camera & camera)
 {
 
 	this->setXPosition(camera.getPosition().x);
