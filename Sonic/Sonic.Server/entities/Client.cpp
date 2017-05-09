@@ -122,7 +122,11 @@ void Client::handleRecievedMessage(char* recievedMessage)
 	Message* message = new Message();
 	message->fromJson(strMessage);
 
+	//this->server->lock();
+
 	PlayerController::update(message, this->player);
+
+	//this->server->unlock();
 
 	delete message;
 
@@ -144,16 +148,7 @@ DWORD Client::socketHandler() {
 		
 		LOG(logINFO) << MESSAGE_CLIENT_DATA_RECV_SUCCESS << recievedMessage << " (Cliente " << this->clientNumber << ")";
 
-
 		this->handleRecievedMessage(recievedMessage);
-		//if (message.validate()) {
-		//	this->handleRecievedMessage(recievedMessage);
-		//}
-		
-		//string convertedMessage;
-		//message.toString(&convertedMessage);
-
-		//printf("Received bytes %d\nReceived string \"%s\"\n", bytecount, recievedMessage /*convertedMessage.c_str()*/);
 	};
 
 	LOG(logINFO) << MESSAGE_CLIENT_CONNECTION_CLOSED << this->clientNumber;

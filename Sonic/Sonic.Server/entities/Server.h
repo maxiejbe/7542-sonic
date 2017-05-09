@@ -49,6 +49,8 @@ public:
 	Configuration* getConfiguration();
 	Scenario* getScenario();
 
+	void lock();
+	void unlock();
 private:
 	/*
 	Initialize socket support WINDOWS ONLY!
@@ -82,7 +84,12 @@ private:
 	unordered_map<int, Client*> clients;
 	Camera* camera;
 
-	mutex broadcastMutex;
+	mutex serverMutex;
+
+	//send handler
+	DWORD sendThreadId;
+	static DWORD WINAPI runSendSocketHandler(void* args);
+	DWORD sendSocketHandler();
 };
 
 #endif

@@ -54,7 +54,6 @@ void NetworkManager::startConnectionHandlers()
 	//Receive Handler
 	//TODO: kill theads
 	CreateThread(0, 0, runRecvSocketHandler, (void*)this, 0, &this->recvThreadId);
-	//CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
 }
 
 DWORD WINAPI NetworkManager::runRecvSocketHandler(void * args)
@@ -102,29 +101,6 @@ void NetworkManager::handleMessage(char * receivedMessage)
 	}
 
 	delete sMessage;
-}
-
-DWORD WINAPI NetworkManager::runSendSocketHandler(void * args)
-{
-	NetworkManager * nManager = (NetworkManager*)args;
-	return nManager->sendSocketHandler();
-}
-
-DWORD NetworkManager::sendSocketHandler()
-{
-	//send new message
-	while (this->online() && this->playerNumber < 0) {
-		//wait till user gets number
-		if (this->playerNumber > 0) {
-			Message * msg = new Message(/*this->player->getNumber()*/);
-			this->sendMessage(msg);
-			delete msg;
-		}
-		//wait 3 seconds;
-		Sleep(3000);
-	}
-
-	return 0;
 }
 
 void NetworkManager::sendMessage(Message* message)

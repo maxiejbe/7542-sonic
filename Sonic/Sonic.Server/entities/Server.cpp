@@ -62,6 +62,8 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 
 	LOG(logINFO) << MESSAGE_STARTING_SERVER_OK << SocketUtils::getIpFromAddress(this->address) << ":" << this->portNumber;
 
+	//CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
+	
 	this->isValid = true;
 }
 
@@ -184,6 +186,16 @@ Scenario * Server::getScenario()
 	return this->scenario;
 }
 
+void Server::lock()
+{
+	this->serverMutex.lock();
+}
+
+void Server::unlock()
+{
+	this->serverMutex.unlock();
+}
+
 void Server::waitForClientConnections()
 {
 	bool keepWaiting = true;
@@ -196,7 +208,7 @@ void Server::waitForClientConnections()
 
 void Server::sendBroadcast()
 {
-	this->broadcastMutex.lock();
+	this->lock();
 
 	ServerMessage * message = this->getPlayersStatusMessage();
 	char * serializedMessage = StringUtils::convert(message->serialize());
@@ -214,7 +226,7 @@ void Server::sendBroadcast()
 		//LOG(logINFO) << MESSAGE_SERVER_SEND_MESSAGE_SUCCESS << message << " (Cliente " << it->second->getClientNumber() << ")";
 	}
 
-	this->broadcastMutex.unlock();
+	this->unlock();
 }
 
 bool Server::validate()
@@ -249,4 +261,20 @@ vector<Player*> Server::clientsPlayers()
 	}
 
 	return clientPlayers;
+}
+
+DWORD WINAPI Server::runSendSocketHandler(void * args)
+{
+	Server * server = (Server*)args;
+	return server->sendSocketHandler();
+}
+
+DWORD Server::sendSocketHandler()
+{
+	while (true) {
+		this->sendBroadcast();
+		Sleep(10);
+	}
+
+	return 0;
 }

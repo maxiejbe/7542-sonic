@@ -47,10 +47,5 @@ private:
 	static DWORD WINAPI runRecvSocketHandler(void* args);
 	DWORD recvSocketHandler();
 	void handleMessage(char*);
-	
-	//send handler
-	DWORD sendThreadId;
-	static DWORD WINAPI runSendSocketHandler(void* args);
-	DWORD sendSocketHandler();
 };
 
