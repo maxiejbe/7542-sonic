@@ -16,18 +16,9 @@ const char* MESSAGE_CLIENT_SEND_FILE_CONTENT_ERROR = "No se pudo enviar el conte
 const char* MESSAGE_CLIENT_SEND_MESSAGE_SUCCESS = "Se envió correctamente el mensaje ";
 
 
-Client::Client(Server* server, int clientNumber)
+Client::Client(Server* server)
 {
-	this->clientNumber = clientNumber;
 	this->server = server;
-
-	int windowHeight = this->server->getWindow()->getHeight();
-	int scenarioWidht = this->server->getScenario()->getWidth();
-	int scenarioHeight = this->server->getScenario()->getHeight();
-	int scrollSpeed = this->server->getConfiguration()->getScrollSpeed();
-
-	this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
-	this->lastReceivedMessage = nullptr;
 }
 
 Client::~Client()
@@ -52,6 +43,18 @@ bool Client::acceptSocket()
 		LOG(logERROR) << MESSAGE_CLIENT_REJECTED_CONNECTION << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError() << " (IP: " << clientIp << ")";
 		return false;
 	}
+}
+
+bool Client::welcome(int clientNumber)
+{
+	this->clientNumber = clientNumber;
+	int windowHeight = this->server->getWindow()->getHeight();
+	int scenarioWidht = this->server->getScenario()->getWidth();
+	int scenarioHeight = this->server->getScenario()->getHeight();
+	int scrollSpeed = this->server->getConfiguration()->getScrollSpeed();
+	
+	this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
+	this->lastReceivedMessage = nullptr;
 
 	LOG(logINFO) << MESSAGE_CLIENT_ACCEPTED_CONNECTION << this->clientNumber;
 
