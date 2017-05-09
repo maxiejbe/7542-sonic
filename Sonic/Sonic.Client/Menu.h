@@ -13,7 +13,7 @@ public:
 	Menu();
 	~Menu();
 
-	int ShowMenu();
+	int showMenu();
 
 private:
 	static const int OPCMENU = 3;
@@ -28,12 +28,12 @@ private:
 	SDL_Color color[OPCMENU];
 	int option;
 
-	void InitMenu();
-	void InitColorNameOptions();
-	void ShowBackgroundImage();
-	void UpdateAndRenderOptions();
-	void FreeSurfaceMenus();
-	void ChangeSelectedOption();
+	void initMenu();
+	void initColorNameOptions();
+	void showBackgroundImage();
+	void updateAndRenderOptions();
+	void freeSurfaceMenus();
+	void changeSelectedOption();
 };
 
 #endif // !MENU_H

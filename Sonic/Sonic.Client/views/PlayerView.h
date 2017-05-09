@@ -27,6 +27,7 @@ private:
 
 	Texture texture;
 	Player* player;
+	SDL_Rect** spriteClips;
 };
 
 #endif // !PLAYERVIEW_H

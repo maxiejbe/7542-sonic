@@ -16,6 +16,7 @@ const char* PLAYER_JUMPING_NODE = "jmp";
 const char* PLAYER_GROUND_POS_NODE = "gp";
 const char* PLAYER_SCROLL_SPEED_NODE = "scs";
 const char* PLAYER_FILE_PATH_NODE = "fp";
+const char* PLAYER_TYPE_NODE = "pt";
 
 
 Player::Player()
@@ -33,9 +34,6 @@ Player::Player()
 	this->isJumping = false;
 	this->facingDirection = FACING_RIGHT;
 	this->spriteState = PlayerStatus::idle;
-
-	this->playerType = (this->getNumber() % 2 == 0) ? PlayerType::SONIC : PlayerType::TAILS;
-	this->filePath = this->playerType == SONIC ? "img/sonic-spritesheet.png" : "img/tails-spritesheet.png";
 }
 
 Player::Player(Player & anotherPlayer) {
@@ -254,6 +252,8 @@ void Player::unserialize(Value * nodeRef)
 	parseInt((int*)&spriteState, 0, nodeRef, PLAYER_SPRITE_STATE_NODE, Validator::intGreaterThanOrEqualToZero);
 	//file path
 	parseString(&filePath, "img/sonic-spritesheet.png", nodeRef, PLAYER_FILE_PATH_NODE);
+	//player type
+	parseInt((int*)&playerType, 0, nodeRef, PLAYER_TYPE_NODE);
 }
 
 string Player::serialize()
@@ -295,6 +295,8 @@ string Player::serialize()
 	writer.String(PLAYER_FILE_PATH_NODE);
 	const char* fp = this->filePath.c_str();
 	writer.String(fp);
+	writer.String(PLAYER_TYPE_NODE);
+	writer.Int(this->playerType);
 
 	writer.EndObject();
 	return s.GetString();

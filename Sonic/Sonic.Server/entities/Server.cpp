@@ -25,7 +25,7 @@ Server::~Server()
 	LOG(logINFO) << MESSAGE_SERVER_EXECUTION_END;
 }
 
-Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario)
+Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario, Camera * camera)
 {
 	this->portNumber = serverConfig->getPortNumber();
 
@@ -34,6 +34,8 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 	this->window = window;
 	this->config = config;
 	this->scenario = scenario;
+	//initialize camera
+	this->camera = camera;
 
 	this->isValid = false;
 
@@ -122,9 +124,9 @@ bool Server::startListening()
 
 int Server::getAvailableIndex()
 {
-	for (size_t i = 0; i < clients.size(); i++)
+	for (size_t i = 0; i < this->serverConfig->getMaxAllowedClients(); i++)
 	{
-		if (clients[i] == NULL) return i;
+		if (!clients.count(i)) return i;
 	}
 	return 0;
 }
@@ -192,25 +194,27 @@ void Server::waitForClientConnections()
 	}
 }
 
-void Server::sendBroadcast(char* message)
+void Server::sendBroadcast()
 {
-	ServerMessage * playersUpdateStatusMessage = this->makePlayersStatusUpdateMessage();
-	char * broadcast = StringUtils::convert(playersUpdateStatusMessage->serialize());
-	delete playersUpdateStatusMessage;
+	this->broadcastMutex.lock();
+
+	ServerMessage * message = this->getPlayersStatusMessage();
+	char * serializedMessage = StringUtils::convert(message->serialize());
+	delete message;
 
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
 		int bytecount;
-		if ((bytecount = send(it->second->getSocket(), broadcast, strlen(broadcast), 0)) == SOCKET_ERROR) {
-			LOG(logERROR) << MESSAGE_SERVER_SEND_MESSAGE_ERROR << broadcast << ". " << MESSAGE_SERVER_ERROR_CODE << WSAGetLastError()
+		if ((bytecount = send(it->second->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
+			LOG(logERROR) << MESSAGE_SERVER_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_SERVER_ERROR_CODE << WSAGetLastError()
 				<< " (Cliente " << it->second->getClientNumber() << ")";
 			continue;
 		}
 
-		LOG(logINFO) << MESSAGE_SERVER_SEND_MESSAGE_SUCCESS << message << " (Cliente " << it->second->getClientNumber() << ")";
+		//LOG(logINFO) << MESSAGE_SERVER_SEND_MESSAGE_SUCCESS << message << " (Cliente " << it->second->getClientNumber() << ")";
 	}
 
-
+	this->broadcastMutex.unlock();
 }
 
 bool Server::validate()
@@ -218,20 +222,31 @@ bool Server::validate()
 	return this->isValid;
 }
 
-ServerMessage* Server::makePlayersStatusUpdateMessage()
+ServerMessage* Server::getPlayersStatusMessage()
 {
-	//TODO: ADD MUTEX
-	vector<Player*> playersUpdates = vector<Player*>();
-	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
-	{
-		//copy player to avoid problems (will be deleted in ServerMessage destructor)
-		Player * playerUpdate = new Player(*it->second->getPlayer());
-		playersUpdates.push_back(playerUpdate);
-	}
+	vector<Player*> clientsPlayers = this->clientsPlayers();
+
+	//update camera
+	CameraController::updateCamera(this->camera, clientsPlayers);
 
 	ServerMessage * message = new ServerMessage();
 	message->setType(players_status);
-	message->setPlayers(playersUpdates);
+	message->setPlayers(clientsPlayers);
+	message->setCamera(new Camera(*this->camera));
 
 	return message;
+}
+
+vector<Player*> Server::clientsPlayers()
+{
+	//TODO: ADD MUTEX
+	vector<Player*> clientPlayers = vector<Player*>();
+	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	{
+		//copy player to avoid problems (will be deleted in ServerMessage destructor)
+		Player * clientPlayer = new Player(*it->second->getPlayer());
+		clientPlayers.push_back(clientPlayer);
+	}
+
+	return clientPlayers;
 }

@@ -3,14 +3,14 @@
 
 Menu::Menu()
 {
-	InitMenu();
+	initMenu();
 }
 
 Menu::~Menu()
 {
 }
 
-void Menu::InitMenu()
+void Menu::initMenu()
 {
 	TTF_Init();
 	font = TTF_OpenFont("fonts/sega.ttf", 30);
@@ -27,7 +27,7 @@ void Menu::InitMenu()
 	color[1] = { 255,0,0 };
 }
 
-void Menu::InitColorNameOptions()
+void Menu::initColorNameOptions()
 {
 	option = 0;
 	menus[option] = TTF_RenderText_Solid(font, labels[option], color[1]);
@@ -42,14 +42,14 @@ void Menu::InitColorNameOptions()
 	}
 }
 
-void Menu::ShowBackgroundImage()
+void Menu::showBackgroundImage()
 {
 	SDL_Rect dstrect;
 	dstrect = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
 	SDL_RenderCopy(Renderer::getInstance().gRenderer, texture.getTexture(), NULL, &dstrect);
 }
 
-void Menu::UpdateAndRenderOptions()
+void Menu::updateAndRenderOptions()
 {
 	SDL_Rect Message_rect;
 	for (int i = 0; i < OPCMENU; i += 1)
@@ -65,7 +65,7 @@ void Menu::UpdateAndRenderOptions()
 	SDL_RenderPresent(Renderer::getInstance().gRenderer);
 }
 
-void Menu::FreeSurfaceMenus()
+void Menu::freeSurfaceMenus()
 {
 	for (int i = 0; i < OPCMENU; i++)
 	{
@@ -73,7 +73,7 @@ void Menu::FreeSurfaceMenus()
 	}
 }
 
-void Menu::ChangeSelectedOption()
+void Menu::changeSelectedOption()
 {
 	selected[option] = true;
 	menus[option] = TTF_RenderText_Solid(font, labels[option], color[1]);
@@ -88,11 +88,11 @@ void Menu::ChangeSelectedOption()
 	}
 }
 
-int Menu::ShowMenu()
+int Menu::showMenu()
 {
-	InitColorNameOptions();
-	ShowBackgroundImage();
-	UpdateAndRenderOptions();
+	initColorNameOptions();
+	showBackgroundImage();
+	updateAndRenderOptions();
 
 	SDL_Event event;
 	bool isRunning = true;
@@ -104,7 +104,7 @@ int Menu::ShowMenu()
 			switch (event.type)
 			{
 			case SDL_QUIT:
-				FreeSurfaceMenus();
+				freeSurfaceMenus();
 				return 1;
 
 			case SDL_KEYDOWN:
@@ -113,15 +113,15 @@ int Menu::ShowMenu()
 				case SDLK_UP:
 					option--;
 					if (option < 0) { option = 0; }
-					ChangeSelectedOption();
-					UpdateAndRenderOptions();
+					changeSelectedOption();
+					updateAndRenderOptions();
 					break;
 
 				case SDLK_DOWN:
 					option++;
 					if (option == OPCMENU) { option = OPCMENU - 1; }
-					ChangeSelectedOption();
-					UpdateAndRenderOptions();
+					changeSelectedOption();
+					updateAndRenderOptions();
 					break;
 
 				case SDLK_RETURN:
@@ -129,12 +129,12 @@ int Menu::ShowMenu()
 					if (selected[1]) { return 0; } //TODO: Desconectar
 					if (selected[2])
 					{
-						FreeSurfaceMenus();
+						freeSurfaceMenus();
 						return 1;
 					}
 
 				case SDLK_ESCAPE:
-					FreeSurfaceMenus();
+					freeSurfaceMenus();
 					return 0;
 				}
 			}

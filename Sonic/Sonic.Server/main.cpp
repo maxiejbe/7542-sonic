@@ -24,13 +24,14 @@ int main(int argc, char* args[])
 	Window window;
 	Configuration config;
 	Scenario scenario;
+	Camera camera;
 
 	parser->parse(&serverConfig);
 	parser->parse(&window);
 	parser->parse(&config);
 	parser->parse(&scenario);
 
-	Server server(&serverConfig, parser->getFileContent(), &window, &config, &scenario);
+	Server server(&serverConfig, parser->getFileContent(), &window, &config, &scenario, &camera);
 	if (!server.validate()) {
 		return 0;
 	}

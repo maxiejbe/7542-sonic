@@ -7,18 +7,22 @@
 #include <Ws2tcpip.h>
 #include <vector>
 #include <Logger.h>
-	
+
 #include <iostream>
 #include <unordered_map>
 
 #include "Client.h"
 #include "entities/Player.h"
+#include "entities/Camera.h"
 #include "protocol/ServerMessage.h"
 
 #include "entities/Window.h"
 #include "entities/Configuration.h"
 #include "entities/Scenario.h"
 #include "common/ServerConfiguration.h"
+#include "../controllers/CameraController.h"
+
+#include <mutex>
 
 //Take a look at: http://stackoverflow.com/questions/16948064/unresolved-external-symbol-lnk2019
 #pragma comment(lib, "Ws2_32.lib")
@@ -32,10 +36,10 @@ class Server {
 
 public:
 	~Server();
-	Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario);
+	Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario, Camera * camera);
 	bool validate();
 	void waitForClientConnections();
-	void sendBroadcast(char* message);
+	void sendBroadcast();
 	void removeClientConnection(int clientNumber);
 
 	SOCKET getSocket();
@@ -54,12 +58,14 @@ private:
 	bool configureAddress();
 	bool bindSocket();
 	bool startListening();
-	
+
 	int getAvailableIndex();
 
 	void acceptClientConnection();
-	ServerMessage* makePlayersStatusUpdateMessage();
-	
+	ServerMessage* getPlayersStatusMessage();
+
+	vector<Player*> clientsPlayers();
+
 	bool isValid;
 	SOCKET _socket;
 	struct sockaddr_in address;
@@ -74,6 +80,9 @@ private:
 	Scenario* scenario;
 
 	unordered_map<int, Client*> clients;
+	Camera* camera;
+
+	mutex broadcastMutex;
 };
 
 #endif

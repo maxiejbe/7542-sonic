@@ -3,17 +3,20 @@
 const char* SERVER_MESSAGE_TYPE_NODE = "t";
 const char* SERVER_MESSAGE_PLAYER_NUMBER_NODE = "pn";
 const char* SERVER_MESSAGE_PLAYERS_STATUS_NODE = "ps";
+const char* SERVER_MESSAGE_CAMERA_NODE = "ca";
 
 ServerMessage::ServerMessage()
 {
 	this->playerNumber = -1;
 	this->type = typeless;
 	this->players = vector<Player*>();
+	this->camera = nullptr;
 }
 
 ServerMessage::~ServerMessage()
 {
 	freePlayers();
+	if (this->camera) delete this->camera;
 }
 
 void ServerMessage::setType(ServerMessageType type)
@@ -42,6 +45,16 @@ vector<Player*> ServerMessage::getPlayers()
 	return this->players;
 }
 
+Camera * ServerMessage::getCamera()
+{
+	return this->camera;
+}
+
+void ServerMessage::setCamera(Camera * camera)
+{
+	this->camera = camera;
+}
+
 void ServerMessage::setPlayers(vector<Player*> players)
 {
 	this->players = players;
@@ -60,6 +73,7 @@ void ServerMessage::unserialize(Value* nodeRef)
 		break;
 	case players_status:
 		parsePlayersStatus(nodeRef);
+		parseCameraStatus(nodeRef);
 		break;
 	default:
 		break;
@@ -93,6 +107,7 @@ string ServerMessage::serialize()
 		break;
 	case players_status:
 		this->serializePlayers(writer);
+		this->serializeCamera(writer);
 	default:
 		break;
 	}
@@ -100,6 +115,14 @@ string ServerMessage::serialize()
 	writer.EndObject();
 
 	return s.GetString();
+}
+
+void ServerMessage::serializeCamera(Writer<StringBuffer>& writer)
+{
+	if (!this->camera) return;
+	writer.String(SERVER_MESSAGE_CAMERA_NODE);
+	string serializedcamera = this->camera->serialize();
+	writer.String(serializedcamera.c_str());
 }
 
 void ServerMessage::serializePlayers(Writer<StringBuffer>& writer)
@@ -117,7 +140,34 @@ void ServerMessage::serializePlayers(Writer<StringBuffer>& writer)
 	writer.EndArray();
 }
 
-void ServerMessage::parsePlayersStatus(Value* nodeRef)
+void ServerMessage::parseCameraStatus(Value * nodeRef)
+{
+	Value& node = *nodeRef;
+
+	if (nodeRef == nullptr || !node.HasMember(SERVER_MESSAGE_CAMERA_NODE)) {
+		LOG(logWARNING) << "Server Message: Fallo parseo de camara";
+		return;
+	}
+
+	const Value& cameraStatus = node[SERVER_MESSAGE_CAMERA_NODE];
+	//Check cameraStatus
+	if (!cameraStatus.IsString()) {
+		LOG(logWARNING) << "Server Message: Campo incorrecto de camera" << SERVER_MESSAGE_PLAYERS_STATUS_NODE;
+		return;
+	}
+
+	Document jsonCamera;
+	if (jsonCamera.Parse(cameraStatus.GetString()).HasParseError()) {
+		LOG(logERROR) << "Server Message: Error al parsear camera";
+		return;
+	}
+
+	if (this->camera) delete this->camera;
+	this->camera = new Camera();
+	this->camera->unserialize(&jsonCamera);
+}
+
+void ServerMessage::parsePlayersStatus(Value * nodeRef)
 {
 	//free players and clear vector
 	freePlayers();

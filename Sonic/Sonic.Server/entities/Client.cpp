@@ -26,7 +26,7 @@ Client::Client(Server* server, int clientNumber)
 	int scenarioHeight = this->server->getScenario()->getHeight();
 	int scrollSpeed = this->server->getConfiguration()->getScrollSpeed();
 
-	this->player = new Player(windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
+	this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
 }
 
 Client::~Client()
@@ -127,7 +127,7 @@ void Client::handleRecievedMessage(char* recievedMessage)
 	delete message;
 
 	//Then, send broadcast message
-	this->server->sendBroadcast(recievedMessage);
+	this->server->sendBroadcast();
 }
 
 DWORD Client::socketHandler() {

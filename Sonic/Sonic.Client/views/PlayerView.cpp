@@ -2,10 +2,8 @@
 #include "SDLWindow.h"
 
 const int ANIMATION_STATES = 4;
-//const int ANIMATION_FRAMES = 8; // SONIC
-const int ANIMATION_FRAMES = 9; // TAILS
-SDL_Rect spriteClips[ANIMATION_STATES][ANIMATION_FRAMES];
-
+const int ANIMATION_FRAMES_SONIC = 8; // SONIC
+const int ANIMATION_FRAMES_TAILS = 9; // TAILS
 
 PlayerView::PlayerView(Player* player)
 {
@@ -15,6 +13,12 @@ PlayerView::PlayerView(Player* player)
 
 PlayerView::~PlayerView()
 {
+	if (this->spriteClips != nullptr) {
+		for (int count = 0; count < ANIMATION_STATES; count++) {
+			delete[] this->spriteClips[count];
+		}
+		delete[] this->spriteClips;
+	}
 	if (this->player == nullptr) return;
 	delete this->player;
 }
@@ -84,6 +88,12 @@ int PlayerView::getFramesCount(PlayerStatus status)
 void PlayerView::loadSpriteClips()
 {
 	if (this->player->getPlayerType() == SONIC) {
+
+		spriteClips = new SDL_Rect *[ANIMATION_STATES];
+		for (int count = 0; count < ANIMATION_STATES; count++) {
+			spriteClips[count] = new SDL_Rect[ANIMATION_FRAMES_SONIC];
+		}
+
 		// SONIC
 		spriteClips[PlayerStatus::idle][0].x = 5;
 		spriteClips[PlayerStatus::idle][0].y = 12;
@@ -175,6 +185,12 @@ void PlayerView::loadSpriteClips()
 	}
 	else {
 		// TAILS
+
+		spriteClips = new SDL_Rect *[ANIMATION_STATES];
+		for (int count = 0; count < ANIMATION_STATES; count++) {
+			spriteClips[count] = new SDL_Rect[ANIMATION_FRAMES_TAILS];
+		}
+
 		// idle
 		spriteClips[PlayerStatus::idle][0].x = 23;
 		spriteClips[PlayerStatus::idle][0].y = 14;
