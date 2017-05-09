@@ -15,7 +15,6 @@ Message::Message()
 
 Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKULeft, bool isKURight, bool isKUSpace)
 {
-	this->playerNumber = 0;
 	this->dt = dt;
 	this->isKPLeft = isKPLeft;
 	this->isKPSpace = isKPSpace;
@@ -24,27 +23,6 @@ Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool 
 	this->isKULeft = isKULeft;
 	this->isKURight = isKURight;
 	this->isKUSpace = isKUSpace;
-}
-
-void Message::setConnectionStatus(ConnectionStatus connectionStatus)
-{
-	this->connectionStatus = connectionStatus;
-}
-
-ConnectionStatus Message::getConnectionStatus()
-{
-	return this->connectionStatus;
-}
-
-bool Message::validate()
-{
-	//if (this->playerNumber < 0) return false;
-	return true;
-}
-
-string Message::getBinaryData()
-{
-	return this->binaryMsg;
 }
 
 double Message::getTimeStep()

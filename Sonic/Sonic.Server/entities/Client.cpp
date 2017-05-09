@@ -138,16 +138,6 @@ void Client::handleRecievedMessage(char* recievedMessage)
 	Message* message = new Message();
 	message->fromJson(strMessage);
 
-	//this->server->lock();
-
-	//PlayerController::update(message, this->player);
-
-	//this->server->unlock();
-
-	//delete message;
-
-	//Then, send broadcast message
-	//this->server->sendBroadcast();
 	if (this->lastReceivedMessage != nullptr) delete this->lastReceivedMessage;
 
 	this->lastReceivedMessage = message;
