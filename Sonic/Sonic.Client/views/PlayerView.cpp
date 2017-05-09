@@ -31,13 +31,13 @@ void PlayerView::render(int camX, int camY)
 		return;
 	}
 
-	if (!this->player->getIsConnected() && !this->player->getIsGreyed()) {
+	if (!this->player->getIsConnected() && !this->isGreyed) {
 		string filePath = this->player->getPlayerType() == SONIC ? "img/sonic-spritesheet-grey.png" : "img/tails-spritesheet-grey.png";
 		if (!this->texture.loadFromFile(filePath)) {
 			LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << filePath << "'.";
 			return;
 		}
-		this->player->setIsGreyed(true);
+		this->isGreyed = true;
 	}
 
 	// Calculate current sprite

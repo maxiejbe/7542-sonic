@@ -44,10 +44,10 @@ bool Client::acceptSocket()
 {
 	int addressSize = sizeof(address);
 	this->socket = accept(this->server->getSocket(), (struct sockaddr *)&address, &addressSize);
-	
+
 	string clientIp = SocketUtils::getIpFromAddress(address);
 	LOG(logINFO) << MESSAGE_CLIENT_INCOMING_CONNECTION << clientIp;
-	
+
 	if (this->socket == INVALID_SOCKET) {
 		LOG(logERROR) << MESSAGE_CLIENT_REJECTED_CONNECTION << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError() << " (IP: " << clientIp << ")";
 		return false;
@@ -64,7 +64,7 @@ bool Client::acceptSocket()
 	if (!this->sendFileContent()) {
 		return false;
 	}
-	
+
 	CreateThread(0, 0, runSocketHandler, (void*)this, 0, &this->threadId);
 	return true;
 }
@@ -82,7 +82,7 @@ bool Client::sendClientNumber()
 	sMessage.setPlayerNumber(this->clientNumber);
 	string serializedMsg = sMessage.serialize();
 	const char* messageToSend = serializedMsg.c_str();
-	
+
 	if ((bytecount = send(this->socket, messageToSend, strlen(messageToSend), 0)) == SOCKET_ERROR) {
 		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << messageToSend << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->clientNumber << ")";
@@ -95,15 +95,15 @@ bool Client::sendClientNumber()
 bool Client::sendFileContent()
 {
 	int bytecount;
-	
+
 	ServerMessage * message = new ServerMessage();
 	message->setType(content);
 	message->setFileContent(this->server->getFileContent());
 	string serializedMessage = message->serialize();
-	
+
 	const char* fileContentMessage = serializedMessage.c_str();
 	delete message;
-	
+
 	if ((bytecount = send(this->socket, fileContentMessage, strlen(fileContentMessage), 0)) == SOCKET_ERROR) {
 		LOG(logERROR) << MESSAGE_CLIENT_SEND_FILE_CONTENT_ERROR << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->clientNumber << ")";
@@ -154,7 +154,7 @@ DWORD Client::socketHandler() {
 			LOG(logERROR) << MESSAGE_CLIENT_DATA_RECV_INCORRECT << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError() << " (Cliente " << this->clientNumber << ")";
 			break;
 		}
-		
+
 		LOG(logINFO) << MESSAGE_CLIENT_DATA_RECV_SUCCESS << recievedMessage << " (Cliente " << this->clientNumber << ")";
 
 		this->handleRecievedMessage(recievedMessage);
@@ -162,9 +162,9 @@ DWORD Client::socketHandler() {
 
 	LOG(logINFO) << MESSAGE_CLIENT_CONNECTION_CLOSED << this->clientNumber;
 
-	this->getPlayer()->setIsConnected(false); // MATI T
+	this->player->setIsConnected(false); // MATI T
 
-	this->server->removeClientConnection(this->clientNumber);
+	//this->server->removeClientConnection(this->clientNumber);
 
 	return 0;
 }
