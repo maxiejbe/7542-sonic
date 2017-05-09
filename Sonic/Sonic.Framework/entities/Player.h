@@ -10,7 +10,7 @@ using namespace std;
 
 enum FacingDirection { FACING_LEFT, FACING_RIGHT };
 
-class Player: public Serializable
+class Player : public Serializable
 {
 public:
 	Player();
@@ -57,6 +57,8 @@ public:
 	void setGroundPos(double gPos);
 	int getScrollSpeed();
 	void setScrollSpeed(int scSpeed);
+	PlayerType getPlayerType();
+	void setPlayerType(PlayerType playerType);
 
 	// Inherited via Serializable
 	void unserialize(Value* nodeRef) override;
@@ -77,6 +79,7 @@ private:
 	int number;
 	PlayerStatus spriteState;
 	string filePath;
+	PlayerType playerType;
 };
 
 #endif // !PLAYER_H

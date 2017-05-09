@@ -62,12 +62,12 @@ string Message::getBinaryData()
 	return this->binaryMsg;
 }
 
-double Message::getTimeStep() 
+double Message::getTimeStep()
 {
 	return this->dt;
 }
 
-bool Message::getIsKPLeft() 
+bool Message::getIsKPLeft()
 {
 	return this->isKPLeft;
 }

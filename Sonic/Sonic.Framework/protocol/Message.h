@@ -10,6 +10,7 @@
 
 enum ConnectionStatus { assign, connected, disconnected };
 enum PlayerStatus { idle, walking, running, jumping };
+enum PlayerType { SONIC, TAILS };
 
 struct Message : public SerializableMessage {
 public:

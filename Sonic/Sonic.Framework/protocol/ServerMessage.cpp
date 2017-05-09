@@ -4,14 +4,14 @@ const char* SERVER_MESSAGE_TYPE_NODE = "t";
 const char* SERVER_MESSAGE_PLAYER_NUMBER_NODE = "pn";
 const char* SERVER_MESSAGE_PLAYERS_STATUS_NODE = "ps";
 
-ServerMessage::ServerMessage() 
+ServerMessage::ServerMessage()
 {
 	this->playerNumber = -1;
 	this->type = typeless;
 	this->players = vector<Player*>();
 }
 
-ServerMessage::~ServerMessage() 
+ServerMessage::~ServerMessage()
 {
 	freePlayers();
 }
@@ -48,7 +48,7 @@ void ServerMessage::setPlayers(vector<Player*> players)
 }
 
 
-void ServerMessage::unserialize(Value * nodeRef)
+void ServerMessage::unserialize(Value* nodeRef)
 {
 	//type
 	parseInt((int*)&type, typeless, nodeRef, SERVER_MESSAGE_TYPE_NODE, Validator::intGreaterThanOrEqualToZero);
@@ -66,7 +66,7 @@ void ServerMessage::unserialize(Value * nodeRef)
 	}
 }
 
-char * ServerMessage::getNodeName()
+char* ServerMessage::getNodeName()
 {
 	return nullptr;
 }
@@ -117,12 +117,12 @@ void ServerMessage::serializePlayers(Writer<StringBuffer>& writer)
 	writer.EndArray();
 }
 
-void ServerMessage::parsePlayersStatus(Value * nodeRef)
+void ServerMessage::parsePlayersStatus(Value* nodeRef)
 {
 	//free players and clear vector
 	freePlayers();
 	Value& node = *nodeRef;
-	
+
 	//LOG(logINFO) << MESSAGE_PARSING_NODE_FIELD + string(fieldName);
 
 	if (nodeRef == nullptr || !node.HasMember(SERVER_MESSAGE_PLAYERS_STATUS_NODE)) {
@@ -146,7 +146,7 @@ void ServerMessage::parsePlayersStatus(Value * nodeRef)
 		}
 
 		//unsearialize player and add to vector
-		Player * newPlayer = new Player();
+		Player* newPlayer = new Player();
 		newPlayer->unserialize(&jsonPlayer);
 		this->players.push_back(newPlayer);
 	}
@@ -159,9 +159,9 @@ void ServerMessage::freePlayers()
 	}
 
 	vector<Player*>::iterator it = this->players.begin();
-	while(it != this->players.end())
+	while (it != this->players.end())
 	{
-		Player * currentPlayer = (*it);
+		Player* currentPlayer = (*it);
 		if (currentPlayer == nullptr) continue;
 		delete(currentPlayer);
 		it++;
