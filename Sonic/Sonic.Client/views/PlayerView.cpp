@@ -2,8 +2,9 @@
 #include "SDLWindow.h"
 
 const int ANIMATION_STATES = 4;
-const int ANIMATION_FRAMES_SONIC = 8; // SONIC
-const int ANIMATION_FRAMES_TAILS = 9; // TAILS
+const int ANIMATION_FRAMES_SONIC = 8;
+const int ANIMATION_FRAMES_TAILS = 9;
+const int ANIMATION_FRAMES_KNUCKLES = 8;
 
 PlayerView::PlayerView(Player* player)
 {
@@ -62,8 +63,47 @@ void PlayerView::render(int camX, int camY)
 
 int PlayerView::getFramesCount(PlayerStatus status)
 {
-	if (this->player->getPlayerType() == SONIC) {
-		// SONIC
+	switch (this->player->getPlayerType()) {
+	case SONIC:
+		switch (status) {
+		case idle:
+			return 1;
+		case walking:
+			return 8;
+		case running:
+			return 4;
+		case jumping:
+			return 4;
+		default:
+			return 1;
+		}
+	case TAILS:
+		switch (status) {
+		case idle:
+			return 1;
+		case walking:
+			return 7;
+		case running:
+			return 3;
+		case jumping:
+			return 9;
+		default:
+			return 1;
+		}
+	case KNUCKLES:
+		switch (status) {
+		case idle:
+			return 1;
+		case walking:
+			return 8;
+		case running:
+			return 4;
+		case jumping:
+			return 4;
+		default:
+			return 1;
+		}
+	default:
 		switch (status) {
 		case idle:
 			return 1;
@@ -77,33 +117,18 @@ int PlayerView::getFramesCount(PlayerStatus status)
 			return 1;
 		}
 	}
-	else {
-		// TAILS
-		switch (status) {
-		case idle:
-			return 1;
-		case walking:
-			return 7;
-		case running:
-			return 3;
-		case jumping:
-			return 9;
-		default:
-			return 1;
-		}
-	}
 }
 
 void PlayerView::loadSpriteClips()
 {
-	if (this->player->getPlayerType() == SONIC) {
-
+	switch (this->player->getPlayerType()) {
+	case SONIC:
 		spriteClips = new SDL_Rect *[ANIMATION_STATES];
 		for (int count = 0; count < ANIMATION_STATES; count++) {
 			spriteClips[count] = new SDL_Rect[ANIMATION_FRAMES_SONIC];
 		}
 
-		// SONIC
+		// Idle
 		spriteClips[PlayerStatus::idle][0].x = 5;
 		spriteClips[PlayerStatus::idle][0].y = 12;
 		spriteClips[PlayerStatus::idle][0].w = 25;
@@ -191,10 +216,9 @@ void PlayerView::loadSpriteClips()
 		spriteClips[PlayerStatus::jumping][3].y = 77;
 		spriteClips[PlayerStatus::jumping][3].w = 30;
 		spriteClips[PlayerStatus::jumping][3].h = 27;
-	}
-	else {
-		// TAILS
+		break;
 
+	case TAILS:
 		spriteClips = new SDL_Rect *[ANIMATION_STATES];
 		for (int count = 0; count < ANIMATION_STATES; count++) {
 			spriteClips[count] = new SDL_Rect[ANIMATION_FRAMES_TAILS];
@@ -303,6 +327,117 @@ void PlayerView::loadSpriteClips()
 		spriteClips[PlayerStatus::jumping][8].y = 108;
 		spriteClips[PlayerStatus::jumping][8].w = 28;
 		spriteClips[PlayerStatus::jumping][8].h = 48;
+		break;
+
+	case KNUCKLES:
+		spriteClips = new SDL_Rect *[ANIMATION_STATES];
+		for (int count = 0; count < ANIMATION_STATES; count++) {
+			spriteClips[count] = new SDL_Rect[ANIMATION_FRAMES_KNUCKLES];
+		}
+
+		// Idle
+		spriteClips[PlayerStatus::idle][0].x = 1;
+		spriteClips[PlayerStatus::idle][0].y = 1;
+		spriteClips[PlayerStatus::idle][0].w = 26;
+		spriteClips[PlayerStatus::idle][0].h = 39;
+
+		// Walking
+		spriteClips[PlayerStatus::walking][0].x = 112;
+		spriteClips[PlayerStatus::walking][0].y = 47;
+		spriteClips[PlayerStatus::walking][0].w = 38;
+		spriteClips[PlayerStatus::walking][0].h = 37;
+
+		spriteClips[PlayerStatus::walking][1].x = 151;
+		spriteClips[PlayerStatus::walking][1].y = 48;
+		spriteClips[PlayerStatus::walking][1].w = 35;
+		spriteClips[PlayerStatus::walking][1].h = 36;
+
+		spriteClips[PlayerStatus::walking][2].x = 187;
+		spriteClips[PlayerStatus::walking][2].y = 49;
+		spriteClips[PlayerStatus::walking][2].w = 29;
+		spriteClips[PlayerStatus::walking][2].h = 35;
+
+		spriteClips[PlayerStatus::walking][3].x = 217;
+		spriteClips[PlayerStatus::walking][3].y = 48;
+		spriteClips[PlayerStatus::walking][3].w = 32;
+		spriteClips[PlayerStatus::walking][3].h = 36;
+
+		spriteClips[PlayerStatus::walking][4].x = 249;
+		spriteClips[PlayerStatus::walking][4].y = 47;
+		spriteClips[PlayerStatus::walking][4].w = 41;
+		spriteClips[PlayerStatus::walking][4].h = 37;
+
+		spriteClips[PlayerStatus::walking][5].x = 291;
+		spriteClips[PlayerStatus::walking][5].y = 50;
+		spriteClips[PlayerStatus::walking][5].w = 37;
+		spriteClips[PlayerStatus::walking][5].h = 34;
+
+		spriteClips[PlayerStatus::walking][6].x = 329;
+		spriteClips[PlayerStatus::walking][6].y = 50;
+		spriteClips[PlayerStatus::walking][6].w = 32;
+		spriteClips[PlayerStatus::walking][6].h = 34;
+
+		spriteClips[PlayerStatus::walking][7].x = 362;
+		spriteClips[PlayerStatus::walking][7].y = 49;
+		spriteClips[PlayerStatus::walking][7].w = 37;
+		spriteClips[PlayerStatus::walking][7].h = 35;
+
+		// Running
+		spriteClips[PlayerStatus::running][0].x = 400;
+		spriteClips[PlayerStatus::running][0].y = 49;
+		spriteClips[PlayerStatus::running][0].w = 32;
+		spriteClips[PlayerStatus::running][0].h = 35;
+
+		spriteClips[PlayerStatus::running][1].x = 434;
+		spriteClips[PlayerStatus::running][1].y = 49;
+		spriteClips[PlayerStatus::running][1].w = 32;
+		spriteClips[PlayerStatus::running][1].h = 35;
+
+		spriteClips[PlayerStatus::running][2].x = 467;
+		spriteClips[PlayerStatus::running][2].y = 49;
+		spriteClips[PlayerStatus::running][2].w = 31;
+		spriteClips[PlayerStatus::running][2].h = 35;
+
+		spriteClips[PlayerStatus::running][3].x = 499;
+		spriteClips[PlayerStatus::running][3].y = 49;
+		spriteClips[PlayerStatus::running][3].w = 32;
+		spriteClips[PlayerStatus::running][3].h = 35;
+
+		// Jumping
+		spriteClips[PlayerStatus::jumping][0].x = 32;
+		spriteClips[PlayerStatus::jumping][0].y = 148;
+		spriteClips[PlayerStatus::jumping][0].w = 30;
+		spriteClips[PlayerStatus::jumping][0].h = 31;
+
+		spriteClips[PlayerStatus::jumping][1].x = 63;
+		spriteClips[PlayerStatus::jumping][1].y = 148;
+		spriteClips[PlayerStatus::jumping][1].w = 31;
+		spriteClips[PlayerStatus::jumping][1].h = 30;
+
+		spriteClips[PlayerStatus::jumping][2].x = 95;
+		spriteClips[PlayerStatus::jumping][2].y = 147;
+		spriteClips[PlayerStatus::jumping][2].w = 30;
+		spriteClips[PlayerStatus::jumping][2].h = 31;
+
+		spriteClips[PlayerStatus::jumping][3].x = 126;
+		spriteClips[PlayerStatus::jumping][3].y = 148;
+		spriteClips[PlayerStatus::jumping][3].w = 31;
+		spriteClips[PlayerStatus::jumping][3].h = 30;
+		break;
+	}
+}
+
+string PlayerView::calculateDisconnectedPlayerPath()
+{
+	switch (this->player->getPlayerType()) {
+	case SONIC:
+		return "img/sonic-spritesheet-grey.png";
+	case TAILS:
+		return "img/tails-spritesheet-grey.png";
+	case KNUCKLES:
+		return "img/knuckles-spritesheet-grey.png";
+	default:
+		return "img/sonic-spritesheet-grey.png";
 	}
 }
 

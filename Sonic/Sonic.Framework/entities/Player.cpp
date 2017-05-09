@@ -224,6 +224,34 @@ void Player::setIsConnected(bool isConnected)
 	this->isConnected = isConnected;
 }
 
+PlayerType Player::calculatePlayerType()
+{
+	switch (this->getNumber() % 3) {
+	case 1:
+		return PlayerType::SONIC;
+	case 2:
+		return PlayerType::TAILS;
+	case 0:
+		return PlayerType::KNUCKLES;
+	default:
+		return PlayerType::SONIC;
+	}
+}
+
+string Player::calculateFilePath()
+{
+	switch (this->playerType) {
+	case SONIC:
+		return "img/sonic-spritesheet.png";
+	case TAILS:
+		return "img/tails-spritesheet.png";
+	case KNUCKLES:
+		return "img/knuckles-spritesheet.png";
+	default:
+		return "img/sonic-spritesheet.png";
+	}
+}
+
 void Player::unserialize(Value * nodeRef)
 {
 	double x, y, vx, vy, gp, tvx = 0;
