@@ -59,6 +59,8 @@ void Player::copyFrom(Player & anotherPlayer)
 	this->setNumber(anotherPlayer.getNumber());
 	this->setSpriteState(anotherPlayer.getSpriteState());
 	this->setPlayerType(anotherPlayer.getPlayerType());
+	this->setIsConnected(anotherPlayer.getIsConnected());
+	this->setIsGreyed(anotherPlayer.getIsGreyed());
 }
 
 Vector2 Player::getPosition()
@@ -209,6 +211,26 @@ PlayerType Player::getPlayerType()
 void Player::setPlayerType(PlayerType playerType)
 {
 	this->playerType = playerType;
+}
+
+bool Player::getIsConnected()
+{
+	return this->isConnected;
+}
+
+void Player::setIsConnected(bool isConnected)
+{
+	this->isConnected = isConnected;
+}
+
+bool Player::getIsGreyed()
+{
+	return this->isGreyed;
+}
+
+void Player::setIsGreyed(bool isGreyed)
+{
+	this->isGreyed = isGreyed;
 }
 
 void Player::unserialize(Value * nodeRef)

@@ -31,6 +31,15 @@ void PlayerView::render(int camX, int camY)
 		return;
 	}
 
+	if (!this->player->getIsConnected() && !this->player->getIsGreyed()) {
+		string filePath = this->player->getPlayerType() == SONIC ? "img/sonic-spritesheet-grey.png" : "img/tails-spritesheet-grey.png";
+		if (!this->texture.loadFromFile(filePath)) {
+			LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << filePath << "'.";
+			return;
+		}
+		this->player->setIsGreyed(true);
+	}
+
 	// Calculate current sprite
 	Uint32 ticks = SDL_GetTicks();
 	Uint32 sprite = (ticks / 100) % getFramesCount(this->player->getSpriteState());

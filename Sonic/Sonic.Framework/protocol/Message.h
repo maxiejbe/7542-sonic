@@ -3,7 +3,6 @@
 
 #include "../utils/StringUtils.h"
 #include "../Vector2.h"
-//#include "common/BoostSerializable.h"
 #include "SerializableMessage.h"
 #include "../entities/common/Validator.h"
 #include <typeinfo>

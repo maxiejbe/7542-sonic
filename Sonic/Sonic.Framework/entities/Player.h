@@ -25,6 +25,8 @@ public:
 
 		this->playerType = (this->getNumber() % 2 == 1) ? PlayerType::SONIC : PlayerType::TAILS;
 		this->filePath = this->playerType == SONIC ? "img/sonic-spritesheet.png" : "img/tails-spritesheet.png";
+		this->isConnected = true;
+		this->isGreyed = false;
 	}
 	Player(Player&);
 
@@ -63,6 +65,10 @@ public:
 	void setScrollSpeed(int scSpeed);
 	PlayerType getPlayerType();
 	void setPlayerType(PlayerType playerType);
+	bool getIsConnected();
+	void setIsConnected(bool isConnected);
+	bool getIsGreyed();
+	void setIsGreyed(bool isGreyed);
 
 	// Inherited via Serializable
 	void unserialize(Value* nodeRef) override;
@@ -82,6 +88,7 @@ private:
 	PlayerStatus spriteState;
 	string filePath;
 	PlayerType playerType;
+	bool isConnected, isGreyed;
 };
 
 #endif // !PLAYER_H

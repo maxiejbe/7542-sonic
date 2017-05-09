@@ -162,6 +162,8 @@ DWORD Client::socketHandler() {
 
 	LOG(logINFO) << MESSAGE_CLIENT_CONNECTION_CLOSED << this->clientNumber;
 
+	this->getPlayer()->setIsConnected(false); // MATI T
+
 	this->server->removeClientConnection(this->clientNumber);
 
 	return 0;
