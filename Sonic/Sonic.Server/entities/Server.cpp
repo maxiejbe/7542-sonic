@@ -196,7 +196,7 @@ void Server::waitForClientConnections()
 
 void Server::sendBroadcast()
 {
-	//this->broadcastMutex.lock();
+	this->broadcastMutex.lock();
 
 	ServerMessage * message = this->getPlayersStatusMessage();
 	char * serializedMessage = StringUtils::convert(message->serialize());
@@ -214,7 +214,7 @@ void Server::sendBroadcast()
 		//LOG(logINFO) << MESSAGE_SERVER_SEND_MESSAGE_SUCCESS << message << " (Cliente " << it->second->getClientNumber() << ")";
 	}
 
-	//this->broadcastMutex.unlock();
+	this->broadcastMutex.unlock();
 }
 
 bool Server::validate()
