@@ -14,7 +14,8 @@ class Player: public Serializable
 {
 public:
 	Player();
-	Player(int windowHeight, int scenarioWidth, int scenarioHeight, int scrollSpeed) : Player() {
+	Player(int number, int windowHeight, int scenarioWidth, int scenarioHeight, int scrollSpeed) : Player() {
+		this->number = number;
 		this->groundPos = windowHeight / 1.35;
 		this->position = Vector2(0, this->groundPos);
 
@@ -63,8 +64,6 @@ public:
 	char* getNodeName() override;
 	string serialize() override;
 private:
-	int playerNumber;
-
 	Vector2 position;
 	Vector2 velocity;
 	int width, height;

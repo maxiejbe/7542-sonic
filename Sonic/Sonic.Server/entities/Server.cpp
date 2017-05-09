@@ -124,9 +124,9 @@ bool Server::startListening()
 
 int Server::getAvailableIndex()
 {
-	for (size_t i = 0; i < clients.size(); i++)
+	for (size_t i = 0; i < this->serverConfig->getMaxAllowedClients(); i++)
 	{
-		if (clients[i] == NULL) return i;
+		if (!clients.count(i)) return i;
 	}
 	return 0;
 }
@@ -194,25 +194,27 @@ void Server::waitForClientConnections()
 	}
 }
 
-void Server::sendBroadcast(char* message)
+void Server::sendBroadcast()
 {
-	ServerMessage * playersUpdateStatusMessage = this->makePlayersStatusUpdateMessage();
-	char * broadcast = StringUtils::convert(playersUpdateStatusMessage->serialize());
-	delete playersUpdateStatusMessage;
+	//this->broadcastMutex.lock();
+
+	ServerMessage * message = this->getPlayersStatusMessage();
+	char * serializedMessage = StringUtils::convert(message->serialize());
+	delete message;
 
 	for (map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
 		int bytecount;
-		if ((bytecount = send(it->second->getSocket(), broadcast, strlen(broadcast), 0)) == SOCKET_ERROR) {
-			LOG(logERROR) << MESSAGE_SERVER_SEND_MESSAGE_ERROR << broadcast << ". " << MESSAGE_SERVER_ERROR_CODE << WSAGetLastError()
+		if ((bytecount = send(it->second->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
+			LOG(logERROR) << MESSAGE_SERVER_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_SERVER_ERROR_CODE << WSAGetLastError()
 				<< " (Cliente " << it->second->getClientNumber() << ")";
 			continue;
 		}
 
-		LOG(logINFO) << MESSAGE_SERVER_SEND_MESSAGE_SUCCESS << message << " (Cliente " << it->second->getClientNumber() << ")";
+		//LOG(logINFO) << MESSAGE_SERVER_SEND_MESSAGE_SUCCESS << message << " (Cliente " << it->second->getClientNumber() << ")";
 	}
 
-	
+	//this->broadcastMutex.unlock();
 }
 
 bool Server::validate()
@@ -220,7 +222,7 @@ bool Server::validate()
 	return this->isValid;
 }
 
-ServerMessage* Server::makePlayersStatusUpdateMessage() 
+ServerMessage* Server::getPlayersStatusMessage()
 {
 	vector<Player*> clientsPlayers = this->clientsPlayers();
 
