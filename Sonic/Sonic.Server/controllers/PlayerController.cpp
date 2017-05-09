@@ -10,6 +10,7 @@ void PlayerController::update(Message* message, Player* player)
 {
 	player->setTargetVelX(0);
 
+	if (message == nullptr) return;
 	updateInput(message, player);
 	move(player, message->getTimeStep());
 }

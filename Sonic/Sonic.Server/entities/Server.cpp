@@ -16,7 +16,7 @@ const char* MESSAGE_SERVER_SEND_MESSAGE_SUCCESS = "Se envió correctamente el men
 
 Server::~Server()
 {
-	for (map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
 		closesocket((it->second)->getSocket());
 		delete it->second;
@@ -28,7 +28,7 @@ Server::~Server()
 Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario, Camera * camera)
 {
 	this->portNumber = serverConfig->getPortNumber();
-	
+
 	this->serverConfig = serverConfig;
 	this->fileContent = fileContent;
 	this->window = window;
@@ -36,7 +36,7 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 	this->scenario = scenario;
 	//initialize camera
 	this->camera = camera;
-	
+
 	this->isValid = false;
 
 	LOG(logINFO) << MESSAGE_STARTING_SERVER << "El Puerto es " << this->portNumber << ". La máxima cantidad de clientes es " << this->serverConfig->getMaxAllowedClients();
@@ -62,6 +62,8 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 
 	LOG(logINFO) << MESSAGE_STARTING_SERVER_OK << SocketUtils::getIpFromAddress(this->address) << ":" << this->portNumber;
 
+	CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
+	
 	this->isValid = true;
 }
 
@@ -149,7 +151,7 @@ void Server::acceptClientConnection()
 void Server::removeClientConnection(int clientNumber)
 {
 	int index = clientNumber - 1;
-	
+
 	Client* client = clients[index];
 	client->closeSocket();
 	delete client;
@@ -184,25 +186,35 @@ Scenario * Server::getScenario()
 	return this->scenario;
 }
 
+void Server::lock()
+{
+	this->serverMutex.lock();
+}
+
+void Server::unlock()
+{
+	this->serverMutex.unlock();
+}
+
 void Server::waitForClientConnections()
 {
 	bool keepWaiting = true;
 
 	while (this->connectedClients < this->serverConfig->getMaxAllowedClients()) {
 		LOG(logINFO) << MESSAGE_SERVER_WAITING_CONNECTIONS;
-		this->acceptClientConnection();	
+		this->acceptClientConnection();
 	}
 }
 
 void Server::sendBroadcast()
 {
-	this->broadcastMutex.lock();
+	this->lock();
 
 	ServerMessage * message = this->getPlayersStatusMessage();
 	char * serializedMessage = StringUtils::convert(message->serialize());
 	delete message;
 
-	for (map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
 		int bytecount;
 		if ((bytecount = send(it->second->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
@@ -214,7 +226,7 @@ void Server::sendBroadcast()
 		//LOG(logINFO) << MESSAGE_SERVER_SEND_MESSAGE_SUCCESS << message << " (Cliente " << it->second->getClientNumber() << ")";
 	}
 
-	this->broadcastMutex.unlock();
+	this->unlock();
 }
 
 bool Server::validate()
@@ -241,7 +253,7 @@ vector<Player*> Server::clientsPlayers()
 {
 	//TODO: ADD MUTEX
 	vector<Player*> clientPlayers = vector<Player*>();
-	for (map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
 		//copy player to avoid problems (will be deleted in ServerMessage destructor)
 		Player * clientPlayer = new Player(*it->second->getPlayer());
@@ -251,4 +263,23 @@ vector<Player*> Server::clientsPlayers()
 	return clientPlayers;
 }
 
+DWORD WINAPI Server::runSendSocketHandler(void * args)
+{
+	Server * server = (Server*)args;
+	return server->sendSocketHandler();
+}
 
+DWORD Server::sendSocketHandler()
+{
+	while (true) {
+		for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+		{
+			PlayerController::update(it->second->getLastMessage(), it->second->getPlayer());
+		}
+
+		this->sendBroadcast();
+		Sleep(15);
+	}
+
+	return 0;
+}

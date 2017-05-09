@@ -7,9 +7,9 @@
 #include <Ws2tcpip.h>
 #include <vector>
 #include <Logger.h>
-	
+
 #include <iostream>
-#include <map>
+#include <unordered_map>
 
 #include "Client.h"
 #include "entities/Player.h"
@@ -49,6 +49,8 @@ public:
 	Configuration* getConfiguration();
 	Scenario* getScenario();
 
+	void lock();
+	void unlock();
 private:
 	/*
 	Initialize socket support WINDOWS ONLY!
@@ -58,12 +60,12 @@ private:
 	bool configureAddress();
 	bool bindSocket();
 	bool startListening();
-	
+
 	int getAvailableIndex();
 
 	void acceptClientConnection();
 	ServerMessage* getPlayersStatusMessage();
-	
+
 	vector<Player*> clientsPlayers();
 
 	bool isValid;
@@ -79,10 +81,15 @@ private:
 	Configuration* config;
 	Scenario* scenario;
 
-	map<int, Client*> clients;
+	unordered_map<int, Client*> clients;
 	Camera* camera;
 
-	mutex broadcastMutex;
+	mutex serverMutex;
+
+	//send handler
+	DWORD sendThreadId;
+	static DWORD WINAPI runSendSocketHandler(void* args);
+	DWORD sendSocketHandler();
 };
 
 #endif

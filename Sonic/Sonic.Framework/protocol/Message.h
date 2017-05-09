@@ -10,6 +10,7 @@
 
 enum ConnectionStatus { assign, connected, disconnected };
 enum PlayerStatus { idle, walking, running, jumping };
+enum PlayerType { SONIC, TAILS };
 
 struct Message : public SerializableMessage {
 public:
@@ -53,6 +54,8 @@ public:
 	bool getIsKUSpace();
 
 	bool unserialize(string json);
+
+	bool equals(Message& message);
 
 	// Inherited via Serializable
 	void unserialize(Value* nodeRef) override;

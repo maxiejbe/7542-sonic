@@ -6,7 +6,7 @@
 int main(int argc, char* args[])
 {
 	Logger::init();
-	Logger::loggingLevel() = logHIGH;
+	Logger::loggingLevel() = logLOW;
 
 	string configParamName = "--config";
 	string configPath = "";

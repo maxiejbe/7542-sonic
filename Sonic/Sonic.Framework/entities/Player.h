@@ -10,7 +10,7 @@ using namespace std;
 
 enum FacingDirection { FACING_LEFT, FACING_RIGHT };
 
-class Player: public Serializable
+class Player : public Serializable
 {
 public:
 	Player();
@@ -22,6 +22,9 @@ public:
 		this->scenarioWidth = scenarioWidth;
 		this->scenarioHeight = scenarioHeight;
 		this->scrollSpeed = scrollSpeed;
+
+		this->playerType = (this->getNumber() % 2 == 1) ? PlayerType::SONIC : PlayerType::TAILS;
+		this->filePath = this->playerType == SONIC ? "img/sonic-spritesheet.png" : "img/tails-spritesheet.png";
 	}
 	Player(Player&);
 
@@ -58,6 +61,8 @@ public:
 	void setGroundPos(double gPos);
 	int getScrollSpeed();
 	void setScrollSpeed(int scSpeed);
+	PlayerType getPlayerType();
+	void setPlayerType(PlayerType playerType);
 
 	// Inherited via Serializable
 	void unserialize(Value* nodeRef) override;
@@ -76,6 +81,7 @@ private:
 	int number;
 	PlayerStatus spriteState;
 	string filePath;
+	PlayerType playerType;
 };
 
 #endif // !PLAYER_H

@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <map>
+#include <unordered_map>
 
 class NetworkManager
 {
@@ -21,8 +22,8 @@ public:
 	bool startClient(char * host, int port);
 	bool online();
 	void sendMessage(Message * message);
-	map<int, PlayerView*> getPlayerViews();
 	Camera * getCamera();
+	unordered_map<int, PlayerView*> getPlayerViews();
 
 	PlayerView* getOwnPlayerView();
 
@@ -33,8 +34,8 @@ private:
 	NetworkManager();
 	static NetworkManager * instance;
 	SocketClient * client;
-	map<int, PlayerView*> playerViews;
 	Camera * camera;
+	unordered_map<int, PlayerView*> playerViews;
 
 	int playerNumber;
 	string fileContent;
@@ -50,10 +51,5 @@ private:
 	static DWORD WINAPI runRecvSocketHandler(void* args);
 	DWORD recvSocketHandler();
 	void handleMessage(char*);
-	
-	//send handler
-	DWORD sendThreadId;
-	static DWORD WINAPI runSendSocketHandler(void* args);
-	DWORD sendSocketHandler();
 };
 

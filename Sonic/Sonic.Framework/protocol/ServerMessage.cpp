@@ -4,16 +4,18 @@ const char* SERVER_MESSAGE_TYPE_NODE = "t";
 const char* SERVER_MESSAGE_PLAYER_NUMBER_NODE = "pn";
 const char* SERVER_MESSAGE_PLAYERS_STATUS_NODE = "ps";
 const char* SERVER_MESSAGE_CAMERA_NODE = "ca";
+const char* SERVER_MESSAGE_FILE_CONTENT_NODE = "fc";
 
-ServerMessage::ServerMessage() 
+ServerMessage::ServerMessage()
 {
 	this->playerNumber = -1;
 	this->type = typeless;
 	this->players = vector<Player*>();
 	this->camera = nullptr;
+	this->fileContent = "";
 }
 
-ServerMessage::~ServerMessage() 
+ServerMessage::~ServerMessage()
 {
 	freePlayers();
 	if (this->camera) delete this->camera;
@@ -60,8 +62,18 @@ void ServerMessage::setPlayers(vector<Player*> players)
 	this->players = players;
 }
 
+void ServerMessage::setFileContent(string content)
+{
+	this->fileContent = content;
+}
 
-void ServerMessage::unserialize(Value * nodeRef)
+string ServerMessage::getFileContent()
+{
+	return this->fileContent;
+}
+
+
+void ServerMessage::unserialize(Value* nodeRef)
 {
 	//type
 	parseInt((int*)&type, typeless, nodeRef, SERVER_MESSAGE_TYPE_NODE, Validator::intGreaterThanOrEqualToZero);
@@ -75,12 +87,15 @@ void ServerMessage::unserialize(Value * nodeRef)
 		parsePlayersStatus(nodeRef);
 		parseCameraStatus(nodeRef);
 		break;
+	case content:
+		parseString(&this->fileContent, "", nodeRef, SERVER_MESSAGE_FILE_CONTENT_NODE);
+		break;
 	default:
 		break;
 	}
 }
 
-char * ServerMessage::getNodeName()
+char* ServerMessage::getNodeName()
 {
 	return nullptr;
 }
@@ -108,6 +123,9 @@ string ServerMessage::serialize()
 	case players_status:
 		this->serializePlayers(writer);
 		this->serializeCamera(writer);
+	case content:
+		writer.String(SERVER_MESSAGE_FILE_CONTENT_NODE);
+		writer.String(this->fileContent.c_str());
 	default:
 		break;
 	}
@@ -159,7 +177,7 @@ void ServerMessage::parseCameraStatus(Value * nodeRef)
 	Document jsonCamera;
 	if (jsonCamera.Parse(cameraStatus.GetString()).HasParseError()) {
 		LOG(logERROR) << "Server Message: Error al parsear camera";
-		return ;
+		return;
 	}
 
 	if (this->camera) delete this->camera;
@@ -172,7 +190,7 @@ void ServerMessage::parsePlayersStatus(Value * nodeRef)
 	//free players and clear vector
 	freePlayers();
 	Value& node = *nodeRef;
-	
+
 	//LOG(logINFO) << MESSAGE_PARSING_NODE_FIELD + string(fieldName);
 
 	if (nodeRef == nullptr || !node.HasMember(SERVER_MESSAGE_PLAYERS_STATUS_NODE)) {
@@ -196,7 +214,7 @@ void ServerMessage::parsePlayersStatus(Value * nodeRef)
 		}
 
 		//unsearialize player and add to vector
-		Player * newPlayer = new Player();
+		Player* newPlayer = new Player();
 		newPlayer->unserialize(&jsonPlayer);
 		this->players.push_back(newPlayer);
 	}
@@ -209,9 +227,9 @@ void ServerMessage::freePlayers()
 	}
 
 	vector<Player*>::iterator it = this->players.begin();
-	while(it != this->players.end())
+	while (it != this->players.end())
 	{
-		Player * currentPlayer = (*it);
+		Player* currentPlayer = (*it);
 		if (currentPlayer == nullptr) continue;
 		delete(currentPlayer);
 		it++;

@@ -19,6 +19,7 @@
 #include "views/PlayerView.h"
 
 #include "views/common/EntityViewResolver.h"
+#include <unordered_map>
 
 char* SERVER_IP = "127.0.0.1";
 const int SERVER_PORT = 5000;
@@ -38,7 +39,7 @@ void close()
 int main(int argc, char* args[])
 {
 	Logger::init();
-	Logger::loggingLevel() = logHIGH;
+	Logger::loggingLevel() = logLOW;
 
 	string configParamName = "--config";
 	string configPath = "";
@@ -51,9 +52,9 @@ int main(int argc, char* args[])
 		Sleep(3000);
 	}
 
-	/*while (networkManager.getFileContent().empty()) {
+	while (networkManager.getFileContent().empty()) {
 		Sleep(3000);
-	}*/
+	}
 
 	Parser* parser = new Parser(configPath, networkManager.getFileContent());
 	Window window;
@@ -68,6 +69,7 @@ int main(int argc, char* args[])
 	int scenarioWidth = scenario.getWidth();
 	int scenarioHeight = scenario.getHeight();
 
+	Message * lastMessage = nullptr;
 	// Initialize layers
 	vector<Layer> layers = scenario.getLayers();
 	vector<LayerView> layerViews;
@@ -136,8 +138,18 @@ int main(int argc, char* args[])
 			bool isKUSpace = input->isKeyUp(KEY_SPACE);
 
 			Message* message = new Message(timeStep, isKPLeft, isKPSpace, isKPRight, isKPUp, isKULeft, isKURight, isKUSpace);
-			networkManager.sendMessage(message);
-			delete message;
+			if (lastMessage == nullptr) {
+				networkManager.sendMessage(message);
+				lastMessage = message;
+			}
+			else if (!lastMessage->equals(*message)) {
+				networkManager.sendMessage(message);
+				delete lastMessage;
+				lastMessage = message;
+			}
+			else {
+				delete message;
+			}
 
 			stepTimer.start();
 
@@ -164,7 +176,7 @@ int main(int argc, char* args[])
 				camera.y = ((int)player->getPosition().y + player->getHeight() / 2) - SDLWindow::getInstance().getScreenHeight() / 2;
 				if (player->getPosition().x > bordeR) { camera.x = camera.x + player->getPosition().x - bordeR; }
 				if (player->getPosition().x < bordeL) { camera.x = camera.x + player->getPosition().x - bordeL; }
-			
+
 				// Keep the camera in bounds
 				if (camera.x < 0)
 					camera.x = 0;
@@ -176,7 +188,7 @@ int main(int argc, char* args[])
 				if (camera.y > scenarioHeight - camera.h)
 					camera.y = scenarioHeight - camera.h;*/
 			}
-			
+
 			// Clear screen
 			SDL_SetRenderDrawColor(Renderer::getInstance().gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 			SDL_RenderClear(Renderer::getInstance().gRenderer);
@@ -195,13 +207,13 @@ int main(int argc, char* args[])
 
 			// Render players
 			// TODO: MUTEX HERE?!?!?!
-			map<int, PlayerView*> playerViews = networkManager.getPlayerViews();
+			unordered_map<int, PlayerView*> playerViews = networkManager.getPlayerViews();
 			if (!playerViews.empty()) {
-				for (map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it) {
+				for (unordered_map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it) {
 					it->second->render(camera.x, camera.y);
 				}
 			}
-			
+
 			SDL_RenderPresent(Renderer::getInstance().gRenderer);
 		}
 	}

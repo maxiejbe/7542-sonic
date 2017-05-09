@@ -9,7 +9,7 @@ NetworkManager::NetworkManager()
 
 NetworkManager::~NetworkManager()
 {
-	for (map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it)
+	for (unordered_map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it)
 	{
 		delete it->second->getPlayer();
 		delete it->second;
@@ -57,7 +57,6 @@ void NetworkManager::startConnectionHandlers()
 	//Receive Handler
 	//TODO: kill theads
 	CreateThread(0, 0, runRecvSocketHandler, (void*)this, 0, &this->recvThreadId);
-	//CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
 }
 
 DWORD WINAPI NetworkManager::runRecvSocketHandler(void * args)
@@ -68,8 +67,8 @@ DWORD WINAPI NetworkManager::runRecvSocketHandler(void * args)
 
 DWORD NetworkManager::recvSocketHandler()
 {
-	char receivedMsg[1024];
-	int receivedMsgLen = 1024;
+	char receivedMsg[4096];
+	int receivedMsgLen = 4096;
 	while (this->online())
 	{
 		if (!this->client->receiveMessage(receivedMsg, receivedMsgLen))
@@ -100,35 +99,15 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		this->updatePlayerViews(sMessage->getPlayers());
 		this->updateCamera(sMessage->getCamera());
 		break;
+	case content:
+		this->fileContent = sMessage->getFileContent();
+		break;
 	default:
 		LOG(logERROR) << "Network Manager: Mensaje invalido -> " << receivedMessage;
 		break;
 	}
 
 	delete sMessage;
-}
-
-DWORD WINAPI NetworkManager::runSendSocketHandler(void * args)
-{
-	NetworkManager * nManager = (NetworkManager*)args;
-	return nManager->sendSocketHandler();
-}
-
-DWORD NetworkManager::sendSocketHandler()
-{
-	//send new message
-	while (this->online() && this->playerNumber < 0) {
-		//wait till user gets number
-		if (this->playerNumber > 0) {
-			Message * msg = new Message(/*this->player->getNumber()*/);
-			this->sendMessage(msg);
-			delete msg;
-		}
-		//wait 3 seconds;
-		Sleep(3000);
-	}
-
-	return 0;
 }
 
 void NetworkManager::sendMessage(Message* message)
@@ -148,7 +127,7 @@ void NetworkManager::sendMessage(Message* message)
 	}
 }
 
-map<int, PlayerView*> NetworkManager::getPlayerViews()
+unordered_map<int, PlayerView*> NetworkManager::getPlayerViews()
 {
 	return this->playerViews;
 }

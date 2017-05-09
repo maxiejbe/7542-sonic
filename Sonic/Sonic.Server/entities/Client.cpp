@@ -27,6 +27,7 @@ Client::Client(Server* server, int clientNumber)
 	int scrollSpeed = this->server->getConfiguration()->getScrollSpeed();
 
 	this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
+	this->lastReceivedMessage = nullptr;
 }
 
 Client::~Client()
@@ -58,9 +59,11 @@ bool Client::acceptSocket()
 		return false;
 	}
 
-	//if (!this->sendFileContent()) {
-	//	return false;
-	//}
+	Sleep(10);
+
+	if (!this->sendFileContent()) {
+		return false;
+	}
 	
 	CreateThread(0, 0, runSocketHandler, (void*)this, 0, &this->threadId);
 	return true;
@@ -92,8 +95,16 @@ bool Client::sendClientNumber()
 bool Client::sendFileContent()
 {
 	int bytecount;
-	string fileContent = this->server->getFileContent();
-	if ((bytecount = send(this->socket, fileContent.c_str(), strlen(fileContent.c_str()), 0)) == SOCKET_ERROR) {
+	
+	ServerMessage * message = new ServerMessage();
+	message->setType(content);
+	message->setFileContent(this->server->getFileContent());
+	string serializedMessage = message->serialize();
+	
+	const char* fileContentMessage = serializedMessage.c_str();
+	delete message;
+	
+	if ((bytecount = send(this->socket, fileContentMessage, strlen(fileContentMessage), 0)) == SOCKET_ERROR) {
 		LOG(logERROR) << MESSAGE_CLIENT_SEND_FILE_CONTENT_ERROR << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->clientNumber << ")";
 		return false;
@@ -104,6 +115,11 @@ bool Client::sendFileContent()
 Player* Client::getPlayer()
 {
 	return this->player;
+}
+
+Message * Client::getLastMessage()
+{
+	return this->lastReceivedMessage;
 }
 
 SOCKET Client::getSocket()
@@ -122,12 +138,19 @@ void Client::handleRecievedMessage(char* recievedMessage)
 	Message* message = new Message();
 	message->fromJson(strMessage);
 
-	PlayerController::update(message, this->player);
+	//this->server->lock();
 
-	delete message;
+	//PlayerController::update(message, this->player);
+
+	//this->server->unlock();
+
+	//delete message;
 
 	//Then, send broadcast message
-	this->server->sendBroadcast();
+	//this->server->sendBroadcast();
+	if (this->lastReceivedMessage != nullptr) delete this->lastReceivedMessage;
+
+	this->lastReceivedMessage = message;
 }
 
 DWORD Client::socketHandler() {
@@ -144,16 +167,7 @@ DWORD Client::socketHandler() {
 		
 		LOG(logINFO) << MESSAGE_CLIENT_DATA_RECV_SUCCESS << recievedMessage << " (Cliente " << this->clientNumber << ")";
 
-
 		this->handleRecievedMessage(recievedMessage);
-		//if (message.validate()) {
-		//	this->handleRecievedMessage(recievedMessage);
-		//}
-		
-		//string convertedMessage;
-		//message.toString(&convertedMessage);
-
-		//printf("Received bytes %d\nReceived string \"%s\"\n", bytecount, recievedMessage /*convertedMessage.c_str()*/);
 	};
 
 	LOG(logINFO) << MESSAGE_CLIENT_CONNECTION_CLOSED << this->clientNumber;
