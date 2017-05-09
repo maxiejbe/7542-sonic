@@ -33,7 +33,7 @@ void PlayerView::render(int camX, int camY)
 	}
 
 	if (!this->player->getIsConnected() && !this->isGreyed) {
-		string filePath = this->player->getPlayerType() == SONIC ? "img/sonic-spritesheet-grey.png" : "img/tails-spritesheet-grey.png";
+		string filePath = calculateDisconnectedPlayerPath();
 		if (!this->texture.loadFromFile(filePath)) {
 			LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << filePath << "'.";
 			return;
@@ -65,6 +65,7 @@ int PlayerView::getFramesCount(PlayerStatus status)
 {
 	switch (this->player->getPlayerType()) {
 	case SONIC:
+	case KNUCKLES:
 		switch (status) {
 		case idle:
 			return 1;
@@ -87,19 +88,6 @@ int PlayerView::getFramesCount(PlayerStatus status)
 			return 3;
 		case jumping:
 			return 9;
-		default:
-			return 1;
-		}
-	case KNUCKLES:
-		switch (status) {
-		case idle:
-			return 1;
-		case walking:
-			return 8;
-		case running:
-			return 4;
-		case jumping:
-			return 4;
 		default:
 			return 1;
 		}
