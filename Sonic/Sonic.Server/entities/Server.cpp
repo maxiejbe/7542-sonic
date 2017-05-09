@@ -278,7 +278,7 @@ DWORD Server::sendSocketHandler()
 		}
 
 		this->sendBroadcast();
-		Sleep(20);
+		Sleep(15);
 	}
 
 	return 0;
