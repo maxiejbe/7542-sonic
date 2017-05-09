@@ -150,12 +150,12 @@ void NetworkManager::updatePlayerViews(vector<Player*> players)
 	//TODO: MUTEX HERE
 	for (vector<Player*>::iterator it = players.begin(); it != players.end(); ++it)
 	{
-		int index = (*it)->getNumber();
+		int index = ((*it)->getNumber()) - 1;
 		if (!playerViews.count(index)) {
 			//Create new player view and include in map
 			Player* player = new Player(*(*it));
 			PlayerView* playerView = new PlayerView(player);
-			playerViews[player->getNumber()] = playerView;
+			playerViews[index] = playerView;
 			continue;
 		}
 

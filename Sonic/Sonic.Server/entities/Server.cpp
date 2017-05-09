@@ -135,11 +135,16 @@ int Server::getAvailableIndex()
 
 void Server::acceptClientConnection()
 {
+	Client* client = new Client(this);
+	if (!client->acceptSocket()) {
+		delete client;
+		return;
+	}
+
 	int index = getAvailableIndex();
 	int clientNumber = index + 1;
-
-	Client* client = new Client(this, clientNumber);
-	if (!client->acceptSocket()) {
+	
+	if (!client->welcome(clientNumber)) {
 		delete client;
 		return;
 	}
