@@ -33,12 +33,21 @@ void PlayerView::render(int camX, int camY)
 	}
 
 	if (!this->player->getIsConnected() && !this->isGreyed) {
+		// Se desconecto, lo griso
 		string filePath = calculateDisconnectedPlayerPath();
 		if (!this->texture.loadFromFile(filePath)) {
 			LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << filePath << "'.";
 			return;
 		}
 		this->isGreyed = true;
+	}
+	else if (this->player->getIsConnected() && this->isGreyed) {
+		// Volvio a conectarse, lo coloreo
+		if (!this->texture.loadFromFile(this->player->getFilePath())) {
+			LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << this->player->getFilePath() << "'.";
+			return;
+		}
+		this->isGreyed = false;
 	}
 
 	// Calculate current sprite
