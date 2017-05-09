@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "entities/Player.h"
+#include "Player.h"
 
 class Camera : public Serializable
 {
@@ -16,6 +16,8 @@ public:
 		this->scenarioWidth = scenarioWidth;
 		this->scenarioHeight = scenarioHeight;
 	}
+	Camera(Camera & camera);
+
 	~Camera();
 
 	Vector2 getPosition();
@@ -25,19 +27,24 @@ public:
 	int getHeight();
 	void setWidth(int w);
 	void setHeight(int h);
+	void setScreenWidth(int scw);
+	int getScreenWidth();
+	void setScreenHeight(int sch);
+	int getScreenHeight();
+	void setScenarioWidth(int sw);
+	int getScenarioWidth();
+	void setScenarioHeight(int sh);
+	int getScenarioHeight();
 
 	// Inherited via Serializable
 	void unserialize(Value* nodeRef) override;
 	char* getNodeName() override;
 	string serialize() override;
 private:
+	void copyFromCamera(Camera& camera);
 	Vector2 position;
 	float width, height;
 	int screenWidth, screenHeight, scenarioWidth, scenarioHeight;
-
-	void keepCameraInBounds();
-	void updateCamera(vector<Player*> players);
-	void updatePositionCamera(float x, float y);
 };
 
 #endif // !CAMERA_H

@@ -144,7 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="entities\Camera.cpp" />
     <ClCompile Include="entities\Circle.cpp" />
     <ClCompile Include="entities\common\EntityResolver.cpp" />
     <ClCompile Include="entities\common\Serializable.cpp" />
@@ -169,7 +169,7 @@
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
+    <ClInclude Include="entities\Camera.h" />
     <ClInclude Include="entities\Circle.h" />
     <ClInclude Include="entities\common\BoostSerializable.h" />
     <ClInclude Include="entities\common\EntityResolver.h" />

@@ -25,7 +25,7 @@ Server::~Server()
 	LOG(logINFO) << MESSAGE_SERVER_EXECUTION_END;
 }
 
-Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario)
+Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario, Camera * camera)
 {
 	this->portNumber = serverConfig->getPortNumber();
 	
@@ -34,6 +34,8 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 	this->window = window;
 	this->config = config;
 	this->scenario = scenario;
+	//initialize camera
+	this->camera = camera;
 	
 	this->isValid = false;
 
@@ -220,18 +222,31 @@ bool Server::validate()
 
 ServerMessage* Server::makePlayersStatusUpdateMessage() 
 {
-	//TODO: ADD MUTEX
-	vector<Player*> playersUpdates = vector<Player*>();
-	for (map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
-	{
-		//copy player to avoid problems (will be deleted in ServerMessage destructor)
-		Player * playerUpdate = new Player(*it->second->getPlayer());
-		playersUpdates.push_back(playerUpdate);
-	}
+	vector<Player*> clientsPlayers = this->clientsPlayers();
+
+	//update camera
+	CameraController::updateCamera(this->camera, clientsPlayers);
 
 	ServerMessage * message = new ServerMessage();
 	message->setType(players_status);
-	message->setPlayers(playersUpdates);
+	message->setPlayers(clientsPlayers);
+	message->setCamera(new Camera(*this->camera));
 
 	return message;
 }
+
+vector<Player*> Server::clientsPlayers()
+{
+	//TODO: ADD MUTEX
+	vector<Player*> clientPlayers = vector<Player*>();
+	for (map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	{
+		//copy player to avoid problems (will be deleted in ServerMessage destructor)
+		Player * clientPlayer = new Player(*it->second->getPlayer());
+		clientPlayers.push_back(clientPlayer);
+	}
+
+	return clientPlayers;
+}
+
+

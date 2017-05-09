@@ -10,11 +10,13 @@ ServerMessage::ServerMessage()
 	this->playerNumber = -1;
 	this->type = typeless;
 	this->players = vector<Player*>();
+	this->camera = nullptr;
 }
 
 ServerMessage::~ServerMessage() 
 {
 	freePlayers();
+	if (this->camera) delete this->camera;
 }
 
 void ServerMessage::setType(ServerMessageType type)
@@ -43,6 +45,16 @@ vector<Player*> ServerMessage::getPlayers()
 	return this->players;
 }
 
+Camera * ServerMessage::getCamera()
+{
+	return this->camera;
+}
+
+void ServerMessage::setCamera(Camera * camera)
+{
+	this->camera = camera;
+}
+
 void ServerMessage::setPlayers(vector<Player*> players)
 {
 	this->players = players;
@@ -61,9 +73,7 @@ void ServerMessage::unserialize(Value * nodeRef)
 		break;
 	case players_status:
 		parsePlayersStatus(nodeRef);
-		break;
-	case camera_position:
-		//parseCameraStatus(nodeRef);
+		parseCameraStatus(nodeRef);
 		break;
 	default:
 		break;
@@ -97,8 +107,7 @@ string ServerMessage::serialize()
 		break;
 	case players_status:
 		this->serializePlayers(writer);
-	case camera_position:
-		//this->serializeCamera(writer);
+		this->serializeCamera(writer);
 	default:
 		break;
 	}
@@ -108,16 +117,13 @@ string ServerMessage::serialize()
 	return s.GetString();
 }
 
-/*void ServerMessage::serializeCamera(Writer<StringBuffer>& writer)
+void ServerMessage::serializeCamera(Writer<StringBuffer>& writer)
 {
+	if (!this->camera) return;
 	writer.String(SERVER_MESSAGE_CAMERA_NODE);
-	writer.StartArray();
-
-	string serializedcamera = this->camera.serialize();
+	string serializedcamera = this->camera->serialize();
 	writer.String(serializedcamera.c_str());
-
-	writer.EndArray();
-}*/
+}
 
 void ServerMessage::serializePlayers(Writer<StringBuffer>& writer)
 {
@@ -134,7 +140,7 @@ void ServerMessage::serializePlayers(Writer<StringBuffer>& writer)
 	writer.EndArray();
 }
 
-/*void ServerMessage::parseCameraStatus(Value * nodeRef)
+void ServerMessage::parseCameraStatus(Value * nodeRef)
 {
 	Value& node = *nodeRef;
 
@@ -147,9 +153,10 @@ void ServerMessage::serializePlayers(Writer<StringBuffer>& writer)
 	//Check cameraStatus
 
 	Document jsonCamera;
-	Camera * newCamera = new Camera();
-	newCamera->unserialize(&jsonCamera);
-}*/
+	if (this->camera) delete this->camera;
+	this->camera = new Camera();
+	this->camera->unserialize(&jsonCamera);
+}
 
 void ServerMessage::parsePlayersStatus(Value * nodeRef)
 {

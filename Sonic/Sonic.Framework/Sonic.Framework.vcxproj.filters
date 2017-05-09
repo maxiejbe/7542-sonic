@@ -81,7 +81,7 @@
     <ClCompile Include="protocol\SerializableMessage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
+    <ClCompile Include="entities\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -155,7 +155,7 @@
     <ClInclude Include="protocol\SerializableMessage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
+    <ClInclude Include="entities\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
