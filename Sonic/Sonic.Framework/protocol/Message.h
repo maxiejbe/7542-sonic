@@ -55,6 +55,8 @@ public:
 
 	bool unserialize(string json);
 
+	bool equals(Message& message);
+
 	// Inherited via Serializable
 	void unserialize(Value* nodeRef) override;
 	char* getNodeName() override;

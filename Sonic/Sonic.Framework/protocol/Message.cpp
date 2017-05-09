@@ -105,6 +105,20 @@ bool Message::getIsKUSpace()
 /*Serializable*/
 
 
+bool Message::equals(Message & message)
+{
+	if (this->playerNumber != message.getPlayerNumber()) return false;
+	if (this->isKPUp != message.getIsKPUp()) return false;
+	if (this->isKPLeft != message.getIsKPLeft()) return false;
+	if (this->isKPRight != message.getIsKPRight()) return false;
+	if (this->isKPSpace != message.getIsKPSpace()) return false;
+	if (this->isKULeft != message.getIsKULeft()) return false;
+	if (this->isKURight != message.getIsKURight()) return false;
+	if (this->isKUSpace != message.getIsKUSpace()) return false;
+	
+	return true;
+}
+
 void Message::unserialize(Value * nodeRef)
 {
 	//Player Number
