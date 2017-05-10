@@ -71,11 +71,11 @@ bool Client::welcome(int clientNumber, Player* player)
 		return false;
 	}
 
-	Sleep(10);
-
 	if (!this->sendFileContent()) {
 		return false;
 	}
+
+	this->server->addConnectedClient();
 
 	CreateThread(0, 0, runSocketHandler, (void*)this, 0, &this->threadId);
 	return true;

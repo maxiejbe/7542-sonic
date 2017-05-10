@@ -176,7 +176,7 @@ void Server::acceptClientConnection()
 	}
 
 	clients[index] = client;
-	this->connectedClients++;
+	//this->connectedClients++;
 }
 
 void Server::removeClientConnection(int clientNumber)
@@ -190,6 +190,11 @@ void Server::removeClientConnection(int clientNumber)
 	client->getPlayer()->setIsConnected(false);
 	
 	this->connectedClients--;
+}
+
+void Server::addConnectedClient()
+{
+	this->connectedClients++;
 }
 
 SOCKET Server::getSocket()
@@ -320,6 +325,8 @@ DWORD WINAPI Server::runSendSocketHandler(void * args)
 DWORD Server::sendSocketHandler()
 {
 	while (true) {
+		if (clients.size() == 0) continue;
+		
 		for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 		{
 			PlayerController::update(it->second->getLastMessage(), it->second->getPlayer(), this->camera);

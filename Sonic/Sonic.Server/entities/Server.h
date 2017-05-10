@@ -42,6 +42,8 @@ public:
 	void sendBroadcast(char*);
 	void removeClientConnection(int clientNumber);
 
+	void addConnectedClient();
+
 	SOCKET getSocket();
 	string getFileContent();
 
