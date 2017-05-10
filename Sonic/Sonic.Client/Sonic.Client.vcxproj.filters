@@ -42,9 +42,6 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="views\common\Drawable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="views\CircleView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
