@@ -17,6 +17,7 @@
 #include "views/LayerView.h"
 #include "views/EntityView.h"
 #include "views/PlayerView.h"
+#include "Banner.h"
 
 #include "views/common/EntityViewResolver.h"
 #include <unordered_map>
@@ -69,6 +70,11 @@ int main(int argc, char* args[])
 	int scenarioWidth = scenario.getWidth();
 	int scenarioHeight = scenario.getHeight();
 
+	int reconnectionAttemp;
+	double reconnectionPause;
+	bool connectionLostAbort = false;
+	Banner reconnectionBanner;
+
 	Message * lastMessage = nullptr;
 	// Initialize layers
 	vector<Layer> layers = scenario.getLayers();
@@ -111,6 +117,27 @@ int main(int argc, char* args[])
 
 		while (isRunning) {
 
+			if (!networkManager.online()) {
+				double reconnetionTimeStep = stepTimer.getTicks() / 1000.;
+				reconnectionAttemp = 1;
+				bool reconnected = false;
+				while (!networkManager.online() && reconnectionAttemp <= 3) {
+					reconnectionBanner.showBanner();
+					SDL_RenderPresent(Renderer::getInstance().gRenderer);
+					
+					double currentTime = stepTimer.getTicks() / 1000.;
+					if ((currentTime - reconnetionTimeStep) > 5) {
+						reconnected = networkManager.reconnect();
+						reconnectionAttemp++;
+						reconnetionTimeStep = stepTimer.getTicks() / 1000.;
+					}
+				}
+
+				if (!reconnected) connectionLostAbort = true;
+			}
+
+			if (connectionLostAbort) break;
+
 			InputManager* input = InputManager::getInstance();
 			input->update();
 
@@ -138,6 +165,7 @@ int main(int argc, char* args[])
 			bool isKUSpace = input->isKeyUp(KEY_SPACE);
 
 			Message* message = new Message(timeStep, isKPLeft, isKPSpace, isKPRight, isKPUp, isKULeft, isKURight, isKUSpace);
+
 			if (lastMessage == nullptr) {
 				networkManager.sendMessage(message);
 				lastMessage = message;

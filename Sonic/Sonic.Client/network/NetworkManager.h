@@ -21,6 +21,7 @@ public:
 
 	bool startClient(char * host, int port);
 	bool online();
+	bool reconnect();
 	void sendMessage(Message * message);
 	Camera * getCamera();
 	unordered_map<int, PlayerView*> getPlayerViews();
@@ -45,11 +46,19 @@ private:
 	
 	/*HANDLERS*/
 	void startConnectionHandlers();
+	void stopConnectionHandlers();
 
 	//receive handler
+	HANDLE recvThreadHandle;
 	DWORD recvThreadId;
 	static DWORD WINAPI runRecvSocketHandler(void* args);
 	DWORD recvSocketHandler();
 	void handleMessage(char*);
+
+	//Connection check
+	/*DWORD cliOnlineCheckThreadId;
+	static DWORD WINAPI runClientOnlineCheck(void* args);
+	DWORD clientOnlineCheck();*/
+
 };
 

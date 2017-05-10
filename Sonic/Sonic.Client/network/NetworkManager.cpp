@@ -27,6 +27,7 @@ bool NetworkManager::startClient(char * host, int port)
 	if (this->client) {
 		//delete previous client
 		delete this->client;
+		this->client = NULL;
 	}
 
 	this->client = new SocketClient(host, port);
@@ -34,6 +35,7 @@ bool NetworkManager::startClient(char * host, int port)
 	if (!this->client->isConnected()) {
 		LOG(logERROR) << "Network Manager: Error al inicializar el cliente";
 		delete this->client;
+		this->client = NULL;
 		return false;
 	}
 
@@ -50,12 +52,32 @@ bool NetworkManager::online()
 	return (this->client && this->client->isConnected());
 }
 
+bool NetworkManager::reconnect() {
+	if (!this->client) return false;
+	if (this->online()) return true;
+	if(this->recvThreadHandle != NULL) this->stopConnectionHandlers();
+	if (!this->client->reconnect()) {
+		LOG(logERROR) << "Network Manager: Fallo intento de reconexión";
+		return false;
+	}
+
+	//reconnection success
+	this->startConnectionHandlers();
+	return true;
+}
+
+void NetworkManager::stopConnectionHandlers() {
+	//set flag to force stop
+	WaitForSingleObject(this->recvThreadHandle, INFINITE);
+	CloseHandle(this->recvThreadHandle);
+	this->recvThreadHandle = NULL;
+}
 
 void NetworkManager::startConnectionHandlers()
 {
 	//Receive Handler
 	//TODO: kill theads
-	CreateThread(0, 0, runRecvSocketHandler, (void*)this, 0, &this->recvThreadId);
+	this->recvThreadHandle = CreateThread(0, 0, runRecvSocketHandler, (void*)this, 0, &this->recvThreadId);
 }
 
 DWORD WINAPI NetworkManager::runRecvSocketHandler(void * args)
@@ -108,6 +130,23 @@ void NetworkManager::handleMessage(char * receivedMessage)
 
 	delete sMessage;
 }
+
+/*DWORD NetworkManager::runClientOnlineCheck(void * args)
+{
+	NetworkManager * nManager = (NetworkManager*)args;
+	return nManager->clientOnlineCheck();
+}
+
+DWORD NetworkManager::clientOnlineCheck()
+{
+	while (this->client->checkConnection()) {
+		Sleep(3000);
+	}
+
+	LOG(logINFO) << "Se deconecto el cliente";
+
+	return 0;
+}*/
 
 void NetworkManager::sendMessage(Message* message)
 {

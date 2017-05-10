@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <iostream>
 #include <Ws2tcpip.h>
+#include "Logger.h"
 #pragma comment(lib, "Ws2_32.lib")
 
 #define bzero(b,len) (memset((b), '\0', (len)), (void) 0) 
@@ -18,17 +19,16 @@ public:
 	~SocketClient();
 	bool isInitialized();
 	bool isConnected();
-	bool isTerminated();
 	bool reconnect();
 	bool sendMessage(string message);
 	bool receiveMessage(char * receivedMessage, int receivedMessageLength);
+	bool checkConnection();
 private:
 	SOCKET _socket;
 	char* host;
 	int port;
 	struct addrinfo * addressInfo;
 	bool initialized;
-	bool terminated;
 	bool connected;
 
 	/*** INITIALIZATION ***/
@@ -39,7 +39,6 @@ private:
 	/* SOCKET CONNECTION*/
 	void connectToSocket();
 
-	void terminateConnection();
 	void disconnectSocket();
 	void freeResources();
 };
