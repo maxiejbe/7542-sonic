@@ -15,7 +15,7 @@ NetworkManager::~NetworkManager()
 		if (it->second) delete it->second;
 	}
 
-	if (this->camera) delete this->camera;
+	if (this->camera != nullptr) delete this->camera;
 }
 
 void NetworkManager::close()

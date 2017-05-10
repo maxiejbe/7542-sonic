@@ -10,6 +10,7 @@
 #include "../utils/SocketUtils.h"
 #include "../controllers/PlayerController.h"
 #include <limits>
+#include <mutex>
 
 using namespace std;
 
@@ -27,7 +28,8 @@ public:
 	
 	bool sendClientNumber();
 	bool sendFileContent();
-	
+	bool sendPlayersStatus();
+
 	Player* getPlayer();
 	Message* getLastMessage();
 
@@ -51,6 +53,13 @@ private:
 	Server* server;
 	struct sockaddr_in address;
 	DWORD threadId;
+
+	//send handler
+	DWORD sendThreadId;
+	static DWORD WINAPI runSendSocketHandler(void* args);
+	DWORD sendSocketHandler();
+
+	mutex clientMutex;
 };
 
 #endif
