@@ -138,6 +138,7 @@ int main(int argc, char* args[])
 				layerView->loadLayer();
 			}
 
+			/* Comentar esto para probar el juego, hasta que este el banner. */
 			while (!networkManager.canStartGame()) {
 				//TODO: mostrar banner de "esperando que se conecte el resto"
 
