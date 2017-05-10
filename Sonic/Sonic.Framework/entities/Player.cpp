@@ -252,6 +252,19 @@ string Player::calculateFilePath()
 	}
 }
 
+double Player::calculateGroundPos(int windowHeight)
+{
+	switch (playerType) {
+	case SONIC:
+	case KNUCKLES:
+		return windowHeight / 1.35;
+	case TAILS:
+		return windowHeight / 1.35 + 16;
+	default:
+		return windowHeight / 1.35;
+	}
+}
+
 void Player::unserialize(Value * nodeRef)
 {
 	double x, y, vx, vy, gp, tvx = 0;

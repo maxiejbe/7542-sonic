@@ -16,15 +16,13 @@ public:
 	Player();
 	Player(int number, int windowHeight, int scenarioWidth, int scenarioHeight, int scrollSpeed) : Player() {
 		this->number = number;
-		this->groundPos = windowHeight / 1.35;
-		this->position = Vector2(0, this->groundPos);
-
 		this->scenarioWidth = scenarioWidth;
 		this->scenarioHeight = scenarioHeight;
 		this->scrollSpeed = scrollSpeed;
-
 		this->playerType = calculatePlayerType();
 		this->filePath = calculateFilePath();
+		this->groundPos = calculateGroundPos(windowHeight);
+		this->position = Vector2(0, this->groundPos);
 		this->isConnected = true;
 	}
 	Player(Player&);
@@ -69,6 +67,7 @@ public:
 
 	PlayerType calculatePlayerType();
 	string calculateFilePath();
+	double calculateGroundPos(int windowHeight);
 
 	// Inherited via Serializable
 	void unserialize(Value* nodeRef) override;

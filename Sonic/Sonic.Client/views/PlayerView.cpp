@@ -52,7 +52,7 @@ void PlayerView::render(int camX, int camY)
 
 	// Calculate current sprite
 	Uint32 ticks = SDL_GetTicks();
-	Uint32 sprite = (ticks / 100) % getFramesCount(this->player->getSpriteState());
+	Uint32 sprite = (ticks / 90) % getFramesCount(this->player->getSpriteState());
 
 	SDL_Rect* currentClip = &spriteClips[player->getSpriteState()][sprite];
 
@@ -83,7 +83,7 @@ int PlayerView::getFramesCount(PlayerStatus status)
 		case running:
 			return 4;
 		case jumping:
-			return 4;
+			return 8;
 		default:
 			return 1;
 		}
@@ -213,6 +213,26 @@ void PlayerView::loadSpriteClips()
 		spriteClips[PlayerStatus::jumping][3].y = 77;
 		spriteClips[PlayerStatus::jumping][3].w = 30;
 		spriteClips[PlayerStatus::jumping][3].h = 27;
+
+		spriteClips[PlayerStatus::jumping][4].x = 386;
+		spriteClips[PlayerStatus::jumping][4].y = 74;
+		spriteClips[PlayerStatus::jumping][4].w = 27;
+		spriteClips[PlayerStatus::jumping][4].h = 30;
+
+		spriteClips[PlayerStatus::jumping][5].x = 417;
+		spriteClips[PlayerStatus::jumping][5].y = 77;
+		spriteClips[PlayerStatus::jumping][5].w = 30;
+		spriteClips[PlayerStatus::jumping][5].h = 27;
+
+		spriteClips[PlayerStatus::jumping][6].x = 452;
+		spriteClips[PlayerStatus::jumping][6].y = 75;
+		spriteClips[PlayerStatus::jumping][6].w = 27;
+		spriteClips[PlayerStatus::jumping][6].h = 30;
+
+		spriteClips[PlayerStatus::jumping][7].x = 481;
+		spriteClips[PlayerStatus::jumping][7].y = 77;
+		spriteClips[PlayerStatus::jumping][7].w = 30;
+		spriteClips[PlayerStatus::jumping][7].h = 27;
 		break;
 
 	case TAILS:
@@ -420,6 +440,26 @@ void PlayerView::loadSpriteClips()
 		spriteClips[PlayerStatus::jumping][3].y = 148;
 		spriteClips[PlayerStatus::jumping][3].w = 31;
 		spriteClips[PlayerStatus::jumping][3].h = 30;
+
+		spriteClips[PlayerStatus::jumping][4].x = 32;
+		spriteClips[PlayerStatus::jumping][4].y = 148;
+		spriteClips[PlayerStatus::jumping][4].w = 30;
+		spriteClips[PlayerStatus::jumping][4].h = 31;
+
+		spriteClips[PlayerStatus::jumping][5].x = 63;
+		spriteClips[PlayerStatus::jumping][5].y = 148;
+		spriteClips[PlayerStatus::jumping][5].w = 31;
+		spriteClips[PlayerStatus::jumping][5].h = 30;
+
+		spriteClips[PlayerStatus::jumping][6].x = 95;
+		spriteClips[PlayerStatus::jumping][6].y = 147;
+		spriteClips[PlayerStatus::jumping][6].w = 30;
+		spriteClips[PlayerStatus::jumping][6].h = 31;
+
+		spriteClips[PlayerStatus::jumping][7].x = 126;
+		spriteClips[PlayerStatus::jumping][7].y = 148;
+		spriteClips[PlayerStatus::jumping][7].w = 31;
+		spriteClips[PlayerStatus::jumping][7].h = 30;
 		break;
 	}
 }
