@@ -56,7 +56,7 @@ void Menu::updateAndRenderOptions()
 	{
 		SDL_Texture* text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, menus[i]);
 		Message_rect.x = SDLWindow::getInstance().getScreenWidth() / 2 - menus[i]->clip_rect.w / 2;
-		Message_rect.y = (SDLWindow::getInstance().getScreenHeight() - SDLWindow::getInstance().getScreenHeight() / 3.5) + (2 * (menus[i]->clip_rect.h) * i);
+		Message_rect.y = (int)(SDLWindow::getInstance().getScreenHeight() - SDLWindow::getInstance().getScreenHeight() / 3.5) + (2 * (menus[i]->clip_rect.h) * i);
 		Message_rect.w = menus[i]->w;
 		Message_rect.h = menus[i]->h;
 		SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &Message_rect);
@@ -140,4 +140,5 @@ int Menu::showMenu()
 			}
 		}
 	}
+	return 0;
 }

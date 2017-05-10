@@ -1,6 +1,7 @@
 #include "PlayerController.h"
 
 const float gravity = 0.38f;
+const int WIDTH_PLAYER_SPRITE = 72; //Fix player->getWidth()
 
 PlayerController::PlayerController()
 {
@@ -79,14 +80,14 @@ void PlayerController::move(Player* player, double dt, Camera* camera)
 	// Que no se salga de los limites
 	if (player->getPosition().x < 0)
 		player->setXPosition(0);
-	else if (player->getPosition().x > player->getScenarioWidth() - player->getWidth())
-		player->setXPosition((float)(player->getScenarioWidth() - player->getWidth()));
+	else if (player->getPosition().x > player->getScenarioWidth() - WIDTH_PLAYER_SPRITE)
+		player->setXPosition((float)(player->getScenarioWidth() - WIDTH_PLAYER_SPRITE));
 
 	// Que no se salga de la camara
 	if (player->getPosition().x < camera->getPosition().x)
 		player->setXPosition(camera->getPosition().x);
-	else if (player->getPosition().x > (camera->getPosition().x + camera->getScreenWidth()) - player->getWidth())
-		player->setXPosition(camera->getPosition().x + camera->getScreenWidth() - player->getWidth());
+	else if (player->getPosition().x > (camera->getPosition().x + camera->getScreenWidth()) - WIDTH_PLAYER_SPRITE)
+		player->setXPosition(camera->getPosition().x + camera->getScreenWidth() - WIDTH_PLAYER_SPRITE);
 
 	// PlayerStatus::jumping
 	if (player->getIsJumping()) {

@@ -17,6 +17,7 @@ const char* PLAYER_GROUND_POS_NODE = "gp";
 const char* PLAYER_SCROLL_SPEED_NODE = "scs";
 const char* PLAYER_FILE_PATH_NODE = "fp";
 const char* PLAYER_TYPE_NODE = "pt";
+const char* PLAYER_IS_CONNECTED_NODE = "ic";
 
 
 Player::Player()
@@ -34,6 +35,7 @@ Player::Player()
 	this->isJumping = false;
 	this->facingDirection = FACING_RIGHT;
 	this->spriteState = PlayerStatus::idle;
+	this->isConnected = true;
 }
 
 Player::Player(Player & anotherPlayer) {
@@ -59,6 +61,7 @@ void Player::copyFrom(Player & anotherPlayer)
 	this->setNumber(anotherPlayer.getNumber());
 	this->setSpriteState(anotherPlayer.getSpriteState());
 	this->setPlayerType(anotherPlayer.getPlayerType());
+	this->setIsConnected(anotherPlayer.getIsConnected());
 }
 
 Vector2 Player::getPosition()
@@ -211,6 +214,44 @@ void Player::setPlayerType(PlayerType playerType)
 	this->playerType = playerType;
 }
 
+bool Player::getIsConnected()
+{
+	return this->isConnected;
+}
+
+void Player::setIsConnected(bool isConnected)
+{
+	this->isConnected = isConnected;
+}
+
+PlayerType Player::calculatePlayerType()
+{
+	switch (this->getNumber() % 3) {
+	case 1:
+		return PlayerType::SONIC;
+	case 2:
+		return PlayerType::TAILS;
+	case 0:
+		return PlayerType::KNUCKLES;
+	default:
+		return PlayerType::SONIC;
+	}
+}
+
+string Player::calculateFilePath()
+{
+	switch (this->playerType) {
+	case SONIC:
+		return "img/sonic-spritesheet.png";
+	case TAILS:
+		return "img/tails-spritesheet.png";
+	case KNUCKLES:
+		return "img/knuckles-spritesheet.png";
+	default:
+		return "img/sonic-spritesheet.png";
+	}
+}
+
 void Player::unserialize(Value * nodeRef)
 {
 	double x, y, vx, vy, gp, tvx = 0;
@@ -254,6 +295,8 @@ void Player::unserialize(Value * nodeRef)
 	parseString(&filePath, "img/sonic-spritesheet.png", nodeRef, PLAYER_FILE_PATH_NODE);
 	//player type
 	parseInt((int*)&playerType, 0, nodeRef, PLAYER_TYPE_NODE);
+	//is connected
+	parseBool(&isConnected, false, nodeRef, PLAYER_IS_CONNECTED_NODE);
 }
 
 string Player::serialize()
@@ -297,6 +340,8 @@ string Player::serialize()
 	writer.String(fp);
 	writer.String(PLAYER_TYPE_NODE);
 	writer.Int(this->playerType);
+	writer.String(PLAYER_IS_CONNECTED_NODE);
+	writer.Bool(this->isConnected);
 
 	writer.EndObject();
 	return s.GetString();

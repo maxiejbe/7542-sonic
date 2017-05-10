@@ -24,10 +24,12 @@ public:
 private:
 	int getFramesCount(PlayerStatus status);
 	void loadSpriteClips();
+	string calculateDisconnectedPlayerPath();
 
 	Texture texture;
 	Player* player;
 	SDL_Rect** spriteClips;
+	bool isGreyed;
 };
 
 #endif // !PLAYERVIEW_H

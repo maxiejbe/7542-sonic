@@ -1,8 +1,5 @@
 #include "Message.h"
 
-const char* MESSAGE_PLAYER_NUMBER_NODE = "pn";
-const char* MESSAGE_CONNECTION_STATUS_NODE = "cs";
-const char* MESSAGE_PLAYER_STATUS_NODE = "ps";
 const char* MESSAGE_TIME_STEP_NODE = "dt";
 const char* MESSAGE_KEY_PRESSED_LEFT_NODE = "klp";
 const char* MESSAGE_KEY_PRESSED_SPACE_NODE = "ksp";
@@ -18,9 +15,6 @@ Message::Message()
 
 Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKULeft, bool isKURight, bool isKUSpace)
 {
-	this->playerNumber = 0;
-	this->connectionStatus = ConnectionStatus::connected;
-	this->playerStatus = PlayerStatus::walking;
 	this->dt = dt;
 	this->isKPLeft = isKPLeft;
 	this->isKPSpace = isKPSpace;
@@ -29,37 +23,6 @@ Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool 
 	this->isKULeft = isKULeft;
 	this->isKURight = isKURight;
 	this->isKUSpace = isKUSpace;
-}
-
-void Message::setConnectionStatus(ConnectionStatus connectionStatus)
-{
-	this->connectionStatus = connectionStatus;
-}
-
-ConnectionStatus Message::getConnectionStatus()
-{
-	return this->connectionStatus;
-}
-
-void Message::setPlayerNumber(int number)
-{
-	this->playerNumber = number;
-}
-
-int Message::getPlayerNumber()
-{
-	return this->playerNumber;
-}
-
-bool Message::validate()
-{
-	//if (this->playerNumber < 0) return false;
-	return true;
-}
-
-string Message::getBinaryData()
-{
-	return this->binaryMsg;
 }
 
 double Message::getTimeStep()
@@ -107,7 +70,6 @@ bool Message::getIsKUSpace()
 
 bool Message::equals(Message & message)
 {
-	if (this->playerNumber != message.getPlayerNumber()) return false;
 	if (this->isKPUp != message.getIsKPUp()) return false;
 	if (this->isKPLeft != message.getIsKPLeft()) return false;
 	if (this->isKPRight != message.getIsKPRight()) return false;
@@ -121,12 +83,6 @@ bool Message::equals(Message & message)
 
 void Message::unserialize(Value * nodeRef)
 {
-	//Player Number
-	parseInt(&playerNumber, -1, nodeRef, MESSAGE_PLAYER_NUMBER_NODE, Validator::intGreaterThanOrEqualToZero);
-	//Connection status
-	parseInt((int*)&connectionStatus, disconnected, nodeRef, MESSAGE_CONNECTION_STATUS_NODE, Validator::intGreaterThanOrEqualToZero);
-	//Player status
-	parseInt((int*)&playerStatus, idle, nodeRef, MESSAGE_PLAYER_STATUS_NODE, Validator::intGreaterThanOrEqualToZero);
 	//Time step
 	parseDouble(&dt, 0, nodeRef, MESSAGE_TIME_STEP_NODE);
 	//keys
@@ -154,14 +110,8 @@ string Message::serialize()
 
 void Message::performSerialization(Writer<StringBuffer>& writer) {
 	writer.StartObject();
-	writer.String(MESSAGE_PLAYER_NUMBER_NODE);
-	writer.Int(this->playerNumber);
-	writer.String(MESSAGE_CONNECTION_STATUS_NODE);
-	writer.Int(this->connectionStatus);
 	writer.String(MESSAGE_TIME_STEP_NODE);
 	writer.Double(this->dt);
-	writer.String(MESSAGE_PLAYER_STATUS_NODE);
-	writer.Int(this->playerStatus);
 	writer.String(MESSAGE_KEY_PRESSED_LEFT_NODE);
 	writer.Bool(this->isKPLeft);
 	writer.String(MESSAGE_KEY_PRESSED_SPACE_NODE);

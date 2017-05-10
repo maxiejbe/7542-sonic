@@ -63,7 +63,7 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 	LOG(logINFO) << MESSAGE_STARTING_SERVER_OK << SocketUtils::getIpFromAddress(this->address) << ":" << this->portNumber;
 
 	CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
-	
+
 	this->isValid = true;
 }
 
@@ -126,22 +126,53 @@ bool Server::startListening()
 
 int Server::getAvailableIndex()
 {
-	for (size_t i = 0; i < this->serverConfig->getMaxAllowedClients(); i++)
+	for (int i = 0; i < this->serverConfig->getMaxAllowedClients(); i++)
 	{
 		if (!clients.count(i)) return i;
 	}
-	return 0;
+	return -1;
+}
+
+int Server::getDisconnectedIndex()
+{
+	for (int i = 0; i < this->serverConfig->getMaxAllowedClients(); i++)
+	{
+		if (clients.count(i)) 
+		{
+			if (!clients[i]->getPlayer()->getIsConnected()) {
+				return i;
+			}
+		}
+	}
+	return -1;
 }
 
 void Server::acceptClientConnection()
 {
-	int index = getAvailableIndex();
-	int clientNumber = index + 1;
-
-	Client* client = new Client(this, clientNumber);
+	Client* client = new Client(this, nullptr);
 	if (!client->acceptSocket()) {
 		delete client;
 		return;
+	}
+
+	//Get either available or disconnected index
+	int index = getAvailableIndex();
+	if (index < 0) index = getDisconnectedIndex();
+	if (index < 0) {
+		delete client;
+		return;
+	}
+
+	int clientNumber = index + 1;
+	Player* player = clients.count(index) ? clients[index]->getPlayer() : nullptr;
+	
+	if (!client->welcome(clientNumber, player)) {
+		delete client;
+		return;
+	}
+
+	if (player == nullptr) {
+		delete clients[index];
 	}
 
 	clients[index] = client;
@@ -151,13 +182,13 @@ void Server::acceptClientConnection()
 void Server::removeClientConnection(int clientNumber)
 {
 	int index = clientNumber - 1;
-
 	Client* client = clients[index];
 	client->closeSocket();
-	delete client;
-
-	clients.erase(index);
-
+	
+	//delete client;
+	//clients.erase(index);
+	client->getPlayer()->setIsConnected(false);
+	
 	this->connectedClients--;
 }
 
@@ -200,9 +231,13 @@ void Server::waitForClientConnections()
 {
 	bool keepWaiting = true;
 
-	while (this->connectedClients < this->serverConfig->getMaxAllowedClients()) {
-		LOG(logINFO) << MESSAGE_SERVER_WAITING_CONNECTIONS;
-		this->acceptClientConnection();
+	LOG(logINFO) << MESSAGE_SERVER_WAITING_CONNECTIONS;
+
+	while (keepWaiting) {
+		if (this->connectedClients <= this->serverConfig->getMaxAllowedClients()) 
+		{
+			this->acceptClientConnection();
+		}
 	}
 }
 
@@ -214,9 +249,11 @@ void Server::sendBroadcast()
 	char * serializedMessage = StringUtils::convert(message->serialize());
 	delete message;
 
-	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
-	{
+	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
 		int bytecount;
+		//If client is not connected, just set to false
+		if (!it->second->getPlayer()->getIsConnected()) continue;
+
 		if ((bytecount = send(it->second->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
 			LOG(logERROR) << MESSAGE_SERVER_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_SERVER_ERROR_CODE << WSAGetLastError()
 				<< " (Cliente " << it->second->getClientNumber() << ")";

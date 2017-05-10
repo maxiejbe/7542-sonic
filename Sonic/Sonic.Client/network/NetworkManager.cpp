@@ -11,8 +11,7 @@ NetworkManager::~NetworkManager()
 {
 	for (unordered_map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it)
 	{
-		delete it->second->getPlayer();
-		delete it->second;
+		if (it->second) delete it->second;
 	}
 
 	if (this->camera) delete this->camera;
@@ -20,7 +19,7 @@ NetworkManager::~NetworkManager()
 
 void NetworkManager::close()
 {
-	if (this->client) { delete client; }
+	if (this->client != NULL) { delete client; }
 }
 
 bool NetworkManager::startClient(char * host, int port)
@@ -160,12 +159,12 @@ void NetworkManager::updatePlayerViews(vector<Player*> players)
 	//TODO: MUTEX HERE
 	for (vector<Player*>::iterator it = players.begin(); it != players.end(); ++it)
 	{
-		int index = (*it)->getNumber();
+		int index = ((*it)->getNumber()) - 1;
 		if (!playerViews.count(index)) {
 			//Create new player view and include in map
 			Player* player = new Player(*(*it));
 			PlayerView* playerView = new PlayerView(player);
-			playerViews[player->getNumber()] = playerView;
+			playerViews[index] = playerView;
 			continue;
 		}
 
