@@ -16,15 +16,12 @@ void Menu::initMenu()
 	font = TTF_OpenFont("fonts/sega.ttf", 30);
 	texture.loadFromFile("img/menu-background.jpg");
 
-	labels[0] = "Connect";
-	labels[1] = "Disconnect";
-	labels[2] = "Exit";
-
 	selected[0] = true;
 	selected[1] = selected[2] = false;
 
 	color[0] = { 255,255,255 };
 	color[1] = { 255,0,0 };
+	color[2] = { 192,192,192 };
 }
 
 void Menu::initColorNameOptions()
@@ -37,7 +34,8 @@ void Menu::initColorNameOptions()
 		if (i != option)
 		{
 			selected[i] = false;
-			menus[i] = TTF_RenderText_Solid(font, labels[i], color[0]);
+			if (this->connectionStatus == "disconnect" && labels[i] == "Disconnect") { menus[i] = TTF_RenderText_Solid(font, labels[i], color[2]); }
+			else { menus[i] = TTF_RenderText_Solid(font, labels[i], color[0]); }
 		}
 	}
 }
@@ -83,13 +81,28 @@ void Menu::changeSelectedOption()
 		if (i != option)
 		{
 			selected[i] = false;
-			menus[i] = TTF_RenderText_Solid(font, labels[i], color[0]);
+			if (this->connectionStatus == "disconnect" && labels[i] == "Disconnect") { menus[i] = TTF_RenderText_Solid(font, labels[i], color[2]); }
+			else { menus[i] = TTF_RenderText_Solid(font, labels[i], color[0]); }
 		}
 	}
 }
 
-int Menu::showMenu()
+int Menu::showMenu(string connectionStatus)
 {
+	this->connectionStatus = connectionStatus;
+
+	if (this->connectionStatus == "disconnect")
+	{
+		labels[0] = "Connect";
+		labels[1] = "Disconnect";
+	}
+	if (this->connectionStatus == "connect")
+	{
+		labels[0] = "Resume";
+		labels[1] = "Disconnect";
+	}
+	labels[2] = "Exit";
+
 	initColorNameOptions();
 	showBackgroundImage();
 	updateAndRenderOptions();
@@ -105,7 +118,7 @@ int Menu::showMenu()
 			{
 			case SDL_QUIT:
 				freeSurfaceMenus();
-				return 1;
+				return 2;
 
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym)
@@ -125,12 +138,16 @@ int Menu::showMenu()
 					break;
 
 				case SDLK_RETURN:
-					if (selected[0]) { return 0; } //TODO: Conectar
-					if (selected[1]) { return 0; } //TODO: Desconectar
+					if (selected[0]) { return 0; } //TODO: Conectar/Resume
+					if (selected[1]) //TODO: Desconectar/Nothing
+					{
+						if (this->labels[1] == "disconnect") { return 5; }
+						else { return 1; }
+					}
 					if (selected[2])
 					{
 						freeSurfaceMenus();
-						return 1;
+						return 2;
 					}
 
 				case SDLK_ESCAPE:

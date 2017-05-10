@@ -1,10 +1,12 @@
 #include "Banner.h"
 
-Banner::Banner()
+Banner::Banner(string text, SDL_Color color)
 {
 	TTF_Init();
-	font = TTF_OpenFont("fonts/sega.ttf", 30);
-	image.loadFromFile("img/sonic_orig.png");
+	this->font = TTF_OpenFont("fonts/sega.ttf", 30);
+	this->image.loadFromFile("img/sonic_orig.png");
+	this->text = text;
+	this->color = color;
 }
 
 Banner::~Banner()
@@ -21,30 +23,29 @@ void Banner::freeSurfaceBanner()
 
 void Banner::showBanner()
 {
-	bool isRunning = true;
-	string point = " ";
-	int i = 0;
+	SDL_Event event;
+	//string point = " ";
+	//int i = 0;
 
+	if (SDL_PollEvent(&event))
+	{
+		switch (event.type)
+		{
+		case SDL_QUIT:
+			freeSurfaceBanner();
+		}
+	}
 
 	//ShowLoadingPoints
-	i++;
-	if (i == 10)
-	{
-		point = " ";
-		i = 0;
-	}
-	else
-	{
-		point = point + ".";
-	}
+	//point = point + ".";
+	//i++;
 
 	//Show Background
-	boxRGBA(Renderer::getInstance().gRenderer, 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight(), 255, 0, 0, 255);
+	boxRGBA(Renderer::getInstance().gRenderer, 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight(), this->color.r, this->color.g, this->color.b, 255);
 
 	//Init and show text
-	color = { 255,255,255 };
-	string allpoint = "Reconnecting" + point;
-	message = TTF_RenderText_Solid(font, allpoint.c_str(), color);
+	string allpoint = this->text;
+	message = TTF_RenderText_Solid(font, allpoint.c_str(), { 0, 0, 0 });
 	SDL_Rect destrect;
 	SDL_Texture* text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, message);
 	destrect.x = SDLWindow::getInstance().getScreenWidth() / 2 - message->clip_rect.w / 2;
@@ -54,14 +55,13 @@ void Banner::showBanner()
 	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &destrect);
 
 	//Show img
-	destrect.x = (int)(SDLWindow::getInstance().getScreenWidth() / 2 - image.getWidth()* 1.3);
+	destrect.x = (int)(SDLWindow::getInstance().getScreenWidth() / 2 - image.getWidth());
 	destrect.y = SDLWindow::getInstance().getScreenHeight() / 2 - image.getHeight();
-	destrect.w = image.getWidth() * 2;
-	destrect.h = image.getHeight() * 2;
+	destrect.w = image.getWidth();
+	destrect.h = image.getHeight();
 	SDL_RenderCopy(Renderer::getInstance().gRenderer, image.getTexture(), NULL, &destrect);
 
 	SDL_RenderPresent(Renderer::getInstance().gRenderer);
 
-	SDL_Delay(1000);
-
+	//SDL_Delay(1000);
 }

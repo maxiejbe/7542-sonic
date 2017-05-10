@@ -64,7 +64,9 @@ int main(int argc, char* args[])
 	int reconnectionAttemp;
 	double reconnectionPause;
 	bool connectionLostAbort = false;
-	Banner reconnectionBanner;
+	Banner reconnectionBanner = Banner("Reconnecting", { 255,255,102 });
+	Banner waitingConnectionsBanner = Banner("Waiting for other connections", { 102,255,102 });
+	Banner errorServerBanner = Banner("Error server", { 255,255,255 });
 
 	Message * lastMessage = nullptr;
 
@@ -87,8 +89,61 @@ int main(int argc, char* args[])
 
 		// Initialize menu
 		Menu menu = Menu();
-		int i = menu.showMenu();
-		if (i == 1) { isRunning = false; }
+		int i = menu.showMenu("disconnect");
+		if (i == 2) { isRunning = false; }
+
+		// Connect. TODO: mejorar esto del i
+		if (i == 0) {
+
+			// Connect to server
+			networkManager.startClient(StringUtils::convert(serverConfig.getHost()), serverConfig.getPortNumber());
+
+			while (networkManager.getPlayerNumber() < 0) {
+				Sleep(3000);
+			}
+
+			while (networkManager.getFileContent().empty()) {
+				Sleep(3000);
+			}
+
+			// Parse scenario
+			parser = new Parser(configPath, networkManager.getFileContent());
+			parser->parse(&scenario);
+
+			scenarioWidth = scenario.getWidth();
+			scenarioHeight = scenario.getHeight();
+
+			// Initialize camera
+			camera = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
+
+			// Initialize layers
+			vector<Layer> layers = scenario.getLayers();
+			for (vector<Layer>::iterator it = layers.begin(); it != layers.end(); ++it) {
+				Layer* layer = &(*it);
+				LayerView layerView(layer);
+				layerViews.push_back(layerView);
+			}
+
+			// Initialize entities
+			vector<Entity*> entities = scenario.getEntities();
+			for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it) {
+				Entity* entity = *it;
+				EntityView* entityView = EntityViewResolver::resolve(entity);
+				entityViews.push_back(entityView);
+			}
+
+			// Load layers
+			for (vector<LayerView>::iterator it = layerViews.begin(); it != layerViews.end(); ++it) {
+				LayerView* layerView = &(*it);
+				layerView->loadLayer();
+			}
+
+			while (!networkManager.canStartGame()) {
+				waitingConnectionsBanner.showBanner();
+				SDL_RenderPresent(Renderer::getInstance().gRenderer);
+				Sleep(3000);
+			}
+		}
 
 		// Connect. TODO: mejorar esto del i
 		if (i == 0) {
@@ -176,8 +231,9 @@ int main(int argc, char* args[])
 			}
 
 			if (input->isKeyDown(KEY_ESCAPE) || input->isKeyDown(KEY_Q)) {
-				i = menu.showMenu();
-				if (i == 1) { isRunning = false; }
+				i = menu.showMenu("connect");
+				if (i == 1) { isRunning = false; } //show disconnect menu
+				if (i == 2) { isRunning = false; }
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
 			}
 
