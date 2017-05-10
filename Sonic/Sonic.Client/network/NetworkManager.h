@@ -27,6 +27,7 @@ public:
 	unordered_map<int, PlayerView*> getPlayerViews();
 
 	PlayerView* getOwnPlayerView();
+	bool canStartGame();
 
 	int getPlayerNumber();
 	string getFileContent();
@@ -37,6 +38,7 @@ private:
 	SocketClient * client;
 	Camera * camera;
 	unordered_map<int, PlayerView*> playerViews;
+	bool startGame;
 
 	int playerNumber;
 	string fileContent;

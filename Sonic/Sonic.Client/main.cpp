@@ -57,6 +57,10 @@ int main(int argc, char* args[])
 		Sleep(3000);
 	}
 
+	while (!networkManager.canStartGame()) {
+		Sleep(3000);
+	}
+
 	Parser* parser = new Parser(configPath, networkManager.getFileContent());
 	Window window;
 	Configuration config;
