@@ -239,7 +239,7 @@ ServerMessage* Server::getPlayersStatusMessage()
 	vector<Player*> clientsPlayers = this->clientsPlayers();
 
 	//update camera
-	CameraController::updateCamera(this->camera, clientsPlayers);
+	CameraController::updateCamera(this->camera, clientsPlayers);	
 
 	ServerMessage * message = new ServerMessage();
 	message->setType(players_status);
@@ -274,7 +274,7 @@ DWORD Server::sendSocketHandler()
 	while (true) {
 		for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 		{
-			PlayerController::update(it->second->getLastMessage(), it->second->getPlayer());
+			PlayerController::update(it->second->getLastMessage(), it->second->getPlayer(), this->camera);
 		}
 
 		this->sendBroadcast();

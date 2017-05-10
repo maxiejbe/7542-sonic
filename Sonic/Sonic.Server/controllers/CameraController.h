@@ -10,6 +10,6 @@ public:
 	static void updateCamera(Camera* camera, vector<Player*> players);
 private:
 	static void keepCameraInBounds(Camera * camera);
-	static void updateCameraPostion(Camera* camera,float x, float y);
+	static bool arePlayersInBothBorders(Camera * camera, vector<Player*> players);
 };
 #endif

@@ -1,6 +1,7 @@
 #include "CameraController.h"
 
-const int BORDER_WIDTH = 100;
+const int RIGHT_BORDER_WIDTH = 100;
+const int LEFT_BORDER_WIDTH = 10;
 
 CameraController::CameraController()
 {
@@ -9,43 +10,32 @@ CameraController::CameraController()
 
 void CameraController::updateCamera(Camera * camera, vector<Player*> players)
 {
-	float x, y = 0;
-	float befX = camera->getPosition().x;
-	float befY = camera->getPosition().y;
-	bool playerIsInLeftBorder = false, playerIsInRightBorder = false;
-	int rightBorder = camera->getPosition().x + camera->getScreenHeight() - BORDER_WIDTH;
-	int leftBorder = camera->getPosition().x + BORDER_WIDTH;
+	int rightBorder, leftBorder = 0;
 
-	vector<Player*>::iterator it = players.begin();
-	while (it != players.end()) {
-		Player* currentPlayer = (*it);
-
-		//Players uno en cada borde, camara no se mueve (queda como estaba antes)
-		if (playerIsInLeftBorder && playerIsInRightBorder)
+	if (!arePlayersInBothBorders(camera, players))
+	{
+		vector<Player*>::iterator it = players.begin();
+		while (it != players.end()) 
 		{
-			camera->setXPosition(befX);
-			camera->setYPosition(befY);
-			break;
-		}
+			Player* currentPlayer = (*it);
 
-		y = ((int)currentPlayer->getPosition().y + currentPlayer->getHeight() / 2) - camera->getScreenWidth() / 2;
-		if (currentPlayer->getPosition().x > rightBorder)
-		{
-			playerIsInRightBorder = true;
-			x = camera->getPosition().x + currentPlayer->getPosition().x - rightBorder;
-			updateCameraPostion(camera, x, y);
-		}
-		if (currentPlayer->getPosition().x < leftBorder)
-		{
-			playerIsInLeftBorder = true;
-			x = camera->getPosition().x + currentPlayer->getPosition().x - leftBorder;
-			updateCameraPostion(camera, x, y);
-		}
+			rightBorder = camera->getPosition().x + camera->getScreenWidth() - RIGHT_BORDER_WIDTH;
+			leftBorder = camera->getPosition().x + LEFT_BORDER_WIDTH;
 
-		it++;
+			camera->setYPosition(((int)currentPlayer->getPosition().y + currentPlayer->getHeight() / 2) - camera->getScreenWidth() / 2);
+			if (currentPlayer->getPosition().x > rightBorder)
+			{
+				camera->setXPosition(camera->getPosition().x + currentPlayer->getPosition().x - rightBorder);
+			}
+			if (currentPlayer->getPosition().x < leftBorder)
+			{
+				camera->setXPosition(camera->getPosition().x + currentPlayer->getPosition().x - leftBorder);
+			}
+
+			keepCameraInBounds(camera);
+			it++;
+		}
 	}
-
-	keepCameraInBounds(camera);
 }
 
 void CameraController::keepCameraInBounds(Camera * camera)
@@ -60,9 +50,30 @@ void CameraController::keepCameraInBounds(Camera * camera)
 		camera->setYPosition(camera->getScenarioHeight() - camera->getHeight());
 }
 
-void CameraController::updateCameraPostion(Camera * camera, float x, float y)
+bool CameraController::arePlayersInBothBorders(Camera * camera, vector<Player*> players)
 {
-	camera->setXPosition(x);
-	camera->setYPosition(y);
+	bool playerIsInRightBorder = false;
+	bool playerIsInLeftBorder = false;
+
+	vector<Player*>::iterator it = players.begin();
+	while (it != players.end()) {
+		Player* currentPlayer = (*it);
+
+		int rightBorder = camera->getPosition().x + camera->getScreenHeight() - RIGHT_BORDER_WIDTH;
+		int leftBorder = camera->getPosition().x + LEFT_BORDER_WIDTH;
+
+		if (currentPlayer->getPosition().x > rightBorder)
+		{
+			playerIsInRightBorder = true;
+		}
+		if (currentPlayer->getPosition().x < leftBorder)
+		{
+			playerIsInLeftBorder = true;
+		}
+
+		it++;
+	}
+
+	return (playerIsInLeftBorder && playerIsInRightBorder);
 }
 

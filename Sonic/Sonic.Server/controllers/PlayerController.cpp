@@ -6,13 +6,13 @@ PlayerController::PlayerController()
 {
 }
 
-void PlayerController::update(Message* message, Player* player)
+void PlayerController::update(Message* message, Player* player, Camera* camera)
 {
 	player->setTargetVelX(0);
 
 	if (message == nullptr) return;
 	updateInput(message, player);
-	move(player, message->getTimeStep());
+	move(player, message->getTimeStep(), camera);
 }
 
 void PlayerController::updateInput(Message* message, Player* player)
@@ -60,7 +60,7 @@ void PlayerController::updateInput(Message* message, Player* player)
 	}
 }
 
-void PlayerController::move(Player* player, double dt)
+void PlayerController::move(Player* player, double dt, Camera* camera)
 {
 	// Weighted averaging acceleration method
 	float a = 0.08f;
@@ -81,6 +81,12 @@ void PlayerController::move(Player* player, double dt)
 		player->setXPosition(0);
 	else if (player->getPosition().x > player->getScenarioWidth() - player->getWidth())
 		player->setXPosition((float)(player->getScenarioWidth() - player->getWidth()));
+
+	// Que no se salga de la camara
+	if (player->getPosition().x < camera->getPosition().x)
+		player->setXPosition(camera->getPosition().x);
+	else if (player->getPosition().x > (camera->getPosition().x + camera->getScreenWidth()) - player->getWidth())
+		player->setXPosition(camera->getPosition().x + camera->getScreenWidth() - player->getWidth());
 
 	// PlayerStatus::jumping
 	if (player->getIsJumping()) {

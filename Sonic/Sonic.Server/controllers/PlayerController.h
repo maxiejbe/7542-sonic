@@ -5,6 +5,7 @@
 #include "Logger.h"
 #include "entities/Player.h"
 #include "protocol/Message.h"
+#include "entities/Camera.h"
 
 using namespace std;
 
@@ -12,10 +13,10 @@ class PlayerController
 {
 public:
 	PlayerController();
-	static void update(Message* message, Player* player);
+	static void update(Message* message, Player* player, Camera* camera);
 private:
 	static void updateInput(Message* message, Player* player);
-	static void move(Player* player, double timeStep);
+	static void move(Player* player, double timeStep, Camera* camera);
 };
 
 #endif // !PLAYERCONTROLLER_H
