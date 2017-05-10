@@ -7,9 +7,11 @@ Banner::Banner()
 	image.loadFromFile("img/sonic_orig.png");
 }
 
-
 Banner::~Banner()
 {
+	freeSurfaceBanner();
+	TTF_CloseFont(font);
+	font = NULL;
 }
 
 void Banner::freeSurfaceBanner()
@@ -17,7 +19,7 @@ void Banner::freeSurfaceBanner()
 	SDL_FreeSurface(message);
 }
 
-void Banner::showBanner() 
+void Banner::showBanner()
 {
 	bool isRunning = true;
 	string point = " ";
@@ -26,16 +28,16 @@ void Banner::showBanner()
 
 	//ShowLoadingPoints
 	i++;
-	if (i == 10) 
-	{ 
-		point = " "; 
+	if (i == 10)
+	{
+		point = " ";
 		i = 0;
 	}
-	else 
-	{ 
-		point = point + "."; 
+	else
+	{
+		point = point + ".";
 	}
-		
+
 	//Show Background
 	boxRGBA(Renderer::getInstance().gRenderer, 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight(), 255, 0, 0, 255);
 

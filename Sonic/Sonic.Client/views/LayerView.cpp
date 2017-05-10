@@ -21,9 +21,4 @@ void LayerView::renderLayer(int x, int y, SDL_Rect* rect)
 	texture.render(x, y, rect);
 }
 
-void LayerView::destroyLayer()
-{
-	texture.free();
-}
-
 
