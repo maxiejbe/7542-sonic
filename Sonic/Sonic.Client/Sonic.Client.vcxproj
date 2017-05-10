@@ -51,6 +51,7 @@
     <Image Include="img\sprite.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="config\params.json" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

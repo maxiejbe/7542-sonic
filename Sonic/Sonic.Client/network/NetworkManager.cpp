@@ -5,6 +5,7 @@ NetworkManager::NetworkManager()
 	this->client = NULL;
 	this->playerNumber = -1;
 	this->camera = new Camera();
+	this->startGame = false;
 }
 
 NetworkManager::~NetworkManager()
@@ -123,6 +124,9 @@ void NetworkManager::handleMessage(char * receivedMessage)
 	case content:
 		this->fileContent = sMessage->getFileContent();
 		break;
+	case start_game:
+		this->startGame = true;
+		break;
 	default:
 		LOG(logERROR) << "Network Manager: Mensaje invalido -> " << receivedMessage;
 		break;
@@ -180,6 +184,11 @@ PlayerView * NetworkManager::getOwnPlayerView()
 	int index = this->playerNumber - 1;
 	if (!playerViews.count(index)) return nullptr;
 	return playerViews[index];
+}
+
+bool NetworkManager::canStartGame()
+{
+	return this->startGame;
 }
 
 int NetworkManager::getPlayerNumber()

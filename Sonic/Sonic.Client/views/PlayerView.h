@@ -13,6 +13,7 @@
 
 using namespace std;
 
+//TODO: Apply polimorphism with player type (SONIC, TAILS...)
 class PlayerView
 {
 public:

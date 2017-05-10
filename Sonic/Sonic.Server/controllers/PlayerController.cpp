@@ -1,6 +1,6 @@
 #include "PlayerController.h"
 
-const float gravity = 0.38f;
+const float gravity = 0.41f;
 const int WIDTH_PLAYER_SPRITE = 72; //Fix player->getWidth()
 
 PlayerController::PlayerController()
@@ -63,8 +63,7 @@ void PlayerController::updateInput(Message* message, Player* player)
 
 void PlayerController::move(Player* player, double dt, Camera* camera)
 {
-	if (player->getIsConnected())
-	{
+	if (player->getIsConnected()) {
 		// Weighted averaging acceleration method
 		float a = 0.08f;
 		player->setXVelocity((a * player->getTargetVelX() * dt) + ((1 - a) * player->getVelocity().x));
@@ -99,14 +98,19 @@ void PlayerController::move(Player* player, double dt, Camera* camera)
 				player->setYVelocity(0);
 				player->setIsJumping(false);
 				player->setSpriteState(PlayerStatus::idle);
+				player->setYPosition(player->getGroundPos());
 			}
 
-			player->setYPosition(player->getPosition().y + player->getVelocity().y * 1.6);
+			player->setYPosition(player->getPosition().y + player->getVelocity().y * 1.45);
+
 		}
 	}
-	else
-	{
-		if (player->getPosition().x <= camera->getPosition().x) { player->setXPosition(camera->getPosition().x); }
-		if (player->getPosition().x >= (camera->getPosition().x + camera->getScreenWidth() - WIDTH_PLAYER_SPRITE)) { player->setXPosition(camera->getPosition().x + camera->getScreenWidth() - WIDTH_PLAYER_SPRITE); }
+	else {
+		if (player->getPosition().x <= camera->getPosition().x) {
+			player->setXPosition(camera->getPosition().x);
+		}
+		if (player->getPosition().x >= (camera->getPosition().x + camera->getScreenWidth() - WIDTH_PLAYER_SPRITE)) {
+			player->setXPosition(camera->getPosition().x + camera->getScreenWidth() - WIDTH_PLAYER_SPRITE);
+		}
 	}
 }
