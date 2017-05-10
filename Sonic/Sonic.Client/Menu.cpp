@@ -67,9 +67,10 @@ void Menu::updateAndRenderOptions()
 
 void Menu::freeSurfaceMenus()
 {
-	for (int i = 0; i < OPCMENU; i++)
-	{
-		SDL_FreeSurface(menus[i]);
+	for (int i = 0; i < OPCMENU; i++) {
+		if (menus[i] != NULL) {
+			SDL_FreeSurface(menus[i]);
+		}
 	}
 }
 
@@ -104,7 +105,6 @@ int Menu::showMenu()
 			switch (event.type)
 			{
 			case SDL_QUIT:
-				freeSurfaceMenus();
 				return 1;
 
 			case SDL_KEYDOWN:
@@ -129,12 +129,10 @@ int Menu::showMenu()
 					if (selected[1]) { return 0; } //TODO: Desconectar
 					if (selected[2])
 					{
-						freeSurfaceMenus();
 						return 1;
 					}
 
 				case SDLK_ESCAPE:
-					freeSurfaceMenus();
 					return 0;
 				}
 			}
