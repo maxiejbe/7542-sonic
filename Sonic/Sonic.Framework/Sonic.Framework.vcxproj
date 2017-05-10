@@ -156,6 +156,7 @@
     <ClCompile Include="entities\Layer.cpp" />
     <ClCompile Include="entities\Rectangle.cpp" />
     <ClCompile Include="entities\Scenario.cpp" />
+    <ClCompile Include="entities\ServerConfiguration.cpp" />
     <ClCompile Include="entities\Square.cpp" />
     <ClCompile Include="entities\Window.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="entities\Layer.h" />
     <ClInclude Include="entities\Rectangle.h" />
     <ClInclude Include="entities\Scenario.h" />
+    <ClInclude Include="entities\ServerConfiguration.h" />
     <ClInclude Include="entities\Square.h" />
     <ClInclude Include="entities\Window.h" />
     <ClInclude Include="Logger.h" />
@@ -195,6 +197,7 @@
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="entities\params.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

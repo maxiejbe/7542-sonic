@@ -19,7 +19,7 @@
 #include "entities/Window.h"
 #include "entities/Configuration.h"
 #include "entities/Scenario.h"
-#include "common/ServerConfiguration.h"
+#include "entities/ServerConfiguration.h"
 #include "../controllers/CameraController.h"
 
 #include <mutex>

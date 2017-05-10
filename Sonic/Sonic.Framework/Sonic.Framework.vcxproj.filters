@@ -84,6 +84,9 @@
     <ClCompile Include="entities\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="entities\ServerConfiguration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parser.h">
@@ -158,8 +161,12 @@
     <ClInclude Include="entities\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="entities\ServerConfiguration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="entities\params.json" />
   </ItemGroup>
 </Project>

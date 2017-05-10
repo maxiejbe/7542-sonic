@@ -8,6 +8,8 @@
 #include "Menu.h"
 #include "Entities/Window.h"
 #include "Renderer.h"
+#include "utils/StringUtils.h"
+#include "entities/ServerConfiguration.h"
 #include "entities/Scenario.h"
 #include "entities/Player.h"
 #include "InputManager.h"
@@ -20,9 +22,6 @@
 
 #include "views/common/EntityViewResolver.h"
 #include <unordered_map>
-
-char* SERVER_IP = "127.0.0.1";
-const int SERVER_PORT = 5000;
 
 void close();
 
@@ -52,6 +51,7 @@ int main(int argc, char* args[])
 		}
 	}
 
+	ServerConfiguration serverConfig;
 	Window window;
 	Scenario scenario;
 	Camera* cameraModel;
@@ -71,6 +71,7 @@ int main(int argc, char* args[])
 	// Parse local window and config
 	Parser* localParser = new Parser(configPath, "");
 	localParser->parse(&window);
+	localParser->parse(&serverConfig);
 
 	// Initialize network manager
 	NetworkManager networkManager = NetworkManager::getInstance();
@@ -93,7 +94,7 @@ int main(int argc, char* args[])
 		if (i == 0) {
 
 			// Connect to server
-			networkManager.startClient(SERVER_IP, SERVER_PORT);
+			networkManager.startClient(StringUtils::convert(serverConfig.getHost()), serverConfig.getPortNumber());
 
 			while (networkManager.getPlayerNumber() < 0) {
 				Sleep(3000);
