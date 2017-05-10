@@ -126,6 +126,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		break;
 	case start_game:
 		this->startGame = true;
+		break;
 	default:
 		LOG(logERROR) << "Network Manager: Mensaje invalido -> " << receivedMessage;
 		break;

@@ -1,5 +1,4 @@
 #include "Menu.h"
-#include "Renderer.h"
 
 Menu::Menu()
 {

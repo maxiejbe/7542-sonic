@@ -1,0 +1,11 @@
+{
+  "ventana": {
+    "dimensiones": {
+      "ancho": 800,
+      "alto": 600
+    }
+  },
+  "configuracion": {
+    "vel_scroll": 400
+  }
+}

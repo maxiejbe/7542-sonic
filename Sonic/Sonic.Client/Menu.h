@@ -6,6 +6,8 @@
 #include <iostream>
 #include <SDL_ttf.h>
 #include "Texture.h"
+#include "Renderer.h"
+#include "InputManager.h"
 
 class Menu
 {
