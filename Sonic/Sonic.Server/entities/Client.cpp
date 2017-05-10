@@ -63,13 +63,6 @@ bool Client::welcome(int clientNumber, Player* player)
 		this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
 	}
 
-	if (player != nullptr) {
-		this->player = player;
-	}
-	else {
-		this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
-	}
-
 	this->lastReceivedMessage = nullptr;
 
 	LOG(logINFO) << MESSAGE_CLIENT_ACCEPTED_CONNECTION << this->clientNumber;

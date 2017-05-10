@@ -171,7 +171,7 @@ void Server::acceptClientConnection()
 		return;
 	}
 
-	if (player == nullptr) {
+	if (player != nullptr) {
 		delete clients[index];
 	}
 
