@@ -16,7 +16,7 @@ const char* MESSAGE_CLIENT_SEND_FILE_CONTENT_ERROR = "No se pudo enviar el conte
 const char* MESSAGE_CLIENT_SEND_MESSAGE_SUCCESS = "Se envió correctamente el mensaje ";
 
 
-Client::Client(Server* server)
+Client::Client(Server* server, Player* player)
 {
 	this->server = server;
 }
@@ -45,7 +45,7 @@ bool Client::acceptSocket()
 	}
 }
 
-bool Client::welcome(int clientNumber)
+bool Client::welcome(int clientNumber, Player* player)
 {
 	this->clientNumber = clientNumber;
 	int windowHeight = this->server->getWindow()->getHeight();
@@ -53,7 +53,22 @@ bool Client::welcome(int clientNumber)
 	int scenarioHeight = this->server->getScenario()->getHeight();
 	int scrollSpeed = this->server->getConfiguration()->getScrollSpeed();
 	
-	this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
+	//Player and last received message can handle reconnection
+	if (player != nullptr) {
+		this->player = player;
+		this->player->setIsConnected(true);
+	}
+	else {
+		this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
+	}
+
+	if (player != nullptr) {
+		this->player = player;
+	}
+	else {
+		this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
+	}
+
 	this->lastReceivedMessage = nullptr;
 
 	LOG(logINFO) << MESSAGE_CLIENT_ACCEPTED_CONNECTION << this->clientNumber;
@@ -165,9 +180,7 @@ DWORD Client::socketHandler() {
 
 	LOG(logINFO) << MESSAGE_CLIENT_CONNECTION_CLOSED << this->clientNumber;
 
-	this->player->setIsConnected(false);
-
-	//this->server->removeClientConnection(this->clientNumber);
+	this->server->removeClientConnection(this->clientNumber);
 
 	return 0;
 }

@@ -62,6 +62,7 @@ private:
 	bool startListening();
 
 	int getAvailableIndex();
+	int getDisconnectedIndex();
 
 	void acceptClientConnection();
 	ServerMessage* getPlayersStatusMessage();

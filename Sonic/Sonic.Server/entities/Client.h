@@ -17,12 +17,12 @@ class Server;
 
 class Client {
 public:
-	Client(Server*);
+	Client(Server*, Player*);
 	~Client();
 	int getClientNumber();
 
 	bool acceptSocket();
-	bool welcome(int);
+	bool welcome(int, Player*);
 	void closeSocket();
 	
 	bool sendClientNumber();
