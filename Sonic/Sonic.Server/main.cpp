@@ -42,26 +42,3 @@ int main(int argc, char* args[])
 	delete parser;
 	return 0;
 }
-
-/*
-	EJEMPLO SERVER MESSAGE
-
-	Player* player1 = new Player(10, 10, 10, 20);
-	Player* player2 = new Player(5, 5, 5, 12);
-	vector<Player*> players = vector<Player*>();
-	players.push_back(player1);
-	players.push_back(player2);
-
-	ServerMessage * message = new ServerMessage();
-	message->setType(players_status);
-	message->setPlayers(players);
-
-	string serializedMessage = message->serialize();
-
-	ServerMessage * message2 = new ServerMessage();
-	message2->fromJson(serializedMessage);
-
-	delete message;
-	delete message2;
-
-*/

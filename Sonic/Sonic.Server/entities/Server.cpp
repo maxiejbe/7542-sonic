@@ -230,24 +230,35 @@ void Server::unlock()
 void Server::waitForClientConnections()
 {
 	bool keepWaiting = true;
+	bool startNotificationSent = false;
 
 	LOG(logINFO) << MESSAGE_SERVER_WAITING_CONNECTIONS;
 
 	while (keepWaiting) {
+		//Still accepting new connections
 		if (this->connectedClients <= this->serverConfig->getMaxAllowedClients()) 
 		{
 			this->acceptClientConnection();
 		}
+
+		//Max connections reached!
+		if (!startNotificationSent && this->connectedClients == this->serverConfig->getMaxAllowedClients())
+		{
+			ServerMessage* message = new ServerMessage();
+			message->setType(ServerMessageType::start_game);
+			char* serializedMessage = StringUtils::convert(message->serialize());
+			delete message;
+
+			this->sendBroadcast(serializedMessage);
+
+			startNotificationSent = true;
+		}
 	}
 }
 
-void Server::sendBroadcast()
+void Server::sendBroadcast(char* serializedMessage)
 {
 	this->lock();
-
-	ServerMessage * message = this->getPlayersStatusMessage();
-	char * serializedMessage = StringUtils::convert(message->serialize());
-	delete message;
 
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
 		int bytecount;
@@ -314,7 +325,11 @@ DWORD Server::sendSocketHandler()
 			PlayerController::update(it->second->getLastMessage(), it->second->getPlayer(), this->camera);
 		}
 
-		this->sendBroadcast();
+		ServerMessage * message = this->getPlayersStatusMessage();
+		char * serializedMessage = StringUtils::convert(message->serialize());
+		delete message;
+
+		this->sendBroadcast(serializedMessage);
 		Sleep(15);
 	}
 

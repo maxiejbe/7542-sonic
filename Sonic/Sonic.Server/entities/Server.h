@@ -39,7 +39,7 @@ public:
 	Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario, Camera * camera);
 	bool validate();
 	void waitForClientConnections();
-	void sendBroadcast();
+	void sendBroadcast(char*);
 	void removeClientConnection(int clientNumber);
 
 	SOCKET getSocket();
