@@ -162,7 +162,7 @@ void Server::acceptClientConnection()
 	}
 
 	int clientNumber = index + 1;
-	Player* player = clients.count(index) ? clients[index]->getPlayer() : nullptr;
+	Player* player = clients.count(index) && clients[index] != NULL ? clients[index]->getPlayer() : nullptr;
 	
 	if (!client->welcome(clientNumber, player)) {
 		delete client;
@@ -174,7 +174,7 @@ void Server::acceptClientConnection()
 	}
 
 	clients[index] = client;
-	this->connectedClients++;
+	/*this->connectedClients++;*/
 }
 
 void Server::removeClientConnection(int clientNumber)
@@ -188,6 +188,11 @@ void Server::removeClientConnection(int clientNumber)
 	client->getPlayer()->setIsConnected(false);
 	
 	this->connectedClients--;
+}
+
+void Server::addConnectedClients()
+{
+	this->connectedClients++;
 }
 
 SOCKET Server::getSocket()
@@ -243,7 +248,7 @@ void Server::waitForClientConnections()
 			delete message;
 
 			this->sendBroadcast(serializedMessage);
-
+			Sleep(1000);
 			startNotificationSent = true;
 		}
 	}

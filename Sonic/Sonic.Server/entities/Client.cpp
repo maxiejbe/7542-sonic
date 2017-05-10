@@ -71,13 +71,15 @@ bool Client::welcome(int clientNumber, Player* player)
 		return false;
 	}
 
-	Sleep(10);
+	Sleep(100);
 
 	if (!this->sendFileContent()) {
 		return false;
 	}
 
-	Sleep(10);
+	Sleep(3000);
+
+	this->server->addConnectedClients();
 
 	CreateThread(0, 0, runSocketHandler, (void*)this, 0, &this->threadId);
 	CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
@@ -214,7 +216,7 @@ DWORD Client::sendSocketHandler()
 		
 		this->sendPlayersStatus();
 		
-		Sleep(15);
+		Sleep(10); // VAMO LO PIBE
 	}
 
 	return 0;

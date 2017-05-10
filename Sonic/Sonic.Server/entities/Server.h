@@ -42,7 +42,7 @@ public:
 	void sendBroadcast(char*);
 	void removeClientConnection(int clientNumber);
 
-	void addConnectedClient();
+	void addConnectedClients();
 
 	SOCKET getSocket();
 	string getFileContent();
