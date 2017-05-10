@@ -62,8 +62,6 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 
 	LOG(logINFO) << MESSAGE_STARTING_SERVER_OK << SocketUtils::getIpFromAddress(this->address) << ":" << this->portNumber;
 
-	CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
-
 	this->isValid = true;
 }
 
@@ -176,7 +174,7 @@ void Server::acceptClientConnection()
 	}
 
 	clients[index] = client;
-	//this->connectedClients++;
+	this->connectedClients++;
 }
 
 void Server::removeClientConnection(int clientNumber)
@@ -190,11 +188,6 @@ void Server::removeClientConnection(int clientNumber)
 	client->getPlayer()->setIsConnected(false);
 	
 	this->connectedClients--;
-}
-
-void Server::addConnectedClient()
-{
-	this->connectedClients++;
 }
 
 SOCKET Server::getSocket()
@@ -222,14 +215,9 @@ Scenario * Server::getScenario()
 	return this->scenario;
 }
 
-void Server::lock()
+Camera * Server::getCamera()
 {
-	this->serverMutex.lock();
-}
-
-void Server::unlock()
-{
-	this->serverMutex.unlock();
+	return this->camera;
 }
 
 void Server::waitForClientConnections()
@@ -263,23 +251,18 @@ void Server::waitForClientConnections()
 
 void Server::sendBroadcast(char* serializedMessage)
 {
-	this->lock();
-
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
 		int bytecount;
 		//If client is not connected, just set to false
 		if (!it->second->getPlayer()->getIsConnected()) continue;
 
 		if ((bytecount = send(it->second->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
-			LOG(logERROR) << MESSAGE_SERVER_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_SERVER_ERROR_CODE << WSAGetLastError()
+			LOG(logERROR) << MESSAGE_SERVER_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_SERVER_SEND_MESSAGE_ERROR << WSAGetLastError()
 				<< " (Cliente " << it->second->getClientNumber() << ")";
 			continue;
 		}
-
 		//LOG(logINFO) << MESSAGE_SERVER_SEND_MESSAGE_SUCCESS << message << " (Cliente " << it->second->getClientNumber() << ")";
 	}
-
-	this->unlock();
 }
 
 bool Server::validate()
@@ -314,31 +297,4 @@ vector<Player*> Server::clientsPlayers()
 	}
 
 	return clientPlayers;
-}
-
-DWORD WINAPI Server::runSendSocketHandler(void * args)
-{
-	Server * server = (Server*)args;
-	return server->sendSocketHandler();
-}
-
-DWORD Server::sendSocketHandler()
-{
-	while (true) {
-		if (clients.size() == 0) continue;
-		
-		for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
-		{
-			PlayerController::update(it->second->getLastMessage(), it->second->getPlayer(), this->camera);
-		}
-
-		ServerMessage * message = this->getPlayersStatusMessage();
-		char * serializedMessage = StringUtils::convert(message->serialize());
-		delete message;
-
-		this->sendBroadcast(serializedMessage);
-		Sleep(15);
-	}
-
-	return 0;
 }

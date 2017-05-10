@@ -71,13 +71,16 @@ bool Client::welcome(int clientNumber, Player* player)
 		return false;
 	}
 
+	Sleep(10);
+
 	if (!this->sendFileContent()) {
 		return false;
 	}
 
-	this->server->addConnectedClient();
+	Sleep(10);
 
 	CreateThread(0, 0, runSocketHandler, (void*)this, 0, &this->threadId);
+	CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
 	return true;
 }
 
@@ -119,6 +122,22 @@ bool Client::sendFileContent()
 	if ((bytecount = send(this->socket, fileContentMessage, strlen(fileContentMessage), 0)) == SOCKET_ERROR) {
 		LOG(logERROR) << MESSAGE_CLIENT_SEND_FILE_CONTENT_ERROR << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->clientNumber << ")";
+		return false;
+	}
+	return true;
+}
+
+bool Client::sendPlayersStatus()
+{
+	int bytecount;
+
+	ServerMessage * message = this->server->getPlayersStatusMessage();
+	char * serializedMessage = StringUtils::convert(message->serialize());
+	delete message;
+
+	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
+		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
+			<< " (Cliente " << this->getClientNumber() << ")";
 		return false;
 	}
 	return true;
@@ -175,6 +194,28 @@ DWORD Client::socketHandler() {
 	LOG(logINFO) << MESSAGE_CLIENT_CONNECTION_CLOSED << this->clientNumber;
 
 	this->server->removeClientConnection(this->clientNumber);
+
+	return 0;
+}
+
+DWORD WINAPI Client::runSendSocketHandler(void * args)
+{
+	Client * client = (Client*)args;
+	return client->sendSocketHandler();
+}
+
+DWORD Client::sendSocketHandler()
+{
+	while (true) {
+		
+		if (!this->player->getIsConnected()) continue;
+		
+		PlayerController::update(this->getLastMessage(), this->getPlayer(), this->server->getCamera());
+		
+		this->sendPlayersStatus();
+		
+		Sleep(15);
+	}
 
 	return 0;
 }

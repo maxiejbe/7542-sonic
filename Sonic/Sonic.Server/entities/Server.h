@@ -51,8 +51,9 @@ public:
 	Configuration* getConfiguration();
 	Scenario* getScenario();
 
-	void lock();
-	void unlock();
+	Camera* getCamera();
+
+	ServerMessage* getPlayersStatusMessage();
 private:
 	/*
 	Initialize socket support WINDOWS ONLY!
@@ -67,8 +68,7 @@ private:
 	int getDisconnectedIndex();
 
 	void acceptClientConnection();
-	ServerMessage* getPlayersStatusMessage();
-
+	
 	vector<Player*> clientsPlayers();
 
 	bool isValid;
@@ -86,13 +86,6 @@ private:
 
 	unordered_map<int, Client*> clients;
 	Camera* camera;
-
-	mutex serverMutex;
-
-	//send handler
-	DWORD sendThreadId;
-	static DWORD WINAPI runSendSocketHandler(void* args);
-	DWORD sendSocketHandler();
 };
 
 #endif
