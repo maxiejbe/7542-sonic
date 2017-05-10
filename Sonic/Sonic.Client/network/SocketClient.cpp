@@ -8,7 +8,6 @@ SocketClient::SocketClient(char * host, int port)
 
 	this->addressInfo = NULL;
 	this->_socket = INVALID_SOCKET;
-	this->terminated = false;
 	this->initialized = false;
 
 	if (!this->initializeWindowsSupport()) { return; }
@@ -38,14 +37,10 @@ bool SocketClient::isConnected()
 	return this->connected;
 }
 
-bool SocketClient::isTerminated()
-{
-	return this->terminated;
-}
 
 bool SocketClient::sendMessage(string message)
 {
-	if (!this->initialized || !this->connected || this->terminated) {
+	if (!this->initialized || !this->connected) {
 		return false;
 	}
 
@@ -53,18 +48,19 @@ bool SocketClient::sendMessage(string message)
 	if (byteCount == SOCKET_ERROR) {
 		//TODO: Log in file
 		//fprintf(stderr, "Error sending data %d\n", WSAGetLastError());
+		this->disconnectSocket();
 		return false;
 	}
 
-	if (byteCount == 0) {
+	/*if (byteCount == 0) {
 		this->disconnectSocket();
-	}
+	}*/
 
 	return true;
 }
 
 bool SocketClient::receiveMessage(char * receivedMessage, int receivedMessageLength) {
-	if (!this->initialized || !this->connected || this->terminated) {
+	if (!this->initialized || !this->connected) {
 		return false;
 	}
 
@@ -73,16 +69,33 @@ bool SocketClient::receiveMessage(char * receivedMessage, int receivedMessageLen
 	if (bytecount == SOCKET_ERROR) {
 		//TODO: Log in file
 		//fprintf(stderr, "Error receiving data %d\n", WSAGetLastError());
-		this->terminateConnection();
-		return false;
-	}
-
-	if (bytecount == 0) {
 		this->disconnectSocket();
 		return false;
 	}
+	/*if (bytecount == 0) {
+		this->disconnectSocket();
+		return false;
+	}*/
 
 	return true;
+}
+
+bool SocketClient::checkConnection() 
+{
+	if (!this->initialized || !this->connected) return false;
+
+	fd_set fd_reader;
+	timeval connection_timer;
+
+	connection_timer.tv_sec = 2; // = 2
+	connection_timer.tv_usec = 0;
+
+	FD_ZERO(&fd_reader);
+	FD_SET(this->_socket, &fd_reader);
+
+	int select_ready = select(0, &fd_reader, NULL, NULL, &connection_timer);
+
+	return(select_ready != SOCKET_ERROR);
 }
 
 
@@ -140,7 +153,7 @@ void SocketClient::connectToSocket()
 	this->connected = (connect(_socket, addressInfo->ai_addr, (int)addressInfo->ai_addrlen) != SOCKET_ERROR);
 	//failed to connect to socket
 	if (!this->connected) {
-		//TODO: Log in file
+		LOG(logERROR) << "Socker client: no se puede conectar. Err: " << WSAGetLastError();
 	}
 }
 
@@ -151,27 +164,27 @@ bool SocketClient::reconnect()
 		return false;
 	}
 
+	if (this->connected) return true;
+
+	//initialize socket again
+	if(!this->initializeSocket()) return false;
 	this->connectToSocket();
 	return this->connected;
 }
 
 
-void SocketClient::terminateConnection()
-{
-	this->terminated = true;
-	this->disconnectSocket();
-}
-
 void SocketClient::disconnectSocket()
 {
 	this->connected = false;
-	if (this->_socket) { closesocket(this->_socket); }
+	if (this->_socket != INVALID_SOCKET) {
+		closesocket(this->_socket);
+		this->_socket = INVALID_SOCKET;
+	}
 }
 
 void SocketClient::freeResources()
 {
 	this->initialized = false;
-	if (this->_socket) { this->_socket = INVALID_SOCKET; }
 	if (this->addressInfo) { freeaddrinfo(this->addressInfo); }
 	WSACleanup();
 }

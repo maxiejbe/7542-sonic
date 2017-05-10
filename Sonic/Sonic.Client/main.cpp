@@ -17,6 +17,7 @@
 #include "views/LayerView.h"
 #include "views/EntityView.h"
 #include "views/PlayerView.h"
+#include "Banner.h"
 
 #include "views/common/EntityViewResolver.h"
 #include <unordered_map>
@@ -56,6 +57,10 @@ int main(int argc, char* args[])
 		Sleep(3000);
 	}
 
+	while (!networkManager.canStartGame()) {
+		Sleep(3000);
+	}
+
 	Parser* parser = new Parser(configPath, networkManager.getFileContent());
 	Window window;
 	Configuration config;
@@ -68,6 +73,11 @@ int main(int argc, char* args[])
 
 	int scenarioWidth = scenario.getWidth();
 	int scenarioHeight = scenario.getHeight();
+
+	int reconnectionAttemp;
+	double reconnectionPause;
+	bool connectionLostAbort = false;
+	Banner reconnectionBanner;
 
 	Message * lastMessage = nullptr;
 	// Initialize layers
@@ -111,6 +121,27 @@ int main(int argc, char* args[])
 
 		while (isRunning) {
 
+			if (!networkManager.online()) {
+				double reconnetionTimeStep = stepTimer.getTicks() / 1000.;
+				reconnectionAttemp = 1;
+				bool reconnected = false;
+				while (!networkManager.online() && reconnectionAttemp <= 3) {
+					reconnectionBanner.showBanner();
+					SDL_RenderPresent(Renderer::getInstance().gRenderer);
+					
+					double currentTime = stepTimer.getTicks() / 1000.;
+					if ((currentTime - reconnetionTimeStep) > 5) {
+						reconnected = networkManager.reconnect();
+						reconnectionAttemp++;
+						reconnetionTimeStep = stepTimer.getTicks() / 1000.;
+					}
+				}
+
+				if (!reconnected) connectionLostAbort = true;
+			}
+
+			if (connectionLostAbort) break;
+
 			InputManager* input = InputManager::getInstance();
 			input->update();
 
@@ -138,6 +169,7 @@ int main(int argc, char* args[])
 			bool isKUSpace = input->isKeyUp(KEY_SPACE);
 
 			Message* message = new Message(timeStep, isKPLeft, isKPSpace, isKPRight, isKPUp, isKULeft, isKURight, isKUSpace);
+
 			if (lastMessage == nullptr) {
 				networkManager.sendMessage(message);
 				lastMessage = message;
@@ -166,29 +198,6 @@ int main(int argc, char* args[])
 				camera.y = cameraModel->getPosition().y;
 			}
 			
-
-			// UNCOMMENT WHEN PLAYERS ARE DONE
-			// Center the camera
-			if (player != nullptr) {
-				/*int bordeR = camera.x + SDLWindow::getInstance().getScreenWidth() - 100;
-				int bordeL = camera.x + 100;
-
-				camera.y = ((int)player->getPosition().y + player->getHeight() / 2) - SDLWindow::getInstance().getScreenHeight() / 2;
-				if (player->getPosition().x > bordeR) { camera.x = camera.x + player->getPosition().x - bordeR; }
-				if (player->getPosition().x < bordeL) { camera.x = camera.x + player->getPosition().x - bordeL; }
-
-				// Keep the camera in bounds
-				if (camera.x < 0)
-					camera.x = 0;
-				if (camera.y < 0)
-					camera.y = 0;
-
-				if (camera.x > scenarioWidth - camera.w)
-					camera.x = scenarioWidth - camera.w;
-				if (camera.y > scenarioHeight - camera.h)
-					camera.y = scenarioHeight - camera.h;*/
-			}
-
 			// Clear screen
 			SDL_SetRenderDrawColor(Renderer::getInstance().gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 			SDL_RenderClear(Renderer::getInstance().gRenderer);

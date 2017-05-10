@@ -63,43 +63,54 @@ void PlayerController::updateInput(Message* message, Player* player)
 
 void PlayerController::move(Player* player, double dt, Camera* camera)
 {
-	// Weighted averaging acceleration method
-	float a = 0.08f;
-	player->setXVelocity((a * player->getTargetVelX() * dt) + ((1 - a) * player->getVelocity().x));
+	if (player->getIsConnected()) {
+		// Weighted averaging acceleration method
+		float a = 0.08f;
+		player->setXVelocity((a * player->getTargetVelX() * dt) + ((1 - a) * player->getVelocity().x));
 
-	// TODO: extraer a isStopping()
-	if (fabs(player->getVelocity().x) < 0.4) {
-		if (player->getVelocity().x == 0 && player->getSpriteState() == PlayerStatus::walking) {
-			player->setSpriteState(PlayerStatus::idle);
+		// TODO: extraer a isStopping()
+		if (fabs(player->getVelocity().x) < 0.4) {
+			if (player->getVelocity().x == 0 && player->getSpriteState() == PlayerStatus::walking) {
+				player->setSpriteState(PlayerStatus::idle);
+			}
+			player->setXVelocity(0);
 		}
-		player->setXVelocity(0);
+
+		player->setXPosition(player->getPosition().x + player->getVelocity().x);
+
+		// Que no se salga de los limites
+		if (player->getPosition().x < 0)
+			player->setXPosition(0);
+		else if (player->getPosition().x > player->getScenarioWidth() - WIDTH_PLAYER_SPRITE)
+			player->setXPosition((float)(player->getScenarioWidth() - WIDTH_PLAYER_SPRITE));
+
+		// Que no se salga de la camara
+		if (player->getPosition().x < camera->getPosition().x)
+			player->setXPosition(camera->getPosition().x);
+		else if (player->getPosition().x > (camera->getPosition().x + camera->getScreenWidth()) - WIDTH_PLAYER_SPRITE)
+			player->setXPosition(camera->getPosition().x + camera->getScreenWidth() - WIDTH_PLAYER_SPRITE);
+
+		// PlayerStatus::jumping
+		if (player->getIsJumping()) {
+			player->setYVelocity(player->getVelocity().y + gravity);
+
+			if ((player->getPosition().y + player->getVelocity().y) >= player->getGroundPos()) {
+				player->setYVelocity(0);
+				player->setIsJumping(false);
+				player->setSpriteState(PlayerStatus::idle);
+				player->setYPosition(player->getGroundPos());
+			}
+
+			player->setYPosition(player->getPosition().y + player->getVelocity().y * 1.45);
+
+		}
 	}
-
-	player->setXPosition(player->getPosition().x + player->getVelocity().x);
-
-	// Que no se salga de los limites
-	if (player->getPosition().x < 0)
-		player->setXPosition(0);
-	else if (player->getPosition().x > player->getScenarioWidth() - WIDTH_PLAYER_SPRITE)
-		player->setXPosition((float)(player->getScenarioWidth() - WIDTH_PLAYER_SPRITE));
-
-	// Que no se salga de la camara
-	if (player->getPosition().x < camera->getPosition().x)
-		player->setXPosition(camera->getPosition().x);
-	else if (player->getPosition().x > (camera->getPosition().x + camera->getScreenWidth()) - WIDTH_PLAYER_SPRITE)
-		player->setXPosition(camera->getPosition().x + camera->getScreenWidth() - WIDTH_PLAYER_SPRITE);
-
-	// PlayerStatus::jumping
-	if (player->getIsJumping()) {
-		player->setYVelocity(player->getVelocity().y + gravity);
-
-		if ((player->getPosition().y + player->getVelocity().y) >= player->getGroundPos()) {
-			player->setYVelocity(0);
-			player->setIsJumping(false);
-			player->setSpriteState(PlayerStatus::idle);
-			player->setYPosition(player->getGroundPos());
+	else {
+		if (player->getPosition().x <= camera->getPosition().x) {
+			player->setXPosition(camera->getPosition().x);
 		}
-
-		player->setYPosition(player->getPosition().y + player->getVelocity().y * 1.45);
+		if (player->getPosition().x >= (camera->getPosition().x + camera->getScreenWidth() - WIDTH_PLAYER_SPRITE)) {
+			player->setXPosition(camera->getPosition().x + camera->getScreenWidth() - WIDTH_PLAYER_SPRITE);
+		}
 	}
 }
