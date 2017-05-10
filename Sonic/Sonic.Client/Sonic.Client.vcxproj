@@ -22,7 +22,6 @@
     <ClCompile Include="network\NetworkManager.cpp" />
     <ClCompile Include="network\SocketClient.cpp" />
     <ClCompile Include="views\CircleView.cpp" />
-    <ClCompile Include="views\common\Drawable.cpp" />
     <ClCompile Include="views\common\EntityViewResolver.cpp" />
     <ClCompile Include="views\EntityView.cpp" />
     <ClCompile Include="InputManager.cpp" />

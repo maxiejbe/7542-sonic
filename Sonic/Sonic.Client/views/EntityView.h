@@ -22,9 +22,8 @@ public:
 protected:
 	Texture texture;
 	bool imageCrop;
-	
+
 	Entity* entity;
-	void setColor(string color);
 };
 
 #endif

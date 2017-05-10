@@ -12,7 +12,6 @@ public:
 	LayerView(Layer* layer);
 	void loadLayer();
 	void renderLayer(int x, int y, SDL_Rect* rect);
-	void destroyLayer();
 private:
 	Texture texture;
 	Layer* layer;
