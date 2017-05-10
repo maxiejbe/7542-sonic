@@ -138,63 +138,10 @@ int main(int argc, char* args[])
 				layerView->loadLayer();
 			}
 
-			while (!networkManager.canStartGame()) {
+			/* Comentar esto para probar el juego, hasta que este el banner.*/
+			while(!networkManager.canStartGame()) {
 				waitingConnectionsBanner.showBanner();
 				SDL_RenderPresent(Renderer::getInstance().gRenderer);
-				Sleep(3000);
-			}
-		}
-
-		// Connect. TODO: mejorar esto del i
-		if (i == 0) {
-
-			// Connect to server
-			networkManager.startClient(StringUtils::convert(serverConfig.getHost()), serverConfig.getPortNumber());
-
-			while (networkManager.getPlayerNumber() < 0) {
-				Sleep(3000);
-			}
-
-			while (networkManager.getFileContent().empty()) {
-				Sleep(3000);
-			}
-
-			// Parse scenario
-			parser = new Parser(configPath, networkManager.getFileContent());
-			parser->parse(&scenario);
-
-			scenarioWidth = scenario.getWidth();
-			scenarioHeight = scenario.getHeight();
-
-			// Initialize camera
-			camera = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
-
-			// Initialize layers
-			vector<Layer> layers = scenario.getLayers();
-			for (vector<Layer>::iterator it = layers.begin(); it != layers.end(); ++it) {
-				Layer* layer = &(*it);
-				LayerView layerView(layer);
-				layerViews.push_back(layerView);
-			}
-
-			// Initialize entities
-			vector<Entity*> entities = scenario.getEntities();
-			for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it) {
-				Entity* entity = *it;
-				EntityView* entityView = EntityViewResolver::resolve(entity);
-				entityViews.push_back(entityView);
-			}
-
-			// Load layers
-			for (vector<LayerView>::iterator it = layerViews.begin(); it != layerViews.end(); ++it) {
-				LayerView* layerView = &(*it);
-				layerView->loadLayer();
-			}
-
-			/* Comentar esto para probar el juego, hasta que este el banner. */
-			while (!networkManager.canStartGame()) {
-				//TODO: mostrar banner de "esperando que se conecte el resto"
-
 				Sleep(3000);
 			}
 		}
@@ -232,7 +179,15 @@ int main(int argc, char* args[])
 
 			if (input->isKeyDown(KEY_ESCAPE) || input->isKeyDown(KEY_Q)) {
 				i = menu.showMenu("connect");
-				if (i == 1) { isRunning = false; } //show disconnect menu
+				if (i == 1) //show disconnect menu
+				{ 
+					//disconnect logic
+					i = menu.showMenu("disconnect");
+					if (i == 0)
+					{
+						//connect logic
+					}
+				}
 				if (i == 2) { isRunning = false; }
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
 			}
