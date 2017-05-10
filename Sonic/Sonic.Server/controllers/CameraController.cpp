@@ -19,17 +19,20 @@ void CameraController::updateCamera(Camera * camera, vector<Player*> players)
 		{
 			Player* currentPlayer = (*it);
 
-			rightBorder = camera->getPosition().x + camera->getScreenWidth() - RIGHT_BORDER_WIDTH;
-			leftBorder = camera->getPosition().x + LEFT_BORDER_WIDTH;
+			if (currentPlayer->getIsConnected())
+			{
+				rightBorder = camera->getPosition().x + camera->getScreenWidth() - RIGHT_BORDER_WIDTH;
+				leftBorder = camera->getPosition().x + LEFT_BORDER_WIDTH;
 
-			camera->setYPosition(((int)currentPlayer->getPosition().y + currentPlayer->getHeight() / 2) - camera->getScreenWidth() / 2);
-			if (currentPlayer->getPosition().x > rightBorder)
-			{
-				camera->setXPosition(camera->getPosition().x + currentPlayer->getPosition().x - rightBorder);
-			}
-			if (currentPlayer->getPosition().x < leftBorder)
-			{
-				camera->setXPosition(camera->getPosition().x + currentPlayer->getPosition().x - leftBorder);
+				camera->setYPosition(((int)currentPlayer->getPosition().y + currentPlayer->getHeight() / 2) - camera->getScreenWidth() / 2);
+				if (currentPlayer->getPosition().x > rightBorder)
+				{
+					camera->setXPosition(camera->getPosition().x + currentPlayer->getPosition().x - rightBorder);
+				}
+				if (currentPlayer->getPosition().x < leftBorder)
+				{
+					camera->setXPosition(camera->getPosition().x + currentPlayer->getPosition().x - leftBorder);
+				}
 			}
 
 			keepCameraInBounds(camera);
@@ -62,11 +65,11 @@ bool CameraController::arePlayersInBothBorders(Camera * camera, vector<Player*> 
 		int rightBorder = camera->getPosition().x + camera->getScreenHeight() - RIGHT_BORDER_WIDTH;
 		int leftBorder = camera->getPosition().x + LEFT_BORDER_WIDTH;
 
-		if (currentPlayer->getPosition().x > rightBorder)
+		if (currentPlayer->getPosition().x > rightBorder && currentPlayer->getIsConnected())
 		{
 			playerIsInRightBorder = true;
 		}
-		if (currentPlayer->getPosition().x < leftBorder)
+		if (currentPlayer->getPosition().x < leftBorder && currentPlayer->getIsConnected())
 		{
 			playerIsInLeftBorder = true;
 		}
