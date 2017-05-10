@@ -1,7 +1,7 @@
 {
   "servidor": {
     "puerto": 5000,
-    "maxima_cantidad_conexiones": 3
+    "maxima_cantidad_conexiones": 1
   },
   "ventana": {
     "dimensiones": {

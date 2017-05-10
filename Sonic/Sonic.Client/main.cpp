@@ -8,7 +8,6 @@
 #include "Menu.h"
 #include "Entities/Window.h"
 #include "Renderer.h"
-#include "entities/Configuration.h"
 #include "entities/Scenario.h"
 #include "entities/Player.h"
 #include "InputManager.h"
@@ -54,7 +53,6 @@ int main(int argc, char* args[])
 	}
 
 	Window window;
-	Configuration config;
 	Scenario scenario;
 	Camera* cameraModel;
 	vector<EntityView*> entityViews;
@@ -73,7 +71,6 @@ int main(int argc, char* args[])
 	// Parse local window and config
 	Parser* localParser = new Parser(configPath, "");
 	localParser->parse(&window);
-	localParser->parse(&config);
 
 	// Initialize network manager
 	NetworkManager networkManager = NetworkManager::getInstance();
