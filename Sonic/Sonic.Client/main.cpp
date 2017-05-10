@@ -112,8 +112,9 @@ int main(int argc, char* args[])
 		
 		// Initialize menu
 		Menu menu = Menu();
-		int i = menu.showMenu();
+		int i = menu.showMenu("disconnect");
 		if (i == 1) { isRunning = false; }
+		if (i == 2) { isRunning = false; }
 
 		while (isRunning) {
 
@@ -147,8 +148,9 @@ int main(int argc, char* args[])
 			}
 
 			if (input->isKeyDown(KEY_ESCAPE) || input->isKeyDown(KEY_Q)) {
-				i = menu.showMenu();
+				i = menu.showMenu("connect");
 				if (i == 1) { isRunning = false; }
+				if (i == 2) { isRunning = false; }
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
 			}
 

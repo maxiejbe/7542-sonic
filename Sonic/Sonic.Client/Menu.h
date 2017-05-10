@@ -13,7 +13,7 @@ public:
 	Menu();
 	~Menu();
 
-	int showMenu();
+	int showMenu(string connectionStatus);
 
 private:
 	static const int OPCMENU = 3;
@@ -27,6 +27,7 @@ private:
 	bool selected[OPCMENU];
 	SDL_Color color[OPCMENU];
 	int option;
+	string connectionStatus;
 
 	void initMenu();
 	void initColorNameOptions();
