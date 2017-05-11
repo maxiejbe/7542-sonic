@@ -67,6 +67,11 @@ bool NetworkManager::reconnect() {
 	return true;
 }
 
+void NetworkManager::disconnect()
+{
+	this->client->disconnectSocket();
+}
+
 void NetworkManager::stopConnectionHandlers() {
 	//set flag to force stop
 	WaitForSingleObject(this->recvThreadHandle, INFINITE);

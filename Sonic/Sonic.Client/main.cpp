@@ -89,7 +89,7 @@ int main(int argc, char* args[])
 
 		// Initialize menu
 		Menu menu = Menu();
-		int i = menu.showMenu("disconnect");
+		int i = menu.showMenu();
 		if (i == 2) { isRunning = false; }
 
 		// Connect. TODO: mejorar esto del i
@@ -180,20 +180,23 @@ int main(int argc, char* args[])
 				LOG(logINFO) << "El usuario ha solicitado la terminación del juego.";
 			}
 
+
 			if (input->isKeyDown(KEY_ESCAPE) || input->isKeyDown(KEY_Q)) {
-				i = menu.showMenu("connect");
+				i = menu.showMenu();
 				if (i == 1) //show disconnect menu
 				{
-					//disconnect logic
-					i = menu.showMenu("disconnect");
-					if (i == 0)
-					{
-						//connect logic
+					NetworkManager::getInstance().disconnect();
+
+					i = menu.showMenu();
+					if (i == 0) {
+						NetworkManager::getInstance().reconnect();
+						continue;
 					}
 				}
 				if (i == 2) { isRunning = false; }
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
 			}
+
 
 			double timeStep = stepTimer.getTicks() / 1000.;
 
