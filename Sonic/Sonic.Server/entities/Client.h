@@ -18,7 +18,7 @@ class Server;
 
 class Client {
 public:
-	Client(Server*, Player*);
+	Client(Server*);
 	~Client();
 	int getClientNumber();
 
@@ -31,6 +31,7 @@ public:
 	bool sendPlayersStatus();
 
 	Player* getPlayer();
+	void setPlayer(Player*);
 	Message* getLastMessage();
 
 	SOCKET getSocket();
@@ -53,13 +54,16 @@ private:
 	Server* server;
 	struct sockaddr_in address;
 	DWORD threadId;
-
+	HANDLE recvThreadHandle;
+	
 	//send handler
 	DWORD sendThreadId;
+	HANDLE sendThreadHandle;
 	static DWORD WINAPI runSendSocketHandler(void* args);
 	DWORD sendSocketHandler();
+	bool continueSending;
 
-	mutex clientMutex;
+	mutex playerMutex;
 };
 
 #endif

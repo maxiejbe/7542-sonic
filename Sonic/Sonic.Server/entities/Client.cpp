@@ -16,14 +16,24 @@ const char* MESSAGE_CLIENT_SEND_FILE_CONTENT_ERROR = "No se pudo enviar el conte
 const char* MESSAGE_CLIENT_SEND_MESSAGE_SUCCESS = "Se envió correctamente el mensaje ";
 
 
-Client::Client(Server* server, Player* player)
+Client::Client(Server* server)
 {
 	this->server = server;
 }
 
 Client::~Client()
 {
-	delete this->player;
+	if(this->player && this->player != nullptr) delete this->player;
+	
+	//terminate Threads
+	WaitForSingleObject(this->recvThreadHandle, INFINITE);
+	CloseHandle(this->recvThreadHandle);
+	this->recvThreadHandle = NULL;
+
+	this->continueSending = false;
+	WaitForSingleObject(this->sendThreadHandle, INFINITE);	
+	CloseHandle(this->sendThreadHandle);
+	this->sendThreadHandle = NULL;
 }
 
 int Client::getClientNumber()
@@ -55,12 +65,10 @@ bool Client::welcome(int clientNumber, Player* player)
 	int scrollSpeed = this->server->getConfiguration()->getScrollSpeed();
 	
 	//Player and last received message can handle reconnection
+	this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
 	if (player != nullptr) {
-		this->player = player;
+		this->player->copyFrom(*player);
 		this->player->setIsConnected(true);
-	}
-	else {
-		this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
 	}
 
 	this->lastReceivedMessage = nullptr;
@@ -81,8 +89,10 @@ bool Client::welcome(int clientNumber, Player* player)
 
 	this->server->addConnectedClients();
 
-	CreateThread(0, 0, runSocketHandler, (void*)this, 0, &this->threadId);
-	CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
+	this->recvThreadHandle = CreateThread(0, 0, runSocketHandler, (void*)this, 0, &this->threadId);
+	
+	this->continueSending = true;
+	this->sendThreadHandle = CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
 	return true;
 }
 
@@ -150,6 +160,11 @@ Player* Client::getPlayer()
 	return this->player;
 }
 
+void Client::setPlayer(Player * player)
+{
+	this->player = player;
+}
+
 Message * Client::getLastMessage()
 {
 	return this->lastReceivedMessage;
@@ -177,8 +192,8 @@ void Client::handleRecievedMessage(char* recievedMessage)
 }
 
 DWORD Client::socketHandler() {
-	char recievedMessage[1024];
-	int recievedMessageLen = 1024;
+	char recievedMessage[2048];
+	int recievedMessageLen = 2048;
 	int bytecount = INT_MAX;
 
 	while (bytecount > 0) {
@@ -208,12 +223,10 @@ DWORD WINAPI Client::runSendSocketHandler(void * args)
 
 DWORD Client::sendSocketHandler()
 {
-	while (true) {
+	while (this->continueSending) {
 		
-		if (!this->player->getIsConnected()) continue;
-		
+		if (this->player != nullptr && !this->player->getIsConnected()) continue;
 		PlayerController::update(this->getLastMessage(), this->getPlayer(), this->server->getCamera());
-		
 		this->sendPlayersStatus();
 		
 		Sleep(10); // VAMO LO PIBE

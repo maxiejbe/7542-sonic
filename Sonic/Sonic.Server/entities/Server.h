@@ -67,6 +67,9 @@ private:
 	int getAvailableIndex();
 	int getDisconnectedIndex();
 
+	/*Client getClient(int index);
+	void setClient(Client*);*/
+
 	void acceptClientConnection();
 	
 	vector<Player*> clientsPlayers();
@@ -84,8 +87,10 @@ private:
 	Configuration* config;
 	Scenario* scenario;
 
-	unordered_map<int, Client*> clients;
+	unordered_map<int, Client*> clients;	
+	vector<Client*> disconnectedClients;
 	Camera* camera;
+	//mutex clientMutex;
 };
 
 #endif

@@ -22,6 +22,11 @@ Server::~Server()
 		delete it->second;
 	}
 
+	for (vector<Client*>::iterator it = disconnectedClients.begin(); it != disconnectedClients.end(); ++it)
+	{
+		delete *it;
+	}
+
 	LOG(logINFO) << MESSAGE_SERVER_EXECUTION_END;
 }
 
@@ -145,9 +150,20 @@ int Server::getDisconnectedIndex()
 	return -1;
 }
 
+/*Client* Server::getClient(int index)
+{	
+	this->clientMutex.lock();
+	Client * clientPointer = this->clients[index];
+	Client client = *clientPointer;
+	this->clientMutex.unlock();
+
+	return client;
+	//return this->client;
+}*/
+
 void Server::acceptClientConnection()
 {
-	Client* client = new Client(this, nullptr);
+	Client* client = new Client(this);
 	if (!client->acceptSocket()) {
 		delete client;
 		return;
@@ -163,17 +179,21 @@ void Server::acceptClientConnection()
 
 	int clientNumber = index + 1;
 	Player* player = clients.count(index) && clients[index] != NULL ? clients[index]->getPlayer() : nullptr;
-	
+
+	Client * previousClient = nullptr;
+	if (player != nullptr) {
+		previousClient = clients[index];
+	}
+
 	if (!client->welcome(clientNumber, player)) {
 		delete client;
 		return;
 	}
 
-	if (player != nullptr) {
-		delete clients[index];
-	}
-
 	clients[index] = client;
+	if (previousClient != nullptr) {
+		this->disconnectedClients.push_back(previousClient);
+	}
 	/*this->connectedClients++;*/
 }
 
