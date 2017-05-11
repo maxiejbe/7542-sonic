@@ -12,6 +12,9 @@
 class Menu
 {
 public:
+
+	enum ConnectionStatus { CONNECTED, DISCONNECTED };
+
 	Menu();
 	~Menu();
 
@@ -29,6 +32,8 @@ private:
 	bool selected[OPCMENU];
 	SDL_Color color[OPCMENU];
 	int option;
+	ConnectionStatus connectionStatus;
+	bool enabled[OPCMENU];
 
 	void initMenu();
 	void initColorNameOptions();
@@ -36,6 +41,8 @@ private:
 	void updateAndRenderOptions();
 	void freeSurfaceMenus();
 	void changeSelectedOption();
+	int getNextOption(int, int);
+	void setEnabledOptions();
 };
 
 #endif // !MENU_H

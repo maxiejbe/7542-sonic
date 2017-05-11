@@ -64,7 +64,9 @@ int main(int argc, char* args[])
 	int reconnectionAttemp;
 	double reconnectionPause;
 	bool connectionLostAbort = false;
-	Banner reconnectionBanner;
+	Banner reconnectionBanner = Banner("Reconnecting", { 255,255,102 });
+	Banner waitingConnectionsBanner = Banner("Waiting for other connections", { 102,255,102 });
+	Banner errorServerBanner = Banner("Error server", { 255,255,255 });
 
 	Message * lastMessage = nullptr;
 
@@ -74,7 +76,7 @@ int main(int argc, char* args[])
 	localParser->parse(&serverConfig);
 
 	// Initialize network manager
-	NetworkManager networkManager = NetworkManager::getInstance();
+	//NetworkManager networkManager = NetworkManager::getInstance();
 
 	if (!SDLWindow::getInstance().create(window.getWidth(), window.getHeight()) || !Renderer::getInstance().create()) {
 		LOG(logERROR) << "Error al inicializar el juego!";
@@ -88,24 +90,24 @@ int main(int argc, char* args[])
 		// Initialize menu
 		Menu menu = Menu();
 		int i = menu.showMenu();
-		if (i == 1) { isRunning = false; }
+		if (i == 2) { isRunning = false; }
 
 		// Connect. TODO: mejorar esto del i
 		if (i == 0) {
 
 			// Connect to server
-			networkManager.startClient(StringUtils::convert(serverConfig.getHost()), serverConfig.getPortNumber());
+			NetworkManager::getInstance().startClient(StringUtils::convert(serverConfig.getHost()), serverConfig.getPortNumber());
 
-			while (networkManager.getPlayerNumber() < 0) {
+			while (NetworkManager::getInstance().getPlayerNumber() < 0) {
 				Sleep(3000);
 			}
 
-			while (networkManager.getFileContent().empty()) {
+			while (NetworkManager::getInstance().getFileContent().empty()) {
 				Sleep(3000);
 			}
 
 			// Parse scenario
-			parser = new Parser(configPath, networkManager.getFileContent());
+			parser = new Parser(configPath, NetworkManager::getInstance().getFileContent());
 			parser->parse(&scenario);
 
 			scenarioWidth = scenario.getWidth();
@@ -136,27 +138,30 @@ int main(int argc, char* args[])
 				layerView->loadLayer();
 			}
 
-			/* Comentar esto para probar el juego, hasta que este el banner. */
-			while (!networkManager.canStartGame()) {
-				//TODO: mostrar banner de "esperando que se conecte el resto"
+			// Show waiting banner
+			if (!NetworkManager::getInstance().canStartGame()) {
+				waitingConnectionsBanner.showBanner();
+				SDL_RenderPresent(Renderer::getInstance().gRenderer);
 
-				Sleep(3000);
+				while (!NetworkManager::getInstance().canStartGame()) {
+					Sleep(1000);
+				}
 			}
 		}
 
 		while (isRunning) {
 
-			if (!networkManager.online()) {
+			if (!NetworkManager::getInstance().online()) {
 				double reconnetionTimeStep = stepTimer.getTicks() / 1000.;
 				reconnectionAttemp = 1;
 				bool reconnected = false;
-				while (!networkManager.online() && reconnectionAttemp <= 3) {
+				while (!NetworkManager::getInstance().online() && reconnectionAttemp <= 3) {
 					reconnectionBanner.showBanner();
 					SDL_RenderPresent(Renderer::getInstance().gRenderer);
 
 					double currentTime = stepTimer.getTicks() / 1000.;
 					if ((currentTime - reconnetionTimeStep) > 5) {
-						reconnected = networkManager.reconnect();
+						reconnected = NetworkManager::getInstance().reconnect();
 						reconnectionAttemp++;
 						reconnetionTimeStep = stepTimer.getTicks() / 1000.;
 					}
@@ -175,11 +180,23 @@ int main(int argc, char* args[])
 				LOG(logINFO) << "El usuario ha solicitado la terminación del juego.";
 			}
 
+
 			if (input->isKeyDown(KEY_ESCAPE) || input->isKeyDown(KEY_Q)) {
 				i = menu.showMenu();
-				if (i == 1) { isRunning = false; }
+				if (i == 1) //show disconnect menu
+				{
+					NetworkManager::getInstance().disconnect();
+
+					i = menu.showMenu();
+					if (i == 0) {
+						NetworkManager::getInstance().reconnect();
+						continue;
+					}
+				}
+				if (i == 2) { isRunning = false; }
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
 			}
+
 
 			double timeStep = stepTimer.getTicks() / 1000.;
 
@@ -196,11 +213,11 @@ int main(int argc, char* args[])
 			Message* message = new Message(timeStep, isKPLeft, isKPSpace, isKPRight, isKPUp, isKULeft, isKURight, isKUSpace);
 
 			if (lastMessage == nullptr) {
-				networkManager.sendMessage(message);
+				NetworkManager::getInstance().sendMessage(message);
 				lastMessage = message;
 			}
 			else if (!lastMessage->equals(*message)) {
-				networkManager.sendMessage(message);
+				NetworkManager::getInstance().sendMessage(message);
 				delete lastMessage;
 				lastMessage = message;
 			}
@@ -211,13 +228,13 @@ int main(int argc, char* args[])
 			stepTimer.start();
 
 			// Initialize player
-			PlayerView* playerView = networkManager.getOwnPlayerView();
+			PlayerView* playerView = NetworkManager::getInstance().getOwnPlayerView();
 			Player* player = nullptr;
 			if (playerView != nullptr) {
 				player = playerView->getPlayer();
 			}
 
-			cameraModel = networkManager.getCamera();
+			cameraModel = NetworkManager::getInstance().getCamera();
 			if (cameraModel) {
 				camera.x = cameraModel->getPosition().x;
 				camera.y = cameraModel->getPosition().y;
@@ -241,7 +258,7 @@ int main(int argc, char* args[])
 
 			// Render players
 			// TODO: MUTEX HERE?!?!?!
-			unordered_map<int, PlayerView*> playerViews = networkManager.getPlayerViews();
+			unordered_map<int, PlayerView*> playerViews = NetworkManager::getInstance().getPlayerViews();
 			if (!playerViews.empty()) {
 				for (unordered_map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it) {
 					it->second->render(camera.x, camera.y);

@@ -11,19 +11,20 @@
 class Banner
 {
 public:
-	Banner();
+	Banner(string text, SDL_Color color);
 	~Banner();
 
 	void showBanner();
 	void freeSurfaceBanner();
 
-private:
+protected:
 	TTF_Font* font;
 	Texture image;
 	Texture background;
 	float posX, posY;
 	SDL_Color color;
 	SDL_Surface* message;
+	string text;
 
 };
 

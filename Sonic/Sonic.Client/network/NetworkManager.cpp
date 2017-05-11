@@ -15,7 +15,7 @@ NetworkManager::~NetworkManager()
 		if (it->second) delete it->second;
 	}
 
-	if (this->camera) delete this->camera;
+	if (this->camera != nullptr) delete this->camera;
 }
 
 void NetworkManager::close()
@@ -65,6 +65,11 @@ bool NetworkManager::reconnect() {
 	//reconnection success
 	this->startConnectionHandlers();
 	return true;
+}
+
+void NetworkManager::disconnect()
+{
+	this->client->disconnectSocket();
 }
 
 void NetworkManager::stopConnectionHandlers() {
