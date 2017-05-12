@@ -136,9 +136,11 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		this->fileContent = sMessage->getFileContent();
 		break;
 	case start_game:
-		clientResponse->setType(MessageType::start_game_ok);
-		this->sendMessage(clientResponse);
-		this->startGame = true;
+		if (!this->startGame) {
+			clientResponse->setType(MessageType::start_game_ok);
+			this->sendMessage(clientResponse);
+			this->startGame = true;
+		}
 		break;
 	default:
 		LOG(logERROR) << "Network Manager: Mensaje invalido -> " << receivedMessage;

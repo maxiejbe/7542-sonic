@@ -68,6 +68,7 @@ bool Client::welcome(int clientNumber, Player* player)
 	this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
 	if (player != nullptr) {
 		this->player->copyFrom(*player);
+		//this->player = player;
 		this->player->setIsConnected(true);
 	}
 
@@ -245,7 +246,7 @@ DWORD Client::sendSocketHandler()
 {
 	while (this->continueSending) {
 		
-		if (this->player != nullptr && !this->player->getIsConnected()) continue;
+		if (this->player == nullptr || !this->player->getIsConnected()) continue;
 		if (this->getLastMessage()->getType() != MessageType::status) continue;
 
 		PlayerController::update(this->getLastMessage(), this->getPlayer(), this->server->getCamera());
