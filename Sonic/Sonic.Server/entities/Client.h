@@ -28,6 +28,7 @@ public:
 	
 	bool sendClientNumber();
 	bool sendFileContent();
+	bool sendGameStart();
 	bool sendPlayersStatus();
 
 	Player* getPlayer();

@@ -211,6 +211,7 @@ int main(int argc, char* args[])
 			bool isKUSpace = input->isKeyUp(KEY_SPACE);
 
 			Message* message = new Message(timeStep, isKPLeft, isKPSpace, isKPRight, isKPUp, isKULeft, isKURight, isKUSpace);
+			message->setType(MessageType::status);
 
 			if (lastMessage == nullptr) {
 				NetworkManager::getInstance().sendMessage(message);

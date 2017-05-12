@@ -79,20 +79,8 @@ bool Client::welcome(int clientNumber, Player* player)
 		return false;
 	}
 
-	Sleep(100);
-
-	if (!this->sendFileContent()) {
-		return false;
-	}
-
-	Sleep(3000);
-
-	this->server->addConnectedClients();
-
 	this->recvThreadHandle = CreateThread(0, 0, runSocketHandler, (void*)this, 0, &this->threadId);
 	
-	this->continueSending = true;
-	this->sendThreadHandle = CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
 	return true;
 }
 
@@ -155,6 +143,23 @@ bool Client::sendPlayersStatus()
 	return true;
 }
 
+bool Client::sendGameStart()
+{
+	int bytecount;
+
+	ServerMessage* message = new ServerMessage();
+	message->setType(ServerMessageType::start_game);
+	char* serializedMessage = StringUtils::convert(message->serialize());
+	delete message;
+
+	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
+		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
+			<< " (Cliente " << this->getClientNumber() << ")";
+		return false;
+	}
+	return true;
+}
+
 Player* Client::getPlayer()
 {
 	return this->player;
@@ -186,9 +191,24 @@ void Client::handleRecievedMessage(char* recievedMessage)
 	Message* message = new Message();
 	message->fromJson(strMessage);
 
-	if (this->lastReceivedMessage != nullptr) delete this->lastReceivedMessage;
-
-	this->lastReceivedMessage = message;
+	switch (message->getType())
+	{
+		case player_assign_ok:
+			sendFileContent();
+			break;
+		case content_ok:
+			this->server->addConnectedClients();
+			break;
+		case start_game_ok:
+			this->continueSending = true;
+			this->sendThreadHandle = CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
+		case status:
+			if (this->lastReceivedMessage != nullptr) delete this->lastReceivedMessage;
+			this->lastReceivedMessage = message;
+			break;
+		default:
+			break;
+	}
 }
 
 DWORD Client::socketHandler() {
@@ -226,10 +246,12 @@ DWORD Client::sendSocketHandler()
 	while (this->continueSending) {
 		
 		if (this->player != nullptr && !this->player->getIsConnected()) continue;
+		if (this->getLastMessage()->getType() != MessageType::status) continue;
+
 		PlayerController::update(this->getLastMessage(), this->getPlayer(), this->server->getCamera());
 		this->sendPlayersStatus();
 		
-		Sleep(10); // VAMO LO PIBE
+		Sleep(15);
 	}
 
 	return 0;

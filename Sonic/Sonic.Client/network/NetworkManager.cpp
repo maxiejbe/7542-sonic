@@ -116,10 +116,14 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		return;
 	}
 
+	Message* clientResponse = new Message();
+
 	switch (sMessage->getType()) {
 	case player_assign:
 		LOG(logINFO) << "Network Manager: Assignación de numero de usuario -> " << sMessage->getPlayerNumber();
-		//TODO: MUTEX HERE
+		clientResponse->setType(MessageType::player_assign_ok);
+		this->sendMessage(clientResponse);
+
 		this->playerNumber = sMessage->getPlayerNumber();
 		break;
 	case players_status:
@@ -127,9 +131,13 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		this->updateCamera(sMessage->getCamera());
 		break;
 	case content:
+		clientResponse->setType(MessageType::content_ok);
+		this->sendMessage(clientResponse);
 		this->fileContent = sMessage->getFileContent();
 		break;
 	case start_game:
+		clientResponse->setType(MessageType::start_game_ok);
+		this->sendMessage(clientResponse);
 		this->startGame = true;
 		break;
 	default:
@@ -137,6 +145,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		break;
 	}
 
+	delete clientResponse;
 	delete sMessage;
 }
 
@@ -166,12 +175,11 @@ void NetworkManager::sendMessage(Message* message)
 	//Serialize message before sending to server
 	string stringMessage = message->serialize();
 
-	if (this->client->sendMessage(stringMessage)) {
-		//LOG(logINFO) << "Network Manager: Se envio mensaje -> " << stringMessage;
-	}
-	else {
+	if (!this->client->sendMessage(stringMessage)) {
 		LOG(logERROR) << "Network Manager: Falló envio de mensaje -> " << stringMessage;
 	}
+	
+	//LOG(logINFO) << "Network Manager: Se envio mensaje -> " << stringMessage;
 }
 
 unordered_map<int, PlayerView*> NetworkManager::getPlayerViews()

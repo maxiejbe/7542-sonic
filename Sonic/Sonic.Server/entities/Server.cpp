@@ -150,17 +150,6 @@ int Server::getDisconnectedIndex()
 	return -1;
 }
 
-/*Client* Server::getClient(int index)
-{	
-	this->clientMutex.lock();
-	Client * clientPointer = this->clients[index];
-	Client client = *clientPointer;
-	this->clientMutex.unlock();
-
-	return client;
-	//return this->client;
-}*/
-
 void Server::acceptClientConnection()
 {
 	Client* client = new Client(this);
@@ -194,7 +183,6 @@ void Server::acceptClientConnection()
 	if (previousClient != nullptr) {
 		this->disconnectedClients.push_back(previousClient);
 	}
-	/*this->connectedClients++;*/
 }
 
 void Server::removeClientConnection(int clientNumber)
@@ -203,8 +191,6 @@ void Server::removeClientConnection(int clientNumber)
 	Client* client = clients[index];
 	client->closeSocket();
 	
-	//delete client;
-	//clients.erase(index);
 	client->getPlayer()->setIsConnected(false);
 	
 	this->connectedClients--;
@@ -213,6 +199,12 @@ void Server::removeClientConnection(int clientNumber)
 void Server::addConnectedClients()
 {
 	this->connectedClients++;
+
+	//Max connections reached!
+	if (this->connectedClients == this->serverConfig->getMaxAllowedClients())
+	{
+		this->sendBroadcast();
+	}
 }
 
 SOCKET Server::getSocket()
@@ -248,8 +240,7 @@ Camera * Server::getCamera()
 void Server::waitForClientConnections()
 {
 	bool keepWaiting = true;
-	bool startNotificationSent = false;
-
+	
 	LOG(logINFO) << MESSAGE_SERVER_WAITING_CONNECTIONS;
 
 	while (keepWaiting) {
@@ -258,35 +249,17 @@ void Server::waitForClientConnections()
 		{
 			this->acceptClientConnection();
 		}
-
-		//Max connections reached!
-		if (!startNotificationSent && this->connectedClients == this->serverConfig->getMaxAllowedClients())
-		{
-			ServerMessage* message = new ServerMessage();
-			message->setType(ServerMessageType::start_game);
-			char* serializedMessage = StringUtils::convert(message->serialize());
-			delete message;
-
-			this->sendBroadcast(serializedMessage);
-			Sleep(1000);
-			startNotificationSent = true;
-		}
 	}
 }
 
-void Server::sendBroadcast(char* serializedMessage)
+void Server::sendBroadcast()
 {
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
 		int bytecount;
 		//If client is not connected, just set to false
 		if (!it->second->getPlayer()->getIsConnected()) continue;
 
-		if ((bytecount = send(it->second->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
-			LOG(logERROR) << MESSAGE_SERVER_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_SERVER_SEND_MESSAGE_ERROR << WSAGetLastError()
-				<< " (Cliente " << it->second->getClientNumber() << ")";
-			continue;
-		}
-		//LOG(logINFO) << MESSAGE_SERVER_SEND_MESSAGE_SUCCESS << message << " (Cliente " << it->second->getClientNumber() << ")";
+		it->second->sendGameStart();
 	}
 }
 
