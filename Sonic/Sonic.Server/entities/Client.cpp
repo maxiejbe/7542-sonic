@@ -146,6 +146,9 @@ bool Client::sendPlayersStatus()
 
 bool Client::sendGameStart()
 {
+	//if send game notification was sent, don't send it again
+	if (this->gameStartSent) return true;
+
 	int bytecount;
 
 	ServerMessage* message = new ServerMessage();
@@ -158,6 +161,10 @@ bool Client::sendGameStart()
 			<< " (Cliente " << this->getClientNumber() << ")";
 		return false;
 	}
+
+	//set flag
+	this->gameStartSent = true;
+
 	return true;
 }
 

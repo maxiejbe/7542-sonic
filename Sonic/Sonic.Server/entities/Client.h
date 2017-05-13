@@ -50,6 +50,7 @@ private:
 	int clientNumber;
 	Player* player;
 	Message * lastReceivedMessage;
+	bool gameStartSent;
 
 	SOCKET socket;
 	Server* server;
