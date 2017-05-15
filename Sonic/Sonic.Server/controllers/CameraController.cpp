@@ -62,7 +62,7 @@ bool CameraController::arePlayersInBothBorders(Camera * camera, vector<Player*> 
 	while (it != players.end()) {
 		Player* currentPlayer = (*it);
 
-		int rightBorder = camera->getPosition().x + camera->getScreenHeight() - RIGHT_BORDER_WIDTH;
+		int rightBorder = camera->getPosition().x + camera->getScreenWidth() - RIGHT_BORDER_WIDTH;
 		int leftBorder = camera->getPosition().x + LEFT_BORDER_WIDTH;
 
 		if (currentPlayer->getPosition().x > rightBorder && currentPlayer->getIsConnected())
