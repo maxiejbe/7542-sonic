@@ -79,19 +79,19 @@ void ServerMessage::unserialize(Value* nodeRef)
 	parseInt((int*)&type, typeless, nodeRef, SERVER_MESSAGE_TYPE_NODE, Validator::intGreaterThanOrEqualToZero);
 	switch (this->type)
 	{
-	case player_assign:
-		//player number
-		parseInt(&playerNumber, -1, nodeRef, SERVER_MESSAGE_PLAYER_NUMBER_NODE, Validator::intGreaterThanOrEqualToZero);
-		break;
-	case players_status:
-		parsePlayersStatus(nodeRef);
-		parseCameraStatus(nodeRef);
-		break;
-	case content:
-		parseString(&this->fileContent, "", nodeRef, SERVER_MESSAGE_FILE_CONTENT_NODE);
-		break;
-	default:
-		break;
+		case player_assign:
+			//player number
+			parseInt(&playerNumber, -1, nodeRef, SERVER_MESSAGE_PLAYER_NUMBER_NODE, Validator::intGreaterThanOrEqualToZero);
+			break;
+		case players_status:
+			parsePlayersStatus(nodeRef);
+			parseCameraStatus(nodeRef);
+			break;
+		case content:
+			parseString(&this->fileContent, "", nodeRef, SERVER_MESSAGE_FILE_CONTENT_NODE);
+			break;
+		default:
+			break;
 	}
 }
 
@@ -116,18 +116,18 @@ string ServerMessage::serialize()
 	//player number
 	switch (this->type)
 	{
-	case player_assign:
-		writer.String(SERVER_MESSAGE_PLAYER_NUMBER_NODE);
-		writer.Int(this->playerNumber);
-		break;
-	case players_status:
-		this->serializePlayers(writer);
-		this->serializeCamera(writer);
-	case content:
-		writer.String(SERVER_MESSAGE_FILE_CONTENT_NODE);
-		writer.String(this->fileContent.c_str());
-	default:
-		break;
+		case player_assign:
+			writer.String(SERVER_MESSAGE_PLAYER_NUMBER_NODE);
+			writer.Int(this->playerNumber);
+			break;
+		case players_status:
+			this->serializePlayers(writer);
+			this->serializeCamera(writer);
+		case content:
+			writer.String(SERVER_MESSAGE_FILE_CONTENT_NODE);
+			writer.String(this->fileContent.c_str());
+		default:
+			break;
 	}
 
 	writer.EndObject();

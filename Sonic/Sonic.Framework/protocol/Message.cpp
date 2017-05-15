@@ -1,5 +1,6 @@
 #include "Message.h"
 
+const char* MESSAGE_TYPE_NODE = "t";
 const char* MESSAGE_TIME_STEP_NODE = "dt";
 const char* MESSAGE_KEY_PRESSED_LEFT_NODE = "klp";
 const char* MESSAGE_KEY_PRESSED_SPACE_NODE = "ksp";
@@ -23,6 +24,16 @@ Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool 
 	this->isKULeft = isKULeft;
 	this->isKURight = isKURight;
 	this->isKUSpace = isKUSpace;
+}
+
+void Message::setType(MessageType type)
+{
+	this->type = type;
+}
+
+MessageType Message::getType()
+{
+	return this->type;
 }
 
 double Message::getTimeStep()
@@ -83,16 +94,25 @@ bool Message::equals(Message & message)
 
 void Message::unserialize(Value * nodeRef)
 {
-	//Time step
-	parseDouble(&dt, 0, nodeRef, MESSAGE_TIME_STEP_NODE);
-	//keys
-	parseBool(&isKPLeft, false, nodeRef, MESSAGE_KEY_PRESSED_LEFT_NODE);
-	parseBool(&isKPRight, false, nodeRef, MESSAGE_KEY_PRESSED_RIGHT_NODE);
-	parseBool(&isKPSpace, false, nodeRef, MESSAGE_KEY_PRESSED_SPACE_NODE);
-	parseBool(&isKPUp, false, nodeRef, MESSAGE_KEY_PRESSED_UP_NODE);
-	parseBool(&isKULeft, false, nodeRef, MESSAGE_KEY_UNPRESSED_LEFT_NODE);
-	parseBool(&isKURight, false, nodeRef, MESSAGE_KEY_UNPRESSED_RIGHT_NODE);
-	parseBool(&isKUSpace, false, nodeRef, MESSAGE_KEY_UNPRESSED_SPACE_NODE);
+	parseInt((int*)&type, no_type, nodeRef, MESSAGE_TYPE_NODE, Validator::intGreaterThanOrEqualToZero);
+
+	switch (this->type)
+	{
+		case status:
+			//Time step
+			parseDouble(&dt, 0, nodeRef, MESSAGE_TIME_STEP_NODE);
+			//keys
+			parseBool(&isKPLeft, false, nodeRef, MESSAGE_KEY_PRESSED_LEFT_NODE);
+			parseBool(&isKPRight, false, nodeRef, MESSAGE_KEY_PRESSED_RIGHT_NODE);
+			parseBool(&isKPSpace, false, nodeRef, MESSAGE_KEY_PRESSED_SPACE_NODE);
+			parseBool(&isKPUp, false, nodeRef, MESSAGE_KEY_PRESSED_UP_NODE);
+			parseBool(&isKULeft, false, nodeRef, MESSAGE_KEY_UNPRESSED_LEFT_NODE);
+			parseBool(&isKURight, false, nodeRef, MESSAGE_KEY_UNPRESSED_RIGHT_NODE);
+			parseBool(&isKUSpace, false, nodeRef, MESSAGE_KEY_UNPRESSED_SPACE_NODE);
+			break;
+		default:
+			break;
+	}
 }
 
 char * Message::getNodeName()
@@ -110,21 +130,33 @@ string Message::serialize()
 
 void Message::performSerialization(Writer<StringBuffer>& writer) {
 	writer.StartObject();
-	writer.String(MESSAGE_TIME_STEP_NODE);
-	writer.Double(this->dt);
-	writer.String(MESSAGE_KEY_PRESSED_LEFT_NODE);
-	writer.Bool(this->isKPLeft);
-	writer.String(MESSAGE_KEY_PRESSED_SPACE_NODE);
-	writer.Bool(this->isKPSpace);
-	writer.String(MESSAGE_KEY_PRESSED_RIGHT_NODE);
-	writer.Bool(this->isKPRight);
-	writer.String(MESSAGE_KEY_PRESSED_UP_NODE);
-	writer.Bool(this->isKPUp);
-	writer.String(MESSAGE_KEY_UNPRESSED_LEFT_NODE);
-	writer.Bool(this->isKULeft);
-	writer.String(MESSAGE_KEY_UNPRESSED_RIGHT_NODE);
-	writer.Bool(this->isKURight);
-	writer.String(MESSAGE_KEY_UNPRESSED_SPACE_NODE);
-	writer.Bool(this->isKUSpace);
+	
+	writer.String(MESSAGE_TYPE_NODE);
+	writer.Int(this->type);
+	
+	//player number
+	switch (this->type)
+	{
+		case status:
+			writer.String(MESSAGE_TIME_STEP_NODE);
+			writer.Double(this->dt);
+			writer.String(MESSAGE_KEY_PRESSED_LEFT_NODE);
+			writer.Bool(this->isKPLeft);
+			writer.String(MESSAGE_KEY_PRESSED_SPACE_NODE);
+			writer.Bool(this->isKPSpace);
+			writer.String(MESSAGE_KEY_PRESSED_RIGHT_NODE);
+			writer.Bool(this->isKPRight);
+			writer.String(MESSAGE_KEY_PRESSED_UP_NODE);
+			writer.Bool(this->isKPUp);
+			writer.String(MESSAGE_KEY_UNPRESSED_LEFT_NODE);
+			writer.Bool(this->isKULeft);
+			writer.String(MESSAGE_KEY_UNPRESSED_RIGHT_NODE);
+			writer.Bool(this->isKURight);
+			writer.String(MESSAGE_KEY_UNPRESSED_SPACE_NODE);
+			writer.Bool(this->isKUSpace);
+
+		default:
+			break;
+	}
 	writer.EndObject();
 }

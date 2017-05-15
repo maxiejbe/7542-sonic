@@ -141,9 +141,18 @@ bool SocketClient::initializeSocket()
 	this->_socket = socket(addressInfo->ai_family, addressInfo->ai_socktype, addressInfo->ai_protocol);
 	if (this->_socket == INVALID_SOCKET) {
 		//TODO: Log in file
-		this->freeResources();
 		return false;
 	}
+
+	//Set recv and send timeouts to 10 seconds
+	struct timeval toRecv, toSend;
+	toRecv.tv_sec = 20;
+	toRecv.tv_usec = 0;
+	//toSend.tv_sec = 10;
+
+	//if (setsockopt(this->_socket, SOL_SOCKET, SO_RCVTIMEO, (const char *)&toRecv, sizeof(toRecv)) == SOCKET_ERROR) return false;
+	//if (setsockopt(this->_socket, SOL_SOCKET, SO_SNDTIMEO, (const char *)&toSend, sizeof(toRecv)) == SOCKET_ERROR) return false;
+
 
 	return true;
 }

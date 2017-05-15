@@ -23,6 +23,8 @@ public:
 	bool sendMessage(string message);
 	bool receiveMessage(char * receivedMessage, int receivedMessageLength);
 	bool checkConnection();
+
+	void disconnectSocket();
 private:
 	SOCKET _socket;
 	char* host;
@@ -38,8 +40,6 @@ private:
 
 	/* SOCKET CONNECTION*/
 	void connectToSocket();
-
-	void disconnectSocket();
 	void freeResources();
 };
 

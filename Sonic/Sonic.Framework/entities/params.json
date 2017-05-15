@@ -1,8 +1,8 @@
 {
   "servidor": {
-    "host": "127.0.0.1",
+    "host":  "192.168.1.1",
     "puerto": 5000,
-    "maxima_cantidad_conexiones": 2
+    "maxima_cantidad_conexiones": 1
   },
   "ventana": {
     "dimensiones": {

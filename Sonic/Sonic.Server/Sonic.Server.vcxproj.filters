@@ -24,9 +24,6 @@
     <ClCompile Include="entities\Server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="entities\common\ServerConfiguration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="utils\SocketUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,9 +39,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="entities\Server.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entities\common\ServerConfiguration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utils\SocketUtils.h">

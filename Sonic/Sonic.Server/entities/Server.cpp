@@ -22,6 +22,11 @@ Server::~Server()
 		delete it->second;
 	}
 
+	for (vector<Client*>::iterator it = disconnectedClients.begin(); it != disconnectedClients.end(); ++it)
+	{
+		delete *it;
+	}
+
 	LOG(logINFO) << MESSAGE_SERVER_EXECUTION_END;
 }
 
@@ -61,8 +66,6 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 	}
 
 	LOG(logINFO) << MESSAGE_STARTING_SERVER_OK << SocketUtils::getIpFromAddress(this->address) << ":" << this->portNumber;
-
-	CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
 
 	this->isValid = true;
 }
@@ -149,7 +152,7 @@ int Server::getDisconnectedIndex()
 
 void Server::acceptClientConnection()
 {
-	Client* client = new Client(this, nullptr);
+	Client* client = new Client(this);
 	if (!client->acceptSocket()) {
 		delete client;
 		return;
@@ -164,19 +167,22 @@ void Server::acceptClientConnection()
 	}
 
 	int clientNumber = index + 1;
-	Player* player = clients.count(index) ? clients[index]->getPlayer() : nullptr;
-	
+	Player* player = clients.count(index) && clients[index] != NULL ? clients[index]->getPlayer() : nullptr;
+
+	Client * previousClient = nullptr;
+	if (player != nullptr) {
+		previousClient = clients[index];
+	}
+
 	if (!client->welcome(clientNumber, player)) {
 		delete client;
 		return;
 	}
 
-	if (player == nullptr) {
-		delete clients[index];
-	}
-
 	clients[index] = client;
-	this->connectedClients++;
+	if (previousClient != nullptr) {
+		this->disconnectedClients.push_back(previousClient);
+	}
 }
 
 void Server::removeClientConnection(int clientNumber)
@@ -185,11 +191,20 @@ void Server::removeClientConnection(int clientNumber)
 	Client* client = clients[index];
 	client->closeSocket();
 	
-	//delete client;
-	//clients.erase(index);
 	client->getPlayer()->setIsConnected(false);
 	
 	this->connectedClients--;
+}
+
+void Server::addConnectedClients()
+{
+	this->connectedClients++;
+
+	//Max connections reached!
+	if (this->connectedClients == this->serverConfig->getMaxAllowedClients())
+	{
+		this->sendBroadcast();
+	}
 }
 
 SOCKET Server::getSocket()
@@ -217,21 +232,15 @@ Scenario * Server::getScenario()
 	return this->scenario;
 }
 
-void Server::lock()
+Camera * Server::getCamera()
 {
-	this->serverMutex.lock();
-}
-
-void Server::unlock()
-{
-	this->serverMutex.unlock();
+	return this->camera;
 }
 
 void Server::waitForClientConnections()
 {
 	bool keepWaiting = true;
-	bool startNotificationSent = false;
-
+	
 	LOG(logINFO) << MESSAGE_SERVER_WAITING_CONNECTIONS;
 
 	while (keepWaiting) {
@@ -240,41 +249,18 @@ void Server::waitForClientConnections()
 		{
 			this->acceptClientConnection();
 		}
-
-		//Max connections reached!
-		if (!startNotificationSent && this->connectedClients == this->serverConfig->getMaxAllowedClients())
-		{
-			ServerMessage* message = new ServerMessage();
-			message->setType(ServerMessageType::start_game);
-			char* serializedMessage = StringUtils::convert(message->serialize());
-			delete message;
-
-			this->sendBroadcast(serializedMessage);
-
-			startNotificationSent = true;
-		}
 	}
 }
 
-void Server::sendBroadcast(char* serializedMessage)
+void Server::sendBroadcast()
 {
-	this->lock();
-
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
 		int bytecount;
 		//If client is not connected, just set to false
 		if (!it->second->getPlayer()->getIsConnected()) continue;
 
-		if ((bytecount = send(it->second->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
-			LOG(logERROR) << MESSAGE_SERVER_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_SERVER_ERROR_CODE << WSAGetLastError()
-				<< " (Cliente " << it->second->getClientNumber() << ")";
-			continue;
-		}
-
-		//LOG(logINFO) << MESSAGE_SERVER_SEND_MESSAGE_SUCCESS << message << " (Cliente " << it->second->getClientNumber() << ")";
+		it->second->sendGameStart();
 	}
-
-	this->unlock();
 }
 
 bool Server::validate()
@@ -309,29 +295,4 @@ vector<Player*> Server::clientsPlayers()
 	}
 
 	return clientPlayers;
-}
-
-DWORD WINAPI Server::runSendSocketHandler(void * args)
-{
-	Server * server = (Server*)args;
-	return server->sendSocketHandler();
-}
-
-DWORD Server::sendSocketHandler()
-{
-	while (true) {
-		for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
-		{
-			PlayerController::update(it->second->getLastMessage(), it->second->getPlayer(), this->camera);
-		}
-
-		ServerMessage * message = this->getPlayersStatusMessage();
-		char * serializedMessage = StringUtils::convert(message->serialize());
-		delete message;
-
-		this->sendBroadcast(serializedMessage);
-		Sleep(15);
-	}
-
-	return 0;
 }

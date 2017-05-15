@@ -19,7 +19,7 @@
 #include "entities/Window.h"
 #include "entities/Configuration.h"
 #include "entities/Scenario.h"
-#include "common/ServerConfiguration.h"
+#include "entities/ServerConfiguration.h"
 #include "../controllers/CameraController.h"
 
 #include <mutex>
@@ -39,8 +39,10 @@ public:
 	Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario, Camera * camera);
 	bool validate();
 	void waitForClientConnections();
-	void sendBroadcast(char*);
+	void sendBroadcast();
 	void removeClientConnection(int clientNumber);
+
+	void addConnectedClients();
 
 	SOCKET getSocket();
 	string getFileContent();
@@ -49,8 +51,9 @@ public:
 	Configuration* getConfiguration();
 	Scenario* getScenario();
 
-	void lock();
-	void unlock();
+	Camera* getCamera();
+
+	ServerMessage* getPlayersStatusMessage();
 private:
 	/*
 	Initialize socket support WINDOWS ONLY!
@@ -64,9 +67,11 @@ private:
 	int getAvailableIndex();
 	int getDisconnectedIndex();
 
-	void acceptClientConnection();
-	ServerMessage* getPlayersStatusMessage();
+	/*Client getClient(int index);
+	void setClient(Client*);*/
 
+	void acceptClientConnection();
+	
 	vector<Player*> clientsPlayers();
 
 	bool isValid;
@@ -82,15 +87,10 @@ private:
 	Configuration* config;
 	Scenario* scenario;
 
-	unordered_map<int, Client*> clients;
+	unordered_map<int, Client*> clients;	
+	vector<Client*> disconnectedClients;
 	Camera* camera;
-
-	mutex serverMutex;
-
-	//send handler
-	DWORD sendThreadId;
-	static DWORD WINAPI runSendSocketHandler(void* args);
-	DWORD sendSocketHandler();
+	//mutex clientMutex;
 };
 
 #endif

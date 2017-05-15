@@ -15,7 +15,7 @@ NetworkManager::~NetworkManager()
 		if (it->second) delete it->second;
 	}
 
-	if (this->camera) delete this->camera;
+	if (this->camera != nullptr) delete this->camera;
 }
 
 void NetworkManager::close()
@@ -67,6 +67,11 @@ bool NetworkManager::reconnect() {
 	return true;
 }
 
+void NetworkManager::disconnect()
+{
+	this->client->disconnectSocket();
+}
+
 void NetworkManager::stopConnectionHandlers() {
 	//set flag to force stop
 	WaitForSingleObject(this->recvThreadHandle, INFINITE);
@@ -111,10 +116,14 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		return;
 	}
 
+	Message* clientResponse = new Message();
+
 	switch (sMessage->getType()) {
 	case player_assign:
 		LOG(logINFO) << "Network Manager: Assignación de numero de usuario -> " << sMessage->getPlayerNumber();
-		//TODO: MUTEX HERE
+		clientResponse->setType(MessageType::player_assign_ok);
+		this->sendMessage(clientResponse);
+
 		this->playerNumber = sMessage->getPlayerNumber();
 		break;
 	case players_status:
@@ -122,16 +131,23 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		this->updateCamera(sMessage->getCamera());
 		break;
 	case content:
+		clientResponse->setType(MessageType::content_ok);
+		this->sendMessage(clientResponse);
 		this->fileContent = sMessage->getFileContent();
 		break;
 	case start_game:
+		//if (!this->startGame) {
+		clientResponse->setType(MessageType::start_game_ok);
+		this->sendMessage(clientResponse);
 		this->startGame = true;
+		//}
 		break;
 	default:
 		LOG(logERROR) << "Network Manager: Mensaje invalido -> " << receivedMessage;
 		break;
 	}
 
+	delete clientResponse;
 	delete sMessage;
 }
 
@@ -161,12 +177,11 @@ void NetworkManager::sendMessage(Message* message)
 	//Serialize message before sending to server
 	string stringMessage = message->serialize();
 
-	if (this->client->sendMessage(stringMessage)) {
-		//LOG(logINFO) << "Network Manager: Se envio mensaje -> " << stringMessage;
-	}
-	else {
+	if (!this->client->sendMessage(stringMessage)) {
 		LOG(logERROR) << "Network Manager: Falló envio de mensaje -> " << stringMessage;
 	}
+	
+	//LOG(logINFO) << "Network Manager: Se envio mensaje -> " << stringMessage;
 }
 
 unordered_map<int, PlayerView*> NetworkManager::getPlayerViews()

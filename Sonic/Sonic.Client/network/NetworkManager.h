@@ -22,6 +22,7 @@ public:
 	bool startClient(char * host, int port);
 	bool online();
 	bool reconnect();
+	void disconnect();
 	void sendMessage(Message * message);
 	Camera * getCamera();
 	unordered_map<int, PlayerView*> getPlayerViews();

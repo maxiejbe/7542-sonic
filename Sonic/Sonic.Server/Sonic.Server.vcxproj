@@ -159,7 +159,6 @@
     <ClCompile Include="controllers\CameraController.cpp" />
     <ClCompile Include="controllers\PlayerController.cpp" />
     <ClCompile Include="entities\Client.cpp" />
-    <ClCompile Include="entities\common\ServerConfiguration.cpp" />
     <ClCompile Include="entities\Server.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="utils\SocketUtils.cpp" />
@@ -168,7 +167,6 @@
     <ClInclude Include="controllers\CameraController.h" />
     <ClInclude Include="controllers\PlayerController.h" />
     <ClInclude Include="entities\Client.h" />
-    <ClInclude Include="entities\common\ServerConfiguration.h" />
     <ClInclude Include="entities\Server.h" />
     <ClInclude Include="utils\SocketUtils.h" />
   </ItemGroup>

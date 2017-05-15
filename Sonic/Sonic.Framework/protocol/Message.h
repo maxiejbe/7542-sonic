@@ -11,13 +11,16 @@ enum ConnectionStatus { assign, connected, disconnected };
 enum PlayerStatus { idle, walking, running, jumping };
 enum PlayerType { SONIC, TAILS, KNUCKLES };
 
+enum MessageType { player_assign_ok, content_ok, start_game_ok, status, no_type };
+
 struct Message : public SerializableMessage {
 public:
 
 	Message::Message();
 	Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKULeft, bool isKURight, bool isKUSpace);
 
-	string getBinaryData();
+	void setType(MessageType);
+	MessageType getType();
 
 	double getTimeStep();
 	
@@ -42,6 +45,7 @@ private:
 	const string DELIMITER = "|";
 	vector<void*> properties;
 	
+	MessageType type;
 	double dt;
 	bool isKPLeft, isKPRight, isKPUp, isKPSpace, isKULeft, isKURight, isKUSpace;
 

@@ -141,7 +141,7 @@ void Player::setFilePath(string filePath)
 
 string Player::getFilePath()
 {
-	return filePath;
+ 	return filePath;
 }
 
 double Player::getTargetVelX()
