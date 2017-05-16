@@ -24,16 +24,6 @@ Client::Client(Server* server)
 Client::~Client()
 {
 	if(this->player && this->player != nullptr) delete this->player;
-	
-	//terminate Threads
-	WaitForSingleObject(this->recvThreadHandle, INFINITE);
-	CloseHandle(this->recvThreadHandle);
-	this->recvThreadHandle = NULL;
-
-	this->continueSending = false;
-	WaitForSingleObject(this->sendThreadHandle, INFINITE);	
-	CloseHandle(this->sendThreadHandle);
-	this->sendThreadHandle = NULL;
 }
 
 int Client::getClientNumber()
@@ -88,6 +78,19 @@ bool Client::welcome(int clientNumber, Player* player)
 void Client::closeSocket()
 {
 	closesocket(this->socket);
+}
+
+void Client::terminateThreads()
+{
+		//terminate Threads
+	WaitForSingleObject(this->recvThreadHandle, INFINITE);
+	CloseHandle(this->recvThreadHandle);
+	this->recvThreadHandle = NULL;
+
+	this->continueSending = false;
+	WaitForSingleObject(this->sendThreadHandle, INFINITE);	
+	CloseHandle(this->sendThreadHandle);
+	this->sendThreadHandle = NULL;
 }
 
 bool Client::sendClientNumber()
