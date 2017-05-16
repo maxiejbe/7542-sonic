@@ -20,7 +20,6 @@ public:
 		this->scenarioHeight = scenarioHeight;
 		this->scrollSpeed = scrollSpeed;
 		this->playerType = calculatePlayerType();
-		this->filePath = calculateFilePath();
 		this->groundPos = calculateGroundPos(windowHeight);
 		this->position = Vector2(0, this->groundPos);
 		this->isConnected = true;
@@ -46,8 +45,6 @@ public:
 	void setFacingDirection(FacingDirection facingDirection);
 	PlayerStatus getSpriteState();
 	void setSpriteState(PlayerStatus spriteState);
-	void setFilePath(string filePath);
-	string getFilePath();
 	double getTargetVelX();
 	void setTargetVelX(double targetVelX);
 	int getScenarioWidth();
@@ -66,7 +63,6 @@ public:
 	void setIsConnected(bool isConnected);
 
 	PlayerType calculatePlayerType();
-	string calculateFilePath();
 	double calculateGroundPos(int windowHeight);
 
 	// Inherited via Serializable
@@ -85,7 +81,6 @@ private:
 	FacingDirection facingDirection;
 	int number;
 	PlayerStatus spriteState;
-	string filePath;
 	PlayerType playerType;
 	bool isConnected;
 };
