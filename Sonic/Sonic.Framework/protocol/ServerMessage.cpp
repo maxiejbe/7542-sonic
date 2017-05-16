@@ -17,7 +17,6 @@ ServerMessage::ServerMessage()
 
 ServerMessage::~ServerMessage()
 {
-	freePlayers();
 	if (this->camera) delete this->camera;
 }
 
@@ -151,7 +150,7 @@ void ServerMessage::serializePlayers(Writer<StringBuffer>& writer)
 	vector<Player*>::iterator it = this->players.begin();
 	while (it != this->players.end()) {
 		if (*it == NULL) continue;
-		string serializedplayer = (*it)->serialize();
+		string serializedplayer = (*it)->getSerializedPlayer();
 		writer.String(serializedplayer.c_str());
 		it++;
 	}
@@ -188,7 +187,6 @@ void ServerMessage::parseCameraStatus(Value * nodeRef)
 void ServerMessage::parsePlayersStatus(Value * nodeRef)
 {
 	//free players and clear vector
-	freePlayers();
 	Value& node = *nodeRef;
 
 	//LOG(logINFO) << MESSAGE_PARSING_NODE_FIELD + string(fieldName);
@@ -218,23 +216,5 @@ void ServerMessage::parsePlayersStatus(Value * nodeRef)
 		newPlayer->unserialize(&jsonPlayer);
 		this->players.push_back(newPlayer);
 	}
-}
-
-void ServerMessage::freePlayers()
-{
-	if (this->players.empty()) {
-		return;
-	}
-
-	vector<Player*>::iterator it = this->players.begin();
-	while (it != this->players.end())
-	{
-		Player* currentPlayer = (*it);
-		if (currentPlayer == nullptr) continue;
-		delete(currentPlayer);
-		it++;
-	}
-
-	this->players.clear();
 }
 

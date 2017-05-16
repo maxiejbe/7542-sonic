@@ -9,11 +9,14 @@ PlayerController::PlayerController()
 
 void PlayerController::update(Message* message, Player* player, Camera* camera)
 {
-	player->setTargetVelX(0);
+	player->lock();
 
+	player->setTargetVelX(0);
 	if (message == nullptr) return;
 	updateInput(message, player);
 	move(player, message->getTimeStep(), camera);
+
+	player->unlock();
 }
 
 void PlayerController::updateInput(Message* message, Player* player)

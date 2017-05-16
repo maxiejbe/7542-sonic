@@ -6,6 +6,8 @@
 #include "../Vector2.h"
 #include "../protocol/Message.h"
 
+#include <mutex>
+
 using namespace std;
 
 enum FacingDirection { FACING_LEFT, FACING_RIGHT };
@@ -28,6 +30,9 @@ public:
 
 	void copyFrom(Player&);
 
+	void lock();
+	void unlock();
+
 	Vector2 getPosition();
 	void setXPosition(double x);
 	void setYPosition(double y);
@@ -35,6 +40,8 @@ public:
 	void setXVelocity(double x);
 	void setYVelocity(double y);
 	void setNumber(int number);
+
+	string getSerializedPlayer();
 
 	int getNumber();
 	int getWidth();
@@ -62,12 +69,15 @@ public:
 	bool getIsConnected();
 	void setIsConnected(bool isConnected);
 
+	string serializedPlayer;
+
 	PlayerType calculatePlayerType();
 	double calculateGroundPos(int windowHeight);
 
 	// Inherited via Serializable
 	void unserialize(Value* nodeRef) override;
 	char* getNodeName() override;
+	void serializePlayer();
 	string serialize() override;
 private:
 	Vector2 position;
@@ -83,6 +93,8 @@ private:
 	PlayerStatus spriteState;
 	PlayerType playerType;
 	bool isConnected;
+
+	mutex playerMutex;
 };
 
 #endif // !PLAYER_H

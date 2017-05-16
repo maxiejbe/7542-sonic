@@ -259,6 +259,7 @@ DWORD Client::sendSocketHandler()
 		if (this->getLastMessage()->getType() != MessageType::status) continue;
 
 		PlayerController::update(this->getLastMessage(), this->getPlayer(), this->server->getCamera());
+		player->serializePlayer();
 		this->sendPlayersStatus();
 		
 		Sleep(15);

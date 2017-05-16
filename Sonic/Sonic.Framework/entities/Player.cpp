@@ -59,6 +59,16 @@ void Player::copyFrom(Player & anotherPlayer)
 	this->setIsConnected(anotherPlayer.getIsConnected());
 }
 
+void Player::lock()
+{
+	this->playerMutex.lock();
+}
+
+void Player::unlock()
+{
+	this->playerMutex.unlock();
+}
+
 Vector2 Player::getPosition()
 {
 	return this->position;
@@ -281,6 +291,13 @@ void Player::unserialize(Value * nodeRef)
 	parseBool(&isConnected, false, nodeRef, PLAYER_IS_CONNECTED_NODE);
 }
 
+void Player::serializePlayer() 
+{
+	this->lock();
+	this->serializedPlayer = this->serialize();
+	this->unlock();
+}
+
 string Player::serialize()
 {
 	StringBuffer s;
@@ -341,4 +358,12 @@ int Player::getNumber()
 void Player::setNumber(int number)
 {
 	this->number = number;
+}
+
+string Player::getSerializedPlayer()
+{
+	this->lock();
+	string serializedPlayer = this->serializedPlayer;
+	this->unlock();
+	return serializedPlayer;
 }

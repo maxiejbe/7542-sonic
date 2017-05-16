@@ -39,7 +39,6 @@ private:
 	Camera * camera;
 	string fileContent;
 	int playerNumber;
-	void freePlayers();
 };
 
 #endif

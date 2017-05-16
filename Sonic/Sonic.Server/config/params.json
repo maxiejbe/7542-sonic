@@ -2,7 +2,7 @@
   "servidor": {
     "host": "127.0.0.1",
     "puerto": 5000,
-    "maxima_cantidad_conexiones": 1
+    "maxima_cantidad_conexiones": 3
   },
   "ventana": {
     "dimensiones": {
