@@ -289,9 +289,7 @@ vector<Player*> Server::clientsPlayers()
 	vector<Player*> clientPlayers = vector<Player*>();
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		//copy player to avoid problems (will be deleted in ServerMessage destructor)
-		Player * clientPlayer = new Player(*it->second->getPlayer());
-		clientPlayers.push_back(clientPlayer);
+		clientPlayers.push_back((*it).second->getPlayer());
 	}
 
 	return clientPlayers;
