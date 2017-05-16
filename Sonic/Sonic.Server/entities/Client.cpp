@@ -197,7 +197,9 @@ void Client::handleRecievedMessage(char* recievedMessage)
 {
 	string strMessage(recievedMessage);
 	Message* message = new Message();
-	message->fromJson(strMessage);
+	if (!message->fromJson(strMessage)) {
+		return;
+	}
 
 	switch (message->getType())
 	{
