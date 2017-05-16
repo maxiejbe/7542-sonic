@@ -201,8 +201,9 @@ void Server::addConnectedClients()
 	this->connectedClients++;
 
 	//Max connections reached!
-	if (this->connectedClients == this->serverConfig->getMaxAllowedClients())
+	if (this->gameStarted || this->connectedClients == this->serverConfig->getMaxAllowedClients())
 	{
+		if (!this->gameStarted) { this->gameStarted = true; }
 		this->sendBroadcast();
 	}
 }
@@ -258,7 +259,6 @@ void Server::sendBroadcast()
 		int bytecount;
 		//If client is not connected, just set to false
 		if (!it->second->getPlayer()->getIsConnected()) continue;
-
 		it->second->sendGameStart();
 	}
 }
@@ -289,9 +289,7 @@ vector<Player*> Server::clientsPlayers()
 	vector<Player*> clientPlayers = vector<Player*>();
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		//copy player to avoid problems (will be deleted in ServerMessage destructor)
-		Player * clientPlayer = new Player(*it->second->getPlayer());
-		clientPlayers.push_back(clientPlayer);
+		clientPlayers.push_back((*it).second->getPlayer());
 	}
 
 	return clientPlayers;

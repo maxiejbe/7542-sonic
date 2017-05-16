@@ -44,7 +44,6 @@ Player::Player(Player & anotherPlayer) {
 
 void Player::copyFrom(Player & anotherPlayer)
 {
-	this->setFilePath(anotherPlayer.getFilePath());
 	this->setGroundPos(anotherPlayer.getGroundPos());
 	this->setXPosition(anotherPlayer.getPosition().x);
 	this->setYPosition(anotherPlayer.getPosition().y);
@@ -132,16 +131,6 @@ PlayerStatus Player::getSpriteState()
 void Player::setSpriteState(PlayerStatus spriteState)
 {
 	this->spriteState = spriteState;
-}
-
-void Player::setFilePath(string filePath)
-{
-	this->filePath = filePath;
-}
-
-string Player::getFilePath()
-{
- 	return filePath;
 }
 
 double Player::getTargetVelX()
@@ -238,20 +227,6 @@ PlayerType Player::calculatePlayerType()
 	}
 }
 
-string Player::calculateFilePath()
-{
-	switch (this->playerType) {
-	case SONIC:
-		return "img/sonic-spritesheet.png";
-	case TAILS:
-		return "img/tails-spritesheet.png";
-	case KNUCKLES:
-		return "img/knuckles-spritesheet.png";
-	default:
-		return "img/sonic-spritesheet.png";
-	}
-}
-
 double Player::calculateGroundPos(int windowHeight)
 {
 	switch (playerType) {
@@ -304,8 +279,6 @@ void Player::unserialize(Value * nodeRef)
 	parseInt(&number, -1, nodeRef, PLAYER_NUMBER_NODE, Validator::intGreaterThanOrEqualToZero);
 	//sprite state
 	parseInt((int*)&spriteState, 0, nodeRef, PLAYER_SPRITE_STATE_NODE, Validator::intGreaterThanOrEqualToZero);
-	//file path
-	parseString(&filePath, "img/sonic-spritesheet.png", nodeRef, PLAYER_FILE_PATH_NODE);
 	//player type
 	parseInt((int*)&playerType, 0, nodeRef, PLAYER_TYPE_NODE);
 	//is connected
@@ -348,9 +321,6 @@ string Player::serialize()
 	writer.Int(this->number);
 	writer.String(PLAYER_SPRITE_STATE_NODE);
 	writer.Int(this->spriteState);
-	writer.String(PLAYER_FILE_PATH_NODE);
-	const char* fp = this->filePath.c_str();
-	writer.String(fp);
 	writer.String(PLAYER_TYPE_NODE);
 	writer.Int(this->playerType);
 	writer.String(PLAYER_IS_CONNECTED_NODE);
