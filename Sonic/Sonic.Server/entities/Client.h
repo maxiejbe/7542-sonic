@@ -26,6 +26,8 @@ public:
 	bool welcome(int, Player*);
 	void closeSocket();
 	
+	void terminateThreads();
+
 	bool sendClientNumber();
 	bool sendFileContent();
 	bool sendGameStart();
