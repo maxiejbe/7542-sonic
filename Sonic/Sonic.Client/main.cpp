@@ -170,7 +170,26 @@ int main(int argc, char* args[])
 				if (!reconnected) connectionLostAbort = true;
 			}
 
-			if (connectionLostAbort) break;
+			if (connectionLostAbort) {
+				int i = menu.showMenu();
+				if (i == 2) { isRunning = false; }
+				if (i == 1) { 
+					NetworkManager::getInstance().disconnect(); 
+					i = menu.showMenu();
+					if (i == 0) {
+						NetworkManager::getInstance().reconnect();
+						continue;
+					}
+					if (i == 2) { 
+						isRunning = false; 
+						continue;
+					}
+				}
+				if (i == 0) { 
+					NetworkManager::getInstance().reconnect(); 
+					continue;
+				}
+			}
 
 			InputManager* input = InputManager::getInstance();
 			input->update();
@@ -183,17 +202,24 @@ int main(int argc, char* args[])
 
 			if (input->isKeyDown(KEY_ESCAPE) || input->isKeyDown(KEY_Q)) {
 				i = menu.showMenu();
+				if (i == 2) { isRunning = false; }
 				if (i == 1) //show disconnect menu
 				{
 					NetworkManager::getInstance().disconnect();
-
 					i = menu.showMenu();
 					if (i == 0) {
 						NetworkManager::getInstance().reconnect();
 						continue;
 					}
+					if (i == 2) {
+						isRunning = false;
+						continue;
+					}
 				}
-				if (i == 2) { isRunning = false; }
+				if (i == 0) {
+					NetworkManager::getInstance().reconnect();
+					continue;
+				}
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
 			}
 
