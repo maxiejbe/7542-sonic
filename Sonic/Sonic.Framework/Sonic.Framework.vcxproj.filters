@@ -166,7 +166,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="entities\params.json" />
   </ItemGroup>
 </Project>

@@ -6,9 +6,9 @@
 #include <string>
 #include <sstream>
 #include <stdio.h>
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
+#include <document.h>
+#include <writer.h>
+#include <stringbuffer.h>
 #include "entities/common/Serializable.h"
 #include <vector>
 #include "Logger.h"

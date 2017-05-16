@@ -150,6 +150,7 @@ void Serializable::parseBool(bool * value, bool defaultValue, Value * nodeRef, c
 	LOG(logINFO) << MESSAGE_OK_PARSING_NODE_FIELD << *value;
 }
 
+
 string Serializable::getNodeContent(Value * nodeRef)
 {
 	Value& node = *nodeRef;

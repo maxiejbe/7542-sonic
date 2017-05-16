@@ -44,7 +44,7 @@ public:
 private:
 	
 	Vector2 position;
-	float width, height;
+	int width, height;
 	int screenWidth, screenHeight, scenarioWidth, scenarioHeight;
 };
 

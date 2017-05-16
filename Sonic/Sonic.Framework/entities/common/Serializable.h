@@ -1,13 +1,13 @@
 #ifndef I_SERIALIZABLE_H
 #define I_SERIALIZABLE_H
 
-#include "rapidjson/document.h"
+#include <document.h>
 #include <vector>
 #include <string>
 #include "../../Logger.h"
 #include <functional>
 #include <cstdio>
-#include <rapidjson/prettywriter.h>
+#include <prettywriter.h>
 
 using namespace rapidjson;
 using namespace std;

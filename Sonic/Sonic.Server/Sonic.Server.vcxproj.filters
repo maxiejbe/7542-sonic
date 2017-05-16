@@ -52,7 +52,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="config\params.json" />
   </ItemGroup>
 </Project>

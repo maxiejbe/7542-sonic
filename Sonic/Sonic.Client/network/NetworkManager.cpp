@@ -181,7 +181,7 @@ void NetworkManager::sendMessage(Message* message)
 		LOG(logERROR) << "Network Manager: Falló envio de mensaje -> " << stringMessage;
 	}
 	
-	//LOG(logINFO) << "Network Manager: Se envio mensaje -> " << stringMessage;
+	//LOG(logINFO) << "Network Manager: Se envio mensaje -> " << stringMessage; // TODO: comentar!
 }
 
 unordered_map<int, PlayerView*> NetworkManager::getPlayerViews()

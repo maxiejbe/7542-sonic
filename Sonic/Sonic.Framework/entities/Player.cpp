@@ -49,10 +49,6 @@ void Player::copyFrom(Player & anotherPlayer)
 	this->setYPosition(anotherPlayer.getPosition().y);
 	this->setXVelocity(anotherPlayer.getVelocity().x);
 	this->setYVelocity(anotherPlayer.getVelocity().y);
-	this->setWidth(anotherPlayer.getWidth());
-	this->setHeight(anotherPlayer.getHeight());
-	this->setScenarioWidth(anotherPlayer.getScenarioWidth());
-	this->setScenarioHeight(anotherPlayer.getScenarioHeight());
 	this->setScrollSpeed(anotherPlayer.getScrollSpeed());
 	this->setTargetVelX(anotherPlayer.getTargetVelX());
 	this->setIsJumping(anotherPlayer.getIsJumping());
@@ -259,10 +255,10 @@ void Player::unserialize(Value * nodeRef)
 	parseInt(&this->width, 0, nodeRef, PLAYER_WIDTH_NODE, Validator::intGreaterThanZero);
 	//height
 	parseInt(&this->height, 0, nodeRef, PLAYER_HEIGHT_NODE, Validator::intGreaterThanZero);
-	//scenario width
-	parseInt(&this->scenarioWidth, 0, nodeRef, PLAYER_SCENARIO_WIDTH_NODE, Validator::intGreaterThanZero);
-	//scenario height
-	parseInt(&this->scenarioHeight, 0, nodeRef, PLAYER_SCENARIO_HEIGHT_NODE, Validator::intGreaterThanZero);
+	////scenario width
+	//parseInt(&this->scenarioWidth, 0, nodeRef, PLAYER_SCENARIO_WIDTH_NODE, Validator::intGreaterThanZero);
+	////scenario height
+	//parseInt(&this->scenarioHeight, 0, nodeRef, PLAYER_SCENARIO_HEIGHT_NODE, Validator::intGreaterThanZero);
 	//scroll speed
 	parseInt(&this->scrollSpeed, 0, nodeRef, PLAYER_SCROLL_SPEED_NODE, Validator::intGreaterThanZero);
 	//ground pos
@@ -289,6 +285,8 @@ string Player::serialize()
 {
 	StringBuffer s;
 	Writer<StringBuffer> writer(s);
+
+	writer.SetMaxDecimalPlaces(4);
 	writer.StartObject();
 
 	writer.String(PLAYER_X_POSITION_NODE);
@@ -303,10 +301,10 @@ string Player::serialize()
 	writer.Int(this->width);
 	writer.String(PLAYER_HEIGHT_NODE);
 	writer.Int(this->height);
-	writer.String(PLAYER_SCENARIO_WIDTH_NODE);
-	writer.Int(this->scenarioWidth);
-	writer.String(PLAYER_SCENARIO_HEIGHT_NODE);
-	writer.Int(this->scenarioHeight);
+	//writer.String(PLAYER_SCENARIO_WIDTH_NODE);
+	//writer.Int(this->scenarioWidth);
+	//writer.String(PLAYER_SCENARIO_HEIGHT_NODE);
+	//writer.Int(this->scenarioHeight);
 	writer.String(PLAYER_SCROLL_SPEED_NODE);
 	writer.Int(this->scrollSpeed);
 	writer.String(PLAYER_GROUND_POS_NODE);
