@@ -26,6 +26,7 @@ private:
 	int getFramesCount(PlayerStatus status);
 	void loadSpriteClips();
 	string calculateDisconnectedPlayerPath();
+	string calculatePlayerFilePath();
 
 	Texture texture;
 	Player* player;
