@@ -27,8 +27,8 @@ PlayerView::~PlayerView()
 void PlayerView::render(int camX, int camY)
 {
 	// Check texture
-	if (this->texture.getTexture() == nullptr && !this->texture.loadFromFile(this->player->getFilePath())) {
-		LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << this->player->getFilePath() << "'.";
+	if (this->texture.getTexture() == nullptr && !this->texture.loadFromFile(calculatePlayerFilePath())) {
+		LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << calculatePlayerFilePath() << "'.";
 		return;
 	}
 
@@ -43,8 +43,8 @@ void PlayerView::render(int camX, int camY)
 	}
 	else if (this->player->getIsConnected() && this->isGreyed) {
 		// Volvio a conectarse, lo coloreo
-		if (!this->texture.loadFromFile(this->player->getFilePath())) {
-			LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << this->player->getFilePath() << "'.";
+		if (!this->texture.loadFromFile(calculatePlayerFilePath())) {
+			LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << calculatePlayerFilePath() << "'.";
 			return;
 		}
 		this->isGreyed = false;
@@ -60,9 +60,9 @@ void PlayerView::render(int camX, int camY)
 	SDL_Rect dest = { (int)(player->getPosition().x - camX), (int)(player->getPosition().y - camY), currentClip->w * 2, currentClip->h * 2 };
 	//SDL_RenderCopy(Renderer::getInstance().gRenderer, texture.getTexture(), currentClip, &dest);
 
-	// Set dimensions
-	this->player->setWidth(dest.w);
-	this->player->setHeight(dest.h);
+	//// Set dimensions
+	//this->player->setWidth(dest.w);
+	//this->player->setHeight(dest.h);
 
 	// Calculate facing direction
 	SDL_RendererFlip flip = (this->player->getFacingDirection() == FACING_RIGHT) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
@@ -461,6 +461,20 @@ void PlayerView::loadSpriteClips()
 		spriteClips[PlayerStatus::jumping][7].w = 31;
 		spriteClips[PlayerStatus::jumping][7].h = 30;
 		break;
+	}
+}
+
+string PlayerView::calculatePlayerFilePath()
+{
+	switch (this->player->getPlayerType()) {
+	case SONIC:
+		return "img/sonic-spritesheet.png";
+	case TAILS:
+		return "img/tails-spritesheet.png";
+	case KNUCKLES:
+		return "img/knuckles-spritesheet.png";
+	default:
+		return "img/sonic-spritesheet.png";
 	}
 }
 
