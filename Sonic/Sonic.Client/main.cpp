@@ -64,9 +64,6 @@ int main(int argc, char* args[])
 	int reconnectionAttemp;
 	double reconnectionPause;
 	bool connectionLostAbort = false;
-	Banner reconnectionBanner = Banner("Reconnecting", { 255,255,102 });
-	Banner waitingConnectionsBanner = Banner("Waiting for other connections", { 102,255,102 });
-	Banner errorServerBanner = Banner("Error server", { 255,255,255 });
 
 	Message * lastMessage = nullptr;
 
@@ -82,6 +79,11 @@ int main(int argc, char* args[])
 		LOG(logERROR) << "Error al inicializar el juego!";
 	}
 	else {
+
+		Banner reconnectionBanner = Banner("Reconnecting", { 255,255,102 });
+		Banner waitingConnectionsBanner = Banner("Waiting for other connections", { 102,255,102 });
+		Banner errorServerBanner = Banner("Error server", { 255,255,255 });
+
 		bool isRunning = true;
 		Timer stepTimer;
 		SDL_Rect camera;
