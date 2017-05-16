@@ -82,6 +82,8 @@ private:
 	int connectedClients;
 	string fileContent;
 
+	bool gameStarted;
+
 	ServerConfiguration* serverConfig;
 	Window* window;
 	Configuration* config;

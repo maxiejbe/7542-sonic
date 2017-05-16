@@ -201,8 +201,9 @@ void Server::addConnectedClients()
 	this->connectedClients++;
 
 	//Max connections reached!
-	if (this->connectedClients == this->serverConfig->getMaxAllowedClients())
+	if (this->gameStarted || this->connectedClients == this->serverConfig->getMaxAllowedClients())
 	{
+		if (!this->gameStarted) { this->gameStarted = true; }
 		this->sendBroadcast();
 	}
 }
@@ -258,7 +259,6 @@ void Server::sendBroadcast()
 		int bytecount;
 		//If client is not connected, just set to false
 		if (!it->second->getPlayer()->getIsConnected()) continue;
-
 		it->second->sendGameStart();
 	}
 }
