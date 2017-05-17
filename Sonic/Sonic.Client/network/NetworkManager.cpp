@@ -118,6 +118,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 	ServerMessage * sMessage = new ServerMessage();
 	if (!sMessage->fromJson(string(constRMessage))) {
 		LOG(logERROR) << "Network Manager: no se pudo deserializar el mensaje";
+		delete sMessage;
 		return;
 	}
 
