@@ -80,9 +80,9 @@ int main(int argc, char* args[])
 	}
 	else {
 
-		Banner reconnectionBanner = Banner("Reconnecting", { 255,255,102 });
-		Banner waitingConnectionsBanner = Banner("Waiting for other connections", { 102,255,102 });
-		Banner errorServerBanner = Banner("Error server", { 255,255,255 });
+		Banner reconnectionBanner = Banner("Reconnecting", { 0,0,0,150 });
+		Banner waitingConnectionsBanner = Banner("Waiting for other connections", { 0,0,0,150 });
+		Banner errorServerBanner = Banner("Server Error", { 0,0,0,150 });
 
 		bool isRunning = true;
 		Timer stepTimer;
@@ -175,20 +175,20 @@ int main(int argc, char* args[])
 			if (connectionLostAbort) {
 				int i = menu.showMenu();
 				if (i == 2) { isRunning = false; }
-				if (i == 1) { 
-					NetworkManager::getInstance().disconnect(); 
+				if (i == 1) {
+					NetworkManager::getInstance().disconnect();
 					i = menu.showMenu();
 					if (i == 0) {
 						NetworkManager::getInstance().reconnect();
 						continue;
 					}
-					if (i == 2) { 
-						isRunning = false; 
+					if (i == 2) {
+						isRunning = false;
 						continue;
 					}
 				}
-				if (i == 0) { 
-					NetworkManager::getInstance().reconnect(); 
+				if (i == 0) {
+					NetworkManager::getInstance().reconnect();
 					continue;
 				}
 			}
