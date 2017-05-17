@@ -24,7 +24,7 @@ Client::Client(Server* server)
 Client::~Client()
 {
 	if (this->player && this->player != nullptr) delete this->player;
-	
+
 	this->terminateThreads();
 
 	if (this->refreshThreadHandle != NULL)
@@ -95,10 +95,10 @@ void Client::terminateThreads()
 		CloseHandle(this->recvThreadHandle);
 		this->recvThreadHandle = NULL;
 	}
-	
-	if (this->sendThreadHandle != NULL) 
+
+	if (this->sendThreadHandle != NULL)
 	{
-		this->continueSending = false;	
+		this->continueSending = false;
 		CloseHandle(this->sendThreadHandle);
 		this->sendThreadHandle = NULL;
 	}
@@ -226,7 +226,7 @@ void Client::handleRecievedMessage(char* recievedMessage)
 	case start_game_ok:
 		this->continueRefreshing = true;
 		this->refreshThreadHandle = CreateThread(0, 0, refreshSocketHandler, (void*)this, 0, &this->refreshThreadId);
-		
+
 		this->continueSending = true;
 		this->sendThreadHandle = CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
 	case status:
@@ -272,7 +272,10 @@ DWORD Client::refreshSocketHandler()
 {
 	while (this->continueRefreshing) {
 		this->refreshPlayer();
-		Sleep(15);
+		//Sleep(15);
+		if (this->getLastMessage()->getTimeStep() > 0) {
+			Sleep(this->getLastMessage()->getTimeStep() * 1000 - 2);
+		}
 	}
 
 	return 0;
@@ -289,7 +292,10 @@ DWORD Client::sendSocketHandler()
 {
 	while (this->continueSending) {
 		this->sendPlayersStatus();
-		Sleep(15);
+		//Sleep(15);
+		if (this->getLastMessage()->getTimeStep() > 0) {
+			Sleep(this->getLastMessage()->getTimeStep() * 1000 - 2);
+		}
 	}
 
 	return 0;

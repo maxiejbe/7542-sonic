@@ -23,6 +23,9 @@
 #include "views/common/EntityViewResolver.h"
 #include <unordered_map>
 
+const int SCREEN_FPS = 60;
+const int SCREEN_TICK_PER_FRAME = 1000 / SCREEN_FPS;
+
 void close();
 
 void close()
@@ -38,7 +41,7 @@ void close()
 int main(int argc, char* args[])
 {
 	Logger::init();
-	Logger::loggingLevel() = logHIGH;
+	Logger::loggingLevel() = logLOW;
 
 	string configParamName = "--config";
 	string configPath = "";
@@ -82,7 +85,15 @@ int main(int argc, char* args[])
 		Banner errorServerBanner = Banner("Server Error", { 0,0,0,150 });
 
 		bool isRunning = true;
+
 		Timer stepTimer;
+
+		Timer fpsTimer;
+		Timer capTimer;
+		int countedFrames = 0;
+		fpsTimer.start();
+
+
 		SDL_Rect camera;
 		vector<LayerView> layerViews;
 
@@ -150,19 +161,21 @@ int main(int argc, char* args[])
 
 		while (isRunning) {
 
+			capTimer.start();
+
 			if (!NetworkManager::getInstance().online()) {
-				double reconnetionTimeStep = stepTimer.getTicks() / 1000.;
+				double reconnetionTimeStep = capTimer.getTicks() / 1000.;
 				reconnectionAttemp = 1;
 				bool reconnected = false;
 				while (!NetworkManager::getInstance().online() && reconnectionAttemp <= 3) {
 					reconnectionBanner.showBanner();
 					SDL_RenderPresent(Renderer::getInstance().gRenderer);
 
-					double currentTime = stepTimer.getTicks() / 1000.;
+					double currentTime = capTimer.getTicks() / 1000.;
 					if ((currentTime - reconnetionTimeStep) > 5) {
 						reconnected = NetworkManager::getInstance().reconnect();
 						reconnectionAttemp++;
-						reconnetionTimeStep = stepTimer.getTicks() / 1000.;
+						reconnetionTimeStep = capTimer.getTicks() / 1000.;
 					}
 				}
 
@@ -220,6 +233,13 @@ int main(int argc, char* args[])
 					continue;
 				}
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
+			}
+
+			//Calculate and correct fps
+			float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
+			if (avgFPS > 2000000)
+			{
+				avgFPS = 0;
 			}
 
 
@@ -292,6 +312,16 @@ int main(int argc, char* args[])
 			}
 
 			SDL_RenderPresent(Renderer::getInstance().gRenderer);
+
+			++countedFrames;
+
+			//If frame finished early
+			int frameTicks = capTimer.getTicks();
+			if (frameTicks < SCREEN_TICK_PER_FRAME)
+			{
+				//Wait remaining time
+				SDL_Delay(SCREEN_TICK_PER_FRAME - frameTicks);
+			}
 		}
 	}
 

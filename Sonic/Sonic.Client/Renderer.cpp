@@ -3,7 +3,7 @@
 
 bool Renderer::create()
 {
-	gRenderer = SDL_CreateRenderer(SDLWindow::getInstance().gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	gRenderer = SDL_CreateRenderer(SDLWindow::getInstance().gWindow, -1, SDL_RENDERER_ACCELERATED); // | SDL_RENDERER_PRESENTVSYNC
 	if (gRenderer == NULL) {
 		LOG(logERROR) << "El Renderer no pudo ser creado! SDL Error: " << SDL_GetError();
 		return false;
