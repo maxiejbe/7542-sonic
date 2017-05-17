@@ -217,6 +217,9 @@ void Client::handleRecievedMessage(char* recievedMessage)
 		this->server->addConnectedClients();
 		break;
 	case start_game_ok:
+		this->continueRefreshing = true;
+		this->refreshThreadHandle = CreateThread(0, 0, refreshSocketHandler, (void*)this, 0, &this->refreshThreadId);
+		
 		this->continueSending = true;
 		this->sendThreadHandle = CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
 	case status:
@@ -252,6 +255,23 @@ DWORD Client::socketHandler() {
 	return 0;
 }
 
+DWORD WINAPI Client::refreshSocketHandler(void * args)
+{
+	Client * client = (Client*)args;
+	return client->refreshSocketHandler();
+}
+
+DWORD Client::refreshSocketHandler()
+{
+	while (this->continueRefreshing) {
+		this->refreshPlayer();
+		Sleep(15);
+	}
+
+	return 0;
+}
+
+
 DWORD WINAPI Client::runSendSocketHandler(void * args)
 {
 	Client * client = (Client*)args;
@@ -261,11 +281,7 @@ DWORD WINAPI Client::runSendSocketHandler(void * args)
 DWORD Client::sendSocketHandler()
 {
 	while (this->continueSending) {
-
-		if (!refreshPlayer()) continue;
-
 		this->sendPlayersStatus();
-
 		Sleep(15);
 	}
 

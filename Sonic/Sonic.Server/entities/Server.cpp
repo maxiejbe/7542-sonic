@@ -180,10 +180,6 @@ void Server::acceptClientConnection()
 	}
 
 	clients[index] = client;
-	//if (previousClient != nullptr) {
-		//this->disconnectedClients.push_back(previousClient);
-		//previousClient->terminateThreads();
-	//}
 }
 
 void Server::removeClientConnection(int clientNumber)
