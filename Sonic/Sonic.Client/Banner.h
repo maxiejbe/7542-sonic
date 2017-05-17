@@ -11,6 +11,7 @@
 class Banner
 {
 public:
+	Banner(string text, SDL_Color color, string imagePath);
 	Banner(string text, SDL_Color color);
 	~Banner();
 

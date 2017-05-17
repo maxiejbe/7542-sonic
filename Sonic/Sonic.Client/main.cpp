@@ -77,8 +77,8 @@ int main(int argc, char* args[])
 	}
 	else {
 
-		Banner reconnectionBanner = Banner("Reconnecting", { 0,0,0,150 });
-		Banner waitingConnectionsBanner = Banner("Waiting for other connections", { 0,0,0,150 });
+		Banner reconnectionBanner = Banner("Reconnecting", { 0,0,0,150 }, "img/menu-background.jpg");
+		Banner waitingConnectionsBanner = Banner("Waiting for other connections", { 0,0,0,150 }, "img/menu-background.jpg");
 		Banner errorServerBanner = Banner("Server Error", { 0,0,0,150 });
 
 		bool isRunning = true;
