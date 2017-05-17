@@ -61,6 +61,13 @@ private:
 	DWORD threadId;
 	HANDLE recvThreadHandle;
 	
+	//refresh handler
+	DWORD refreshThreadId;
+	HANDLE refreshThreadHandle;
+	static DWORD WINAPI refreshSocketHandler(void* args);
+	DWORD refreshSocketHandler();
+	bool continueRefreshing;
+
 	//send handler
 	DWORD sendThreadId;
 	HANDLE sendThreadHandle;
