@@ -72,9 +72,6 @@ int main(int argc, char* args[])
 	localParser->parse(&window);
 	localParser->parse(&serverConfig);
 
-	// Initialize network manager
-	//NetworkManager networkManager = NetworkManager::getInstance();
-
 	if (!SDLWindow::getInstance().create(window.getWidth(), window.getHeight()) || !Renderer::getInstance().create()) {
 		LOG(logERROR) << "Error al inicializar el juego!";
 	}

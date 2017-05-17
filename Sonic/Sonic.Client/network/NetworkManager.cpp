@@ -56,7 +56,9 @@ bool NetworkManager::online()
 bool NetworkManager::reconnect() {
 	if (!this->client) return false;
 	if (this->online()) return true;
-	if(this->recvThreadHandle != NULL) this->stopConnectionHandlers();
+	if (this->recvThreadHandle != NULL) {
+		this->stopConnectionHandlers();
+	}
 	if (!this->client->reconnect()) {
 		LOG(logERROR) << "Network Manager: Fallo intento de reconexión";
 		return false;
@@ -69,12 +71,15 @@ bool NetworkManager::reconnect() {
 
 void NetworkManager::disconnect()
 {
+	if (this->recvThreadHandle != NULL) {
+		this->stopConnectionHandlers();
+	}
 	this->client->disconnectSocket();
 }
 
 void NetworkManager::stopConnectionHandlers() {
 	//set flag to force stop
-	WaitForSingleObject(this->recvThreadHandle, INFINITE);
+	//WaitForSingleObject(this->recvThreadHandle, INFINITE);
 	CloseHandle(this->recvThreadHandle);
 	this->recvThreadHandle = NULL;
 }
@@ -151,23 +156,6 @@ void NetworkManager::handleMessage(char * receivedMessage)
 	delete sMessage;
 }
 
-/*DWORD NetworkManager::runClientOnlineCheck(void * args)
-{
-	NetworkManager * nManager = (NetworkManager*)args;
-	return nManager->clientOnlineCheck();
-}
-
-DWORD NetworkManager::clientOnlineCheck()
-{
-	while (this->client->checkConnection()) {
-		Sleep(3000);
-	}
-
-	LOG(logINFO) << "Se deconecto el cliente";
-
-	return 0;
-}*/
-
 void NetworkManager::sendMessage(Message* message)
 {
 	if (!this->online()) {
@@ -180,7 +168,7 @@ void NetworkManager::sendMessage(Message* message)
 	if (!this->client->sendMessage(stringMessage)) {
 		LOG(logERROR) << "Network Manager: Falló envio de mensaje -> " << stringMessage;
 	}
-	
+
 	//LOG(logINFO) << "Network Manager: Se envio mensaje -> " << stringMessage; // TODO: comentar!
 }
 

@@ -140,7 +140,7 @@ int Server::getDisconnectedIndex()
 {
 	for (int i = 0; i < this->serverConfig->getMaxAllowedClients(); i++)
 	{
-		if (clients.count(i)) 
+		if (clients.count(i))
 		{
 			if (!clients[i]->getPlayer()->getIsConnected()) {
 				return i;
@@ -180,21 +180,23 @@ void Server::acceptClientConnection()
 	}
 
 	clients[index] = client;
-	if (previousClient != nullptr) {
-		this->disconnectedClients.push_back(previousClient);
-		previousClient->terminateThreads();
-	}
+	//if (previousClient != nullptr) {
+		//this->disconnectedClients.push_back(previousClient);
+		//previousClient->terminateThreads();
+	//}
 }
 
 void Server::removeClientConnection(int clientNumber)
 {
 	int index = clientNumber - 1;
 	Client* client = clients[index];
-	client->closeSocket();
-	
+
 	client->getPlayer()->setIsConnected(false);
-	
 	this->connectedClients--;
+	this->disconnectedClients.push_back(client);
+
+	client->closeSocket();
+	client->terminateThreads();
 }
 
 void Server::addConnectedClients()
@@ -242,12 +244,12 @@ Camera * Server::getCamera()
 void Server::waitForClientConnections()
 {
 	bool keepWaiting = true;
-	
+
 	LOG(logINFO) << MESSAGE_SERVER_WAITING_CONNECTIONS;
 
 	while (keepWaiting) {
 		//Still accepting new connections
-		if (this->connectedClients <= this->serverConfig->getMaxAllowedClients()) 
+		if (this->connectedClients <= this->serverConfig->getMaxAllowedClients())
 		{
 			this->acceptClientConnection();
 		}
@@ -274,7 +276,7 @@ ServerMessage* Server::getPlayersStatusMessage()
 	vector<Player*> clientsPlayers = this->clientsPlayers();
 
 	//update camera
-	CameraController::updateCamera(this->camera, clientsPlayers);	
+	CameraController::updateCamera(this->camera, clientsPlayers);
 
 	ServerMessage * message = new ServerMessage();
 	message->setType(players_status);
