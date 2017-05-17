@@ -69,6 +69,10 @@ void PlayerController::move(Player* player, double dt, Camera* camera)
 {
 	if (player->getIsConnected()) {
 
+		if (player->getVelocity().x < -100) {
+  			player->setXVelocity(0);
+		}
+
 		// Weighted averaging acceleration method
 		player->setXVelocity((acc * player->getTargetVelX() * dt) + ((1 - acc) * player->getVelocity().x));
 

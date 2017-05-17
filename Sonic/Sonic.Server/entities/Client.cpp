@@ -273,7 +273,7 @@ DWORD Client::refreshSocketHandler()
 	while (this->continueRefreshing) {
 		this->refreshPlayer();
 		//Sleep(15);
-		if (this->getLastMessage()->getTimeStep() > 0) {
+		if (this->getLastMessage()->getTimeStep() * 1000 - 2 > 0) {
 			Sleep(this->getLastMessage()->getTimeStep() * 1000 - 2);
 		}
 	}
@@ -293,7 +293,7 @@ DWORD Client::sendSocketHandler()
 	while (this->continueSending) {
 		this->sendPlayersStatus();
 		//Sleep(15);
-		if (this->getLastMessage()->getTimeStep() > 0) {
+		if (this->getLastMessage()->getTimeStep() * 1000 - 2 > 0) {
 			Sleep(this->getLastMessage()->getTimeStep() * 1000 - 2);
 		}
 	}
