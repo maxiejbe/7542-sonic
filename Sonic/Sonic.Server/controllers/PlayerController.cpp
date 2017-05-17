@@ -1,6 +1,7 @@
 #include "PlayerController.h"
 
 const float gravity = 0.41f;
+const float acc = 0.08f;
 const int WIDTH_PLAYER_SPRITE = 72; //Fix player->getWidth()
 
 PlayerController::PlayerController()
@@ -67,9 +68,9 @@ void PlayerController::updateInput(Message* message, Player* player)
 void PlayerController::move(Player* player, double dt, Camera* camera)
 {
 	if (player->getIsConnected()) {
+
 		// Weighted averaging acceleration method
-		float a = 0.08f;
-		player->setXVelocity((a * player->getTargetVelX() * dt) + ((1 - a) * player->getVelocity().x));
+		player->setXVelocity((acc * player->getTargetVelX() * dt) + ((1 - acc) * player->getVelocity().x));
 
 		// TODO: extraer a isStopping()
 		if (fabs(player->getVelocity().x) < 0.4) {

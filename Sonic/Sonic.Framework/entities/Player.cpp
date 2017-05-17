@@ -248,37 +248,22 @@ double Player::calculateGroundPos(int windowHeight)
 
 void Player::unserialize(Value * nodeRef)
 {
-	double x, y, vx, vy, gp, tvx = 0;
 	//position x
-	parseDouble(&x, 0, nodeRef, PLAYER_X_POSITION_NODE);
-	this->setXPosition(x);
+	parseDouble(&position.x, 0, nodeRef, PLAYER_X_POSITION_NODE);
 	//position y
-	parseDouble(&y, 0, nodeRef, PLAYER_Y_POSITION_NODE);
-	this->setYPosition(y);
+	parseDouble(&position.y, 0, nodeRef, PLAYER_Y_POSITION_NODE);
 	//velocity x
-	parseDouble(&vx, 0, nodeRef, PLAYER_X_VELOCITY_NODE);
-	this->setXVelocity(vx);
+	parseDouble(&velocity.x, 0, nodeRef, PLAYER_X_VELOCITY_NODE);
 	//velocity y
-	parseDouble(&vy, 0, nodeRef, PLAYER_Y_VELOCITY_NODE);
-	this->setYVelocity(vy);
-	//width
-	parseInt(&this->width, 0, nodeRef, PLAYER_WIDTH_NODE, Validator::intGreaterThanZero);
-	//height
-	parseInt(&this->height, 0, nodeRef, PLAYER_HEIGHT_NODE, Validator::intGreaterThanZero);
-	////scenario width
-	//parseInt(&this->scenarioWidth, 0, nodeRef, PLAYER_SCENARIO_WIDTH_NODE, Validator::intGreaterThanZero);
-	////scenario height
-	//parseInt(&this->scenarioHeight, 0, nodeRef, PLAYER_SCENARIO_HEIGHT_NODE, Validator::intGreaterThanZero);
+	parseDouble(&velocity.y, 0, nodeRef, PLAYER_Y_VELOCITY_NODE);
 	//scroll speed
-	parseInt(&this->scrollSpeed, 0, nodeRef, PLAYER_SCROLL_SPEED_NODE, Validator::intGreaterThanZero);
+	parseInt(&scrollSpeed, 0, nodeRef, PLAYER_SCROLL_SPEED_NODE, Validator::intGreaterThanZero);
 	//ground pos
-	parseDouble(&gp, 0, nodeRef, PLAYER_GROUND_POS_NODE);
-	this->setGroundPos(gp);
+	parseDouble(&groundPos, 0, nodeRef, PLAYER_GROUND_POS_NODE);
 	//jumping
 	parseBool(&isJumping, false, nodeRef, PLAYER_JUMPING_NODE);
 	//target vel x
-	parseDouble(&tvx, 0, nodeRef, PLAYER_TARGET_VEL_X_NODE);
-	this->setTargetVelX(tvx);
+	parseDouble(&targetVelX, 0, nodeRef, PLAYER_TARGET_VEL_X_NODE);
 	//facing direction
 	parseInt((int*)&facingDirection, 0, nodeRef, PLAYER_FACING_DIRECTION_NODE, Validator::intGreaterThanOrEqualToZero);
 	//number
@@ -291,7 +276,7 @@ void Player::unserialize(Value * nodeRef)
 	parseBool(&isConnected, false, nodeRef, PLAYER_IS_CONNECTED_NODE);
 }
 
-void Player::serializePlayer() 
+void Player::serializePlayer()
 {
 	this->lock();
 	this->serializedPlayer = this->serialize();
@@ -314,14 +299,6 @@ string Player::serialize()
 	writer.Double(this->velocity.x);
 	writer.String(PLAYER_Y_VELOCITY_NODE);
 	writer.Double(this->velocity.y);
-	writer.String(PLAYER_WIDTH_NODE);
-	writer.Int(this->width);
-	writer.String(PLAYER_HEIGHT_NODE);
-	writer.Int(this->height);
-	//writer.String(PLAYER_SCENARIO_WIDTH_NODE);
-	//writer.Int(this->scenarioWidth);
-	//writer.String(PLAYER_SCENARIO_HEIGHT_NODE);
-	//writer.Int(this->scenarioHeight);
 	writer.String(PLAYER_SCROLL_SPEED_NODE);
 	writer.Int(this->scrollSpeed);
 	writer.String(PLAYER_GROUND_POS_NODE);

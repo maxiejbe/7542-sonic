@@ -38,7 +38,7 @@ void close()
 int main(int argc, char* args[])
 {
 	Logger::init();
-	Logger::loggingLevel() = logLOW;
+	Logger::loggingLevel() = logHIGH;
 
 	string configParamName = "--config";
 	string configPath = "";
