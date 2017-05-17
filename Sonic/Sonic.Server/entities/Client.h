@@ -32,6 +32,7 @@ public:
 	bool sendFileContent();
 	bool sendGameStart();
 	bool sendPlayersStatus();
+	bool refreshPlayer();
 
 	Player* getPlayer();
 	void setPlayer(Player*);

@@ -83,6 +83,10 @@ void Client::closeSocket()
 void Client::terminateThreads()
 {
 	//terminate Threads
+
+	// Last refresh before DEATH
+	this->refreshPlayer();
+
 	//WaitForSingleObject(this->recvThreadHandle, INFINITE);
 	CloseHandle(this->recvThreadHandle);
 	this->recvThreadHandle = NULL;
@@ -258,15 +262,21 @@ DWORD Client::sendSocketHandler()
 {
 	while (this->continueSending) {
 
-		if (this->player == nullptr) continue;
-		if (this->getLastMessage()->getType() != MessageType::status) continue;
+		if (!refreshPlayer()) continue;
 
-		PlayerController::update(this->getLastMessage(), this->getPlayer(), this->server->getCamera());
-		player->serializePlayer();
 		this->sendPlayersStatus();
 
 		Sleep(15);
 	}
 
 	return 0;
+}
+
+bool Client::refreshPlayer() {
+	if (this->player == nullptr) return false;
+	if (this->getLastMessage()->getType() != MessageType::status) return false;
+
+	PlayerController::update(this->getLastMessage(), this->getPlayer(), this->server->getCamera());
+	player->serializePlayer();
+	return true;
 }
