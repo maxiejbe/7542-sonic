@@ -24,6 +24,15 @@ Client::Client(Server* server)
 Client::~Client()
 {
 	if (this->player && this->player != nullptr) delete this->player;
+	
+	this->terminateThreads();
+
+	if (this->refreshThreadHandle != NULL)
+	{
+		this->continueRefreshing = false;
+		CloseHandle(this->refreshThreadHandle);
+		this->refreshThreadHandle = NULL;
+	}
 }
 
 int Client::getClientNumber()
@@ -82,19 +91,17 @@ void Client::closeSocket()
 
 void Client::terminateThreads()
 {
-	//terminate Threads
-
-	// Last refresh before DEATH
-	this->refreshPlayer();
-
-	//WaitForSingleObject(this->recvThreadHandle, INFINITE);
-	CloseHandle(this->recvThreadHandle);
-	this->recvThreadHandle = NULL;
-
-	this->continueSending = false;
-	//WaitForSingleObject(this->sendThreadHandle, INFINITE);	
-	CloseHandle(this->sendThreadHandle);
-	this->sendThreadHandle = NULL;
+	if (this->recvThreadHandle != NULL) {
+		CloseHandle(this->recvThreadHandle);
+		this->recvThreadHandle = NULL;
+	}
+	
+	if (this->sendThreadHandle != NULL) 
+	{
+		this->continueSending = false;	
+		CloseHandle(this->sendThreadHandle);
+		this->sendThreadHandle = NULL;
+	}
 }
 
 bool Client::sendClientNumber()
