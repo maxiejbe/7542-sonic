@@ -145,14 +145,16 @@ bool SocketClient::initializeSocket()
 	}
 
 	//Set recv and send timeouts to 10 seconds
-	struct timeval toRecv, toSend;
-	toRecv.tv_sec = 20;
-	toRecv.tv_usec = 0;
+	//struct timeval toRecv, toSend;
+	//toRecv.tv_sec = 20;
+	//toRecv.tv_usec = 0;
 	//toSend.tv_sec = 10;
 
 	//if (setsockopt(this->_socket, SOL_SOCKET, SO_RCVTIMEO, (const char *)&toRecv, sizeof(toRecv)) == SOCKET_ERROR) return false;
 	//if (setsockopt(this->_socket, SOL_SOCKET, SO_SNDTIMEO, (const char *)&toSend, sizeof(toRecv)) == SOCKET_ERROR) return false;
 
+	int i = 1;
+	setsockopt(this->_socket, IPPROTO_TCP, TCP_NODELAY, (char *)&i, sizeof(i));
 
 	return true;
 }

@@ -93,6 +93,10 @@ bool Server::initSocket()
 		LOG(logERROR) << MESSAGE_SERVER_CANNOT_OPEN_SOCKET << MESSAGE_SERVER_ERROR_CODE << WSAGetLastError();
 		return false;
 	}
+
+	int i = 1;
+	setsockopt(this->_socket, IPPROTO_TCP, TCP_NODELAY, (char *)&i, sizeof(i));
+
 	return true;
 }
 
