@@ -303,9 +303,11 @@ DWORD Client::sendSocketHandler()
 
 bool Client::refreshPlayer() {
 	if (this->player == nullptr) return false;
-	if (this->getLastMessage()->getType() != MessageType::status) return false;
+	
+	if (this->getLastMessage()->getType() == MessageType::status) {
+		PlayerController::update(this->getLastMessage(), this->getPlayer(), this->server->getCamera());
+	}
 
-	PlayerController::update(this->getLastMessage(), this->getPlayer(), this->server->getCamera());
 	player->serializePlayer();
 	return true;
 }
