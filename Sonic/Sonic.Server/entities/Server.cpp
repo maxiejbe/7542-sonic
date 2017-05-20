@@ -94,7 +94,7 @@ bool Server::initSocket()
 		return false;
 	}
 
-	int i = 1;
+	char i;
 	setsockopt(this->_socket, IPPROTO_TCP, TCP_NODELAY, (char *)&i, sizeof(i));
 
 	return true;
