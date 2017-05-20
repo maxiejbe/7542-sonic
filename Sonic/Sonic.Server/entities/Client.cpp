@@ -274,8 +274,6 @@ DWORD Client::receiveSocketHandler() {
 
 	LOG(logINFO) << MESSAGE_CLIENT_CONNECTION_CLOSED << this->clientNumber;
 
-	this->server->removeClientConnection(this->clientNumber);
-
 	return 0;
 }
 
@@ -307,12 +305,14 @@ DWORD WINAPI Client::runSendSocketHandler(void * args)
 DWORD Client::sendSocketHandler()
 {
 	while (this->continueSending) {
-		this->sendPlayersStatus();
+		if (!this->sendPlayersStatus()) break;
 		//Sleep(15);
 		if (this->getLastMessage()->getTimeStep() * 1000 - 2 > 0) {
 			Sleep(this->getLastMessage()->getTimeStep() * 1000 - 2);
 		}
 	}
+
+	this->server->removeClientConnection(this->clientNumber);
 
 	return 0;
 }
