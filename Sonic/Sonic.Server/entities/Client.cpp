@@ -52,6 +52,10 @@ bool Client::acceptSocket()
 		LOG(logERROR) << MESSAGE_CLIENT_REJECTED_CONNECTION << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError() << " (IP: " << clientIp << ")";
 		return false;
 	}
+
+	char i;
+	setsockopt(this->socket, IPPROTO_TCP, TCP_NODELAY, (char *)&i, sizeof(i));
+
 	return true;
 }
 
