@@ -148,6 +148,11 @@ int main(int argc, char* args[])
 				layerView->loadLayer();
 			}
 
+			Message* clientResponse = new Message();
+			clientResponse->setType(MessageType::content_ok);
+			NetworkManager::getInstance().sendMessage(clientResponse);
+			delete clientResponse;
+
 			// Show waiting banner
 			if (!NetworkManager::getInstance().canStartGame()) {
 				waitingConnectionsBanner.showBanner();
