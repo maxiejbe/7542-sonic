@@ -271,7 +271,7 @@ DWORD WINAPI Client::refreshSocketHandler(void * args)
 DWORD Client::refreshSocketHandler()
 {
 	while (this->continueRefreshing) {
-		this->refreshPlayer();
+		if (!this->refreshPlayer()) continue;
 		//Sleep(15);
 		if (this->getLastMessage()->getTimeStep() * 1000 - 2 > 0) {
 			Sleep(this->getLastMessage()->getTimeStep() * 1000 - 2);
