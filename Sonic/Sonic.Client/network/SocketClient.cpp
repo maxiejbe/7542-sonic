@@ -156,7 +156,6 @@ bool SocketClient::initializeSocket()
 	//if (setsockopt(this->_socket, SOL_SOCKET, TCP_NODELAY, (const char *)&toRecv, sizeof(toRecv)) == SOCKET_ERROR) return false;
 	//if (setsockopt(this->_socket, SOL_SOCKET, SO_SNDTIMEO, (const char *)&toSend, sizeof(toRecv)) == SOCKET_ERROR) return false;
 
-
 	return true;
 }
 
