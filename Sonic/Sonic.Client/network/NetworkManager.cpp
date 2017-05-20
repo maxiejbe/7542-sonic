@@ -137,8 +137,6 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		this->updateCamera(sMessage->getCamera());
 		break;
 	case content:
-		clientResponse->setType(MessageType::content_ok);
-		this->sendMessage(clientResponse);
 		this->fileContent = sMessage->getFileContent();
 		break;
 	case start_game:
