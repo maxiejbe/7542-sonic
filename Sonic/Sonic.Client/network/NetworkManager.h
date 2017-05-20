@@ -57,11 +57,13 @@ private:
 	static DWORD WINAPI runRecvSocketHandler(void* args);
 	DWORD recvSocketHandler();
 	void handleMessage(char*);
+	bool continueReceiving;
 
 	//Connection check
-	/*DWORD cliOnlineCheckThreadId;
-	static DWORD WINAPI runClientOnlineCheck(void* args);
-	DWORD clientOnlineCheck();*/
-
+	HANDLE heartBeatThreadHandle;
+	DWORD heartBeatThreadId;
+	static DWORD WINAPI runHeartBeatSocketHandler(void* args);
+	DWORD heartBeatSocketHandler();
+	bool continueHeartBeating;
 };
 

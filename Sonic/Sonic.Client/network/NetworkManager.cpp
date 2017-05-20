@@ -56,9 +56,8 @@ bool NetworkManager::online()
 bool NetworkManager::reconnect() {
 	if (!this->client) return false;
 	if (this->online()) return true;
-	if (this->recvThreadHandle != NULL) {
-		this->stopConnectionHandlers();
-	}
+	this->stopConnectionHandlers();
+	
 	if (!this->client->reconnect()) {
 		LOG(logERROR) << "Network Manager: Fallo intento de reconexión";
 		return false;
@@ -71,24 +70,34 @@ bool NetworkManager::reconnect() {
 
 void NetworkManager::disconnect()
 {
-	if (this->recvThreadHandle != NULL) {
-		this->stopConnectionHandlers();
-	}
+	this->stopConnectionHandlers();
 	this->client->disconnectSocket();
 }
 
 void NetworkManager::stopConnectionHandlers() {
-	//set flag to force stop
-	//WaitForSingleObject(this->recvThreadHandle, INFINITE);
-	CloseHandle(this->recvThreadHandle);
-	this->recvThreadHandle = NULL;
+	
+	if (this->recvThreadHandle != NULL) {
+		//WaitForSingleObject(this->recvThreadHandle, INFINITE);
+		this->continueReceiving = false;
+		CloseHandle(this->recvThreadHandle);
+		this->recvThreadHandle = NULL;
+	}
+
+	if (this->heartBeatThreadHandle != NULL) {
+		//WaitForSingleObject(this->heartBeatThreadHandle, INFINITE);
+		this->continueHeartBeating = false;
+		CloseHandle(this->heartBeatThreadHandle);
+		this->heartBeatThreadHandle = NULL;
+	}
 }
 
 void NetworkManager::startConnectionHandlers()
 {
-	//Receive Handler
-	//TODO: kill theads
+	this->continueReceiving = true;
 	this->recvThreadHandle = CreateThread(0, 0, runRecvSocketHandler, (void*)this, 0, &this->recvThreadId);
+
+	this->continueHeartBeating = true;
+	this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
 }
 
 DWORD WINAPI NetworkManager::runRecvSocketHandler(void * args)
@@ -101,7 +110,7 @@ DWORD NetworkManager::recvSocketHandler()
 {
 	char receivedMsg[4096];
 	int receivedMsgLen = 4096;
-	while (this->online())
+	while (this->online() && this->continueReceiving)
 	{
 		if (!this->client->receiveMessage(receivedMsg, receivedMsgLen))
 		{
@@ -153,6 +162,26 @@ void NetworkManager::handleMessage(char * receivedMessage)
 
 	delete clientResponse;
 	delete sMessage;
+}
+
+DWORD WINAPI NetworkManager::runHeartBeatSocketHandler(void * args)
+{
+	NetworkManager * nManager = (NetworkManager*)args;
+	return nManager->heartBeatSocketHandler();
+}
+
+DWORD NetworkManager::heartBeatSocketHandler()
+{
+	while (this->online() && this->continueHeartBeating)
+	{
+		Message* heartBeatMessage = new Message();
+		heartBeatMessage->setType(MessageType::heart_beat);
+		this->sendMessage(heartBeatMessage);
+		delete heartBeatMessage;
+
+		Sleep(1000);
+	}
+	return 0;
 }
 
 void NetworkManager::sendMessage(Message* message)

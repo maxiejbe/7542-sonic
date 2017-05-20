@@ -1,6 +1,5 @@
 #include "SocketClient.h"
 
-
 SocketClient::SocketClient(char * host, int port)
 {
 	this->host = host;
@@ -20,7 +19,6 @@ SocketClient::SocketClient(char * host, int port)
 	this->connectToSocket();
 }
 
-
 SocketClient::~SocketClient()
 {
 	this->disconnectSocket();
@@ -36,7 +34,6 @@ bool SocketClient::isConnected()
 {
 	return this->connected;
 }
-
 
 bool SocketClient::sendMessage(string message)
 {
@@ -79,25 +76,6 @@ bool SocketClient::receiveMessage(char * receivedMessage, int receivedMessageLen
 
 	return true;
 }
-
-bool SocketClient::checkConnection() 
-{
-	if (!this->initialized || !this->connected) return false;
-
-	fd_set fd_reader;
-	timeval connection_timer;
-
-	connection_timer.tv_sec = 2; // = 2
-	connection_timer.tv_usec = 0;
-
-	FD_ZERO(&fd_reader);
-	FD_SET(this->_socket, &fd_reader);
-
-	int select_ready = select(0, &fd_reader, NULL, NULL, &connection_timer);
-
-	return(select_ready != SOCKET_ERROR);
-}
-
 
 bool SocketClient::initializeWindowsSupport()
 {
@@ -144,18 +122,14 @@ bool SocketClient::initializeSocket()
 		return false;
 	}
 
-	//Set recv and send timeouts to 10 seconds
-	//struct timeval toRecv, toSend;
-	//toRecv.tv_sec = 20;
-	//toRecv.tv_usec = 0;
-	//toSend.tv_sec = 10;
+	//Set recv timeouts to 3 seconds
+	int timeoutSeconds = 3;
+	DWORD timeout = timeoutSeconds * 1000;
+	setsockopt(this->_socket, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
 
 	char i;
 	setsockopt(this->_socket, IPPROTO_TCP, TCP_NODELAY, (char *)&i, sizeof(i));
-
-	//if (setsockopt(this->_socket, SOL_SOCKET, TCP_NODELAY, (const char *)&toRecv, sizeof(toRecv)) == SOCKET_ERROR) return false;
-	//if (setsockopt(this->_socket, SOL_SOCKET, SO_SNDTIMEO, (const char *)&toSend, sizeof(toRecv)) == SOCKET_ERROR) return false;
-
+	
 	return true;
 }
 
@@ -182,7 +156,6 @@ bool SocketClient::reconnect()
 	this->connectToSocket();
 	return this->connected;
 }
-
 
 void SocketClient::disconnectSocket()
 {

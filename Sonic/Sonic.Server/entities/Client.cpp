@@ -53,6 +53,11 @@ bool Client::acceptSocket()
 		return false;
 	}
 
+	//Set send timeouts to 3 seconds
+	int timeoutSeconds = 3;
+	DWORD timeout = timeoutSeconds * 1000;
+	setsockopt(this->socket, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout, sizeof(timeout));
+
 	char i;
 	setsockopt(this->socket, IPPROTO_TCP, TCP_NODELAY, (char *)&i, sizeof(i));
 
@@ -83,7 +88,8 @@ bool Client::welcome(int clientNumber, Player* player)
 		return false;
 	}
 
-	this->recvThreadHandle = CreateThread(0, 0, runSocketHandler, (void*)this, 0, &this->threadId);
+	this->continueReceiving = true;
+	this->recvThreadHandle = CreateThread(0, 0, runReceiveSocketHandler, (void*)this, 0, &this->threadId);
 
 	return true;
 }
@@ -96,6 +102,7 @@ void Client::closeSocket()
 void Client::terminateThreads()
 {
 	if (this->recvThreadHandle != NULL) {
+		this->continueReceiving = false;
 		CloseHandle(this->recvThreadHandle);
 		this->recvThreadHandle = NULL;
 	}
@@ -206,12 +213,12 @@ SOCKET Client::getSocket()
 	return this->socket;
 }
 
-bool Client::parseRecievedMessage()
+bool Client::parseReceivedMessage()
 {
 	return false;
 }
 
-void Client::handleRecievedMessage(char* recievedMessage)
+void Client::handleReceivedMessage(char* recievedMessage)
 {
 	string strMessage(recievedMessage);
 	Message* message = new Message();
@@ -242,12 +249,18 @@ void Client::handleRecievedMessage(char* recievedMessage)
 	}
 }
 
-DWORD Client::socketHandler() {
+DWORD WINAPI Client::runReceiveSocketHandler(void * args)
+{
+	Client * client = (Client*)args;
+	return client->receiveSocketHandler();
+}
+
+DWORD Client::receiveSocketHandler() {
 	char recievedMessage[2048];
 	int recievedMessageLen = 2048;
 	int bytecount = INT_MAX;
 
-	while (bytecount > 0) {
+	while (bytecount > 0 && this->continueReceiving) {
 		memset(recievedMessage, 0, recievedMessageLen);
 		if ((bytecount = recv(this->socket, recievedMessage, recievedMessageLen, 0)) == SOCKET_ERROR) {
 			LOG(logERROR) << MESSAGE_CLIENT_DATA_RECV_INCORRECT << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError() << " (Cliente " << this->clientNumber << ")";
@@ -256,7 +269,7 @@ DWORD Client::socketHandler() {
 
 		LOG(logINFO) << MESSAGE_CLIENT_DATA_RECV_SUCCESS << recievedMessage << " (Cliente " << this->clientNumber << ")";
 
-		this->handleRecievedMessage(recievedMessage);
+		this->handleReceivedMessage(recievedMessage);
 	};
 
 	LOG(logINFO) << MESSAGE_CLIENT_CONNECTION_CLOSED << this->clientNumber;
@@ -284,7 +297,6 @@ DWORD Client::refreshSocketHandler()
 
 	return 0;
 }
-
 
 DWORD WINAPI Client::runSendSocketHandler(void * args)
 {

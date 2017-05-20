@@ -40,16 +40,6 @@ public:
 
 	SOCKET getSocket();
 private:
-	bool parseRecievedMessage();
-	void handleRecievedMessage(char* recievedMessage);
-
-	static DWORD WINAPI runSocketHandler(void* args)
-	{
-		Client* pclient = (Client*) args;
-		return pclient->socketHandler();
-	}
-	DWORD socketHandler();
-
 	int clientNumber;
 	Player* player;
 	Message * lastReceivedMessage;
@@ -61,6 +51,13 @@ private:
 	DWORD threadId;
 	HANDLE recvThreadHandle;
 	
+	//recieve handler
+	static DWORD WINAPI runReceiveSocketHandler(void* args);
+	DWORD receiveSocketHandler();
+	bool parseReceivedMessage();
+	void handleReceivedMessage(char* recievedMessage);
+	bool continueReceiving;
+
 	//refresh handler
 	DWORD refreshThreadId;
 	HANDLE refreshThreadHandle;

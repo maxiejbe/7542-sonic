@@ -22,8 +22,7 @@ public:
 	bool reconnect();
 	bool sendMessage(string message);
 	bool receiveMessage(char * receivedMessage, int receivedMessageLength);
-	bool checkConnection();
-
+	
 	void disconnectSocket();
 private:
 	SOCKET _socket;
