@@ -24,6 +24,7 @@ public:
 	bool reconnect();
 	void disconnect();
 	void sendMessage(Message * message);
+	void sendMessage(Message * message, bool disconnect);
 	Camera * getCamera();
 	unordered_map<int, PlayerView*> getPlayerViews();
 

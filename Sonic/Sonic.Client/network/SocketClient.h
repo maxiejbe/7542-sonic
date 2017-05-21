@@ -21,6 +21,7 @@ public:
 	bool isConnected();
 	bool reconnect();
 	bool sendMessage(string message);
+	bool sendMessage(string message, bool disconnect);
 	bool receiveMessage(char * receivedMessage, int receivedMessageLength);
 	
 	void disconnectSocket();
