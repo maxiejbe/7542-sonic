@@ -38,6 +38,135 @@ void close()
 	SDL_Quit();
 }
 
+bool connectToServer(ServerConfiguration serverConfig) {
+	NetworkManager::getInstance().startClient(StringUtils::convert(serverConfig.getHost()), serverConfig.getPortNumber());
+	if (NetworkManager::getInstance().online()) return true;
+	//show banner
+	Banner canConnectToServerBanner = Banner("Server connection failed", { 0,0,0,150 });
+	canConnectToServerBanner.showBanner();
+	//wait 2 seconds
+	Sleep(2000);
+	
+	Menu menu = Menu();
+	int i = menu.showMenu();
+	if (i == 0) return connectToServer(serverConfig);
+
+	return false;
+}
+
+bool initializeGameEntities(string configPath, Scenario &scenario,int &scenarioWidth, int &scenarioHeight, SDL_Rect &camera, vector<EntityView*>&entityViews, vector<LayerView>&layerViews) {
+	while (NetworkManager::getInstance().getPlayerNumber() < 0) {
+		Sleep(3000);
+	}
+
+	while (NetworkManager::getInstance().getFileContent().empty()) {
+		Sleep(3000);
+	}
+
+	// Parse scenario
+	Parser * parser = new Parser(configPath, NetworkManager::getInstance().getFileContent());
+	parser->parse(&scenario);
+	delete parser;
+
+	scenarioWidth = scenario.getWidth();
+	scenarioHeight = scenario.getHeight();
+
+	// Initialize camera
+	camera = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
+
+	// Initialize layers
+	vector<Layer> layers = scenario.getLayers();
+	for (vector<Layer>::iterator it = layers.begin(); it != layers.end(); ++it) {
+		Layer* layer = &(*it);
+		LayerView layerView(layer);
+		layerViews.push_back(layerView);
+	}
+
+	// Initialize entities
+	vector<Entity*> entities = scenario.getEntities();
+	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it) {
+		Entity* entity = *it;
+		EntityView* entityView = EntityViewResolver::resolve(entity);
+		entityViews.push_back(entityView);
+	}
+
+	// Load layers
+	for (vector<LayerView>::iterator it = layerViews.begin(); it != layerViews.end(); ++it) {
+		LayerView* layerView = &(*it);
+		layerView->loadLayer();
+	}
+
+	return true;
+}
+
+bool startGame() {
+	Banner waitingConnectionsBanner = Banner("Waiting for other connections", { 0,0,0,150 }, "img/menu-background.jpg");
+
+	Message* clientResponse = new Message();
+	clientResponse->setType(MessageType::content_ok);
+	NetworkManager::getInstance().sendMessage(clientResponse);
+	delete clientResponse;
+
+	// Show waiting banner
+	if (!NetworkManager::getInstance().canStartGame()) {
+		waitingConnectionsBanner.showBanner();
+		SDL_RenderPresent(Renderer::getInstance().gRenderer);
+
+		while (!NetworkManager::getInstance().canStartGame()) {
+			Sleep(1000);
+		}
+	}
+
+	return true;
+}
+
+bool reconnect(Timer capTimer) {
+	Banner reconnectionBanner = Banner("Reconnecting", { 0,0,0,150 }, "img/menu-background.jpg");
+	double reconnetionTimeStep = capTimer.getTicks() / 1000.;
+	int reconnectionAttemp = 1;
+	bool reconnected = false;
+	while (!NetworkManager::getInstance().online() && reconnectionAttemp <= 1) {
+		reconnectionBanner.showBanner();
+		SDL_RenderPresent(Renderer::getInstance().gRenderer);
+
+		double currentTime = capTimer.getTicks() / 1000.;
+		if ((currentTime - reconnetionTimeStep) > 5) {
+			reconnected = NetworkManager::getInstance().reconnect();
+			reconnectionAttemp++;
+			reconnetionTimeStep = capTimer.getTicks() / 1000.;
+		}
+	}
+
+	if (!reconnected) return false;
+
+	return startGame();
+}
+
+
+void pauseGame(Menu &menu,Timer capTimer, bool &keepGameRunning) {
+	int i = menu.showMenu();
+	bool reconnected;
+	if (i == 2) { keepGameRunning = false; }
+	if (i == 1) //show disconnect menu
+	{
+		NetworkManager::getInstance().disconnect();
+		i = menu.showMenu();
+		if (i == 0) {
+			reconnected = reconnect(capTimer);
+			if (reconnected) {
+				keepGameRunning = true;
+				return;
+			}
+			//pause game again
+			pauseGame(menu, capTimer, keepGameRunning);
+		}
+		if (i == 2) {
+			keepGameRunning = false;
+		}
+	}
+}
+
+
 int main(int argc, char* args[])
 {
 	Logger::init();
@@ -59,12 +188,11 @@ int main(int argc, char* args[])
 	Scenario scenario;
 	Camera* cameraModel;
 	vector<EntityView*> entityViews;
-	Parser* parser = nullptr;
 
 	int scenarioWidth;
 	int scenarioHeight;
 
-	int reconnectionAttemp;
+	
 	double reconnectionPause;
 	bool connectionLostAbort = false;
 
@@ -80,11 +208,9 @@ int main(int argc, char* args[])
 	}
 	else {
 
-		Banner reconnectionBanner = Banner("Reconnecting", { 0,0,0,150 }, "img/menu-background.jpg");
-		Banner waitingConnectionsBanner = Banner("Waiting for other connections", { 0,0,0,150 }, "img/menu-background.jpg");
 		Banner errorServerBanner = Banner("Server Error", { 0,0,0,150 });
 
-		bool isRunning = true;
+		bool isRunning = false;
 
 		Timer stepTimer;
 
@@ -100,66 +226,15 @@ int main(int argc, char* args[])
 		// Initialize menu
 		Menu menu = Menu();
 		int i = menu.showMenu();
-		if (i == 2) { isRunning = false; }
+		//if (i == 2) { isRunning = false; }
 
 		// Connect. TODO: mejorar esto del i
 		if (i == 0) {
 
 			// Connect to server
-			NetworkManager::getInstance().startClient(StringUtils::convert(serverConfig.getHost()), serverConfig.getPortNumber());
-
-			while (NetworkManager::getInstance().getPlayerNumber() < 0) {
-				Sleep(3000);
-			}
-
-			while (NetworkManager::getInstance().getFileContent().empty()) {
-				Sleep(3000);
-			}
-
-			// Parse scenario
-			parser = new Parser(configPath, NetworkManager::getInstance().getFileContent());
-			parser->parse(&scenario);
-
-			scenarioWidth = scenario.getWidth();
-			scenarioHeight = scenario.getHeight();
-
-			// Initialize camera
-			camera = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
-
-			// Initialize layers
-			vector<Layer> layers = scenario.getLayers();
-			for (vector<Layer>::iterator it = layers.begin(); it != layers.end(); ++it) {
-				Layer* layer = &(*it);
-				LayerView layerView(layer);
-				layerViews.push_back(layerView);
-			}
-
-			// Initialize entities
-			vector<Entity*> entities = scenario.getEntities();
-			for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it) {
-				Entity* entity = *it;
-				EntityView* entityView = EntityViewResolver::resolve(entity);
-				entityViews.push_back(entityView);
-			}
-
-			// Load layers
-			for (vector<LayerView>::iterator it = layerViews.begin(); it != layerViews.end(); ++it) {
-				LayerView* layerView = &(*it);
-				layerView->loadLayer();
-			}
-
-			Message* clientResponse = new Message();
-			clientResponse->setType(MessageType::content_ok);
-			NetworkManager::getInstance().sendMessage(clientResponse);
-			delete clientResponse;
-
-			// Show waiting banner
-			if (!NetworkManager::getInstance().canStartGame()) {
-				waitingConnectionsBanner.showBanner();
-				SDL_RenderPresent(Renderer::getInstance().gRenderer);
-
-				while (!NetworkManager::getInstance().canStartGame()) {
-					Sleep(1000);
+			if (connectToServer(serverConfig)) {
+				if (initializeGameEntities(configPath, scenario, scenarioWidth, scenarioHeight, camera, entityViews, layerViews)) {
+					isRunning = startGame();
 				}
 			}
 		}
@@ -169,43 +244,13 @@ int main(int argc, char* args[])
 			capTimer.start();
 
 			if (!NetworkManager::getInstance().online()) {
-				double reconnetionTimeStep = capTimer.getTicks() / 1000.;
-				reconnectionAttemp = 1;
-				bool reconnected = false;
-				while (!NetworkManager::getInstance().online() && reconnectionAttemp <= 3) {
-					reconnectionBanner.showBanner();
-					SDL_RenderPresent(Renderer::getInstance().gRenderer);
-
-					double currentTime = capTimer.getTicks() / 1000.;
-					if ((currentTime - reconnetionTimeStep) > 5) {
-						reconnected = NetworkManager::getInstance().reconnect();
-						reconnectionAttemp++;
-						reconnetionTimeStep = capTimer.getTicks() / 1000.;
-					}
-				}
-
-				if (!reconnected) connectionLostAbort = true;
+				connectionLostAbort = (!reconnect(capTimer));
 			}
 
 			if (connectionLostAbort) {
-				int i = menu.showMenu();
-				if (i == 2) { isRunning = false; }
-				if (i == 1) {
-					NetworkManager::getInstance().disconnect();
-					i = menu.showMenu();
-					if (i == 0) {
-						NetworkManager::getInstance().reconnect();
-						continue;
-					}
-					if (i == 2) {
-						isRunning = false;
-						continue;
-					}
-				}
-				if (i == 0) {
-					NetworkManager::getInstance().reconnect();
-					continue;
-				}
+				//connection lost, show pause game menu
+				Menu lostConnectionMenu = Menu();
+				pauseGame(lostConnectionMenu,capTimer, isRunning);
 			}
 
 			InputManager* input = InputManager::getInstance();
@@ -218,26 +263,8 @@ int main(int argc, char* args[])
 
 
 			if (input->isKeyDown(KEY_ESCAPE) || input->isKeyDown(KEY_Q)) {
-				i = menu.showMenu();
-				if (i == 2) { isRunning = false; }
-				if (i == 1) //show disconnect menu
-				{
-					NetworkManager::getInstance().disconnect();
-					i = menu.showMenu();
-					if (i == 0) {
-						NetworkManager::getInstance().reconnect();
-						continue;
-					}
-					if (i == 2) {
-						isRunning = false;
-						continue;
-					}
-				}
-				if (i == 0) {
-					NetworkManager::getInstance().reconnect();
-					continue;
-				}
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
+				pauseGame(menu, capTimer, isRunning);
 			}
 
 			//Calculate and correct fps
@@ -340,9 +367,6 @@ int main(int argc, char* args[])
 
 	LOG(logINFO) << "El juego ha finalizado.";
 
-	if (parser != nullptr) {
-		delete parser;
-	}
 	if (localParser != nullptr) {
 		delete localParser;
 	}
