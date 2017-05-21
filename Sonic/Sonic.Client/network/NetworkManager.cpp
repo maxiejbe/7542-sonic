@@ -177,7 +177,7 @@ DWORD NetworkManager::heartBeatSocketHandler()
 	{
 		Message* heartBeatMessage = new Message();
 		heartBeatMessage->setType(MessageType::heart_beat);
-		this->sendMessage(heartBeatMessage);
+		this->sendMessage(heartBeatMessage, true);
 		delete heartBeatMessage;
 
 		Sleep(1000);
@@ -187,6 +187,11 @@ DWORD NetworkManager::heartBeatSocketHandler()
 
 void NetworkManager::sendMessage(Message* message)
 {
+	this->sendMessage(message, false);
+}
+
+void NetworkManager::sendMessage(Message* message, bool disconnect)
+{
 	if (!this->online()) {
 		return;
 	}
@@ -194,7 +199,7 @@ void NetworkManager::sendMessage(Message* message)
 	//Serialize message before sending to server
 	string stringMessage = message->serialize();
 
-	if (!this->client->sendMessage(stringMessage)) {
+	if (!this->client->sendMessage(stringMessage, disconnect)) {
 		LOG(logERROR) << "Network Manager: Falló envio de mensaje -> " << stringMessage;
 	}
 

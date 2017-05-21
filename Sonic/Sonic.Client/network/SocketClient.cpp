@@ -37,6 +37,11 @@ bool SocketClient::isConnected()
 
 bool SocketClient::sendMessage(string message)
 {
+	return this->sendMessage(message, false);
+}
+
+bool SocketClient::sendMessage(string message, bool disconnect = false)
+{
 	if (!this->initialized || !this->connected) {
 		return false;
 	}
@@ -44,14 +49,9 @@ bool SocketClient::sendMessage(string message)
 	int byteCount = send(this->_socket, message.c_str(), message.size(), 0);
 	if (byteCount == SOCKET_ERROR) {
 		//TODO: Log in file
-		//fprintf(stderr, "Error sending data %d\n", WSAGetLastError());
-		this->disconnectSocket();
+		if (disconnect) this->disconnectSocket();
 		return false;
 	}
-
-	/*if (byteCount == 0) {
-		this->disconnectSocket();
-	}*/
 
 	return true;
 }
@@ -65,15 +65,10 @@ bool SocketClient::receiveMessage(char * receivedMessage, int receivedMessageLen
 	int bytecount = recv(this->_socket, receivedMessage, receivedMessageLength, 0);
 	if (bytecount == SOCKET_ERROR) {
 		//TODO: Log in file
-		//fprintf(stderr, "Error receiving data %d\n", WSAGetLastError());
-		this->disconnectSocket();
+		//this->disconnectSocket();
 		return false;
 	}
-	/*if (bytecount == 0) {
-		this->disconnectSocket();
-		return false;
-	}*/
-
+	
 	return true;
 }
 
