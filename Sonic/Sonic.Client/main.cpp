@@ -125,7 +125,7 @@ bool reconnect(Timer capTimer) {
 	double reconnetionTimeStep = capTimer.getTicks() / 1000.;
 	int reconnectionAttemp = 1;
 	bool reconnected = false;
-	while (!NetworkManager::getInstance().online() && reconnectionAttemp <= 1) {
+	while (!NetworkManager::getInstance().online() && reconnectionAttemp <= 3) {
 		reconnectionBanner.showBanner();
 		SDL_RenderPresent(Renderer::getInstance().gRenderer);
 
@@ -244,13 +244,11 @@ int main(int argc, char* args[])
 			capTimer.start();
 
 			if (!NetworkManager::getInstance().online()) {
-				connectionLostAbort = (!reconnect(capTimer));
-			}
-
-			if (connectionLostAbort) {
-				//connection lost, show pause game menu
-				Menu lostConnectionMenu = Menu();
-				pauseGame(lostConnectionMenu,capTimer, isRunning);
+				if (!reconnect(capTimer)) {
+					//connection lost, show pause game menu
+					Menu lostConnectionMenu = Menu();
+					pauseGame(lostConnectionMenu, capTimer, isRunning);
+				}
 			}
 
 			InputManager* input = InputManager::getInstance();
