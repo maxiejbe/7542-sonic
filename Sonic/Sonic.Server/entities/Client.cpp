@@ -286,8 +286,13 @@ DWORD WINAPI Client::refreshSocketHandler(void * args)
 DWORD Client::refreshSocketHandler()
 {
 	while (this->continueRefreshing) {
-		if (!this->refreshPlayer()) continue;
-		//Sleep(15);
+		this->refreshPlayer();
+		
+		if (this->getLastMessage() == NULL) {
+			Sleep(10);
+			return 0;
+		}
+
 		if (this->getLastMessage()->getTimeStep() * 1000 - 2 > 0) {
 			Sleep(this->getLastMessage()->getTimeStep() * 1000 - 2);
 		}
@@ -305,11 +310,17 @@ DWORD WINAPI Client::runSendSocketHandler(void * args)
 DWORD Client::sendSocketHandler()
 {
 	while (this->continueSending) {
-		if (!this->sendPlayersStatus()) break;
-		//Sleep(15);
+		this->sendPlayersStatus();
+		
+		if (this->getLastMessage() == NULL) {
+			Sleep(10);
+			return 0;
+		}
+
 		if (this->getLastMessage()->getTimeStep() * 1000 - 2 > 0) {
 			Sleep(this->getLastMessage()->getTimeStep() * 1000 - 2);
 		}
+
 	}
 
 	this->server->removeClientConnection(this->clientNumber);
