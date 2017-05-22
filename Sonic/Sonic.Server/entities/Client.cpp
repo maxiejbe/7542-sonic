@@ -95,9 +95,6 @@ bool Client::welcome(int clientNumber, Player* player)
 	this->continueReceiving = true;
 	this->recvThreadHandle = CreateThread(0, 0, runReceiveSocketHandler, (void*)this, 0, &this->threadId);
 
-	this->continueHeartBeating = true;
-	this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
-
 	return true;
 }
 
@@ -269,6 +266,10 @@ void Client::handleReceivedMessage(char* recievedMessage)
 
 		this->continueSending = true;
 		this->sendThreadHandle = CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
+
+		this->continueHeartBeating = true;
+		this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
+
 	case status:
 		if (this->lastReceivedMessage != nullptr) delete this->lastReceivedMessage;
 		this->lastReceivedMessage = message;
