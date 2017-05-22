@@ -28,6 +28,7 @@ public:
 	
 	void terminateThreads();
 
+	bool sendHeartBeat();
 	bool sendClientNumber();
 	bool sendFileContent();
 	bool sendGameStart();
@@ -73,6 +74,13 @@ private:
 	bool continueSending;
 
 	mutex playerMutex;
+
+	//Connection check
+	HANDLE heartBeatThreadHandle;
+	DWORD heartBeatThreadId;
+	static DWORD WINAPI runHeartBeatSocketHandler(void* args);
+	DWORD heartBeatSocketHandler();
+	bool continueHeartBeating;
 };
 
 #endif

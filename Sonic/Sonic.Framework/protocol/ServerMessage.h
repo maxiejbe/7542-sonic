@@ -7,7 +7,7 @@
 #include "../entities/Player.h"
 #include "../entities/Camera.h"
 
-enum ServerMessageType {player_assign, content, start_game, players_status, typeless};
+enum ServerMessageType {player_assign, content, start_game, players_status, typeless, heart_beat_server };
 
 //TODO: Apply polimorphism with server message type 
 class ServerMessage : public SerializableMessage {

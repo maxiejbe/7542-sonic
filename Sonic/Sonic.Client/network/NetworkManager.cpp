@@ -96,6 +96,9 @@ void NetworkManager::startConnectionHandlers()
 {
 	this->continueReceiving = true;
 	this->recvThreadHandle = CreateThread(0, 0, runRecvSocketHandler, (void*)this, 0, &this->recvThreadId);
+
+	this->continueHeartBeating = true;
+	this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
 }
 
 DWORD WINAPI NetworkManager::runRecvSocketHandler(void * args)
@@ -151,10 +154,6 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		clientResponse->setType(MessageType::start_game_ok);
 		this->sendMessage(clientResponse);
 		this->startGame = true;
-
-		this->continueHeartBeating = true;
-		this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
-
 		break;
 	default:
 		LOG(logERROR) << "Network Manager: Mensaje invalido -> " << receivedMessage;
@@ -180,7 +179,7 @@ DWORD NetworkManager::heartBeatSocketHandler()
 		this->sendMessage(heartBeatMessage, true);
 		delete heartBeatMessage;
 
-		Sleep(1000);
+		Sleep(2000);
 	}
 	return 0;
 }

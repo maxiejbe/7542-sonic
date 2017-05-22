@@ -44,6 +44,10 @@ bool Client::acceptSocket()
 {
 	int addressSize = sizeof(address);
 	this->socket = accept(this->server->getSocket(), (struct sockaddr *)&address, &addressSize);
+	if (this->socket == INVALID_SOCKET) {
+		LOG(logERROR) << MESSAGE_CLIENT_REJECTED_CONNECTION << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError();
+		return false;
+	}
 
 	string clientIp = SocketUtils::getIpFromAddress(address);
 	LOG(logINFO) << MESSAGE_CLIENT_INCOMING_CONNECTION << clientIp;
@@ -91,6 +95,9 @@ bool Client::welcome(int clientNumber, Player* player)
 	this->continueReceiving = true;
 	this->recvThreadHandle = CreateThread(0, 0, runReceiveSocketHandler, (void*)this, 0, &this->threadId);
 
+	this->continueHeartBeating = true;
+	this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
+
 	return true;
 }
 
@@ -107,12 +114,34 @@ void Client::terminateThreads()
 		this->recvThreadHandle = NULL;
 	}
 
+	if (this->heartBeatThreadHandle != NULL) {
+		this->continueHeartBeating = false;
+		CloseHandle(this->heartBeatThreadHandle);
+		this->heartBeatThreadHandle = NULL;
+	}
+
 	if (this->sendThreadHandle != NULL)
 	{
 		this->continueSending = false;
 		CloseHandle(this->sendThreadHandle);
 		this->sendThreadHandle = NULL;
 	}
+}
+
+bool Client::sendHeartBeat() {
+	int bytecount;
+	ServerMessage sMessage;
+	sMessage.setType(heart_beat_server);
+	string serializedMsg = sMessage.serialize();
+	const char* messageToSend = serializedMsg.c_str();
+
+	if ((bytecount = send(this->socket, messageToSend, strlen(messageToSend), 0)) == SOCKET_ERROR) {
+		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << messageToSend << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
+			<< " (Cliente " << this->clientNumber << ")";
+		return false;
+	}
+
+	return true;
 }
 
 bool Client::sendClientNumber()
@@ -290,7 +319,7 @@ DWORD Client::refreshSocketHandler()
 		
 		if (this->getLastMessage() == NULL) {
 			Sleep(10);
-			return 0;
+			continue;
 		}
 
 		if (this->getLastMessage()->getTimeStep() * 1000 - 2 > 0) {
@@ -314,7 +343,7 @@ DWORD Client::sendSocketHandler()
 		
 		if (this->getLastMessage() == NULL) {
 			Sleep(10);
-			return 0;
+			continue;
 		}
 
 		if (this->getLastMessage()->getTimeStep() * 1000 - 2 > 0) {
@@ -322,8 +351,6 @@ DWORD Client::sendSocketHandler()
 		}
 
 	}
-
-	this->server->removeClientConnection(this->clientNumber);
 
 	return 0;
 }
@@ -337,4 +364,22 @@ bool Client::refreshPlayer() {
 
 	player->serializePlayer();
 	return true;
+}
+
+DWORD WINAPI Client::runHeartBeatSocketHandler(void * args)
+{
+	Client * client = (Client*)args;
+	return client->heartBeatSocketHandler();
+}
+
+DWORD Client::heartBeatSocketHandler()
+{
+	while (this->continueHeartBeating)
+	{
+		if (!this->sendHeartBeat()) {
+			this->server->removeClientConnection(this->clientNumber);
+		}
+		Sleep(2000);
+	}
+	return 0;
 }
