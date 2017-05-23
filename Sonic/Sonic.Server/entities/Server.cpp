@@ -14,6 +14,8 @@ const char* MESSAGE_SERVER_ERROR_CODE = "Código de error: ";
 const char* MESSAGE_SERVER_SEND_MESSAGE_ERROR = "No se pudo enviar el mensaje ";
 const char* MESSAGE_SERVER_SEND_MESSAGE_SUCCESS = "Se envió correctamente el mensaje ";
 
+const int CLIENT_NUMBER_MAX_CONNECTED_PLAYERS = -99;
+
 Server::~Server()
 {
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
@@ -137,7 +139,7 @@ int Server::getAvailableIndex()
 	{
 		if (!clients.count(i)) return i;
 	}
-	return -1;
+	return CLIENT_NUMBER_MAX_CONNECTED_PLAYERS;
 }
 
 int Server::getDisconnectedIndex()
@@ -151,7 +153,7 @@ int Server::getDisconnectedIndex()
 			}
 		}
 	}
-	return -1;
+	return CLIENT_NUMBER_MAX_CONNECTED_PLAYERS;
 }
 
 void Server::acceptClientConnection()
@@ -166,6 +168,9 @@ void Server::acceptClientConnection()
 	int index = getAvailableIndex();
 	if (index < 0) index = getDisconnectedIndex();
 	if (index < 0) {
+		//max users reached
+		client->setClientNumber(index);
+		client->sendClientNumber();
 		delete client;
 		return;
 	}

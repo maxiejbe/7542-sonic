@@ -367,6 +367,11 @@ bool Client::refreshPlayer() {
 	return true;
 }
 
+void Client::setClientNumber(int clientNumber)
+{
+	this->clientNumber = clientNumber;
+}
+
 DWORD WINAPI Client::runHeartBeatSocketHandler(void * args)
 {
 	Client * client = (Client*)args;

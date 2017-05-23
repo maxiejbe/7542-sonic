@@ -146,6 +146,11 @@ int Menu::showMenu()
 	return 0;
 }
 
+void Menu::setConnectionStatus(MenuConnectionStatus connectionStatus)
+{
+	this->connectionStatus = connectionStatus;
+}
+
 int Menu::getNextOption(int option, int order) {
 	if (order > 0) {
 		// Abajo

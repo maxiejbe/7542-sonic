@@ -80,7 +80,7 @@ void ServerMessage::unserialize(Value* nodeRef)
 	{
 		case player_assign:
 			//player number
-			parseInt(&playerNumber, -1, nodeRef, SERVER_MESSAGE_PLAYER_NUMBER_NODE, Validator::intGreaterThanOrEqualToZero);
+			parseInt(&playerNumber, -1, nodeRef, SERVER_MESSAGE_PLAYER_NUMBER_NODE);
 			break;
 		case players_status:
 			parsePlayersStatus(nodeRef);

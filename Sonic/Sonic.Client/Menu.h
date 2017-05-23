@@ -9,17 +9,17 @@
 #include "Renderer.h"
 #include "InputManager.h"
 
+enum MenuConnectionStatus { CONNECTED, DISCONNECTED };
+
 class Menu
 {
 public:
-
-	enum ConnectionStatus { CONNECTED, DISCONNECTED };
-
+	
 	Menu();
 	~Menu();
 
 	int showMenu();
-
+	void setConnectionStatus(MenuConnectionStatus);
 private:
 	static const int OPCMENU = 3;
 
@@ -32,7 +32,7 @@ private:
 	bool selected[OPCMENU];
 	SDL_Color color[OPCMENU];
 	int option;
-	ConnectionStatus connectionStatus;
+	MenuConnectionStatus connectionStatus;
 	bool enabled[OPCMENU];
 
 	void initMenu();

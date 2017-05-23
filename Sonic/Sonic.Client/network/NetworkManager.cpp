@@ -1,5 +1,7 @@
 #include "NetworkManager.h"
 
+const int CLIENT_NUMBER_MAX_CONNECTED_PLAYERS = -99;
+
 NetworkManager::NetworkManager()
 {
 	this->client = NULL;
@@ -58,7 +60,9 @@ bool NetworkManager::reconnect() {
 	if (!this->client) return false;
 	if (this->online()) return true;
 	this->stopConnectionHandlers();
-	
+	//reset player number
+	this->playerNumber = -1;
+
 	if (!this->client->reconnect()) {
 		LOG(logERROR) << "Network Manager: Fallo intento de reconexión";
 		return false;
@@ -71,6 +75,7 @@ bool NetworkManager::reconnect() {
 
 void NetworkManager::disconnect()
 {
+	this->playerNumber = -1;
 	this->client->disconnectSocket();
 	this->stopConnectionHandlers();
 }
@@ -134,8 +139,10 @@ void NetworkManager::handleMessage(char * receivedMessage)
 	switch (sMessage->getType()) {
 	case player_assign:
 		LOG(logINFO) << "Network Manager: Assignación de numero de usuario -> " << sMessage->getPlayerNumber();
-		clientResponse->setType(MessageType::player_assign_ok);
-		this->sendMessage(clientResponse);
+		if (sMessage->getPlayerNumber() != CLIENT_NUMBER_MAX_CONNECTED_PLAYERS) {
+			clientResponse->setType(MessageType::player_assign_ok);
+			this->sendMessage(clientResponse);
+		}
 
 		this->playerNumber = sMessage->getPlayerNumber();
 		break;

@@ -36,6 +36,8 @@ public:
 	bool sendPlayersStatus();
 	bool refreshPlayer();
 
+	void setClientNumber(int);
+
 	Player* getPlayer();
 	void setPlayer(Player*);
 	Message* getLastMessage();

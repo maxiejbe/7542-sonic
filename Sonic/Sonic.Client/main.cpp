@@ -26,6 +26,8 @@
 const int SCREEN_FPS = 60;
 const int SCREEN_TICK_PER_FRAME = 1000 / SCREEN_FPS;
 
+const int CLIENT_NUMBER_MAX_CONNECTED_PLAYERS = -99;
+
 void close();
 
 void close()
@@ -54,10 +56,24 @@ bool connectToServer(ServerConfiguration serverConfig) {
 	return false;
 }
 
-bool initializeGameEntities(string configPath, Scenario &scenario, int &scenarioWidth, int &scenarioHeight, SDL_Rect &camera, vector<EntityView*>&entityViews, vector<LayerView>&layerViews) {
+bool clientNumberSet() {
+	Banner maxClientsReached = Banner("Max players reached", { 0,0,0,150 });
 	while (NetworkManager::getInstance().getPlayerNumber() < 0) {
-		Sleep(3000);
+		if (NetworkManager::getInstance().getPlayerNumber() == CLIENT_NUMBER_MAX_CONNECTED_PLAYERS) {
+			maxClientsReached.showBanner();
+			Sleep(1000);
+			return false;
+		}
+
+		Sleep(1000);
 	}
+
+	return true;
+}
+
+bool initializeGameEntities(string configPath, Scenario &scenario, int &scenarioWidth, int &scenarioHeight, SDL_Rect &camera, vector<EntityView*>&entityViews, vector<LayerView>&layerViews) {
+	
+	if (!clientNumberSet()) return false;
 
 	while (NetworkManager::getInstance().getFileContent().empty()) {
 		Sleep(3000);
@@ -99,6 +115,8 @@ bool initializeGameEntities(string configPath, Scenario &scenario, int &scenario
 	return true;
 }
 
+
+
 bool startGame() {
 	Banner waitingConnectionsBanner = Banner("Waiting for other connections", { 0,0,0,150 }, "img/menu-background.jpg");
 
@@ -120,6 +138,30 @@ bool startGame() {
 	return true;
 }
 
+void mainMenu(Menu &menu, bool &runGame, ServerConfiguration serverConfig, string configPath, Scenario &scenario, int &scenarioWidth, int &scenarioHeight, SDL_Rect &camera, vector<EntityView*>&entityViews, vector<LayerView>&layerViews) {
+	int i = menu.showMenu();
+	//if (i == 2) { isRunning = false; }
+
+	// Connect. TODO: mejorar esto del i
+	if (i == 0) {
+
+		// Connect to server
+		if (connectToServer(serverConfig)) {
+			if (initializeGameEntities(configPath, scenario, scenarioWidth, scenarioHeight, camera, entityViews, layerViews)) {
+				menu.setConnectionStatus(CONNECTED);
+				runGame = startGame();
+				//if not run game set game to disconnected
+				if(!runGame) menu.setConnectionStatus(DISCONNECTED);
+			}
+			else {
+				NetworkManager::getInstance().disconnect();
+				menu.setConnectionStatus(DISCONNECTED);
+				mainMenu(menu, runGame, serverConfig, configPath, scenario, scenarioWidth, scenarioHeight, camera, entityViews, layerViews);
+			}
+		}
+	}
+}
+
 bool reconnect(Timer stepTimer) {
 	Banner reconnectionBanner = Banner("Reconnecting", { 0,0,0,150 }, "img/menu-background.jpg");
 	double reconnetionTimeStep = stepTimer.getTicks() / 1000.;
@@ -139,28 +181,33 @@ bool reconnect(Timer stepTimer) {
 	}
 
 	if (!reconnected) return false;
-
+	if (!clientNumberSet()) {
+		NetworkManager::getInstance().disconnect();
+		return false;
+	}
 	return startGame();
 }
 
 void pauseGame(Menu &menu, Timer stepTimer, bool &keepGameRunning) {
 	int i = menu.showMenu();
-	bool reconnected;
 	if (i == 2) { keepGameRunning = false; }
 	if (i == 1) //show disconnect menu
 	{
 		NetworkManager::getInstance().disconnect();
+		menu.setConnectionStatus(DISCONNECTED);
 		i = menu.showMenu();
-		if (i == 0) {
-			reconnected = reconnect(stepTimer);
-			if (reconnected) {
+		if (i == 0) {	
+			if (reconnect(stepTimer)) {
+				menu.setConnectionStatus(CONNECTED);
 				keepGameRunning = true;
 				return;
 			}
 			//pause game again
+			menu.setConnectionStatus(DISCONNECTED);
 			pauseGame(menu, stepTimer, keepGameRunning);
 		}
 		if (i == 2) {
+			menu.setConnectionStatus(DISCONNECTED);
 			keepGameRunning = false;
 		}
 	}
@@ -222,22 +269,10 @@ int main(int argc, char* args[])
 
 		SDL_Rect camera;
 		vector<LayerView> layerViews;
-
+	
 		// Initialize menu
 		Menu menu = Menu();
-		int i = menu.showMenu();
-		//if (i == 2) { isRunning = false; }
-
-		// Connect. TODO: mejorar esto del i
-		if (i == 0) {
-
-			// Connect to server
-			if (connectToServer(serverConfig)) {
-				if (initializeGameEntities(configPath, scenario, scenarioWidth, scenarioHeight, camera, entityViews, layerViews)) {
-					isRunning = startGame();
-				}
-			}
-		}
+		mainMenu(menu, isRunning, serverConfig,configPath, scenario, scenarioWidth, scenarioHeight, camera, entityViews, layerViews);
 
 		while (isRunning) {
 
@@ -246,8 +281,8 @@ int main(int argc, char* args[])
 			if (!NetworkManager::getInstance().online()) {
 				if (!reconnect(stepTimer)) {
 					//connection lost, show pause game menu
-					Menu lostConnectionMenu = Menu();
-					pauseGame(lostConnectionMenu, stepTimer, isRunning);
+					menu.setConnectionStatus(DISCONNECTED);
+					pauseGame(menu, stepTimer, isRunning);
 				}
 			}
 
