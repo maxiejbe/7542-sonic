@@ -183,6 +183,7 @@ DWORD NetworkManager::heartBeatSocketHandler()
 		int difference = difftime(currentDate, lastHeartBeat);
 		if (difference > 3) {
 			disconnect();
+			continue;
 		}
 		Sleep(2000);
 	}
