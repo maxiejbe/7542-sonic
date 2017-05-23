@@ -49,7 +49,7 @@ bool SocketClient::sendMessage(string message, bool disconnect = false)
 	int byteCount = send(this->_socket, message.c_str(), message.size(), 0);
 	if (byteCount == SOCKET_ERROR) {
 		//TODO: Log in file
-		if (disconnect) this->disconnectSocket();
+		//if (disconnect) this->disconnectSocket();
 		return false;
 	}
 

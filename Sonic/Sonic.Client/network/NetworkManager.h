@@ -66,5 +66,7 @@ private:
 	static DWORD WINAPI runHeartBeatSocketHandler(void* args);
 	DWORD heartBeatSocketHandler();
 	bool continueHeartBeating;
+
+	time_t lastHeartBeat;
 };
 

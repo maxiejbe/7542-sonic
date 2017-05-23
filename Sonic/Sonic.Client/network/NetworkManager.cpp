@@ -154,7 +154,8 @@ void NetworkManager::handleMessage(char * receivedMessage)
 
 		this->continueHeartBeating = true;
 		this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
-
+	case heart_beat_server:
+		time(&lastHeartBeat);
 		break;
 	default:
 		break;
@@ -174,11 +175,14 @@ DWORD NetworkManager::heartBeatSocketHandler()
 {
 	while (this->online() && this->continueHeartBeating)
 	{
-		Message* heartBeatMessage = new Message();
-		heartBeatMessage->setType(MessageType::heart_beat);
-		this->sendMessage(heartBeatMessage, true);
-		delete heartBeatMessage;
-
+		if (!lastHeartBeat) continue;
+		time_t currentDate;
+		time(&currentDate);
+		int difference = difftime(currentDate, lastHeartBeat);
+		if (difference > 3) {
+			disconnect();
+			break;
+		}
 		Sleep(2000);
 	}
 	return 0;
