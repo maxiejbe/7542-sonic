@@ -117,11 +117,6 @@ bool SocketClient::initializeSocket()
 		return false;
 	}
 
-	//Set recv timeouts to 3 seconds
-	int timeoutSeconds = 3;
-	DWORD timeout = timeoutSeconds * 1000;
-	setsockopt(this->_socket, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout, sizeof(timeout));
-
 	char i;
 	setsockopt(this->_socket, IPPROTO_TCP, TCP_NODELAY, (char *)&i, sizeof(i));
 	

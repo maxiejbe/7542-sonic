@@ -71,8 +71,8 @@ bool NetworkManager::reconnect() {
 
 void NetworkManager::disconnect()
 {
-	this->stopConnectionHandlers();
 	this->client->disconnectSocket();
+	this->stopConnectionHandlers();
 }
 
 void NetworkManager::stopConnectionHandlers() {

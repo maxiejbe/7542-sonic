@@ -142,7 +142,6 @@ bool reconnect(Timer capTimer) {
 	return startGame();
 }
 
-
 void pauseGame(Menu &menu,Timer capTimer, bool &keepGameRunning) {
 	int i = menu.showMenu();
 	bool reconnected;
