@@ -154,6 +154,8 @@ void NetworkManager::handleMessage(char * receivedMessage)
 
 		this->continueHeartBeating = true;
 		this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
+
+		lastHeartBeat = NULL;
 	case heart_beat_server:
 		time(&lastHeartBeat);
 		break;
@@ -181,7 +183,6 @@ DWORD NetworkManager::heartBeatSocketHandler()
 		int difference = difftime(currentDate, lastHeartBeat);
 		if (difference > 3) {
 			disconnect();
-			break;
 		}
 		Sleep(2000);
 	}
