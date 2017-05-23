@@ -13,7 +13,7 @@ class PlayerController
 {
 public:
 	PlayerController();
-	static void update(Message* message, Player* player, Camera* camera);
+	static void update(Message* message, Player* player, Camera* camera, int milliseconds);
 private:
 	static void updateInput(Message* message, Player* player);
 	static void move(Player* player, double timeStep, Camera* camera);

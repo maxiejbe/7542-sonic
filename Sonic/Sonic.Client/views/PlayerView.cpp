@@ -50,9 +50,10 @@ void PlayerView::render(int camX, int camY)
 		this->isGreyed = false;
 	}
 
-	// Calculate current sprite
-	Uint32 ticks = SDL_GetTicks();
-	Uint32 sprite = (ticks / 90) % getFramesCount(this->player->getSpriteState());
+	//// Calculate current sprite
+	//Uint32 ticks = SDL_GetTicks();
+	//Uint32 sprite = (ticks / 90) % getFramesCount(this->player->getSpriteState());
+	Uint32 sprite = (this->player->getTime() / 90) % getFramesCount(this->player->getSpriteState());
 
 	SDL_Rect* currentClip = &spriteClips[player->getSpriteState()][sprite];
 

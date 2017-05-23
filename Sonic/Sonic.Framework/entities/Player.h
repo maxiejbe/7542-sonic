@@ -5,6 +5,7 @@
 #include "../Logger.h"
 #include "../Vector2.h"
 #include "../protocol/Message.h"
+#include <chrono>
 
 #include <mutex>
 
@@ -25,6 +26,7 @@ public:
 		this->groundPos = calculateGroundPos(windowHeight);
 		this->position = Vector2(0, this->groundPos);
 		this->isConnected = true;
+		this->time = 0;
 	}
 	Player(Player&);
 
@@ -68,6 +70,8 @@ public:
 	void setPlayerType(PlayerType playerType);
 	bool getIsConnected();
 	void setIsConnected(bool isConnected);
+	int getTime();
+	void setTime(int time);
 
 	string serializedPlayer;
 
@@ -93,6 +97,7 @@ private:
 	PlayerStatus spriteState;
 	PlayerType playerType;
 	bool isConnected;
+	int time;
 
 	mutex playerMutex;
 };

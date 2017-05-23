@@ -8,11 +8,13 @@ PlayerController::PlayerController()
 {
 }
 
-void PlayerController::update(Message* message, Player* player, Camera* camera)
+void PlayerController::update(Message* message, Player* player, Camera* camera, int milliseconds)
 {
 	player->lock();
 
 	player->setTargetVelX(0);
+	player->setTime(milliseconds);
+
 	if (message == nullptr) return;
 	updateInput(message, player);
 	move(player, message->getTimeStep(), camera);
@@ -70,7 +72,7 @@ void PlayerController::move(Player* player, double dt, Camera* camera)
 	if (player->getIsConnected()) {
 
 		if (player->getVelocity().x < -100) {
-  			player->setXVelocity(0);
+			player->setXVelocity(0);
 		}
 
 		// Weighted averaging acceleration method

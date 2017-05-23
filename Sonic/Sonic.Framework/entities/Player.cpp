@@ -18,6 +18,7 @@ const char* PLAYER_SCROLL_SPEED_NODE = "scs";
 const char* PLAYER_FILE_PATH_NODE = "fp";
 const char* PLAYER_TYPE_NODE = "pt";
 const char* PLAYER_IS_CONNECTED_NODE = "ic";
+const char* PLAYER_MILLISECONDS = "ms";
 
 
 Player::Player()
@@ -36,6 +37,8 @@ Player::Player()
 	this->facingDirection = FACING_RIGHT;
 	this->spriteState = PlayerStatus::idle;
 	this->isConnected = true;
+
+	this->time = 0;
 }
 
 Player::Player(Player & anotherPlayer) {
@@ -57,6 +60,7 @@ void Player::copyFrom(Player & anotherPlayer)
 	this->setSpriteState(anotherPlayer.getSpriteState());
 	this->setPlayerType(anotherPlayer.getPlayerType());
 	this->setIsConnected(anotherPlayer.getIsConnected());
+	this->setTime(anotherPlayer.getTime());
 }
 
 void Player::lock()
@@ -219,6 +223,16 @@ void Player::setIsConnected(bool isConnected)
 	this->isConnected = isConnected;
 }
 
+int Player::getTime()
+{
+	return this->time;
+}
+
+void Player::setTime(int time)
+{
+	this->time = time;
+}
+
 PlayerType Player::calculatePlayerType()
 {
 	switch (this->getNumber() % 3) {
@@ -274,6 +288,8 @@ void Player::unserialize(Value * nodeRef)
 	parseInt((int*)&playerType, 0, nodeRef, PLAYER_TYPE_NODE);
 	//is connected
 	parseBool(&isConnected, false, nodeRef, PLAYER_IS_CONNECTED_NODE);
+	//time
+	parseInt(&time, 0, nodeRef, PLAYER_MILLISECONDS);
 }
 
 void Player::serializePlayer()
@@ -317,6 +333,10 @@ string Player::serialize()
 	writer.Int(this->playerType);
 	writer.String(PLAYER_IS_CONNECTED_NODE);
 	writer.Bool(this->isConnected);
+	writer.String(PLAYER_MILLISECONDS);
+	writer.Int(this->time);
+
+	int(time);
 
 	writer.EndObject();
 	return s.GetString();

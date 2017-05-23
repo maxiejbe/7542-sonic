@@ -9,6 +9,7 @@
 #include "entities/Player.h"
 #include "../utils/SocketUtils.h"
 #include "../controllers/PlayerController.h"
+#include "Timer.h"
 #include <limits>
 #include <mutex>
 
@@ -51,6 +52,8 @@ private:
 	struct sockaddr_in address;
 	DWORD threadId;
 	HANDLE recvThreadHandle;
+
+	Timer timer;
 	
 	//recieve handler
 	static DWORD WINAPI runReceiveSocketHandler(void* args);

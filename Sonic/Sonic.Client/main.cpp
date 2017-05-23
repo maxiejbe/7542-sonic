@@ -46,7 +46,7 @@ bool connectToServer(ServerConfiguration serverConfig) {
 	canConnectToServerBanner.showBanner();
 	//wait 2 seconds
 	Sleep(2000);
-	
+
 	Menu menu = Menu();
 	int i = menu.showMenu();
 	if (i == 0) return connectToServer(serverConfig);
@@ -54,7 +54,7 @@ bool connectToServer(ServerConfiguration serverConfig) {
 	return false;
 }
 
-bool initializeGameEntities(string configPath, Scenario &scenario,int &scenarioWidth, int &scenarioHeight, SDL_Rect &camera, vector<EntityView*>&entityViews, vector<LayerView>&layerViews) {
+bool initializeGameEntities(string configPath, Scenario &scenario, int &scenarioWidth, int &scenarioHeight, SDL_Rect &camera, vector<EntityView*>&entityViews, vector<LayerView>&layerViews) {
 	while (NetworkManager::getInstance().getPlayerNumber() < 0) {
 		Sleep(3000);
 	}
@@ -110,7 +110,7 @@ bool startGame() {
 	// Show waiting banner
 	if (!NetworkManager::getInstance().canStartGame()) {
 		waitingConnectionsBanner.showBanner();
-		SDL_RenderPresent(Renderer::getInstance().gRenderer);
+		//SDL_RenderPresent(Renderer::getInstance().gRenderer);
 
 		while (!NetworkManager::getInstance().canStartGame()) {
 			Sleep(1000);
@@ -125,10 +125,11 @@ bool reconnect(Timer capTimer) {
 	double reconnetionTimeStep = capTimer.getTicks() / 1000.;
 	int reconnectionAttemp = 1;
 	bool reconnected = false;
-	while (!NetworkManager::getInstance().online() && reconnectionAttemp <= 3) {
-		reconnectionBanner.showBanner();
-		SDL_RenderPresent(Renderer::getInstance().gRenderer);
 
+	reconnectionBanner.showBanner();
+	//SDL_RenderPresent(Renderer::getInstance().gRenderer);
+
+	while (!NetworkManager::getInstance().online() && reconnectionAttemp <= 3) {
 		double currentTime = capTimer.getTicks() / 1000.;
 		if ((currentTime - reconnetionTimeStep) > 5) {
 			reconnected = NetworkManager::getInstance().reconnect();
@@ -142,7 +143,7 @@ bool reconnect(Timer capTimer) {
 	return startGame();
 }
 
-void pauseGame(Menu &menu,Timer capTimer, bool &keepGameRunning) {
+void pauseGame(Menu &menu, Timer capTimer, bool &keepGameRunning) {
 	int i = menu.showMenu();
 	bool reconnected;
 	if (i == 2) { keepGameRunning = false; }
@@ -191,7 +192,7 @@ int main(int argc, char* args[])
 	int scenarioWidth;
 	int scenarioHeight;
 
-	
+
 	double reconnectionPause;
 	bool connectionLostAbort = false;
 
@@ -258,7 +259,6 @@ int main(int argc, char* args[])
 				LOG(logINFO) << "El usuario ha solicitado la terminación del juego.";
 			}
 
-
 			if (input->isKeyDown(KEY_ESCAPE) || input->isKeyDown(KEY_Q)) {
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
 				pauseGame(menu, capTimer, isRunning);
@@ -271,10 +271,9 @@ int main(int argc, char* args[])
 				avgFPS = 0;
 			}
 
-
 			double timeStep = stepTimer.getTicks() / 1000.;
 
-			//Handle player input
+			// Handle player input
 			bool isKPLeft = input->isKeyPressed(KEY_LEFT);
 			bool isKPSpace = input->isKeyPressed(KEY_SPACE);
 			bool isKPRight = input->isKeyPressed(KEY_RIGHT);
@@ -344,11 +343,11 @@ int main(int argc, char* args[])
 
 			++countedFrames;
 
-			//If frame finished early
+			// If frame finished early
 			int frameTicks = capTimer.getTicks();
 			if (frameTicks < SCREEN_TICK_PER_FRAME)
 			{
-				//Wait remaining time
+				// Wait remaining time
 				SDL_Delay(SCREEN_TICK_PER_FRAME - frameTicks);
 			}
 		}
