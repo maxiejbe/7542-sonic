@@ -77,6 +77,7 @@ private:
 	bool continueSending;
 
 	mutex playerMutex;
+	mutex sendMutex;
 
 	//Connection check
 	HANDLE heartBeatThreadHandle;

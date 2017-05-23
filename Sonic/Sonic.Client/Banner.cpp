@@ -31,14 +31,6 @@ void Banner::freeSurfaceBanner()
 
 void Banner::showBanner()
 {
-	/*SDL_Event event;
-	while (SDL_PollEvent(&event)) {
-		switch (event.type) {
-		case SDL_QUIT:
-			freeSurfaceBanner();
-			break;
-		default:
-*/
 	SDL_Rect destrect;
 
 	// Show image
@@ -66,7 +58,4 @@ void Banner::showBanner()
 	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &destrect);
 
 	SDL_RenderPresent(Renderer::getInstance().gRenderer);
-	/*	}
-
-	}*/
 }
