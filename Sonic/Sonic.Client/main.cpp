@@ -120,21 +120,21 @@ bool startGame() {
 	return true;
 }
 
-bool reconnect(Timer capTimer) {
+bool reconnect(Timer stepTimer) {
 	Banner reconnectionBanner = Banner("Reconnecting", { 0,0,0,150 }, "img/menu-background.jpg");
-	double reconnetionTimeStep = capTimer.getTicks() / 1000.;
+	double reconnetionTimeStep = stepTimer.getTicks() / 1000.;
 	int reconnectionAttemp = 1;
 	bool reconnected = false;
 
 	reconnectionBanner.showBanner();
 	//SDL_RenderPresent(Renderer::getInstance().gRenderer);
 
-	while (!NetworkManager::getInstance().online() && reconnectionAttemp <= 3) {
-		double currentTime = capTimer.getTicks() / 1000.;
-		if ((currentTime - reconnetionTimeStep) > 5) {
+	while (!NetworkManager::getInstance().online() && reconnectionAttemp <= 10) {
+		double currentTime = stepTimer.getTicks() / 1000.;
+		if ((currentTime - reconnetionTimeStep) > 1) {
 			reconnected = NetworkManager::getInstance().reconnect();
 			reconnectionAttemp++;
-			reconnetionTimeStep = capTimer.getTicks() / 1000.;
+			reconnetionTimeStep = stepTimer.getTicks() / 1000.;
 		}
 	}
 
@@ -143,7 +143,7 @@ bool reconnect(Timer capTimer) {
 	return startGame();
 }
 
-void pauseGame(Menu &menu, Timer capTimer, bool &keepGameRunning) {
+void pauseGame(Menu &menu, Timer stepTimer, bool &keepGameRunning) {
 	int i = menu.showMenu();
 	bool reconnected;
 	if (i == 2) { keepGameRunning = false; }
@@ -152,13 +152,13 @@ void pauseGame(Menu &menu, Timer capTimer, bool &keepGameRunning) {
 		NetworkManager::getInstance().disconnect();
 		i = menu.showMenu();
 		if (i == 0) {
-			reconnected = reconnect(capTimer);
+			reconnected = reconnect(stepTimer);
 			if (reconnected) {
 				keepGameRunning = true;
 				return;
 			}
 			//pause game again
-			pauseGame(menu, capTimer, keepGameRunning);
+			pauseGame(menu, stepTimer, keepGameRunning);
 		}
 		if (i == 2) {
 			keepGameRunning = false;
@@ -244,10 +244,10 @@ int main(int argc, char* args[])
 			capTimer.start();
 
 			if (!NetworkManager::getInstance().online()) {
-				if (!reconnect(capTimer)) {
+				if (!reconnect(stepTimer)) {
 					//connection lost, show pause game menu
 					Menu lostConnectionMenu = Menu();
-					pauseGame(lostConnectionMenu, capTimer, isRunning);
+					pauseGame(lostConnectionMenu, stepTimer, isRunning);
 				}
 			}
 
@@ -261,7 +261,7 @@ int main(int argc, char* args[])
 
 			if (input->isKeyDown(KEY_ESCAPE) || input->isKeyDown(KEY_Q)) {
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
-				pauseGame(menu, capTimer, isRunning);
+				pauseGame(menu, stepTimer, isRunning);
 			}
 
 			//Calculate and correct fps
