@@ -132,13 +132,11 @@ bool Client::sendHeartBeat() {
 	string serializedMsg = sMessage.serialize();
 	const char* messageToSend = serializedMsg.c_str();
 
-	sendMutex.lock();
 	if ((bytecount = send(this->socket, messageToSend, strlen(messageToSend), 0)) == SOCKET_ERROR) {
 		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << messageToSend << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->clientNumber << ")";
 		return false;
 	}
-	sendMutex.unlock();
 
 	return true;
 }
@@ -189,13 +187,11 @@ bool Client::sendPlayersStatus()
 	char * serializedMessage = StringUtils::convert(message->serialize());
 	delete message;
 
-	sendMutex.lock();
 	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
 		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->getClientNumber() << ")";
 		return false;
 	}
-	sendMutex.unlock();
 
 	return true;
 }
@@ -271,6 +267,9 @@ void Client::handleReceivedMessage(char* recievedMessage)
 
 		this->continueSending = true;
 		this->sendThreadHandle = CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
+
+		this->continueHeartBeating = true;
+		this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
 	case status:
 		if (this->lastReceivedMessage != nullptr) delete this->lastReceivedMessage;
 		this->lastReceivedMessage = message;
@@ -318,7 +317,7 @@ DWORD Client::refreshSocketHandler()
 {
 	while (this->continueRefreshing) {
 		this->refreshPlayer();
-		
+
 		if (this->getLastMessage() == NULL) {
 			Sleep(10);
 			continue;
@@ -342,7 +341,7 @@ DWORD Client::sendSocketHandler()
 {
 	while (this->continueSending) {
 		this->sendPlayersStatus();
-		
+
 		if (this->getLastMessage() == NULL) {
 			Sleep(10);
 			continue;
@@ -359,7 +358,7 @@ DWORD Client::sendSocketHandler()
 
 bool Client::refreshPlayer() {
 	if (this->player == nullptr) return false;
-	
+
 	if (this->getLastMessage()->getType() == MessageType::status) {
 		PlayerController::update(this->getLastMessage(), this->getPlayer(), this->server->getCamera(), timer.elapsed());
 	}
