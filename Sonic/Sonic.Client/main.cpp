@@ -283,12 +283,14 @@ int main(int argc, char* args[])
 
 			bool reconnected = false;
 			if (!NetworkManager::getInstance().online()) {
+				stepTimer.pause();
 				reconnected = reconnect();
 				if (!reconnected) {
 					//connection lost, show pause game menu
 					menu.setConnectionStatus(DISCONNECTED);
 					pauseGame(menu, isRunning);
 				}
+				stepTimer.unpause();
 			}
 			
 			if (reconnected) {
@@ -305,7 +307,9 @@ int main(int argc, char* args[])
 
 			if (input->isKeyDown(KEY_ESCAPE) || input->isKeyDown(KEY_Q)) {
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
+				stepTimer.pause();
 				pauseGame(menu, isRunning);
+				stepTimer.unpause();
 			}
 
 			//Calculate and correct fps
