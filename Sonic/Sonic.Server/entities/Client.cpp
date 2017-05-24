@@ -359,7 +359,7 @@ DWORD Client::sendSocketHandler()
 bool Client::refreshPlayer() {
 	if (this->player == nullptr) return false;
 
-	if (this->getLastMessage()->getType() == MessageType::status) {
+	if (this->getLastMessage() != nullptr && this->getLastMessage()->getType() == MessageType::status) {
 		PlayerController::update(this->getLastMessage(), this->getPlayer(), this->server->getCamera(), timer.elapsed());
 	}
 
