@@ -173,9 +173,9 @@ bool reconnect() {
 	reconnectionBanner.showBanner();
 	//SDL_RenderPresent(Renderer::getInstance().gRenderer);
 
-	while (!NetworkManager::getInstance().online() && reconnectionAttemp <= 10) {
+	while (!NetworkManager::getInstance().online() && reconnectionAttemp <= 3) {
 		double currentTime = timer.getTicks() / 1000.;
-		if ((currentTime - reconnetionTimeStep) > 1) {
+		if ((currentTime - reconnetionTimeStep) > 3) {
 			reconnected = NetworkManager::getInstance().reconnect();
 			reconnectionAttemp++;
 			reconnetionTimeStep = timer.getTicks() / 1000.;
