@@ -147,6 +147,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		this->playerNumber = sMessage->getPlayerNumber();
 		break;
 	case players_status:
+		if (this->playerNumber < 0) return;
 		this->updatePlayerViews(sMessage->getPlayers());
 		this->updateCamera(sMessage->getCamera());
 		break;
