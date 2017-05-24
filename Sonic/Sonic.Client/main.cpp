@@ -44,7 +44,7 @@ bool connectToServer(ServerConfiguration serverConfig) {
 	NetworkManager::getInstance().startClient(StringUtils::convert(serverConfig.getHost()), serverConfig.getPortNumber());
 	if (NetworkManager::getInstance().online()) return true;
 	//show banner
-	Banner canConnectToServerBanner = Banner("Server connection failed", { 0,0,0,150 });
+	Banner canConnectToServerBanner = Banner("Server connection failed", { 0,0,0,150 }, "img/menu-background.jpg");
 	canConnectToServerBanner.showBanner();
 	//wait 2 seconds
 	Sleep(2000);
@@ -57,7 +57,7 @@ bool connectToServer(ServerConfiguration serverConfig) {
 }
 
 bool clientNumberSet() {
-	Banner maxClientsReached = Banner("Max players reached", { 0,0,0,150 });
+	Banner maxClientsReached = Banner("Max players reached", { 0,0,0,150 }, "img/menu-background.jpg");
 	while (NetworkManager::getInstance().getPlayerNumber() < 0) {
 		if (NetworkManager::getInstance().getPlayerNumber() == CLIENT_NUMBER_MAX_CONNECTED_PLAYERS) {
 			maxClientsReached.showBanner();
@@ -257,7 +257,7 @@ int main(int argc, char* args[])
 	}
 	else {
 
-		Banner errorServerBanner = Banner("Server Error", { 0,0,0,150 });
+		Banner errorServerBanner = Banner("Server Error", { 0,0,0,150 }, "img/menu-background.jpg");
 
 		bool isRunning = false;
 
@@ -283,19 +283,12 @@ int main(int argc, char* args[])
 
 			bool reconnected = false;
 			if (!NetworkManager::getInstance().online()) {
-				capTimer.pause();
-				stepTimer.pause();
-				fpsTimer.pause();
 				reconnected = reconnect();
 				if (!reconnected) {
 					//connection lost, show pause game menu
 					menu.setConnectionStatus(DISCONNECTED);
 					pauseGame(menu, isRunning);
 				}
-
-				stepTimer.unpause();
-				capTimer.unpause();
-				fpsTimer.unpause();
 			}
 			
 			if (reconnected) {
@@ -311,14 +304,8 @@ int main(int argc, char* args[])
 			}
 
 			if (input->isKeyDown(KEY_ESCAPE) || input->isKeyDown(KEY_Q)) {
-				capTimer.pause();
-				stepTimer.pause();
-				fpsTimer.pause();
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
 				pauseGame(menu, isRunning);
-				stepTimer.unpause();
-				capTimer.unpause();
-				fpsTimer.unpause();
 			}
 
 			//Calculate and correct fps
