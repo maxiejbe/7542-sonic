@@ -31,8 +31,8 @@ void Banner::freeSurfaceBanner()
 
 void Banner::showBanner()
 {
-	SDL_SetRenderDrawColor(Renderer::getInstance().gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-	SDL_RenderClear(Renderer::getInstance().gRenderer);
+	/*SDL_SetRenderDrawColor(Renderer::getInstance().gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_RenderClear(Renderer::getInstance().gRenderer);*/
 
 	SDL_Rect destrect;
 

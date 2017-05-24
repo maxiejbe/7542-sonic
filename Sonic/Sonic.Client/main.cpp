@@ -162,9 +162,11 @@ void mainMenu(Menu &menu, bool &runGame, ServerConfiguration serverConfig, strin
 	}
 }
 
-bool reconnect(Timer stepTimer) {
+bool reconnect() {
+	Timer timer = Timer();
+	timer.start();
 	Banner reconnectionBanner = Banner("Reconnecting", { 0,0,0,150 }, "img/menu-background.jpg");
-	double reconnetionTimeStep = stepTimer.getTicks() / 1000.;
+	double reconnetionTimeStep = timer.getTicks() / 1000.;
 	int reconnectionAttemp = 1;
 	bool reconnected = false;
 
@@ -172,11 +174,11 @@ bool reconnect(Timer stepTimer) {
 	//SDL_RenderPresent(Renderer::getInstance().gRenderer);
 
 	while (!NetworkManager::getInstance().online() && reconnectionAttemp <= 10) {
-		double currentTime = stepTimer.getTicks() / 1000.;
+		double currentTime = timer.getTicks() / 1000.;
 		if ((currentTime - reconnetionTimeStep) > 1) {
 			reconnected = NetworkManager::getInstance().reconnect();
 			reconnectionAttemp++;
-			reconnetionTimeStep = stepTimer.getTicks() / 1000.;
+			reconnetionTimeStep = timer.getTicks() / 1000.;
 		}
 	}
 
@@ -188,7 +190,7 @@ bool reconnect(Timer stepTimer) {
 	return startGame();
 }
 
-void pauseGame(Menu &menu, Timer stepTimer, bool &keepGameRunning) {
+void pauseGame(Menu &menu, bool &keepGameRunning) {
 	int i = menu.showMenu();
 	if (i == 2) { keepGameRunning = false; }
 	if (i == 1) //show disconnect menu
@@ -197,14 +199,14 @@ void pauseGame(Menu &menu, Timer stepTimer, bool &keepGameRunning) {
 		menu.setConnectionStatus(DISCONNECTED);
 		i = menu.showMenu();
 		if (i == 0) {	
-			if (reconnect(stepTimer)) {
+			if (reconnect()) {
 				menu.setConnectionStatus(CONNECTED);
 				keepGameRunning = true;
 				return;
 			}
 			//pause game again
 			menu.setConnectionStatus(DISCONNECTED);
-			pauseGame(menu, stepTimer, keepGameRunning);
+			pauseGame(menu,keepGameRunning);
 		}
 		if (i == 2) {
 			menu.setConnectionStatus(DISCONNECTED);
@@ -266,7 +268,6 @@ int main(int argc, char* args[])
 		int countedFrames = 0;
 		fpsTimer.start();
 
-
 		SDL_Rect camera;
 		vector<LayerView> layerViews;
 	
@@ -274,16 +275,31 @@ int main(int argc, char* args[])
 		Menu menu = Menu();
 		mainMenu(menu, isRunning, serverConfig,configPath, scenario, scenarioWidth, scenarioHeight, camera, entityViews, layerViews);
 
+		bool lastMessageFlag = false;
+
 		while (isRunning) {
 
 			capTimer.start();
 
+			bool reconnected = false;
 			if (!NetworkManager::getInstance().online()) {
-				if (!reconnect(stepTimer)) {
+				capTimer.pause();
+				stepTimer.pause();
+				fpsTimer.pause();
+				reconnected = reconnect();
+				if (!reconnected) {
 					//connection lost, show pause game menu
 					menu.setConnectionStatus(DISCONNECTED);
-					pauseGame(menu, stepTimer, isRunning);
+					pauseGame(menu, isRunning);
 				}
+
+				stepTimer.unpause();
+				capTimer.unpause();
+				fpsTimer.unpause();
+			}
+			
+			if (reconnected) {
+				lastMessage = nullptr;
 			}
 
 			InputManager* input = InputManager::getInstance();
@@ -295,8 +311,14 @@ int main(int argc, char* args[])
 			}
 
 			if (input->isKeyDown(KEY_ESCAPE) || input->isKeyDown(KEY_Q)) {
+				capTimer.pause();
+				stepTimer.pause();
+				fpsTimer.pause();
 				LOG(logINFO) << "El usuario ha solicitado ingresar al menu del juego.";
-				pauseGame(menu, stepTimer, isRunning);
+				pauseGame(menu, isRunning);
+				stepTimer.unpause();
+				capTimer.unpause();
+				fpsTimer.unpause();
 			}
 
 			//Calculate and correct fps
@@ -324,16 +346,23 @@ int main(int argc, char* args[])
 			if (lastMessage == nullptr) {
 				NetworkManager::getInstance().sendMessage(message);
 				lastMessage = message;
+				lastMessageFlag = true;
 			}
 			else if (!lastMessage->equals(*message)) {
 				NetworkManager::getInstance().sendMessage(message);
 				delete lastMessage;
 				lastMessage = message;
+				lastMessageFlag = true;
 			}
 			else {
+				if (lastMessageFlag) {
+					NetworkManager::getInstance().sendMessage(message);
+					lastMessageFlag = false;
+				}
 				delete message;
 			}
 
+			
 			stepTimer.start();
 
 			// Initialize player
