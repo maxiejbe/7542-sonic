@@ -65,7 +65,7 @@ bool clientNumberSet() {
 			return false;
 		}
 
-		Sleep(1000);
+		Sleep(10);
 	}
 
 	return true;
