@@ -25,6 +25,7 @@ public:
 	Logger();
 	~Logger();
 	static void init();
+	static void init(LogLevel logLevel);
 	std::ostringstream& get(LogType level = logINFO);
 	static LogLevel fromString(string level);
 	static string toString();

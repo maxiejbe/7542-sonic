@@ -4,6 +4,7 @@
 #include "protocol/Message.h"
 #include "../views/PlayerView.h"
 #include "protocol/ServerMessage.h"
+#include "entities/ServerConfiguration.h"
 
 #include <iostream>
 #include <map>
@@ -33,6 +34,8 @@ public:
 
 	int getPlayerNumber();
 	string getFileContent();
+
+	bool connectToServer(ServerConfiguration serverConfig);
 
 private:
 	NetworkManager();

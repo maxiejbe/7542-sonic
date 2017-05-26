@@ -1,26 +1,34 @@
-#ifndef MENU_H
-#define MENU_H
+#ifndef MENU_STATE_H
+#define MENU_STATE_H
 
+#include "GameState.h"
 #include <SDL.h>
 #include <SDL2_gfxPrimitives.h>
 #include <iostream>
 #include <SDL_ttf.h>
 #include "Texture.h"
-#include "Renderer.h"
 #include "InputManager.h"
+#include "ConnectState.h"
 
 enum MenuConnectionStatus { CONNECTED, DISCONNECTED };
 
-class Menu
-{
+class MenuState : public GameState {
 public:
-	
-	Menu();
-	~Menu();
+	void load(Game* game);
+	int unload();
+	void update(Game* game, float dt);
+	void render(Game* game);
 
-	int showMenu();
-	void setConnectionStatus(MenuConnectionStatus);
+	static MenuState* Instance() {
+		return &m_MenuState;
+	}
+
+protected:
+	MenuState() {}
+
 private:
+	static MenuState m_MenuState;
+
 	static const int OPCMENU = 3;
 
 	TTF_Font* font;
@@ -35,14 +43,13 @@ private:
 	MenuConnectionStatus connectionStatus;
 	bool enabled[OPCMENU];
 
-	void initMenu();
 	void initColorNameOptions();
 	void showBackgroundImage();
 	void updateAndRenderOptions();
-	void freeSurfaceMenus();
-	void changeSelectedOption();
+	void renderSelectedOption();
 	int getNextOption(int, int);
 	void setEnabledOptions();
 };
 
-#endif // !MENU_H
+#endif // !MENU_STATE_H
+

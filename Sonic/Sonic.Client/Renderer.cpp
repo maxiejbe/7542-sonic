@@ -1,5 +1,4 @@
 #include "Renderer.h"
-#include "SDLWindow.h"
 
 bool Renderer::create()
 {

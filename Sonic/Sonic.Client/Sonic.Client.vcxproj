@@ -19,6 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="ConnectState.cpp" />
+    <ClCompile Include="PauseState.cpp" />
+    <ClCompile Include="PlayState.cpp" />
+    <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="network\NetworkManager.cpp" />
     <ClCompile Include="network\SocketClient.cpp" />
     <ClCompile Include="views\CircleView.cpp" />
@@ -26,7 +31,6 @@
     <ClCompile Include="views\EntityView.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Banner.cpp" />
-    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="utils\img_crop\CircleImageCropper.cpp" />
     <ClCompile Include="SDLWindow.cpp" />
     <ClCompile Include="StreamingTexture.cpp" />
@@ -38,6 +42,7 @@
     <ClCompile Include="views\PlayerView.cpp" />
     <ClCompile Include="views\RectangleView.cpp" />
     <ClCompile Include="views\SquareView.cpp" />
+    <ClCompile Include="WaitingState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\image-not-found.png" />
@@ -54,6 +59,12 @@
     <None Include="config\params.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="ConnectState.h" />
+    <ClInclude Include="PauseState.h" />
+    <ClInclude Include="PlayState.h" />
+    <ClInclude Include="MenuState.h" />
     <ClInclude Include="network\NetworkManager.h" />
     <ClInclude Include="network\SocketClient.h" />
     <ClInclude Include="views\CircleView.h" />
@@ -63,7 +74,6 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="InputTable.h" />
     <ClInclude Include="Banner.h" />
-    <ClInclude Include="Menu.h" />
     <ClInclude Include="utils\img_crop\CircleImageCropper.h" />
     <ClInclude Include="StreamingTexture.h" />
     <ClInclude Include="Texture.h" />
@@ -75,6 +85,7 @@
     <ClInclude Include="views\PlayerView.h" />
     <ClInclude Include="views\RectangleView.h" />
     <ClInclude Include="views\SquareView.h" />
+    <ClInclude Include="WaitingState.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sonic.rc" />

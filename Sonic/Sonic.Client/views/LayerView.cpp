@@ -10,9 +10,11 @@ LayerView::LayerView(Layer * layer)
 void LayerView::loadLayer()
 {
 	string imagePath = this->layer->getImagePath();
-	if (!texture.loadFromFile(imagePath)) {
-		this->layer->setImagePath(LAYER_VIEW_DEFAULT_IMAGE_PATH);
-		loadLayer();
+	if (texture.getTexture() == nullptr) {
+		if (!texture.loadFromFile(imagePath)) {
+			this->layer->setImagePath(LAYER_VIEW_DEFAULT_IMAGE_PATH);
+			loadLayer();
+		}
 	}
 }
 

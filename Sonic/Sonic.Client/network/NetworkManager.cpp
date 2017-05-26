@@ -81,7 +81,7 @@ void NetworkManager::disconnect()
 }
 
 void NetworkManager::stopConnectionHandlers() {
-	
+
 	if (this->recvThreadHandle != NULL) {
 		//WaitForSingleObject(this->recvThreadHandle, INFINITE);
 		this->continueReceiving = false;
@@ -276,4 +276,13 @@ void NetworkManager::updateCamera(Camera * camera)
 {
 	//TODO MUTEX HERE;
 	this->camera->copyFrom(*camera);
+}
+
+bool NetworkManager::connectToServer(ServerConfiguration serverConfig) {
+	this->startClient(StringUtils::convert(serverConfig.getHost()), serverConfig.getPortNumber());
+	if (this->online()) {
+		return true;
+	}
+
+	return false;
 }

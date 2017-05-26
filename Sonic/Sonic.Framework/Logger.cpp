@@ -25,6 +25,16 @@ void Logger::init() {
 	Logger().get(logINFO) << "El juego ha sido iniciado.";
 }
 
+void Logger::init(LogLevel logLevel) {
+	Logger::loggingLevel() = logLevel;
+	string fileName = "log_" + DateUtils::getCurrentDate() + ".log";
+	FILE* file = fopen(fileName.c_str(), "a");
+	Logger::Stream() = file;
+
+	Logger().GetSeparator();
+	Logger().get(logINFO) << "El juego ha sido iniciado.";
+}
+
 std::ostringstream& Logger::GetSeparator() {
 	os << SEPARATOR;
 	return os;
