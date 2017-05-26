@@ -17,9 +17,6 @@ void Game::unload()
 		states.back()->unload();
 		states.pop_back();
 	}
-
-	// shutdown SDL
-	SDL_Quit();
 }
 
 void Game::update()
