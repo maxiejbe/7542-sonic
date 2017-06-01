@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="ConnectState.cpp" />
+    <ClCompile Include="InGameStatisticsPanel.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="PlayState.cpp" />
     <ClCompile Include="MenuState.cpp" />
@@ -62,6 +63,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="ConnectState.h" />
+    <ClInclude Include="InGameStatisticsPanel.h" />
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="PlayState.h" />
     <ClInclude Include="MenuState.h" />
@@ -94,6 +96,9 @@
     <ProjectReference Include="..\Sonic.Framework\Sonic.Framework.vcxproj">
       <Project>{e64ffe73-794b-4014-b67f-458b633431d6}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\SonicAdvance.ttf" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A3F8E1A0-5C50-4336-A742-6CAFA67F93A0}</ProjectGuid>

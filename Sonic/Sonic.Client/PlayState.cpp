@@ -53,6 +53,9 @@ void PlayState::load(Game* game)
 		layerView->loadLayer();
 	}
 
+	//Load statistics player panel (refactor move to Game)
+	statisticsPanel = InGameStatisticsPanel();
+
 	game->pushState(WaitingState::Instance());
 }
 
@@ -167,6 +170,9 @@ void PlayState::render(Game* game)
 			it->second->render(camera.x, camera.y);
 		}
 	}
+
+	// Render statistics panel
+	statisticsPanel.showStatistics(NULL);
 }
 
 bool PlayState::clientNumberSet()

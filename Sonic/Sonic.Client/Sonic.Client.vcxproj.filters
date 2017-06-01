@@ -87,6 +87,9 @@
     <ClCompile Include="PauseState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InGameStatisticsPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -170,6 +173,9 @@
     <ClInclude Include="PauseState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InGameStatisticsPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\level.png">
@@ -207,5 +213,8 @@
     <ResourceCompile Include="Sonic.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\SonicAdvance.ttf" />
   </ItemGroup>
 </Project>
