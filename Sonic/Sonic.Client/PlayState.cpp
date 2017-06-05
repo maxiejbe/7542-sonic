@@ -55,6 +55,8 @@ void PlayState::load(Game* game)
 
 	//Load statistics player panel (refactor move to Game)
 	statisticsPanel = InGameStatisticsPanel();
+	//Load final statistics player panel (refactor move to Game)
+	finalStatisticsPanel = FinalLevelStatisticsPanel();
 
 	game->pushState(WaitingState::Instance());
 }
@@ -172,7 +174,10 @@ void PlayState::render(Game* game)
 	}
 
 	// Render statistics panel
-	statisticsPanel.showStatistics(NULL);
+	statisticsPanel.showStatistics(NULL); //NULL until integration
+	// Render final statistics panel
+	if (camera.x == 2800) //ONLY FOR TEST
+		finalStatisticsPanel.showStatistics();
 }
 
 bool PlayState::clientNumberSet()

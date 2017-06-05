@@ -22,10 +22,7 @@ private:
 	TTF_Font* fontLifes;
 	TTF_Font* fontScore;
 	Texture playerImage;
-	SDL_Color color;
 	SDL_Surface* surfaceMessage;
-	int statistic;
-	string labelStatistic;
 };
 
 #endif // !INGAMESTATISTICS_H

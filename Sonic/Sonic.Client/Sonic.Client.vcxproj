@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FinalLevelStatisticsPanel.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="ConnectState.cpp" />
     <ClCompile Include="InGameStatisticsPanel.cpp" />
@@ -60,6 +61,7 @@
     <None Include="config\params.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FinalLevelStatisticsPanel.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="ConnectState.h" />

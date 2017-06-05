@@ -23,7 +23,6 @@ void InGameStatisticsPanel::freeSurfaceStatistics()
 
 void InGameStatisticsPanel::showStatistics(Player* player)
 {
-	TTF_Init();
 	SDL_Rect destrect;
 	SDL_Texture* text;
 
@@ -77,6 +76,16 @@ void InGameStatisticsPanel::showStatistics(Player* player)
 	text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, surfaceMessage);
 	destrect.x = 30;
 	destrect.y = 65;
+	destrect.w = surfaceMessage->w;
+	destrect.h = surfaceMessage->h;
+	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &destrect);
+
+	//Show team
+	string team = "TEAM " + to_string(1); //Refactor when player has rings
+	surfaceMessage = TTF_RenderText_Solid(fontScore, team.c_str(), { 255, 255, 255 });
+	text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, surfaceMessage);
+	destrect.x = 670;
+	destrect.y = 10;
 	destrect.w = surfaceMessage->w;
 	destrect.h = surfaceMessage->h;
 	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &destrect);
