@@ -11,7 +11,7 @@ enum ConnectionStatus { assign, connected, disconnected };
 enum PlayerStatus { idle, walking, running, jumping };
 enum PlayerType { SONIC, TAILS, KNUCKLES };
 
-enum MessageType { player_assign_ok, content_ok, start_game_ok, status, heart_beat, no_type };
+enum MessageType { player_assign_ok, content_ok, username, start_game_ok, status, heart_beat, no_type };
 
 struct Message : public SerializableMessage {
 public:
@@ -33,6 +33,11 @@ public:
 	bool getIsKURight();
 	bool getIsKUSpace();
 
+	void setUserName(string);
+	void setTeamId(int);
+	string getUserName();
+	int getTeamId();
+
 	//bool unserialize(string json);
 
 	bool equals(Message& message);
@@ -48,6 +53,8 @@ private:
 	MessageType type;
 	double dt;
 	bool isKPLeft, isKPRight, isKPUp, isKPSpace, isKULeft, isKURight, isKUSpace;
+	string userName;
+	int teamId;
 
 	void performSerialization(Writer<StringBuffer>& writer);
 };

@@ -14,6 +14,7 @@
 #include "Client.h"
 #include "entities/Player.h"
 #include "entities/Camera.h"
+#include "entities/Team.h"
 #include "protocol/ServerMessage.h"
 
 #include "entities/Window.h"
@@ -54,6 +55,7 @@ public:
 	Camera* getCamera();
 
 	ServerMessage* getPlayersStatusMessage();
+	ServerMessage* getTeamOptionsMessage();
 private:
 	/*
 	Initialize socket support WINDOWS ONLY!
@@ -92,6 +94,7 @@ private:
 	unordered_map<int, Client*> clients;	
 	vector<Client*> disconnectedClients;
 	Camera* camera;
+	ServerMessage * teamOptionsMessage;
 	//mutex clientMutex;
 };
 

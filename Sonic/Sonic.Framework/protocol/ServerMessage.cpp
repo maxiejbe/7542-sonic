@@ -5,12 +5,14 @@ const char* SERVER_MESSAGE_PLAYER_NUMBER_NODE = "pn";
 const char* SERVER_MESSAGE_PLAYERS_STATUS_NODE = "ps";
 const char* SERVER_MESSAGE_CAMERA_NODE = "ca";
 const char* SERVER_MESSAGE_FILE_CONTENT_NODE = "fc";
+const char* SERVER_MESSAGE_TEAMS_NODE = "tm";
 
 ServerMessage::ServerMessage()
 {
 	this->playerNumber = -1;
 	this->type = typeless;
 	this->players = vector<Player*>();
+	this->teams = vector<Team*>();
 	this->camera = nullptr;
 	this->fileContent = "";
 }
@@ -51,6 +53,11 @@ Camera * ServerMessage::getCamera()
 	return this->camera;
 }
 
+vector<Team*> ServerMessage::getTeams()
+{
+	return this->teams;
+}
+
 void ServerMessage::setCamera(Camera * camera)
 {
 	this->camera = camera;
@@ -64,6 +71,11 @@ void ServerMessage::setPlayers(vector<Player*> players)
 void ServerMessage::setFileContent(string content)
 {
 	this->fileContent = content;
+}
+
+void ServerMessage::setTeams(vector<Team*> teams)
+{
+	this->teams = teams;
 }
 
 string ServerMessage::getFileContent()
@@ -88,6 +100,9 @@ void ServerMessage::unserialize(Value* nodeRef)
 			break;
 		case content:
 			parseString(&this->fileContent, "", nodeRef, SERVER_MESSAGE_FILE_CONTENT_NODE);
+			break;
+		case team_options:
+			parseTeams(nodeRef);
 			break;
 		default:
 			break;
@@ -125,6 +140,8 @@ string ServerMessage::serialize()
 		case content:
 			writer.String(SERVER_MESSAGE_FILE_CONTENT_NODE);
 			writer.String(this->fileContent.c_str());
+		case team_options:
+			this->serializeTeams(writer);
 		default:
 			break;
 	}
@@ -140,6 +157,22 @@ void ServerMessage::serializeCamera(Writer<StringBuffer>& writer)
 	writer.String(SERVER_MESSAGE_CAMERA_NODE);
 	string serializedcamera = this->camera->serialize();
 	writer.String(serializedcamera.c_str());
+}
+
+void ServerMessage::serializeTeams(Writer<StringBuffer>& writer)
+{
+	writer.String(SERVER_MESSAGE_TEAMS_NODE);
+	writer.StartArray();
+
+	vector<Team*>::iterator it = this->teams.begin();
+	while (it != this->teams.end()) {
+		if (*it == NULL) continue;
+		string serializedTeam = (*it)->serialize();
+		writer.String(serializedTeam.c_str());
+		it++;
+	}
+
+	writer.EndArray();
 }
 
 void ServerMessage::serializePlayers(Writer<StringBuffer>& writer)
@@ -182,6 +215,40 @@ void ServerMessage::parseCameraStatus(Value * nodeRef)
 	if (this->camera) delete this->camera;
 	this->camera = new Camera();
 	this->camera->unserialize(&jsonCamera);
+}
+
+void ServerMessage::parseTeams(Value * nodeRef)
+{
+	//free players and clear vector
+	Value& node = *nodeRef;
+
+	//LOG(logINFO) << MESSAGE_PARSING_NODE_FIELD + string(fieldName);
+
+	if (nodeRef == nullptr || !node.HasMember(SERVER_MESSAGE_TEAMS_NODE)) {
+		LOG(logWARNING) << "Server Message: Fallo parseo de equipos";
+		return;
+	}
+
+	//string childNodeValue = getNodeContent(&node[SERVER_MESSAGE_PLAYERS_STATUS_NODE]);
+	const Value& teamOptions = node[SERVER_MESSAGE_TEAMS_NODE];
+	if (!teamOptions.IsArray()) {
+		LOG(logWARNING) << "Server Message: Campo incorrecto de equipos " << SERVER_MESSAGE_TEAMS_NODE;
+		return;
+	}
+
+	//unserialize teams
+	Document jsonPlayer;
+	for (Value::ConstValueIterator itr = teamOptions.Begin(); itr != teamOptions.End(); ++itr) {
+		if (jsonPlayer.Parse((*itr).GetString()).HasParseError()) {
+			//LOG
+			continue;
+		}
+
+		//unsearialize player and add to vector
+		Team* newTeam = new Team();
+		newTeam->unserialize(&jsonPlayer);
+		this->teams.push_back(newTeam);
+	}
 }
 
 void ServerMessage::parsePlayersStatus(Value * nodeRef)

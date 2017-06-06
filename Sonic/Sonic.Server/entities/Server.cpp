@@ -67,6 +67,15 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 		return;
 	}
 
+	//TODO: parse from json
+	vector<Team*> teamOptions = vector<Team*>();
+	teamOptions.push_back(new Team(1, "Los Roques"));
+	teamOptions.push_back(new Team(2, "Billiken Knuckles Club"));
+
+	teamOptionsMessage = new ServerMessage();
+	teamOptionsMessage->setType(team_options);
+	teamOptionsMessage->setTeams(teamOptions);
+
 	LOG(logINFO) << MESSAGE_STARTING_SERVER_OK << SocketUtils::getIpFromAddress(this->address) << ":" << this->portNumber;
 
 	this->isValid = true;
@@ -289,6 +298,11 @@ ServerMessage* Server::getPlayersStatusMessage()
 	message->setCamera(new Camera(*this->camera));
 
 	return message;
+}
+
+ServerMessage * Server::getTeamOptionsMessage()
+{
+	return teamOptionsMessage;
 }
 
 vector<Player*> Server::clientsPlayers()

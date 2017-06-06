@@ -9,9 +9,15 @@ const char* MESSAGE_KEY_PRESSED_UP_NODE = "kup";
 const char* MESSAGE_KEY_UNPRESSED_LEFT_NODE = "klu";
 const char* MESSAGE_KEY_UNPRESSED_RIGHT_NODE = "kru";
 const char* MESSAGE_KEY_UNPRESSED_SPACE_NODE = "ksu";
+const char* MESSAGE_USERNAME_NODE = "un";
+const char* MESSAGE_TEAMID_NODE = "tid";
+
+const int MESSAGE_DEFAULT_TEAMID = -1;
 
 Message::Message()
 {
+	this->userName = string();
+	this->teamId = MESSAGE_DEFAULT_TEAMID;
 }
 
 Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKULeft, bool isKURight, bool isKUSpace)
@@ -76,6 +82,26 @@ bool Message::getIsKUSpace()
 	return this->isKUSpace;
 }
 
+void Message::setUserName(string userName)
+{
+	this->userName = userName;
+}
+
+void Message::setTeamId(int teamId)
+{
+	this->teamId = teamId;
+}
+
+string Message::getUserName()
+{
+	return this->userName;
+}
+
+int Message::getTeamId()
+{
+	return this->teamId;
+}
+
 /*Serializable*/
 
 
@@ -109,6 +135,10 @@ void Message::unserialize(Value * nodeRef)
 			parseBool(&isKULeft, false, nodeRef, MESSAGE_KEY_UNPRESSED_LEFT_NODE);
 			parseBool(&isKURight, false, nodeRef, MESSAGE_KEY_UNPRESSED_RIGHT_NODE);
 			parseBool(&isKUSpace, false, nodeRef, MESSAGE_KEY_UNPRESSED_SPACE_NODE);
+			break;
+		case username:
+			parseString(&userName, "", nodeRef, MESSAGE_USERNAME_NODE);
+			parseInt(&teamId, MESSAGE_DEFAULT_TEAMID, nodeRef, MESSAGE_TEAMID_NODE, Validator::intGreaterThanOrEqualToZero);
 			break;
 		default:
 			break;
@@ -154,7 +184,12 @@ void Message::performSerialization(Writer<StringBuffer>& writer) {
 			writer.Bool(this->isKURight);
 			writer.String(MESSAGE_KEY_UNPRESSED_SPACE_NODE);
 			writer.Bool(this->isKUSpace);
-
+		case username:
+			writer.String(MESSAGE_USERNAME_NODE);
+			writer.String(this->userName.c_str());
+			writer.String(MESSAGE_TEAMID_NODE);
+			writer.Int(this->teamId);
+			break;
 		default:
 			break;
 	}

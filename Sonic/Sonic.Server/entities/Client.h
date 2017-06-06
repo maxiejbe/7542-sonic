@@ -32,6 +32,7 @@ public:
 	bool sendHeartBeat();
 	bool sendClientNumber();
 	bool sendFileContent();
+	bool sendTeamOptions();
 	bool sendGameStart();
 	bool sendPlayersStatus();
 	bool refreshPlayer();
@@ -45,6 +46,8 @@ public:
 	SOCKET getSocket();
 private:
 	int clientNumber;
+	int teamId;
+	string userName;
 	Player* player;
 	Message * lastReceivedMessage;
 	bool gameStartSent;
