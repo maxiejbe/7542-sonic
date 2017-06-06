@@ -8,7 +8,7 @@
 #include <typeinfo>
 
 enum ConnectionStatus { assign, connected, disconnected };
-enum PlayerStatus { idle, walking, running, jumping };
+enum PlayerStatus { idle, walking, running, jumping, spinning };
 enum PlayerType { SONIC, TAILS, KNUCKLES };
 
 enum MessageType { player_assign_ok, content_ok, start_game_ok, status, heart_beat, no_type };

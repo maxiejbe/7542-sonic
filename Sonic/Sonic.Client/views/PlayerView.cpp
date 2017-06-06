@@ -85,6 +85,8 @@ int PlayerView::getFramesCount(PlayerStatus status)
 			return 4;
 		case jumping:
 			return 8;
+		case spinning:
+			return 5;
 		default:
 			return 1;
 		}
@@ -98,22 +100,13 @@ int PlayerView::getFramesCount(PlayerStatus status)
 			return 3;
 		case jumping:
 			return 9;
+		case spinning:
+			return 4;
 		default:
 			return 1;
 		}
 	default:
-		switch (status) {
-		case idle:
-			return 1;
-		case walking:
-			return 8;
-		case running:
-			return 4;
-		case jumping:
-			return 4;
-		default:
-			return 1;
-		}
+		return 0;
 	}
 }
 
