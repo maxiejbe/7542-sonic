@@ -159,6 +159,7 @@
     <ClCompile Include="entities\Configuration.cpp" />
     <ClCompile Include="entities\Coordinate.cpp" />
     <ClCompile Include="entities\Dimensions.cpp" />
+    <ClCompile Include="entities\enemies\Enemy.cpp" />
     <ClCompile Include="entities\Entity.cpp" />
     <ClCompile Include="entities\Layer.cpp" />
     <ClCompile Include="entities\Rectangle.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="entities\Configuration.h" />
     <ClInclude Include="entities\Coordinate.h" />
     <ClInclude Include="entities\Dimensions.h" />
+    <ClInclude Include="entities\enemies\Enemy.h" />
     <ClInclude Include="entities\Entity.h" />
     <ClInclude Include="entities\Layer.h" />
     <ClInclude Include="entities\Rectangle.h" />
