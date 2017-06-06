@@ -7,14 +7,16 @@
 #include <SDL_ttf.h>
 #include "Texture.h"
 #include "views/PlayerView.h"
+#include "BaseStatisticsPanel.h"
 
-class InGameStatisticsPanel
+class InGameStatisticsPanel : public BaseStatisticsPanel
 {
 public:
 	InGameStatisticsPanel();
 	~InGameStatisticsPanel();
 
-	void showStatistics(Player* player);
+	//void showStatistics(Player* player);
+	void showStatistics();
 	void freeSurfaceStatistics();
 
 private:
@@ -22,7 +24,6 @@ private:
 	TTF_Font* fontLifes;
 	TTF_Font* fontScore;
 	Texture playerImage;
-	SDL_Surface* surfaceMessage;
 };
 
 #endif // !INGAMESTATISTICS_H

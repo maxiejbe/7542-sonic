@@ -174,7 +174,7 @@ void PlayState::render(Game* game)
 	}
 
 	// Render statistics panel
-	statisticsPanel.showStatistics(NULL); //NULL until integration
+	statisticsPanel.showStatistics(); //Until integration
 	// Render final statistics panel
 	if (camera.x == 2800) //ONLY FOR TEST
 		finalStatisticsPanel.showStatistics();

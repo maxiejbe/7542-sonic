@@ -5,6 +5,8 @@ InGameStatisticsPanel::InGameStatisticsPanel()
 	TTF_Init();
 	fontLifes = TTF_OpenFont("fonts/SonicAdvance.ttf", 10);
 	fontScore = TTF_OpenFont("fonts/SonicAdvance.ttf", 20);
+
+	//this->playerImage.loadFromFile("img/sonic_avatar.png"); //Refactor when player has playerImage
 }
 
 InGameStatisticsPanel::~InGameStatisticsPanel()
@@ -18,75 +20,35 @@ InGameStatisticsPanel::~InGameStatisticsPanel()
 
 void InGameStatisticsPanel::freeSurfaceStatistics()
 {
-	SDL_FreeSurface(surfaceMessage);
+	//Call base method
+	//SDL_FreeSurface(surfaceMessage);
 }
 
-void InGameStatisticsPanel::showStatistics(Player* player)
+//void InGameStatisticsPanel::showStatistics(Player* player)
+void InGameStatisticsPanel::showStatistics()
 {
-	SDL_Rect destrect;
-	SDL_Texture* text;
+	this->playerImage.loadFromFile("img/sonic_avatar.png"); //Bug
 
-	this->player = player;
-	this->playerImage.loadFromFile("img/sonic_avatar.png"); //Refactor when player has playerImage
-
-	//Show Player image, name and lifes
-	if (this->playerImage.getTexture() != nullptr) {
-		destrect.x = 30;
-		destrect.y = 550;
-		destrect.w = playerImage.getWidth()*2;
-		destrect.h = playerImage.getHeight()*2;
-
-		SDL_RenderCopy(Renderer::getInstance().gRenderer, playerImage.getTexture(), NULL, &destrect);
-	}
+	//Show Player image
+	showPlayerImage(playerImage, 30, 550); //Refactor when player has image
 
 	//Show userName
 	string namePlayer = "SONIC"; //Refactor when player has playerName
-	surfaceMessage = TTF_RenderText_Solid(fontLifes, namePlayer.c_str(), { 255, 255, 0 });
-	text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, surfaceMessage);
-	destrect.x = 80;
-	destrect.y = 545;
-	destrect.w = surfaceMessage->w;
-	destrect.h = surfaceMessage->h;
-	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &destrect);
+	showText(namePlayer, 80, 545, fontLifes, { 255, 255, 0 });
 	
 	//Show lifes
 	string lifesPlayer = "X 3"; //Refactor when player has lifes
-	surfaceMessage = TTF_RenderText_Solid(fontLifes, lifesPlayer.c_str(), { 255, 255, 255 });
-	text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, surfaceMessage);
-	destrect.x = 80;
-	destrect.y = 570;
-	destrect.w = surfaceMessage->w;
-	destrect.h = surfaceMessage->h;
-	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &destrect);
-
+	showText(lifesPlayer, 80, 570, fontLifes, { 255, 255, 255 });
 
 	//Show score
 	string score = "SCORE " + to_string(100); //Refactor when player has score
-	surfaceMessage = TTF_RenderText_Solid(fontScore, score.c_str(), { 255, 255, 0 });
-	text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, surfaceMessage);
-	destrect.x = 30;
-	destrect.y = 10;
-	destrect.w = surfaceMessage->w;
-	destrect.h = surfaceMessage->h;
-	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &destrect);
+	showText(score, 30, 10, fontScore, { 255, 255, 0 });
 
 	//Show rings
 	string rings = "RINGS " + to_string(50); //Refactor when player has rings
-	surfaceMessage = TTF_RenderText_Solid(fontScore, rings.c_str(), { 255, 255, 0 });
-	text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, surfaceMessage);
-	destrect.x = 30;
-	destrect.y = 65;
-	destrect.w = surfaceMessage->w;
-	destrect.h = surfaceMessage->h;
-	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &destrect);
+	showText(rings, 30, 65, fontScore, { 255, 255, 0 });
 
 	//Show team
 	string team = "TEAM " + to_string(1); //Refactor when player has rings
-	surfaceMessage = TTF_RenderText_Solid(fontScore, team.c_str(), { 255, 255, 255 });
-	text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, surfaceMessage);
-	destrect.x = 670;
-	destrect.y = 10;
-	destrect.w = surfaceMessage->w;
-	destrect.h = surfaceMessage->h;
-	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &destrect);
+	showText(team, 670, 10, fontScore, { 255, 255, 255 });
 }

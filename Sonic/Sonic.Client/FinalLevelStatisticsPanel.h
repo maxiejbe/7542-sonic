@@ -7,8 +7,9 @@
 #include <SDL_ttf.h>
 #include "Texture.h"
 #include "views/PlayerView.h"
+#include "BaseStatisticsPanel.h"
 
-class FinalLevelStatisticsPanel
+class FinalLevelStatisticsPanel : public BaseStatisticsPanel
 {
 public:
 	FinalLevelStatisticsPanel();
@@ -16,6 +17,7 @@ public:
 
 	//void showStatistics(vector<Player*> players);
 	void showStatistics();
+	void showLevelHasPassed(Texture imgLevel, int x, int y);
 	void freeSurfaceStatistics();
 
 private:
@@ -24,7 +26,6 @@ private:
 	TTF_Font* fontScore;
 	TTF_Font* fontLevel;
 	Texture levelHasPassed;
-	SDL_Surface* surfaceMessage;
 };
 
 #endif // !FINALLEVELSTATISTICSPANEL_H
