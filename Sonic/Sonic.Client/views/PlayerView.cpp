@@ -1,7 +1,7 @@
 #include "PlayerView.h"
 #include "SDLWindow.h"
 
-const int ANIMATION_STATES = 4;
+const int ANIMATION_STATES = 5;
 const int ANIMATION_FRAMES_SONIC = 8;
 const int ANIMATION_FRAMES_TAILS = 9;
 const int ANIMATION_FRAMES_KNUCKLES = 8;
@@ -53,7 +53,7 @@ void PlayerView::render(int camX, int camY)
 	//// Calculate current sprite
 	//Uint32 ticks = SDL_GetTicks();
 	//Uint32 sprite = (ticks / 90) % getFramesCount(this->player->getSpriteState());
-	Uint32 sprite = (this->player->getTime() / 90) % getFramesCount(this->player->getSpriteState());
+	Uint32 sprite = (this->player->getTime() / getFramesDivision(this->player->getSpriteState())) % getFramesCount(this->player->getSpriteState()); //90
 
 	SDL_Rect* currentClip = &spriteClips[player->getSpriteState()][sprite];
 
@@ -75,6 +75,20 @@ int PlayerView::getFramesCount(PlayerStatus status)
 {
 	switch (this->player->getPlayerType()) {
 	case SONIC:
+		switch (status) {
+		case idle:
+			return 1;
+		case walking:
+			return 8;
+		case running:
+			return 4;
+		case jumping:
+			return 4;
+		case spinning:
+			return 4;
+		default:
+			return 1;
+		}
 	case KNUCKLES:
 		switch (status) {
 		case idle:
@@ -86,7 +100,7 @@ int PlayerView::getFramesCount(PlayerStatus status)
 		case jumping:
 			return 8;
 		case spinning:
-			return 5;
+			return 4;
 		default:
 			return 1;
 		}
@@ -107,6 +121,18 @@ int PlayerView::getFramesCount(PlayerStatus status)
 		}
 	default:
 		return 0;
+	}
+}
+
+int PlayerView::getFramesDivision(PlayerStatus status)
+{
+	switch (status) {
+	case spinning:
+		return 60;
+	case jumping:
+		return 70;
+	default:
+		return 85;
 	}
 }
 
@@ -189,44 +215,45 @@ void PlayerView::loadSpriteClips()
 
 		// Jumping
 		spriteClips[PlayerStatus::jumping][0].x = 386;
-		spriteClips[PlayerStatus::jumping][0].y = 74;
+		spriteClips[PlayerStatus::jumping][0].y = 72;
 		spriteClips[PlayerStatus::jumping][0].w = 27;
 		spriteClips[PlayerStatus::jumping][0].h = 30;
 
 		spriteClips[PlayerStatus::jumping][1].x = 417;
-		spriteClips[PlayerStatus::jumping][1].y = 77;
+		spriteClips[PlayerStatus::jumping][1].y = 75;
 		spriteClips[PlayerStatus::jumping][1].w = 30;
 		spriteClips[PlayerStatus::jumping][1].h = 27;
 
 		spriteClips[PlayerStatus::jumping][2].x = 452;
-		spriteClips[PlayerStatus::jumping][2].y = 75;
+		spriteClips[PlayerStatus::jumping][2].y = 72;
 		spriteClips[PlayerStatus::jumping][2].w = 27;
 		spriteClips[PlayerStatus::jumping][2].h = 30;
 
 		spriteClips[PlayerStatus::jumping][3].x = 481;
-		spriteClips[PlayerStatus::jumping][3].y = 77;
+		spriteClips[PlayerStatus::jumping][3].y = 75;
 		spriteClips[PlayerStatus::jumping][3].w = 30;
 		spriteClips[PlayerStatus::jumping][3].h = 27;
 
-		spriteClips[PlayerStatus::jumping][4].x = 386;
-		spriteClips[PlayerStatus::jumping][4].y = 74;
-		spriteClips[PlayerStatus::jumping][4].w = 27;
-		spriteClips[PlayerStatus::jumping][4].h = 30;
+		// Spinning
+		spriteClips[PlayerStatus::spinning][0].x = 351;
+		spriteClips[PlayerStatus::spinning][0].y = 72;
+		spriteClips[PlayerStatus::spinning][0].w = 30;
+		spriteClips[PlayerStatus::spinning][0].h = 30;
 
-		spriteClips[PlayerStatus::jumping][5].x = 417;
-		spriteClips[PlayerStatus::jumping][5].y = 77;
-		spriteClips[PlayerStatus::jumping][5].w = 30;
-		spriteClips[PlayerStatus::jumping][5].h = 27;
+		spriteClips[PlayerStatus::spinning][1].x = 386;
+		spriteClips[PlayerStatus::spinning][1].y = 72;
+		spriteClips[PlayerStatus::spinning][1].w = 27;
+		spriteClips[PlayerStatus::spinning][1].h = 30;
 
-		spriteClips[PlayerStatus::jumping][6].x = 452;
-		spriteClips[PlayerStatus::jumping][6].y = 75;
-		spriteClips[PlayerStatus::jumping][6].w = 27;
-		spriteClips[PlayerStatus::jumping][6].h = 30;
+		spriteClips[PlayerStatus::spinning][2].x = 417;
+		spriteClips[PlayerStatus::spinning][2].y = 75;
+		spriteClips[PlayerStatus::spinning][2].w = 30;
+		spriteClips[PlayerStatus::spinning][2].h = 27;
 
-		spriteClips[PlayerStatus::jumping][7].x = 481;
-		spriteClips[PlayerStatus::jumping][7].y = 77;
-		spriteClips[PlayerStatus::jumping][7].w = 30;
-		spriteClips[PlayerStatus::jumping][7].h = 27;
+		spriteClips[PlayerStatus::spinning][3].x = 452;
+		spriteClips[PlayerStatus::spinning][3].y = 72;
+		spriteClips[PlayerStatus::spinning][3].w = 27;
+		spriteClips[PlayerStatus::spinning][3].h = 30;
 		break;
 
 	case TAILS:
@@ -338,6 +365,27 @@ void PlayerView::loadSpriteClips()
 		spriteClips[PlayerStatus::jumping][8].y = 108;
 		spriteClips[PlayerStatus::jumping][8].w = 28;
 		spriteClips[PlayerStatus::jumping][8].h = 48;
+
+		// Spinning
+		spriteClips[PlayerStatus::spinning][0].x = 376;
+		spriteClips[PlayerStatus::spinning][0].y = 217;
+		spriteClips[PlayerStatus::spinning][0].w = 51;
+		spriteClips[PlayerStatus::spinning][0].h = 28;
+
+		spriteClips[PlayerStatus::spinning][1].x = 437;
+		spriteClips[PlayerStatus::spinning][1].y = 217;
+		spriteClips[PlayerStatus::spinning][1].w = 49;
+		spriteClips[PlayerStatus::spinning][1].h = 28;
+
+		spriteClips[PlayerStatus::spinning][2].x = 497;
+		spriteClips[PlayerStatus::spinning][2].y = 217;
+		spriteClips[PlayerStatus::spinning][2].w = 47;
+		spriteClips[PlayerStatus::spinning][2].h = 28;
+
+		spriteClips[PlayerStatus::spinning][3].x = 552;
+		spriteClips[PlayerStatus::spinning][3].y = 217;
+		spriteClips[PlayerStatus::spinning][3].w = 48;
+		spriteClips[PlayerStatus::spinning][3].h = 28;
 		break;
 
 	case KNUCKLES:
@@ -454,6 +502,32 @@ void PlayerView::loadSpriteClips()
 		spriteClips[PlayerStatus::jumping][7].y = 148;
 		spriteClips[PlayerStatus::jumping][7].w = 31;
 		spriteClips[PlayerStatus::jumping][7].h = 30;
+
+		// Spinning
+		spriteClips[PlayerStatus::spinning][0].x = 1;
+		spriteClips[PlayerStatus::spinning][0].y = 148;
+		spriteClips[PlayerStatus::spinning][0].w = 31;
+		spriteClips[PlayerStatus::spinning][0].h = 30;
+
+		spriteClips[PlayerStatus::spinning][1].x = 32;
+		spriteClips[PlayerStatus::spinning][1].y = 148;
+		spriteClips[PlayerStatus::spinning][1].w = 30;
+		spriteClips[PlayerStatus::spinning][1].h = 31;
+
+		spriteClips[PlayerStatus::spinning][2].x = 63;
+		spriteClips[PlayerStatus::spinning][2].y = 148;
+		spriteClips[PlayerStatus::spinning][2].w = 31;
+		spriteClips[PlayerStatus::spinning][2].h = 30;
+
+		spriteClips[PlayerStatus::spinning][3].x = 95;
+		spriteClips[PlayerStatus::spinning][3].y = 147;
+		spriteClips[PlayerStatus::spinning][3].w = 30;
+		spriteClips[PlayerStatus::spinning][3].h = 31;
+
+		spriteClips[PlayerStatus::spinning][4].x = 126;
+		spriteClips[PlayerStatus::spinning][4].y = 148;
+		spriteClips[PlayerStatus::spinning][4].w = 31;
+		spriteClips[PlayerStatus::spinning][4].h = 30;
 		break;
 	}
 }

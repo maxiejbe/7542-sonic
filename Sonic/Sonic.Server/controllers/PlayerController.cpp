@@ -24,34 +24,44 @@ void PlayerController::update(Message* message, Player* player, Camera* camera, 
 
 void PlayerController::updateInput(Message* message, Player* player)
 {
-	float turbo = 2;
+	float turboRun = 2;
+	float turboSpin = 60;
 
-	if (message->getIsKPLeft()) {
+	if (message->getIsKPSpace() && player->getSpriteState() == PlayerStatus::idle) {
+		if (player->getFacingDirection() == FACING_RIGHT)
+			player->setTargetVelX(player->getScrollSpeed() * turboSpin);
+		else
+			player->setTargetVelX(player->getScrollSpeed() * -1 * turboSpin);
+
+		player->setSpriteState(PlayerStatus::spinning);
+		return;
+	}
+
+	if (message->getIsKPLeft() && player->getSpriteState() != PlayerStatus::spinning) {
 		player->setFacingDirection(FACING_LEFT);
 		player->setTargetVelX(player->getScrollSpeed() * -1);
 		if (!player->getIsJumping()) {
 			player->setSpriteState(PlayerStatus::walking);
-			if (message->getIsKPSpace()) {
-				player->setTargetVelX(player->getTargetVelX() * turbo);
+			if (message->getIsKPShift()) {
+				player->setTargetVelX(player->getTargetVelX() * turboRun);
 				player->setSpriteState(PlayerStatus::running);
 			}
 		}
 	}
 
-	if (message->getIsKPRight()) {
+	if (message->getIsKPRight() && player->getSpriteState() != PlayerStatus::spinning) {
 		player->setFacingDirection(FACING_RIGHT);
 		player->setTargetVelX(player->getScrollSpeed());
 		if (!player->getIsJumping()) {
 			player->setSpriteState(PlayerStatus::walking);
-			if (message->getIsKPSpace()) {
-				player->setTargetVelX(player->getTargetVelX() * turbo);
+			if (message->getIsKPShift()) {
+				player->setTargetVelX(player->getTargetVelX() * turboRun);
 				player->setSpriteState(PlayerStatus::running);
 			}
 		}
 	}
 
-	if (message->getIsKPUp()) {
-		// TODO: extraer a PlayerStatus::jumping()
+	if (message->getIsKPUp() && player->getSpriteState() != PlayerStatus::spinning) {
 		if (!player->getIsJumping()) {
 			player->setSpriteState(PlayerStatus::jumping);
 			player->setIsJumping(true);
@@ -59,9 +69,9 @@ void PlayerController::updateInput(Message* message, Player* player)
 		}
 	}
 
-	// En caso que se suelten a la vez la flecha y el space.
+	// En caso que se suelten a la vez la flecha y el shift.
 	if (message->getIsKULeft() || message->getIsKURight()) {
-		if (message->getIsKPSpace() || message->getIsKUSpace()) {
+		if (message->getIsKPShift() || message->getIsKUShift()) {
 			player->setSpriteState(PlayerStatus::walking);
 		}
 	}
@@ -71,7 +81,7 @@ void PlayerController::move(Player* player, double dt, Camera* camera)
 {
 	if (player->getIsConnected()) {
 
-		if (player->getVelocity().x < -100) {
+		if (abs(player->getVelocity().x) > 100) {
 			player->setXVelocity(0);
 		}
 
@@ -80,7 +90,8 @@ void PlayerController::move(Player* player, double dt, Camera* camera)
 
 		// TODO: extraer a isStopping()
 		if (fabs(player->getVelocity().x) < 0.4) {
-			if (player->getVelocity().x == 0 && player->getSpriteState() == PlayerStatus::walking) {
+			if (player->getVelocity().x == 0 && (player->getSpriteState() == PlayerStatus::walking
+				|| player->getSpriteState() == PlayerStatus::spinning)) {
 				player->setSpriteState(PlayerStatus::idle);
 			}
 			player->setXVelocity(0);
