@@ -1,6 +1,7 @@
 #include "protocol/Message.h"
 #include "protocol/SerializableMessage.h"
 #include "entities/Server.h"
+#include "entities/GameConfig.h"
 #include "Parser.h"
 
 int main(int argc, char* args[])
@@ -23,13 +24,15 @@ int main(int argc, char* args[])
 	ServerConfiguration serverConfig;
 	Window window;
 	Configuration config;
-	Scenario scenario;
 	Camera camera;
+	GameConfig gameConfig;
 
 	parser->parse(&serverConfig);
 	parser->parse(&window);
 	parser->parse(&config);
-	parser->parse(&scenario);
+	parser->parse(&gameConfig);
+
+	Scenario scenario;
 
 	camera = Camera(0, 0, window.getWidth(), window.getHeight(), window.getWidth(), window.getHeight(), scenario.getWidth(), scenario.getHeight());
 

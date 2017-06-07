@@ -12,6 +12,7 @@
 #include "entities/common/Serializable.h"
 #include <vector>
 #include "Logger.h"
+#include "entities/Level.h"
 #include <algorithm>
 
 using namespace std;

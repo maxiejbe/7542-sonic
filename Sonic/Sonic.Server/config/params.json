@@ -13,20 +13,40 @@
   "configuracion": {
     "vel_scroll": 400
   },
-  "escenario": {
-    "dimensiones": {
-      "ancho": 3600,
-      "alto": 600
-    },
-    "capas": [
+  "juego": {
+    "niveles": [
       {
-        "id": 1,
-        "index_z": 0,
-        "ruta_imagen": "img/level0.png"
+        "escenario": {
+          "dimensiones": {
+            "ancho": 3600,
+            "alto": 600
+          },
+          "capas": [
+            {
+              "id": 1,
+              "index_z": 0,
+              "ruta_imagen": "img/level0.png"
+            }
+          ]
+        },
+        "limites": [ ]
+      },
+      {
+        "escenario": {
+          "dimensiones": {
+            "ancho": 3600,
+            "alto": 600
+          },
+          "capas": [
+            {
+              "id": 1,
+              "index_z": 0,
+              "ruta_imagen": "img/level1.png"
+            }
+          ]
+        },
+        "limites": [ ]
       }
-    ],
-    "entidades": [
-      
     ]
-  }
+  } 
 }
