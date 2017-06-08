@@ -30,6 +30,7 @@ private:
 	static SelectTeamState m_SelectTeamState;
 
 	static const int OPCMENU = 3;
+	static const int TEAMS_COUNT = 3; //One for not selected team
 
 	TTF_Font* fontTeam;
 	Texture texture;
@@ -38,9 +39,10 @@ private:
 	const char* labels[OPCMENU];
 	SDL_Surface* menus[OPCMENU];
 	bool selected[OPCMENU];
+	bool team[TEAMS_COUNT];
 	SDL_Color color[OPCMENU];
 	int option;
-	int team;
+	int selectedTeam;
 
 	void initColorNameOptions();
 	void updateAndRenderOptions();

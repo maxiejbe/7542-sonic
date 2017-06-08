@@ -12,7 +12,7 @@ void SelectTeamState::load(Game* game)
 	selected[1] = true;
 	selected[0] = selected[2] = false;
 
-	team = 1;
+	team[0] = team[1] = team[2] = false;
 
 	color[0] = { 255,255,255 }; //Blanco
 	color[1] = { 255,0,0 }; //Rojo
@@ -55,15 +55,26 @@ void SelectTeamState::update(Game* game, float dt)
 		option = this->getNextOption(option, 1);
 	}
 
+	if (input->isKeyDown(KEY_DOWN)) {
+		option = 0; //Connect
+	}
+
+	if (input->isKeyDown(KEY_UP)) {
+		option = 1; //Team1
+	}
+
 	if (input->isKeyDown(KEY_RETURN)) {
 		if (selected[0]) {
 			// Connect
 			game->changeState(ConnectState::Instance());
 		}
 		else {
-			team = option;
-			//cambiar color y dejarlo seleccionado
-			//this->renderSelectedOption();
+			team[option] = true;
+			selectedTeam = option;
+			for (int i = 0; i < OPCMENU; i++)
+			{
+				if (i != option) { team[i] = false; }
+			}
 		}
 	}
 }
@@ -77,7 +88,7 @@ void SelectTeamState::render(Game* game)
 void SelectTeamState::initColorNameOptions()
 {
 	option = 1;
-	menus[option] = TTF_RenderText_Solid(fontTeam, labels[option], color[2]);
+	menus[option] = TTF_RenderText_Solid(fontTeam, labels[option], color[1]);
 
 	for (int i = 0; i < OPCMENU; i++)
 	{
@@ -92,18 +103,16 @@ void SelectTeamState::initColorNameOptions()
 void SelectTeamState::renderSelectedOption()
 {
 	selected[option] = true;
-	if (selected[option] == 0)
-		TTF_RenderText_Solid(fontTeam, labels[option], color[1]);
-	else
-		TTF_RenderText_Solid(fontTeam, labels[option], color[2]);
+	for (int i = 0; i < OPCMENU; i++)
+	{
+		if (i != option) { selected[i] = false; }
+	}
 
 	for (int i = 0; i < OPCMENU; i++)
 	{
-		if (i != option)
-		{
-			selected[i] = false;
-			menus[i] = TTF_RenderText_Solid(fontTeam, labels[i], color[0]);
-		}
+		if (selected[i] == true) { menus[i] = TTF_RenderText_Solid(fontTeam, labels[i], color[1]); }
+		else if (team[i] == true) { menus[i] = TTF_RenderText_Solid(fontTeam, labels[i], color[2]); }
+		else { menus[i] = TTF_RenderText_Solid(fontTeam, labels[i], color[0]); }
 	}
 }
 
@@ -123,10 +132,10 @@ int SelectTeamState::getNextOption(int option, int order) {
 
 void SelectTeamState::updateAndRenderOptions()
 {
-	//Cambiar posiciones de cada opcion
 	SDL_Rect Message_rect;
 	SDL_Texture* text;
 
+	//Show connect text
 	text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, menus[0]);
 	Message_rect.x = SDLWindow::getInstance().getScreenWidth() / 2 - menus[0]->clip_rect.w / 2;
 	Message_rect.y = 520;
@@ -134,6 +143,7 @@ void SelectTeamState::updateAndRenderOptions()
 	Message_rect.h = menus[0]->h;
 	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &Message_rect);
 
+	//Show team1 text
 	text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, menus[1]);
 	Message_rect.x = 190;
 	Message_rect.y = 410;
@@ -141,6 +151,7 @@ void SelectTeamState::updateAndRenderOptions()
 	Message_rect.h = menus[1]->h;
 	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &Message_rect);
 
+	//Show team2 text
 	text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, menus[2]);
 	Message_rect.x = 490;
 	Message_rect.y = 410;
