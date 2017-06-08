@@ -17,7 +17,7 @@ struct Message : public SerializableMessage {
 public:
 
 	Message::Message();
-	Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKPShift, bool isKULeft, bool isKURight, bool isKUSpace, bool isKUShift);
+	Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKPShift, bool isKULeft, bool isKURight, bool isKUSpace, bool isKUShift, double isKUTest);
 
 	void setType(MessageType);
 	MessageType getType();
@@ -34,6 +34,7 @@ public:
 	bool getIsKURight();
 	bool getIsKUSpace();
 	bool getIsKUShift();
+	bool getIsKUTest();
 
 	//bool unserialize(string json);
 
@@ -49,7 +50,7 @@ private:
 
 	MessageType type;
 	double dt;
-	bool isKPLeft, isKPRight, isKPUp, isKPSpace, isKPShift, isKULeft, isKURight, isKUSpace, isKUShift;
+	bool isKPLeft, isKPRight, isKPUp, isKPSpace, isKPShift, isKULeft, isKURight, isKUSpace, isKUShift, isKUTest;
 
 	void performSerialization(Writer<StringBuffer>& writer);
 };

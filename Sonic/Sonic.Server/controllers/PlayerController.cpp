@@ -27,6 +27,11 @@ void PlayerController::updateInput(Message* message, Player* player)
 	float turboRun = 2;
 	float turboSpin = 60;
 
+	if (message->getIsKUTest()) {
+		player->setTestMode(!player->getTestMode());
+		// TODO: activar modo fantasma
+	}
+
 	if (message->getIsKPSpace() && player->getSpriteState() == PlayerStatus::idle) {
 		if (player->getFacingDirection() == FACING_RIGHT)
 			player->setTargetVelX(player->getScrollSpeed() * turboSpin);

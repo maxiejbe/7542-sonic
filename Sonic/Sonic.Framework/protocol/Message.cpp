@@ -11,12 +11,13 @@ const char* MESSAGE_KEY_UNPRESSED_LEFT_NODE = "klu";
 const char* MESSAGE_KEY_UNPRESSED_RIGHT_NODE = "kru";
 const char* MESSAGE_KEY_UNPRESSED_SPACE_NODE = "ksu";
 const char* MESSAGE_KEY_UNPRESSED_SHIFT_NODE = "khu";
+const char* MESSAGE_KEY_UNPRESSED_TEST_NODE = "kpu";
 
 Message::Message()
 {
 }
 
-Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKPShift, bool isKULeft, bool isKURight, bool isKUSpace, bool isKUShift)
+Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKPShift, bool isKULeft, bool isKURight, bool isKUSpace, bool isKUShift, double isKUTest)
 {
 	this->dt = dt;
 	this->isKPLeft = isKPLeft;
@@ -28,6 +29,7 @@ Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool 
 	this->isKURight = isKURight;
 	this->isKUSpace = isKUSpace;
 	this->isKUShift = isKUShift;
+	this->isKUTest = isKUTest;
 }
 
 void Message::setType(MessageType type)
@@ -90,6 +92,11 @@ bool Message::getIsKUShift()
 	return this->isKUShift;
 }
 
+bool Message::getIsKUTest()
+{
+	return this->isKUTest;
+}
+
 /*Serializable*/
 
 
@@ -104,6 +111,7 @@ bool Message::equals(Message & message)
 	if (this->isKURight != message.getIsKURight()) return false;
 	if (this->isKUSpace != message.getIsKUSpace()) return false;
 	if (this->isKUShift != message.getIsKUShift()) return false;
+	if (this->isKUTest != message.getIsKUTest()) return false;
 
 	return true;
 }
@@ -127,6 +135,7 @@ void Message::unserialize(Value * nodeRef)
 		parseBool(&isKURight, false, nodeRef, MESSAGE_KEY_UNPRESSED_RIGHT_NODE);
 		parseBool(&isKUSpace, false, nodeRef, MESSAGE_KEY_UNPRESSED_SPACE_NODE);
 		parseBool(&isKUShift, false, nodeRef, MESSAGE_KEY_UNPRESSED_SHIFT_NODE);
+		parseBool(&isKUTest, false, nodeRef, MESSAGE_KEY_UNPRESSED_TEST_NODE);
 		break;
 	default:
 		break;
@@ -176,6 +185,8 @@ void Message::performSerialization(Writer<StringBuffer>& writer) {
 		writer.Bool(this->isKUSpace);
 		writer.String(MESSAGE_KEY_UNPRESSED_SHIFT_NODE);
 		writer.Bool(this->isKUShift);
+		writer.String(MESSAGE_KEY_UNPRESSED_TEST_NODE);
+		writer.Bool(this->isKUTest);
 
 	default:
 		break;

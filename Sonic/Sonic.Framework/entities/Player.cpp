@@ -37,6 +37,7 @@ Player::Player()
 	this->facingDirection = FACING_RIGHT;
 	this->spriteState = PlayerStatus::idle;
 	this->isConnected = true;
+	this->testMode = false;
 
 	this->time = 0;
 }
@@ -61,6 +62,7 @@ void Player::copyFrom(Player & anotherPlayer)
 	this->setPlayerType(anotherPlayer.getPlayerType());
 	this->setIsConnected(anotherPlayer.getIsConnected());
 	this->setTime(anotherPlayer.getTime());
+	this->setTestMode(anotherPlayer.getTestMode());
 }
 
 void Player::lock()
@@ -233,6 +235,16 @@ void Player::setTime(int time)
 	this->time = time;
 }
 
+void Player::setTestMode(bool testMode)
+{
+	this->testMode = testMode;
+}
+
+bool Player::getTestMode()
+{
+	return this->testMode;
+}
+
 PlayerType Player::calculatePlayerType()
 {
 	switch (this->getNumber() % 3) {
@@ -252,7 +264,7 @@ double Player::calculateGroundPos(int windowHeight)
 	switch (playerType) {
 	case SONIC:
 	case KNUCKLES:
-		return windowHeight / 1.35;
+		return windowHeight / 1.40;
 	case TAILS:
 		return windowHeight / 1.35 + 16;
 	default:
