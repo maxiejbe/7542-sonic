@@ -266,7 +266,7 @@ double Player::calculateGroundPos(int windowHeight)
 	case KNUCKLES:
 		return windowHeight / 1.40;
 	case TAILS:
-		return windowHeight / 1.35 + 16;
+		return windowHeight / 1.358;
 	default:
 		return windowHeight / 1.35;
 	}

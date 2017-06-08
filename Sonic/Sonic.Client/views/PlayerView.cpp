@@ -236,24 +236,24 @@ void PlayerView::loadSpriteClips()
 
 		// Spinning
 		spriteClips[PlayerStatus::spinning][0].x = 351;
-		spriteClips[PlayerStatus::spinning][0].y = 72;
+		spriteClips[PlayerStatus::spinning][0].y = 64;// 72;
 		spriteClips[PlayerStatus::spinning][0].w = 30;
-		spriteClips[PlayerStatus::spinning][0].h = 30;
+		spriteClips[PlayerStatus::spinning][0].h = 38;// 30;
 
 		spriteClips[PlayerStatus::spinning][1].x = 386;
-		spriteClips[PlayerStatus::spinning][1].y = 72;
+		spriteClips[PlayerStatus::spinning][1].y = 64;// 72;
 		spriteClips[PlayerStatus::spinning][1].w = 27;
-		spriteClips[PlayerStatus::spinning][1].h = 30;
+		spriteClips[PlayerStatus::spinning][1].h = 38;// 30;
 
 		spriteClips[PlayerStatus::spinning][2].x = 417;
-		spriteClips[PlayerStatus::spinning][2].y = 75;
+		spriteClips[PlayerStatus::spinning][2].y = 64;// 75;
 		spriteClips[PlayerStatus::spinning][2].w = 30;
-		spriteClips[PlayerStatus::spinning][2].h = 27;
+		spriteClips[PlayerStatus::spinning][2].h = 38;// 27;
 
 		spriteClips[PlayerStatus::spinning][3].x = 452;
-		spriteClips[PlayerStatus::spinning][3].y = 72;
+		spriteClips[PlayerStatus::spinning][3].y = 64;// 72;
 		spriteClips[PlayerStatus::spinning][3].w = 27;
-		spriteClips[PlayerStatus::spinning][3].h = 30;
+		spriteClips[PlayerStatus::spinning][3].h = 38;// 30;
 		break;
 
 	case TAILS:
@@ -368,24 +368,24 @@ void PlayerView::loadSpriteClips()
 
 		// Spinning
 		spriteClips[PlayerStatus::spinning][0].x = 376;
-		spriteClips[PlayerStatus::spinning][0].y = 217;
+		spriteClips[PlayerStatus::spinning][0].y = 213;// 217;
 		spriteClips[PlayerStatus::spinning][0].w = 51;
-		spriteClips[PlayerStatus::spinning][0].h = 28;
+		spriteClips[PlayerStatus::spinning][0].h = 32;// 28;
 
 		spriteClips[PlayerStatus::spinning][1].x = 437;
-		spriteClips[PlayerStatus::spinning][1].y = 217;
+		spriteClips[PlayerStatus::spinning][1].y = 213;// 217;
 		spriteClips[PlayerStatus::spinning][1].w = 49;
-		spriteClips[PlayerStatus::spinning][1].h = 28;
+		spriteClips[PlayerStatus::spinning][1].h = 32;// 28;
 
 		spriteClips[PlayerStatus::spinning][2].x = 497;
-		spriteClips[PlayerStatus::spinning][2].y = 217;
+		spriteClips[PlayerStatus::spinning][2].y = 213;// 217;
 		spriteClips[PlayerStatus::spinning][2].w = 47;
-		spriteClips[PlayerStatus::spinning][2].h = 28;
+		spriteClips[PlayerStatus::spinning][2].h = 32;// 28;
 
 		spriteClips[PlayerStatus::spinning][3].x = 552;
-		spriteClips[PlayerStatus::spinning][3].y = 217;
+		spriteClips[PlayerStatus::spinning][3].y = 213;// 217;
 		spriteClips[PlayerStatus::spinning][3].w = 48;
-		spriteClips[PlayerStatus::spinning][3].h = 28;
+		spriteClips[PlayerStatus::spinning][3].h = 32;// 28;
 		break;
 
 	case KNUCKLES:
@@ -505,29 +505,29 @@ void PlayerView::loadSpriteClips()
 
 		// Spinning
 		spriteClips[PlayerStatus::spinning][0].x = 1;
-		spriteClips[PlayerStatus::spinning][0].y = 148;
+		spriteClips[PlayerStatus::spinning][0].y = 140;// 148;
 		spriteClips[PlayerStatus::spinning][0].w = 31;
-		spriteClips[PlayerStatus::spinning][0].h = 30;
+		spriteClips[PlayerStatus::spinning][0].h = 38;// 30;
 
 		spriteClips[PlayerStatus::spinning][1].x = 32;
-		spriteClips[PlayerStatus::spinning][1].y = 148;
+		spriteClips[PlayerStatus::spinning][1].y = 140;// 148;
 		spriteClips[PlayerStatus::spinning][1].w = 30;
-		spriteClips[PlayerStatus::spinning][1].h = 31;
+		spriteClips[PlayerStatus::spinning][1].h = 38;// 31;
 
 		spriteClips[PlayerStatus::spinning][2].x = 63;
-		spriteClips[PlayerStatus::spinning][2].y = 148;
+		spriteClips[PlayerStatus::spinning][2].y = 140;// 148;
 		spriteClips[PlayerStatus::spinning][2].w = 31;
-		spriteClips[PlayerStatus::spinning][2].h = 30;
+		spriteClips[PlayerStatus::spinning][2].h = 38;// 30;
 
 		spriteClips[PlayerStatus::spinning][3].x = 95;
-		spriteClips[PlayerStatus::spinning][3].y = 147;
+		spriteClips[PlayerStatus::spinning][3].y = 140;// 147;
 		spriteClips[PlayerStatus::spinning][3].w = 30;
-		spriteClips[PlayerStatus::spinning][3].h = 31;
+		spriteClips[PlayerStatus::spinning][3].h = 38;// 31;
 
 		spriteClips[PlayerStatus::spinning][4].x = 126;
-		spriteClips[PlayerStatus::spinning][4].y = 148;
+		spriteClips[PlayerStatus::spinning][4].y = 140;// 148;
 		spriteClips[PlayerStatus::spinning][4].w = 31;
-		spriteClips[PlayerStatus::spinning][4].h = 30;
+		spriteClips[PlayerStatus::spinning][4].h = 38;// 30;
 		break;
 	}
 }
