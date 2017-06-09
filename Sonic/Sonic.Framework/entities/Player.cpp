@@ -248,13 +248,13 @@ bool Player::getTestMode()
 PlayerType Player::calculatePlayerType()
 {
 	switch (this->getNumber() % 4) {
-	case 0:
+	case 1:
 		return PlayerType::SONIC;
 	case 2:
 		return PlayerType::TAILS;
 	case 3:
 		return PlayerType::KNUCKLES;
-	case 1:
+	case 0:
 		return PlayerType::SHADOW;
 	default:
 		return PlayerType::SONIC;
