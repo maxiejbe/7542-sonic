@@ -102,12 +102,15 @@ void PlayState::update(Game* game, float dt)
 	bool isKPSpace = input->isKeyPressed(KEY_SPACE);
 	bool isKPRight = input->isKeyPressed(KEY_RIGHT);
 	bool isKPUp = input->isKeyPressed(KEY_UP);
+	bool isKPShift = input->isKeyPressed(KEY_LEFT_SHIFT);
 
 	bool isKULeft = input->isKeyUp(KEY_LEFT);
 	bool isKURight = input->isKeyUp(KEY_RIGHT);
 	bool isKUSpace = input->isKeyUp(KEY_SPACE);
+	bool isKUShift = input->isKeyUp(KEY_LEFT_SHIFT);
+	bool isKUTest = input->isKeyUp(KEY_P);
 
-	Message* message = new Message(timeStep, isKPLeft, isKPSpace, isKPRight, isKPUp, isKULeft, isKURight, isKUSpace);
+	Message* message = new Message(timeStep, isKPLeft, isKPSpace, isKPRight, isKPUp, isKPShift, isKULeft, isKURight, isKUSpace, isKUShift, isKUTest);
 	message->setType(MessageType::status);
 
 	if (lastMessage == nullptr) {

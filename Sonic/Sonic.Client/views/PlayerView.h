@@ -24,6 +24,7 @@ public:
 
 private:
 	int getFramesCount(PlayerStatus status);
+	int getFramesDivision(PlayerStatus status);
 	void loadSpriteClips();
 	string calculateDisconnectedPlayerPath();
 	string calculatePlayerFilePath();

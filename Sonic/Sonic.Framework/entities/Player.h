@@ -27,6 +27,7 @@ public:
 		this->position = Vector2(0, this->groundPos);
 		this->isConnected = true;
 		this->time = 0;
+		this->testMode = false;
 	}
 	Player(Player&);
 
@@ -72,6 +73,8 @@ public:
 	void setIsConnected(bool isConnected);
 	int getTime();
 	void setTime(int time);
+	void setTestMode(bool testMode);
+	bool getTestMode();
 
 	string serializedPlayer;
 
@@ -98,6 +101,7 @@ private:
 	PlayerType playerType;
 	bool isConnected;
 	int time;
+	bool testMode;
 
 	mutex playerMutex;
 };
