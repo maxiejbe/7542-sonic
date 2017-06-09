@@ -12,7 +12,7 @@
 #include "views/EntityView.h"
 #include "views/common/EntityViewResolver.h"
 #include "InGameStatisticsPanel.h"
-#include "FinalLevelStatisticsPanel.h"
+#include "EndLevelState.h"
 #include "Timer.h"
 #include <stdio.h>
 #include <string>
@@ -45,7 +45,6 @@ private:
 	SDL_Rect camera;
 	vector<LayerView> layerViews;
 	InGameStatisticsPanel statisticsPanel;
-	FinalLevelStatisticsPanel finalStatisticsPanel;
 
 	int scenarioWidth;
 	int scenarioHeight;

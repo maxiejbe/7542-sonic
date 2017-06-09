@@ -20,7 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseStatisticsPanel.cpp" />
-    <ClCompile Include="FinalLevelStatisticsPanel.cpp" />
+    <ClCompile Include="EndLevelState.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="ConnectState.cpp" />
     <ClCompile Include="InGameStatisticsPanel.cpp" />
@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseStatisticsPanel.h" />
-    <ClInclude Include="FinalLevelStatisticsPanel.h" />
+    <ClInclude Include="EndLevelState.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="ConnectState.h" />

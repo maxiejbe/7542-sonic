@@ -90,13 +90,13 @@
     <ClCompile Include="InGameStatisticsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FinalLevelStatisticsPanel.cpp">
+    <ClCompile Include="SelectTeamState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EndLevelState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BaseStatisticsPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SelectTeamState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -185,13 +185,13 @@
     <ClInclude Include="InGameStatisticsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FinalLevelStatisticsPanel.h">
+    <ClInclude Include="SelectTeamState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EndLevelState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BaseStatisticsPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SelectTeamState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

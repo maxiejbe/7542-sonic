@@ -4,7 +4,7 @@ void BaseStatisticsPanel::showText(string text, int x, int y, TTF_Font* font, SD
 {
 	SDL_Texture* textTexture;
 	SDL_Surface* surfaceMessage;
-	
+
 	surfaceMessage = TTF_RenderText_Solid(font, text.c_str(), color);
 	textTexture = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, surfaceMessage);
 	destrect.x = x;
