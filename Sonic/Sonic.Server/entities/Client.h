@@ -33,6 +33,7 @@ public:
 	bool sendClientNumber();
 	bool sendFileContent();
 	bool sendGameStart();
+	bool sendEnemiesStatus(string);
 	bool sendPlayersStatus();
 	bool refreshPlayer();
 

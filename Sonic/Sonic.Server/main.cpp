@@ -33,7 +33,11 @@ int main(int argc, char* args[])
 
 	camera = Camera(0, 0, window.getWidth(), window.getHeight(), window.getWidth(), window.getHeight(), scenario.getWidth(), scenario.getHeight());
 
-	Server server(&serverConfig, parser->getFileContent(), &window, &config, &scenario, &camera);
+	//only for testing
+	vector<Enemy*> enemies = vector<Enemy*>();
+	enemies.push_back(new Enemy(10, 10, 20, 20, crab));
+
+	Server server(&serverConfig, parser->getFileContent(), &window, &config, &scenario, &camera, enemies);
 	if (!server.validate()) {
 		return 0;
 	}
