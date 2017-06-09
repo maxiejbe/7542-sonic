@@ -247,13 +247,15 @@ bool Player::getTestMode()
 
 PlayerType Player::calculatePlayerType()
 {
-	switch (this->getNumber() % 3) {
-	case 1:
+	switch (this->getNumber() % 4) {
+	case 0:
 		return PlayerType::SONIC;
 	case 2:
 		return PlayerType::TAILS;
-	case 0:
+	case 3:
 		return PlayerType::KNUCKLES;
+	case 1:
+		return PlayerType::SHADOW;
 	default:
 		return PlayerType::SONIC;
 	}
@@ -264,6 +266,7 @@ double Player::calculateGroundPos(int windowHeight)
 	switch (playerType) {
 	case SONIC:
 	case KNUCKLES:
+	case SHADOW:
 		return windowHeight / 1.40;
 	case TAILS:
 		return windowHeight / 1.358;

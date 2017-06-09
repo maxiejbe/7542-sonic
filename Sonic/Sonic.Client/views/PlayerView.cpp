@@ -5,6 +5,7 @@ const int ANIMATION_STATES = 5;
 const int ANIMATION_FRAMES_SONIC = 8;
 const int ANIMATION_FRAMES_TAILS = 9;
 const int ANIMATION_FRAMES_KNUCKLES = 8;
+const int ANIMATION_FRAMES_SHADOW = 8;
 
 PlayerView::PlayerView(Player* player)
 {
@@ -116,6 +117,21 @@ int PlayerView::getFramesCount(PlayerStatus status)
 			return 9;
 		case spinning:
 			return 4;
+		default:
+			return 1;
+		}
+	case SHADOW:
+		switch (status) {
+		case idle:
+			return 1;
+		case walking:
+			return 8;
+		case running:
+			return 4;
+		case jumping:
+			return 4;
+		case spinning:
+			return 5;
 		default:
 			return 1;
 		}
@@ -529,6 +545,135 @@ void PlayerView::loadSpriteClips()
 		spriteClips[PlayerStatus::spinning][4].w = 31;
 		spriteClips[PlayerStatus::spinning][4].h = 38;// 30;
 		break;
+
+	case SHADOW:
+		spriteClips = new SDL_Rect *[ANIMATION_STATES];
+		for (int count = 0; count < ANIMATION_STATES; count++) {
+			spriteClips[count] = new SDL_Rect[ANIMATION_FRAMES_SHADOW];
+		}
+
+		// Idle
+		spriteClips[PlayerStatus::idle][0].x = 9;
+		spriteClips[PlayerStatus::idle][0].y = 9;
+		spriteClips[PlayerStatus::idle][0].w = 29;
+		spriteClips[PlayerStatus::idle][0].h = 40;
+
+		// Walking
+		spriteClips[PlayerStatus::walking][0].x = 10;
+		spriteClips[PlayerStatus::walking][0].y = 104;
+		spriteClips[PlayerStatus::walking][0].w = 26;
+		spriteClips[PlayerStatus::walking][0].h = 38;
+
+		spriteClips[PlayerStatus::walking][1].x = 41;
+		spriteClips[PlayerStatus::walking][1].y = 102;
+		spriteClips[PlayerStatus::walking][1].w = 26;
+		spriteClips[PlayerStatus::walking][1].h = 40;
+
+		spriteClips[PlayerStatus::walking][2].x = 73;
+		spriteClips[PlayerStatus::walking][2].y = 102;
+		spriteClips[PlayerStatus::walking][2].w = 40;
+		spriteClips[PlayerStatus::walking][2].h = 40;
+
+		spriteClips[PlayerStatus::walking][3].x = 119;
+		spriteClips[PlayerStatus::walking][3].y = 103;
+		spriteClips[PlayerStatus::walking][3].w = 39;
+		spriteClips[PlayerStatus::walking][3].h = 38;
+
+		spriteClips[PlayerStatus::walking][4].x = 161;
+		spriteClips[PlayerStatus::walking][4].y = 104;
+		spriteClips[PlayerStatus::walking][4].w = 25;
+		spriteClips[PlayerStatus::walking][4].h = 38;
+
+		spriteClips[PlayerStatus::walking][5].x = 194;
+		spriteClips[PlayerStatus::walking][5].y = 103;
+		spriteClips[PlayerStatus::walking][5].w = 29;
+		spriteClips[PlayerStatus::walking][5].h = 40;
+
+		spriteClips[PlayerStatus::walking][6].x = 228;
+		spriteClips[PlayerStatus::walking][6].y = 103;
+		spriteClips[PlayerStatus::walking][6].w = 37;
+		spriteClips[PlayerStatus::walking][6].h = 40;
+
+		spriteClips[PlayerStatus::walking][7].x = 267;
+		spriteClips[PlayerStatus::walking][7].y = 104;
+		spriteClips[PlayerStatus::walking][7].w = 40;
+		spriteClips[PlayerStatus::walking][7].h = 38;
+
+		// Running
+		spriteClips[PlayerStatus::running][0].x = 316;
+		spriteClips[PlayerStatus::running][0].y = 106;
+		spriteClips[PlayerStatus::running][0].w = 32;
+		spriteClips[PlayerStatus::running][0].h = 36;
+
+		spriteClips[PlayerStatus::running][1].x = 350;
+		spriteClips[PlayerStatus::running][1].y = 106;
+		spriteClips[PlayerStatus::running][1].w = 31;
+		spriteClips[PlayerStatus::running][1].h = 36;
+
+		spriteClips[PlayerStatus::running][2].x = 384;
+		spriteClips[PlayerStatus::running][2].y = 106;
+		spriteClips[PlayerStatus::running][2].w = 32;
+		spriteClips[PlayerStatus::running][2].h = 36;
+
+		spriteClips[PlayerStatus::running][3].x = 420;
+		spriteClips[PlayerStatus::running][3].y = 106;
+		spriteClips[PlayerStatus::running][3].w = 32;
+		spriteClips[PlayerStatus::running][3].h = 36;
+
+		// Jumping
+		spriteClips[PlayerStatus::jumping][0].x = 623;
+		spriteClips[PlayerStatus::jumping][0].y = 248;
+		spriteClips[PlayerStatus::jumping][0].w = 30;
+		spriteClips[PlayerStatus::jumping][0].h = 30;
+
+		spriteClips[PlayerStatus::jumping][1].x = 658;
+		spriteClips[PlayerStatus::jumping][1].y = 248;
+		spriteClips[PlayerStatus::jumping][1].w = 30;
+		spriteClips[PlayerStatus::jumping][1].h = 30;
+
+		spriteClips[PlayerStatus::jumping][2].x = 693;
+		spriteClips[PlayerStatus::jumping][2].y = 248;
+		spriteClips[PlayerStatus::jumping][2].w = 30;
+		spriteClips[PlayerStatus::jumping][2].h = 30;
+
+		spriteClips[PlayerStatus::jumping][3].x = 728;
+		spriteClips[PlayerStatus::jumping][3].y = 248;
+		spriteClips[PlayerStatus::jumping][3].w = 30;
+		spriteClips[PlayerStatus::jumping][3].h = 30;
+
+		// Spinning
+
+		spriteClips[PlayerStatus::idle][0].x = 9;
+		spriteClips[PlayerStatus::idle][0].y = 9;
+		spriteClips[PlayerStatus::idle][0].w = 29;
+		spriteClips[PlayerStatus::idle][0].h = 40;
+
+
+		spriteClips[PlayerStatus::spinning][0].x = 588;
+		spriteClips[PlayerStatus::spinning][0].y = 238;// 248;
+		spriteClips[PlayerStatus::spinning][0].w = 30;
+		spriteClips[PlayerStatus::spinning][0].h = 40;// 30;
+		
+		spriteClips[PlayerStatus::spinning][1].x = 623;
+		spriteClips[PlayerStatus::spinning][1].y = 238;// 248;
+		spriteClips[PlayerStatus::spinning][1].w = 30;
+		spriteClips[PlayerStatus::spinning][1].h = 40;// 30;
+
+		spriteClips[PlayerStatus::spinning][2].x = 658;
+		spriteClips[PlayerStatus::spinning][2].y = 238;// 248;
+		spriteClips[PlayerStatus::spinning][2].w = 30;
+		spriteClips[PlayerStatus::spinning][2].h = 40;// 30;
+
+		spriteClips[PlayerStatus::spinning][3].x = 693;
+		spriteClips[PlayerStatus::spinning][3].y = 238;// 248;
+		spriteClips[PlayerStatus::spinning][3].w = 30;
+		spriteClips[PlayerStatus::spinning][3].h = 40;// 30;
+
+		spriteClips[PlayerStatus::spinning][4].x = 728;
+		spriteClips[PlayerStatus::spinning][4].y = 238;// 248;
+		spriteClips[PlayerStatus::spinning][4].w = 30;
+		spriteClips[PlayerStatus::spinning][4].h = 40;// 30;
+		break;
 	}
 }
 
@@ -541,6 +686,8 @@ string PlayerView::calculatePlayerFilePath()
 		return "img/tails-spritesheet.png";
 	case KNUCKLES:
 		return "img/knuckles-spritesheet.png";
+	case SHADOW:
+		return "img/shadow-spritesheet.png";
 	default:
 		return "img/sonic-spritesheet.png";
 	}
@@ -555,6 +702,8 @@ string PlayerView::calculateDisconnectedPlayerPath()
 		return "img/tails-spritesheet-grey.png";
 	case KNUCKLES:
 		return "img/knuckles-spritesheet-grey.png";
+	case SHADOW:
+		return "img/shadow-spritesheet-grey.png";
 	default:
 		return "img/sonic-spritesheet-grey.png";
 	}
