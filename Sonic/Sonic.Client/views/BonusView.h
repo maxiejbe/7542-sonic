@@ -1,0 +1,14 @@
+#ifndef BONUSVIEW_H
+#define BONUSVIEW_H
+
+#include "RectangleView.h"
+
+class BonusView : RectangleView {
+public:
+	BonusView(Entity* entity) : RectangleView(entity) {
+	}
+
+	virtual void draw(SDL_Rect camera) override;
+};
+
+#endif // !BONUSVIEW_H
