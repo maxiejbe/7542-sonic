@@ -125,3 +125,7 @@ string Enemy::serialize()
 	return s.GetString();
 }
 
+void Enemy::onCollision(Player * player)
+{
+}
+

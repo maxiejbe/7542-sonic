@@ -64,12 +64,8 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 	this->config = config;
 	this->gameConfig = gameConfig;
 
-	Level* level = &this->gameConfig->getLevels()->at(0);
-	this->scenario = level->getScenario();
-
-	//this->scenario = scenario;
-	//initialize camera
-	this->camera = &Camera(0, 0, window->getWidth(), window->getHeight(), window->getWidth(), window->getHeight(), scenario->getWidth(), scenario->getHeight());
+	this->currentLevel = 1; // First level 
+	this->resetLevel();
 
 	this->isValid = false;
 
@@ -247,6 +243,15 @@ void Server::addConnectedClients()
 		*/
 		this->sendBroadcast();
 	}
+}
+
+void Server::resetLevel()
+{
+	Level* level = &this->gameConfig->getLevels()->at(this->currentLevel - 1);
+	this->scenario = level->getScenario();
+
+	//initialize camera
+	this->camera = &Camera(0, 0, window->getWidth(), window->getHeight(), window->getWidth(), window->getHeight(), scenario->getWidth(), scenario->getHeight());
 }
 
 SOCKET Server::getSocket()

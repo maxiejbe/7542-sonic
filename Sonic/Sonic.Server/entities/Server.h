@@ -47,6 +47,8 @@ public:
 	void terminateThreads();
 	void addConnectedClients();
 
+	void resetLevel();
+
 	SOCKET getSocket();
 	string getFileContent();
 
@@ -87,6 +89,7 @@ private:
 	string fileContent;
 
 	bool gameStarted;
+	int currentLevel;
 
 	ServerConfiguration* serverConfig;
 	Window* window;
