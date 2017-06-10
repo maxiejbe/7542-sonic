@@ -25,7 +25,9 @@ public:
 	void setType(string);
 
 	Coordinate getCoordinate();
+	void setCoordinate(Coordinate);
 	Dimensions getDimensions();
+	void setDimensions(Dimensions);
 
 	bool operator< (const Entity &other) const {
 		return zIndex < other.zIndex;

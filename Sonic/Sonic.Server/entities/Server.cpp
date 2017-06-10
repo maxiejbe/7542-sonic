@@ -29,7 +29,7 @@ Server::~Server()
 		delete *it;
 	}
 
-	this->terminateThreads();
+	//this->terminateThreads();
 
 	for (vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); it++) {
 		if ((*it) != NULL) delete *it;
@@ -55,7 +55,7 @@ void Server::terminateThreads()
 	}
 }
 
-Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario, Camera * camera, vector<Enemy *> enemies)
+Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario, Camera * camera)
 {
 	this->portNumber = serverConfig->getPortNumber();
 
@@ -64,8 +64,6 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 	this->window = window;
 	this->config = config;
 	this->scenario = scenario;
-	this->enemies = enemies;
-	this->visibleEnemies = vector<Enemy*>();
 	//initialize camera
 	this->camera = camera;
 
@@ -238,10 +236,11 @@ void Server::addConnectedClients()
 	{
 		if (!this->gameStarted) { this->gameStarted = true; }
 		//start enemies update thread
-		this->continueUpdatingEnemies = true;
+		/*this->continueUpdatingEnemies = true;
 		this->updateEnemiesThreadHandle = CreateThread(0, 0, runUpdateEnemiesHandler, (void*)this, 0, &this->updateEnemiesThreadId);
 		//start enemies send thread
 		this->sendEnemiesThreadHandle = CreateThread(0, 0, runSendEnemiesHandler, (void*)this, 0, &this->sendEnemiesThreadId);
+		*/
 		this->sendBroadcast();
 	}
 }
@@ -366,7 +365,7 @@ DWORD Server::updateEnemiesHandler()
 	return 0;
 }
 
-DWORD Server::runSendEnemiesHandler(void * args)
+/*DWORD Server::runSendEnemiesHandler(void * args)
 {
 	Server * client = (Server *)args;
 	client->sendEnemiesHandler();
@@ -403,6 +402,6 @@ string Server::getEnemiesStatusMessage()
 	this->visibleEnemiesMutex.unlock();
 
 	return enemiesStatusMessage;
-}
+}*/
 
 

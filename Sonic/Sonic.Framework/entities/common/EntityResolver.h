@@ -5,10 +5,11 @@
 #include "../Circle.h"
 #include "../Square.h"
 #include "../Dimensions.h"
+#include "../enemies/Enemy.h";
 #include <string>
 
-//enum EntityType { obstaculo_pinche, obstaculo_piedra, moneda, bonus_super_ring, bonus_invencibilidad, bonus_escudo, cangrejo, pez, mosca, null };
-enum EntityType { rectangle, circle, square, null };
+enum EntityType { obstaculo_pinche, obstaculo_piedra, moneda, bonus_super_ring, bonus_invencibilidad, bonus_escudo, enemigo_cangrejo, enemigo_pez, enemigo_mosca, null };
+//enum EntityType { rectangle, circle, square, enemy, null };
 
 enum EntityColor {  red, yellow, green, blue };
 

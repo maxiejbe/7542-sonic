@@ -99,7 +99,7 @@ void ServerMessage::unserialize(Value* nodeRef)
 			parseCameraStatus(nodeRef);
 			break;
 		case enemies_status:
-			parseEnemiesStatus(nodeRef);
+			//parseEnemiesStatus(nodeRef);
 			break;
 		case content:
 			parseString(&this->fileContent, "", nodeRef, SERVER_MESSAGE_FILE_CONTENT_NODE);
@@ -139,7 +139,7 @@ string ServerMessage::serialize()
 			this->serializeCamera(writer);
 			break;
 		case enemies_status:
-			this->serializeEnemies(writer);
+			//this->serializeEnemies(writer);
 			break;
 		case content:
 			writer.String(SERVER_MESSAGE_FILE_CONTENT_NODE);
@@ -176,7 +176,7 @@ void ServerMessage::serializePlayers(Writer<StringBuffer>& writer)
 	writer.EndArray();
 }
 
-void ServerMessage::serializeEnemies(Writer<StringBuffer>& writer)
+/*void ServerMessage::serializeEnemies(Writer<StringBuffer>& writer)
 {
 	writer.String(SERVER_MESSAGE_ENEMIES_STATUS_NODE);
 	writer.StartArray();
@@ -189,7 +189,7 @@ void ServerMessage::serializeEnemies(Writer<StringBuffer>& writer)
 		it++;
 	}
 	writer.EndArray();
-}
+}*/
 
 void ServerMessage::parseCameraStatus(Value * nodeRef)
 {
@@ -252,7 +252,7 @@ void ServerMessage::parsePlayersStatus(Value * nodeRef)
 	}
 }
 
-void ServerMessage::parseEnemiesStatus(Value * nodeRef)
+/*void ServerMessage::parseEnemiesStatus(Value * nodeRef)
 {
 	//free enemies and clear vector
 	Value& node = *nodeRef;
@@ -282,5 +282,5 @@ void ServerMessage::parseEnemiesStatus(Value * nodeRef)
 		newEnemy->unserialize(&jsonEnemy);
 		this->enemies.push_back(newEnemy);
 	}
-}
+}*/
 

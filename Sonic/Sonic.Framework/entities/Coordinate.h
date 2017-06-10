@@ -7,6 +7,7 @@
 class Coordinate : public Serializable {
 public:
 	Coordinate();
+	Coordinate(int, int);
 	int getX();
 	int getY();
 private:

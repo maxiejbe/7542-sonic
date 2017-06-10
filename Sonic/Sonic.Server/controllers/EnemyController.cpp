@@ -9,16 +9,16 @@ void EnemyController::update(Enemy * enemy, Camera * camera)
 	//if enemy is out of screen don't update
 	if (!isEnemyVisible(enemy, camera)) return;
 
-	switch (enemy->getType()) {
+	/*switch (enemy->getType()) {
 	case crab:
 		moveCrab(enemy);
 		break;
-	}
+	}*/
 }
 
 bool EnemyController::isEnemyVisible(Enemy * enemy, Camera * camera)
 {
-	return (enemy->getPosition().x >= camera->getPosition().x && enemy->getPosition().x <= (camera->getPosition().x + camera->getScreenWidth() - enemy->getWidth()));
+	return (enemy->getCoordinate().getX() >= camera->getPosition().x && enemy->getCoordinate().getX() <= (camera->getPosition().x + camera->getScreenWidth() - enemy->getDimensions().getWidth()));
 }
 
 void EnemyController::moveCrab(Enemy * enemy)
@@ -33,12 +33,15 @@ void EnemyController::moveCrab(Enemy * enemy)
 
 void EnemyController::horizontalMovement(Enemy * enemy)
 {
+	Coordinate newEnemyCoordinate;
+	Coordinate enemyCoordinate = enemy->getCoordinate();
 	if (enemy->getFacingDirection() == FACING_LEFT) {
-		enemy->setPositionX(enemy->getPosition().x - enemy->getVelocity().x);
+		newEnemyCoordinate = Coordinate(enemyCoordinate.getX() - enemy->getVelocity().x, enemyCoordinate.getY());
 	}else if (enemy->getFacingDirection() == FACING_RIGHT) {
-		enemy->setPositionX(enemy->getPosition().x + enemy->getVelocity().x);
+		newEnemyCoordinate = Coordinate(enemyCoordinate.getX() + enemy->getVelocity().x, enemyCoordinate.getY());
 	}
 
+	enemy->setCoordinate(newEnemyCoordinate);
 	enemy->incrementDistanceTravelled(enemy->getVelocity().x);
 }
 

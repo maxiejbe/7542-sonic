@@ -38,7 +38,7 @@ class Server {
 
 public:
 	~Server();
-	Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario, Camera * camera, vector<Enemy*> enemies);
+	Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario, Camera * camera);
 	bool validate();
 	void waitForClientConnections();
 	void sendBroadcast();

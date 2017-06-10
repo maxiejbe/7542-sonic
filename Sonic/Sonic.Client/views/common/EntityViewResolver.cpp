@@ -3,7 +3,7 @@
 EntityView * EntityViewResolver::resolve(Entity * origin)
 {
 	EntityView* destination = nullptr;
-	if (origin->getType() == EntityResolver::toTypeString(EntityType::rectangle)) {
+	/*if (origin->getType() == EntityResolver::toTypeString(EntityType::rectangle)) {
 		destination = new RectangleView(origin);
 	}
 	else if (origin->getType() == EntityResolver::toTypeString(EntityType::circle)) {
@@ -11,6 +11,6 @@ EntityView * EntityViewResolver::resolve(Entity * origin)
 	}
 	else if (origin->getType() == EntityResolver::toTypeString(EntityType::square)) {
 		destination = new SquareView(origin);
-	}
+	}*/
 	return destination;
 }

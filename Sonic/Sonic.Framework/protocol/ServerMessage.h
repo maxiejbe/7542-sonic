@@ -28,10 +28,10 @@ public:
 	string getFileContent();
 
 	void serializePlayers(Writer<StringBuffer>& writer);
-	void serializeEnemies(Writer<StringBuffer>& writer);
+	//void serializeEnemies(Writer<StringBuffer>& writer);
 	void serializeCamera(Writer<StringBuffer>& writer);
 	void parsePlayersStatus(Value *);
-	void parseEnemiesStatus(Value *);
+	//void parseEnemiesStatus(Value *);
 	void parseCameraStatus(Value *);
 	// Inherited via Serializable
 	void unserialize(Value* nodeRef) override;

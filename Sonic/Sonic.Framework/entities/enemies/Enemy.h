@@ -1,27 +1,20 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "../../Vector2.h"
 #include "../Player.h"
+#include "../Entity.h"
 #include <mutex>
 
 //TODO: Enemy and player should hava a common parent class
-enum EnemyType {crab, bee, fish};
+//enum EnemyType {crab, bee, fish};
 
-class Enemy : public Serializable
+class Enemy : public Entity
 {
 public:
-	Enemy();
-	Enemy(double, double, double, double, EnemyType);
+	Enemy(string);
 	~Enemy();
 	
-	Vector2 getPosition();
 	Vector2 getVelocity();
-	void setPositionX(double);
-	void setPositionY(double);
-	int getHeight();
-	int getWidth();
-	EnemyType getType();
 	FacingDirection getFacingDirection();
 	void setFacingDirection(FacingDirection);
 	int getMaxDistance();
@@ -42,13 +35,9 @@ public:
 	char* getNodeName() override;
 	string serialize() override;
 private:
-	Vector2 position;
 	Vector2 velocity;
-	int width;
-	int height;
 	bool alive;
 	int points;
-	EnemyType type;
 	FacingDirection facingDirection;
 	int maxDistance;
 	int distanceTravelled;

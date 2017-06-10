@@ -93,9 +93,19 @@ Coordinate Entity::getCoordinate()
 	return coordinate;
 }
 
+void Entity::setCoordinate(Coordinate coordinate)
+{
+	this->coordinate = coordinate;
+}
+
 Dimensions Entity::getDimensions()
 {
 	return dimensions;
+}
+
+void Entity::setDimensions(Dimensions dimensions)
+{
+	this->dimensions = dimensions;
 }
 
 void Entity::unserialize(Value * nodeRef)
