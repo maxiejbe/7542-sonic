@@ -3,7 +3,7 @@
 
 #include "CircleView.h"
 
-class RingView : CircleView {
+class RingView : public CircleView {
 public:
 	RingView(Entity* entity) : CircleView(entity) {
 	}

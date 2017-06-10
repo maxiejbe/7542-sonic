@@ -3,7 +3,7 @@
 
 #include "RectangleView.h"
 
-class EnemyView : RectangleView {
+class EnemyView : public RectangleView {
 public:
 	EnemyView(Entity* entity) : RectangleView(entity) {
 	}

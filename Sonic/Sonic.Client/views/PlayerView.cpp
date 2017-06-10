@@ -51,20 +51,13 @@ void PlayerView::render(int camX, int camY)
 		this->isGreyed = false;
 	}
 
-	//// Calculate current sprite
-	//Uint32 ticks = SDL_GetTicks();
-	//Uint32 sprite = (ticks / 90) % getFramesCount(this->player->getSpriteState());
+	// Calculate current sprite
 	Uint32 sprite = (this->player->getTime() / getFramesDivision(this->player->getSpriteState())) % getFramesCount(this->player->getSpriteState()); //90
 
 	SDL_Rect* currentClip = &spriteClips[player->getSpriteState()][sprite];
 
 	// Scale
 	SDL_Rect dest = { (int)(player->getPosition().x - camX), (int)(player->getPosition().y - camY), currentClip->w * 2, currentClip->h * 2 };
-	//SDL_RenderCopy(Renderer::getInstance().gRenderer, texture.getTexture(), currentClip, &dest);
-
-	//// Set dimensions
-	//this->player->setWidth(dest.w);
-	//this->player->setHeight(dest.h);
 
 	// Calculate facing direction
 	SDL_RendererFlip flip = (this->player->getFacingDirection() == FACING_RIGHT) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
@@ -653,7 +646,7 @@ void PlayerView::loadSpriteClips()
 		spriteClips[PlayerStatus::spinning][0].y = 238;// 248;
 		spriteClips[PlayerStatus::spinning][0].w = 30;
 		spriteClips[PlayerStatus::spinning][0].h = 40;// 30;
-		
+
 		spriteClips[PlayerStatus::spinning][1].x = 623;
 		spriteClips[PlayerStatus::spinning][1].y = 238;// 248;
 		spriteClips[PlayerStatus::spinning][1].w = 30;

@@ -3,7 +3,7 @@
 
 #include "RectangleView.h"
 
-class BonusView : RectangleView {
+class BonusView : public RectangleView {
 public:
 	BonusView(Entity* entity) : RectangleView(entity) {
 	}
