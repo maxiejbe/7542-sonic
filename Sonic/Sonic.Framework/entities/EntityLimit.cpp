@@ -13,7 +13,7 @@ const char* MESSAGE_PARSING_ENTITY_LIMIT_NODE = "Inicio de parseo de nodo limite
 const char* MESSAGE_END_PARSING_ENTITY_LIMIT_NODE = "Fin de parseo de nodo limites de entidades.";
 
 const int ENTITY_LIMIT_DEFAULT_MIN_COUNT = 0;
-const string ENTITY_LIMIT_DEFAULT_TYPE = "moneda";
+const string ENTITY_LIMIT_DEFAULT_TYPE = "anillo";
 const int ENTITY_LIMIT_DEFAULT_MAX_COUNT = 0;
 
 const int ENTITY_LIMIT_DEFAULT_MIN_X = 0;

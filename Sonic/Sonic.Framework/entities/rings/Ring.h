@@ -1,22 +1,20 @@
-#ifndef BONUS_H
-#define BONUS_H
+#ifndef RING_H
+#define RING_H
 
 #include "../Entity.h"
 
-class Bonus : public Entity
+class Ring : public Entity
 {
 public:
-	Bonus();
-	~Bonus();
+	Ring();
+	~Ring();
 
 	// Inherited via Serializable
 	void unserialize(Value* nodeRef) override;
 	char* getNodeName() override;
 	string serialize() override;
 private:
-	
+
 };
 
 #endif
-
-
