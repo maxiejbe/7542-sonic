@@ -35,6 +35,20 @@ void Level::setEntities(vector<Entity*> entities)
 	this->scenario.setEntities(entities);
 }
 
+string Level::serialize()
+{
+	StringBuffer s;
+	Writer<StringBuffer> writer(s);
+	
+	writer.StartObject();
+	writer.String(LEVEL_NUMBER_NODE);
+	writer.Int(this->number);
+	writer.String(LEVEL_SCENARIO_NODE);
+	writer.String(this->scenario.serialize().c_str());
+	writer.EndObject();
+	return s.GetString();
+}
+
 void Level::unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;

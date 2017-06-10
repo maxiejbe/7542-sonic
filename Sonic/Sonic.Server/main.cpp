@@ -62,11 +62,15 @@ int main(int argc, char* args[])
 	parser->parse(&gameConfig);
 
 	vector<Level>* levels = gameConfig.getLevels();
+	string levelSerialized;
 	for (vector<Level>::iterator it = levels->begin(); it != levels->end(); ++it)
 	{
 		vector<Entity*> entities = generateLevelEntities(*it);
 		(*it).setEntities(entities);
+		levelSerialized = (*it).serialize();
 	}
+
+
 
 	Scenario scenario;
 

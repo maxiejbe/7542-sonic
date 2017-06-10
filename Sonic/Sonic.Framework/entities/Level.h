@@ -19,7 +19,7 @@ public:
 	Scenario getScenario();
 
 	void setEntities(vector<Entity*> entities);
-
+	virtual string serialize() override;
 private:
 	int number;
 	Scenario scenario;

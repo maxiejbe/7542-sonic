@@ -15,6 +15,11 @@ public:
 	int getWidth();
 	int getHeight();
 	int getRadio();
+
+	// Inherited via Serializable
+	virtual string serialize() override;
+	virtual void unserialize(Value * parentNode) override;
+	virtual char* getNodeName() override;
 private:
 	int width;
 	int height;
@@ -23,10 +28,6 @@ private:
 	int defaultWidth;
 	int defaultHeight;
 	int defaultRadio;
-
-	// Inherited via Serializable
-	virtual void unserialize(Value * parentNode) override;
-	virtual char* getNodeName() override;
 };
 
 #endif

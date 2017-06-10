@@ -51,6 +51,31 @@ int Scenario::getHeight()
 	return dimensions.getHeight();
 }
 
+void Scenario::serializeLayers(Writer<StringBuffer>& writer)
+{
+	writer.String(SCENARIO_LAYERS_NODE);
+	writer.StartArray();
+
+	for (vector<Layer>::iterator it = layers.begin(); it != layers.end(); it++) {
+		writer.String((*it).serialize().c_str());
+	}
+
+	writer.EndArray();
+}
+
+string Scenario::serialize()
+{
+	StringBuffer s;
+	Writer<StringBuffer> writer(s);
+
+	writer.StartObject();
+	writer.String(dimensions.getNodeName());
+	writer.String(dimensions.serialize().c_str());
+	serializeLayers(writer);
+	writer.EndObject();
+	return s.GetString();
+}
+
 void Scenario::unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;
