@@ -20,9 +20,9 @@ void MenuState::load(Game* game)
 
 	if (this->connectionStatus == CONNECTED)
 		labels[0] = "Resume";
-	else 
+	else
 		labels[0] = this->modeGameStatus == GRUPAL ? "Choose team" : "Connect";
-	
+
 	labels[1] = "Disconnect";
 	labels[2] = "Exit";
 
@@ -38,6 +38,9 @@ int MenuState::unload()
 			SDL_FreeSurface(menus[i]);
 		}
 	}
+
+	TTF_CloseFont(font);
+	font = NULL;
 
 	return 0;
 }
@@ -68,13 +71,13 @@ void MenuState::update(Game* game, float dt)
 				//Choose Team
 				game->changeState(SelectTeamState::Instance());
 			}
-			else 
+			else
 			{
 				// Connect
 				this->connectionStatus = CONNECTED;
 				game->changeState(ConnectState::Instance());
 			}
-			
+
 		}
 		else if (selected[1]) {
 			// Disconnect

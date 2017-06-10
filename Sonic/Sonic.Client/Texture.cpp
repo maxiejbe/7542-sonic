@@ -12,7 +12,7 @@ Texture::~Texture()
 	free();
 }
 
-bool Texture::loadFromFile(std::string path)
+bool Texture::loadFromFile(string path)
 {
 	free();
 
@@ -27,6 +27,36 @@ bool Texture::loadFromFile(std::string path)
 		texture = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, surface);
 		if (texture == NULL) {
 			LOG(logERROR) << "Error al crear la textura desde '" << path.c_str() << "'. SDL Error: " << SDL_GetError();
+		}
+		else {
+			width = surface->w;
+			height = surface->h;
+		}
+
+		SDL_FreeSurface(surface);
+	}
+
+	this->texture = texture;
+	return texture != NULL;
+}
+
+bool Texture::loadFromFont(TTF_Font* font, string text, SDL_Color color)
+{
+	free();
+
+	SDL_Texture* texture = NULL;
+	SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
+	if (surface == NULL) {
+		LOG(logERROR) << "No se pudo cargar la font con texto '" << text.c_str() << "'.";
+		SDL_FreeSurface(surface);
+		return false;
+	}
+	else {
+		texture = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, surface);
+		if (texture == NULL) {
+			LOG(logERROR) << "Error al crear la textura de la font con texto '" << text.c_str() << "'";
+			SDL_FreeSurface(surface);
+			return false;
 		}
 		else {
 			width = surface->w;
@@ -60,6 +90,12 @@ void Texture::render(int x, int y, SDL_Rect* clip)
 	}
 
 	SDL_RenderCopy(Renderer::getInstance().gRenderer, texture, clip, &renderQuad);
+}
+
+void Texture::render(int x, int y, int w, int h)
+{
+	SDL_Rect renderQuad = { x, y, w, h };
+	SDL_RenderCopy(Renderer::getInstance().gRenderer, texture, NULL, &renderQuad);
 }
 
 void Texture::render(int x, int y, SDL_Rect* clip, SDL_Rect dest, double angle, SDL_Point* center, SDL_RendererFlip flip)

@@ -9,6 +9,8 @@
 #include "Texture.h"
 #include "InputManager.h"
 #include "MenuState.h"
+#include "PlayState.h"
+#include "utils/PlayerUtils.h"
 
 class EndLevelState : public GameState {
 public:
@@ -32,12 +34,15 @@ private:
 	TTF_Font* fontScore;
 	TTF_Font* fontLevel;
 	Texture levelHasPassed;
+	Texture textTexture;
+	Texture playerImage;
 
 	void showLevelHasPassed();
 	void showStatistics();
 	void showText(string text, int x, int y, TTF_Font* font, SDL_Color color);
 	//void freeSurfaceStatistics();
 	void showPlayerImage(Texture playerImage, int x, int y);
+	vector<Player*> players;
 
 };
 

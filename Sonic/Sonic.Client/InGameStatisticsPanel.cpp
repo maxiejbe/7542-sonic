@@ -9,6 +9,10 @@ InGameStatisticsPanel::InGameStatisticsPanel()
 
 InGameStatisticsPanel::~InGameStatisticsPanel()
 {
+}
+
+void InGameStatisticsPanel::freeSurfaceStatistics()
+{
 	TTF_CloseFont(fontLifes);
 	fontLifes = NULL;
 	TTF_CloseFont(fontScore);
@@ -18,8 +22,8 @@ InGameStatisticsPanel::~InGameStatisticsPanel()
 void InGameStatisticsPanel::showStatistics(Player* player)
 {
 	// Check texture
-	if (this->playerImage.getTexture() == nullptr && !this->playerImage.loadFromFile(calculatePlayerFilePath(player))) {
-		LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << calculatePlayerFilePath(player) << "'.";
+	if (this->playerImage.getTexture() == nullptr && !this->playerImage.loadFromFile(PlayerUtils::getPlayerAvatarFilePath(player))) {
+		LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << PlayerUtils::getPlayerAvatarFilePath(player) << "'.";
 		return;
 	}
 
@@ -27,7 +31,7 @@ void InGameStatisticsPanel::showStatistics(Player* player)
 	showPlayerImage(&playerImage, 30, 550);
 
 	// Show userName
-	string namePlayer = calculatePlayerName(player);
+	string namePlayer = PlayerUtils::getPlayerName(player);
 	showText(namePlayer, 80, 545, fontLifes, { 255, 255, 0 });
 
 	// Show lifes
@@ -45,36 +49,4 @@ void InGameStatisticsPanel::showStatistics(Player* player)
 	// Show team
 	string team = "TEAM " + to_string(1); //Refactor when player has team
 	showText(team, 670, 10, fontScore, { 255, 255, 255 });
-}
-
-string InGameStatisticsPanel::calculatePlayerFilePath(Player* player)
-{
-	switch (player->getPlayerType()) {
-	case SONIC:
-		return "img/sonic_avatar.png";
-	case TAILS:
-		return "img/tails_avatar.png";
-	case KNUCKLES:
-		return "img/knuckles_avatar.png"; //TODO
-	case SHADOW:
-		return "img/shadow_avatar.png"; //TODO
-	default:
-		return "img/sonic_avatar.png";
-	}
-}
-
-string InGameStatisticsPanel::calculatePlayerName(Player* player)
-{
-	switch (player->getPlayerType()) {
-	case SONIC:
-		return "SONIC";
-	case TAILS:
-		return "TAILS";
-	case KNUCKLES:
-		return "KNUCKLES";
-	case SHADOW:
-		return "SHADOW";
-	default:
-		return "SONIC";
-	}
 }

@@ -18,14 +18,13 @@ const int CLIENT_NUMBER_MAX_CONNECTED_PLAYERS = -99;
 
 Server::~Server()
 {
-	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
-	{
+	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
 		closesocket((it->second)->getSocket());
 		delete it->second;
+		clients.erase(it);
 	}
 
-	for (vector<Client*>::iterator it = disconnectedClients.begin(); it != disconnectedClients.end(); ++it)
-	{
+	for (vector<Client*>::iterator it = disconnectedClients.begin(); it != disconnectedClients.end(); ++it) {
 		delete *it;
 	}
 

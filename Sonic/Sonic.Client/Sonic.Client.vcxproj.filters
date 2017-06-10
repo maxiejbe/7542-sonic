@@ -99,6 +99,9 @@
     <ClCompile Include="BaseStatisticsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="utils\PlayerUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -194,6 +197,9 @@
     <ClInclude Include="BaseStatisticsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="utils\PlayerUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\level.png">
@@ -223,6 +229,15 @@
     <Image Include="img\sonic_orig.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Font Include="fonts\SonicAdvance.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="fonts\Retro_Stereo_Wide.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="fonts\SEGA.TTF">
+      <Filter>Resource Files</Filter>
+    </Font>
   </ItemGroup>
   <ItemGroup>
     <None Include="config\params.json" />
@@ -231,8 +246,5 @@
     <ResourceCompile Include="Sonic.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="fonts\SonicAdvance.ttf" />
   </ItemGroup>
 </Project>

@@ -72,12 +72,14 @@ int main(int argc, char* args[])
 
 	camera = Camera(0, 0, window.getWidth(), window.getHeight(), window.getWidth(), window.getHeight(), scenario.getWidth(), scenario.getHeight());
 
-	Server server(&serverConfig, parser->getFileContent(), &window, &config, &scenario, &camera);
-	if (!server.validate()) {
+	Server* server = new Server(&serverConfig, parser->getFileContent(), &window, &config, &scenario, &camera);
+	if (!server->validate()) {
 		return 0;
 	}
-	server.waitForClientConnections();
+	server->waitForClientConnections();
 
+	// Will exit when game ends.
 	delete parser;
+	delete server;
 	return 0;
 }

@@ -12,8 +12,7 @@ NetworkManager::NetworkManager()
 
 NetworkManager::~NetworkManager()
 {
-	for (unordered_map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it)
-	{
+	for (unordered_map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it) {
 		if (it->second) delete it->second;
 	}
 
@@ -147,7 +146,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		this->playerNumber = sMessage->getPlayerNumber();
 		break;
 	case players_status:
-		if (this->playerNumber < 0) return;
+		if (this->playerNumber < 0) break;
 		this->updatePlayerViews(sMessage->getPlayers());
 		this->updateCamera(sMessage->getCamera());
 		break;
@@ -155,7 +154,6 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		this->fileContent = sMessage->getFileContent();
 		break;
 	case start_game:
-		//if (!this->startGame) {
 		clientResponse->setType(MessageType::start_game_ok);
 		this->sendMessage(clientResponse);
 		this->startGame = true;
@@ -164,6 +162,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
 
 		lastHeartBeat = NULL;
+		break;
 	case heart_beat_server:
 		time(&lastHeartBeat);
 		break;
@@ -269,6 +268,8 @@ void NetworkManager::updatePlayerViews(vector<Player*> players)
 		//Player view already exists, just update
 		Player* player = playerViews[index]->getPlayer();
 		player->copyFrom(*(*it));
+
+		delete *it;
 	}
 }
 
@@ -279,7 +280,10 @@ void NetworkManager::updateCamera(Camera * camera)
 }
 
 bool NetworkManager::connectToServer(ServerConfiguration serverConfig) {
-	this->startClient(StringUtils::convert(serverConfig.getHost()), serverConfig.getPortNumber());
+	char* host = StringUtils::convert(serverConfig.getHost());
+	this->startClient(host, serverConfig.getPortNumber());
+	delete host;
+
 	if (this->online()) {
 		return true;
 	}

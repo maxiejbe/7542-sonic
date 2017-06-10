@@ -65,7 +65,11 @@ int PlayState::unload()
 {
 	entityViews.clear();
 	layerViews.clear();
-	delete statisticsPanel;
+	if (this->statisticsPanel) {
+		statisticsPanel->freeSurfaceStatistics();
+		delete statisticsPanel;
+		statisticsPanel = NULL;
+	}
 
 	return 0;
 }
@@ -186,7 +190,7 @@ void PlayState::render(Game* game)
 
 	// Render final statistics panel
 	if (camera.x == 2800) //ONLY FOR TEST
-		game->pushState(EndLevelState::Instance());
+		game->changeState(EndLevelState::Instance());
 }
 
 bool PlayState::clientNumberSet()

@@ -23,7 +23,9 @@ Client::Client(Server* server)
 
 Client::~Client()
 {
-	if (this->player && this->player != nullptr) delete this->player;
+	if (this->player && this->player != nullptr) {
+		delete this->player;
+	}
 
 	this->terminateThreads();
 
@@ -185,14 +187,17 @@ bool Client::sendPlayersStatus()
 
 	ServerMessage * message = this->server->getPlayersStatusMessage();
 	char * serializedMessage = StringUtils::convert(message->serialize());
+
 	delete message;
 
 	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
 		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->getClientNumber() << ")";
+		delete serializedMessage;
 		return false;
 	}
 
+	delete serializedMessage;
 	return true;
 }
 
@@ -211,12 +216,14 @@ bool Client::sendGameStart()
 	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
 		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->getClientNumber() << ")";
+		delete serializedMessage;
 		return false;
 	}
 
 	//set flag
 	this->gameStartSent = true;
 
+	delete serializedMessage;
 	return true;
 }
 
@@ -266,6 +273,7 @@ void Client::handleReceivedMessage(char* recievedMessage)
 	string strMessage(recievedMessage);
 	Message* message = new Message();
 	if (!message->fromJson(strMessage)) {
+		delete message;
 		return;
 	}
 
@@ -289,10 +297,12 @@ void Client::handleReceivedMessage(char* recievedMessage)
 	case status:
 		if (this->lastReceivedMessage != nullptr) delete this->lastReceivedMessage;
 		this->lastReceivedMessage = message;
-		break;
+		return; // Avoid deleting message
 	default:
 		break;
 	}
+
+	delete message;
 }
 
 DWORD WINAPI Client::runReceiveSocketHandler(void * args)
