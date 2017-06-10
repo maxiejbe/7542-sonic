@@ -78,6 +78,11 @@ void Entity::setImagePath(string imagePath)
 	this->imagePath = imagePath;
 }
 
+void Entity::setType(string type)
+{
+	this->type = type;
+}
+
 string Entity::getImagePath()
 {
 	return imagePath;

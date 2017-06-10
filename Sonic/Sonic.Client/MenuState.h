@@ -9,8 +9,10 @@
 #include "Texture.h"
 #include "InputManager.h"
 #include "ConnectState.h"
+#include "SelectTeamState.h"
 
 enum MenuConnectionStatus { CONNECTED, DISCONNECTED };
+enum ModeGameStatus { INDIVIDUAL, COLABORATIVO, GRUPAL };
 
 class MenuState : public GameState {
 public:
@@ -41,6 +43,7 @@ private:
 	SDL_Color color[OPCMENU];
 	int option;
 	MenuConnectionStatus connectionStatus;
+	ModeGameStatus modeGameStatus;
 	bool enabled[OPCMENU];
 
 	void initColorNameOptions();

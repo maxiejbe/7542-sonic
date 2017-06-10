@@ -22,6 +22,8 @@ public:
 	string getImagePath();
 	void setImagePath(string);
 
+	void setType(string);
+
 	Coordinate getCoordinate();
 	Dimensions getDimensions();
 
