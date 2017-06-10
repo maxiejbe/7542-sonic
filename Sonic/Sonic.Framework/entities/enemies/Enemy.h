@@ -34,6 +34,10 @@ public:
 	void unserialize(Value* nodeRef) override;
 	char* getNodeName() override;
 	string serialize() override;
+
+	// Inherited via Entity
+	virtual void onCollision(Player* player) override;
+
 private:
 	Vector2 velocity;
 	bool alive;

@@ -4,6 +4,7 @@
 #include <string>
 #include "Dimensions.h"
 #include "Coordinate.h"
+#include "Player.h"
 #include "common/Serializable.h"
 #include "common/Validator.h"
 
@@ -28,6 +29,8 @@ public:
 	void setCoordinate(Coordinate);
 	Dimensions getDimensions();
 	void setDimensions(Dimensions);
+
+	virtual void onCollision(Player* player) = 0;
 
 	bool operator< (const Entity &other) const {
 		return zIndex < other.zIndex;

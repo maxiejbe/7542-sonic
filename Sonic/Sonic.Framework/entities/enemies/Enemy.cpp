@@ -144,3 +144,7 @@ string Enemy::serialize()
 	return string();
 }
 
+void Enemy::onCollision(Player * player)
+{
+}
+

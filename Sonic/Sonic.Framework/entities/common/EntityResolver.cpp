@@ -1,34 +1,16 @@
 #include "EntityResolver.h"
 #include "EntityResolver.h"	
 
-Entity* EntityResolver::resolve(Entity* origin)
+Entity * EntityResolver::resolve(string entityType)
 {
 	Entity* destination = nullptr;
 
-	/*if (origin->getType() == toTypeString(EntityType::rectangle)) {
-		destination = new Rectangle(origin);
+	if ((entityType == toTypeString(EntityType::enemigo_cangrejo)) ||
+		(entityType == toTypeString(EntityType::enemigo_mosca)) ||
+		(entityType == toTypeString(EntityType::enemigo_pez))) {
+		destination = new Enemy(entityType);
 	}
-	else if (origin->getType() == toTypeString(EntityType::circle)) {
-		destination = new Circle(origin);
-	}
-	else if (origin->getType() == toTypeString(EntityType::square)) {
-		destination = new Square(origin);
-	}*/
-
-	if ((origin->getType() == toTypeString(EntityType::enemigo_cangrejo)) || 
-		(origin->getType() == toTypeString(EntityType::enemigo_mosca)) || 
-		(origin->getType() == toTypeString(EntityType::enemigo_pez))) {
-		destination = new Enemy(origin->getType());
-	}
-
 	return destination;
-}
-
-Entity * EntityResolver::resolve(string entityType)
-{
-	Entity entity;
-	entity.setType(entityType);
-	return resolve(&entity);
 }
 
 Dimensions EntityResolver::getDefaultDimensions(Entity * entity)
