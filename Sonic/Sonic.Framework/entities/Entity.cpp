@@ -78,6 +78,11 @@ void Entity::setImagePath(string imagePath)
 	this->imagePath = imagePath;
 }
 
+void Entity::setType(string type)
+{
+	this->type = type;
+}
+
 string Entity::getImagePath()
 {
 	return imagePath;
@@ -88,9 +93,19 @@ Coordinate Entity::getCoordinate()
 	return coordinate;
 }
 
+void Entity::setCoordinate(Coordinate coordinate)
+{
+	this->coordinate = coordinate;
+}
+
 Dimensions Entity::getDimensions()
 {
 	return dimensions;
+}
+
+void Entity::setDimensions(Dimensions dimensions)
+{
+	this->dimensions = dimensions;
 }
 
 void Entity::unserialize(Value * nodeRef)

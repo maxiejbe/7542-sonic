@@ -65,6 +65,7 @@ void Scenario::unserialize(Value * nodeRef)
 	// Order layers by z-index
 	sort(layers.begin(), layers.end());
 
+	/*
 	vector<Entity> entities;
 	parseCollection<Entity>(&entities, nodeRef, SCENARIO_ENTITIES_NODE);
 
@@ -79,6 +80,7 @@ void Scenario::unserialize(Value * nodeRef)
 			this->entities.push_back(toAdd);
 		}
 	}
+	*/
 	
 	LOG(logINFO) << MESSAGE_END_PARSING_SCENARIO_NODE;
 }

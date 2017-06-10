@@ -227,6 +227,22 @@ bool Client::sendGameStart()
 	return true;
 }
 
+bool Client::sendEnemiesStatus(string enemiesStatusMessage)
+{
+	int bytecount;
+
+	char* serializedMessage = StringUtils::convert(enemiesStatusMessage);
+
+	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
+		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
+			<< " (Cliente " << this->getClientNumber() << ")";
+		return false;
+	}
+
+	return true;
+}
+
+
 Player* Client::getPlayer()
 {
 	return this->player;
@@ -399,3 +415,5 @@ DWORD Client::heartBeatSocketHandler()
 	}
 	return 0;
 }
+
+

@@ -11,7 +11,7 @@
 
 using namespace std;
 
-enum FacingDirection { FACING_LEFT, FACING_RIGHT };
+enum FacingDirection { FACING_LEFT, FACING_RIGHT, FACING_UP, FACING_DOWN};
 
 class Player : public Serializable
 {

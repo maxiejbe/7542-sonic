@@ -3,6 +3,7 @@
 const char* SERVER_MESSAGE_TYPE_NODE = "t";
 const char* SERVER_MESSAGE_PLAYER_NUMBER_NODE = "pn";
 const char* SERVER_MESSAGE_PLAYERS_STATUS_NODE = "ps";
+const char* SERVER_MESSAGE_ENEMIES_STATUS_NODE = "es";
 const char* SERVER_MESSAGE_CAMERA_NODE = "ca";
 const char* SERVER_MESSAGE_FILE_CONTENT_NODE = "fc";
 
@@ -11,6 +12,7 @@ ServerMessage::ServerMessage()
 	this->playerNumber = -1;
 	this->type = typeless;
 	this->players = vector<Player*>();
+	this->enemies = vector<Enemy*>();
 	this->camera = nullptr;
 	this->fileContent = "";
 }
@@ -46,6 +48,11 @@ vector<Player*> ServerMessage::getPlayers()
 	return this->players;
 }
 
+vector<Enemy*> ServerMessage::getEnemies()
+{
+	return this->enemies;
+}
+
 Camera * ServerMessage::getCamera()
 {
 	return this->camera;
@@ -59,6 +66,11 @@ void ServerMessage::setCamera(Camera * camera)
 void ServerMessage::setPlayers(vector<Player*> players)
 {
 	this->players = players;
+}
+
+void ServerMessage::setEnemies(vector<Enemy*> enemies)
+{
+	this->enemies = enemies;
 }
 
 void ServerMessage::setFileContent(string content)
@@ -157,6 +169,21 @@ void ServerMessage::serializePlayers(Writer<StringBuffer>& writer)
 	writer.EndArray();
 }
 
+/*void ServerMessage::serializeEnemies(Writer<StringBuffer>& writer)
+{
+	writer.String(SERVER_MESSAGE_ENEMIES_STATUS_NODE);
+	writer.StartArray();
+
+	vector<Enemy*>::iterator it = this->enemies.begin();
+	while (it != this->enemies.end()) {
+		if (*it == NULL) continue;
+		string serializedEnemy = (*it)->getSerializedEnemy();
+		writer.String(serializedEnemy.c_str());
+		it++;
+	}
+	writer.EndArray();
+}*/
+
 void ServerMessage::parseCameraStatus(Value * nodeRef)
 {
 	Value& node = *nodeRef;
@@ -217,4 +244,36 @@ void ServerMessage::parsePlayersStatus(Value * nodeRef)
 		this->players.push_back(newPlayer);
 	}
 }
+
+/*void ServerMessage::parseEnemiesStatus(Value * nodeRef)
+{
+	//free enemies and clear vector
+	Value& node = *nodeRef;
+
+	if (nodeRef == nullptr || !node.HasMember(SERVER_MESSAGE_ENEMIES_STATUS_NODE)) {
+		LOG(logWARNING) << "Server Message: Fallo parseo de enemigos";
+		return;
+	}
+
+	//string childNodeValue = getNodeContent(&node[SERVER_MESSAGE_PLAYERS_STATUS_NODE]);
+	const Value& enemiesStatus = node[SERVER_MESSAGE_ENEMIES_STATUS_NODE];
+	if (!enemiesStatus.IsArray()) {
+		LOG(logWARNING) << "Server Message: Campo incorrecto de enemigos " << SERVER_MESSAGE_ENEMIES_STATUS_NODE;
+		return;
+	}
+
+	//unserialize enemies
+	Document jsonEnemy;
+	for (Value::ConstValueIterator itr = enemiesStatus.Begin(); itr != enemiesStatus.End(); ++itr) {
+		if (jsonEnemy.Parse((*itr).GetString()).HasParseError()) {
+			//LOG
+			continue;
+		}
+
+		//unsearialize player and add to vector
+		Enemy* newEnemy = new Enemy();
+		newEnemy->unserialize(&jsonEnemy);
+		this->enemies.push_back(newEnemy);
+	}
+}*/
 

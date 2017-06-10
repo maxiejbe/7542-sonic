@@ -166,6 +166,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="controllers\CameraController.cpp" />
+    <ClCompile Include="controllers\EnemyController.cpp" />
     <ClCompile Include="controllers\PlayerController.cpp" />
     <ClCompile Include="entities\Client.cpp" />
     <ClCompile Include="entities\Server.cpp" />
@@ -174,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="controllers\CameraController.h" />
+    <ClInclude Include="controllers\EnemyController.h" />
     <ClInclude Include="controllers\PlayerController.h" />
     <ClInclude Include="entities\Client.h" />
     <ClInclude Include="entities\Server.h" />

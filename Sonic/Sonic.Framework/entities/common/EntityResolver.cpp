@@ -1,9 +1,11 @@
+#include "EntityResolver.h"
 #include "EntityResolver.h"	
 
 Entity* EntityResolver::resolve(Entity* origin)
 {
 	Entity* destination = nullptr;
-	if (origin->getType() == toTypeString(EntityType::rectangle)) {
+
+	/*if (origin->getType() == toTypeString(EntityType::rectangle)) {
 		destination = new Rectangle(origin);
 	}
 	else if (origin->getType() == toTypeString(EntityType::circle)) {
@@ -11,14 +13,28 @@ Entity* EntityResolver::resolve(Entity* origin)
 	}
 	else if (origin->getType() == toTypeString(EntityType::square)) {
 		destination = new Square(origin);
+	}*/
+
+	if ((origin->getType() == toTypeString(EntityType::enemigo_cangrejo)) || 
+		(origin->getType() == toTypeString(EntityType::enemigo_mosca)) || 
+		(origin->getType() == toTypeString(EntityType::enemigo_pez))) {
+		destination = new Enemy(origin->getType());
 	}
+
 	return destination;
+}
+
+Entity * EntityResolver::resolve(string entityType)
+{
+	Entity entity;
+	entity.setType(entityType);
+	return resolve(&entity);
 }
 
 Dimensions EntityResolver::getDefaultDimensions(Entity * entity)
 {
 	Dimensions dimensions;
-	if (entity->getType() == toTypeString(EntityType::rectangle)) {
+	/*if (entity->getType() == toTypeString(EntityType::rectangle)) {
 		dimensions = Rectangle().getDefaultDimensions();
 	}
 	else if (entity->getType() == toTypeString(EntityType::circle)) {
@@ -26,18 +42,18 @@ Dimensions EntityResolver::getDefaultDimensions(Entity * entity)
 	}
 	else if (entity->getType() == toTypeString(EntityType::square)) {
 		dimensions = Square().getDefaultDimensions();
-	}
+	}*/
 	return dimensions;
 }
 
 EntityType EntityResolver::fromTypeString(string entityType)
 {
-	if (entityType == "rectangulo")
-		return EntityType::rectangle;
-	else if (entityType == "cuadrado")
-		return EntityType::square;
-	else if (entityType == "circulo")
-		return EntityType::circle;
+	if (entityType == "enemigo_cangrejo")
+		return EntityType::enemigo_cangrejo;
+	else if (entityType == "enemigo_pez")
+		return EntityType::enemigo_pez;
+	else if (entityType == "enemigo_mosca")
+		return EntityType::enemigo_mosca;
 	else
 		return EntityType::null;
 }
@@ -45,12 +61,12 @@ EntityType EntityResolver::fromTypeString(string entityType)
 string EntityResolver::toTypeString(EntityType entityType)
 {
 	switch (entityType) {
-		case EntityType::rectangle:
-			return "rectangulo";
-		case EntityType::square:
-			return "cuadrado";
-		case EntityType::circle:
-			return "circulo";
+		case EntityType::enemigo_cangrejo:
+			return "enemigo_cangrejo";
+		case EntityType::enemigo_pez:
+			return "enemigo_pez";
+		case EntityType::enemigo_mosca:
+			return "enemigo_mosca";
 		default:
 			return "";
 	}

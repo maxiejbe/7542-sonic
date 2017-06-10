@@ -14,6 +14,7 @@
 #include "Client.h"
 #include "entities/Player.h"
 #include "entities/Camera.h"
+#include "entities\enemies\Enemy.h"
 #include "protocol/ServerMessage.h"
 
 #include "entities/Window.h"
@@ -21,6 +22,7 @@
 #include "entities/Scenario.h"
 #include "entities/ServerConfiguration.h"
 #include "../controllers/CameraController.h"
+#include "../controllers/EnemyController.h"
 
 #include <mutex>
 
@@ -41,7 +43,7 @@ public:
 	void waitForClientConnections();
 	void sendBroadcast();
 	void removeClientConnection(int clientNumber);
-
+	void terminateThreads();
 	void addConnectedClients();
 
 	SOCKET getSocket();
@@ -54,6 +56,7 @@ public:
 	Camera* getCamera();
 
 	ServerMessage* getPlayersStatusMessage();
+	string getEnemiesStatusMessage();
 private:
 	/*
 	Initialize socket support WINDOWS ONLY!
@@ -71,7 +74,7 @@ private:
 	void setClient(Client*);*/
 
 	void acceptClientConnection();
-	
+
 	vector<Player*> clientsPlayers();
 
 	bool isValid;
@@ -89,10 +92,29 @@ private:
 	Configuration* config;
 	Scenario* scenario;
 
-	unordered_map<int, Client*> clients;	
+	unordered_map<int, Client*> clients;
 	vector<Client*> disconnectedClients;
 	Camera* camera;
 	//mutex clientMutex;
+
+	vector<Enemy*> enemies;
+	vector<Enemy*> visibleEnemies;
+	mutex visibleEnemiesMutex;
+
+	//update enemies handler
+	DWORD updateEnemiesThreadId;
+	HANDLE updateEnemiesThreadHandle;
+	static DWORD WINAPI runUpdateEnemiesHandler(void* args);
+	DWORD updateEnemiesHandler();
+	bool continueUpdatingEnemies;
+
+	//send enemies handler
+	DWORD sendEnemiesThreadId;
+	HANDLE sendEnemiesThreadHandle;
+	static DWORD WINAPI runSendEnemiesHandler(void* args);
+	DWORD sendEnemiesHandler();
+	bool continueSendingEnemies;
+
 };
 
 #endif
