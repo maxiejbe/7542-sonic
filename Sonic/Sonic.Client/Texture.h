@@ -18,6 +18,7 @@ public:
 	bool loadFromFont(TTF_Font* font, string text, SDL_Color color);
 	void free();
 	void render(int x, int y, SDL_Rect* clip = NULL);
+	void render(int x, int y, int w, int h);
 	void render(int x, int y, SDL_Rect* clip, SDL_Rect dest, double angle, SDL_Point* center, SDL_RendererFlip flip);
 
 	int getWidth();

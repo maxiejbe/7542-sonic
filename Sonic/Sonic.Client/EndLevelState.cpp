@@ -59,32 +59,14 @@ void EndLevelState::showLevelHasPassed()
 
 void EndLevelState::showText(string text, int x, int y, TTF_Font* font, SDL_Color color)
 {
-	SDL_Rect destrect;
-	SDL_Texture* textTexture;
-	SDL_Surface* surfaceMessage;
-
-	surfaceMessage = TTF_RenderText_Solid(font, text.c_str(), color);
-	textTexture = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, surfaceMessage);
-	destrect.x = x;
-	destrect.y = y;
-	destrect.w = surfaceMessage->w;
-	destrect.h = surfaceMessage->h;
-
-	SDL_RenderCopy(Renderer::getInstance().gRenderer, textTexture, NULL, &destrect);
-	SDL_FreeSurface(surfaceMessage);
+	textTexture.loadFromFont(font, text, color);
+	textTexture.render(x, y, NULL);
 }
 
 void EndLevelState::showPlayerImage(Texture playerImage, int x, int y)
 {
-	SDL_Rect destrect;
-
 	if (playerImage.getTexture() != nullptr) {
-		destrect.x = x;
-		destrect.y = y;
-		destrect.w = playerImage.getWidth() * 2;
-		destrect.h = playerImage.getHeight() * 2;
-
-		SDL_RenderCopy(Renderer::getInstance().gRenderer, playerImage.getTexture(), NULL, &destrect);
+		playerImage.render(x, y, playerImage.getWidth() * 2.5, playerImage.getHeight() * 2.5);
 	}
 }
 

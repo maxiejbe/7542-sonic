@@ -33,6 +33,7 @@ private:
 	TTF_Font* fontScore;
 	TTF_Font* fontLevel;
 	Texture levelHasPassed;
+	Texture textTexture;
 
 	void showLevelHasPassed();
 	void showStatistics();
