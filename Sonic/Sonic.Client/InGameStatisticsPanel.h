@@ -16,7 +16,6 @@ public:
 	~InGameStatisticsPanel();
 
 	void showStatistics(Player* player);
-	void freeSurfaceStatistics();
 
 private:
 	string calculatePlayerFilePath(Player* player);

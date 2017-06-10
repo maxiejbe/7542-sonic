@@ -36,7 +36,7 @@ private:
 	void showLevelHasPassed();
 	void showStatistics();
 	void showText(string text, int x, int y, TTF_Font* font, SDL_Color color);
-	void freeSurfaceStatistics();
+	//void freeSurfaceStatistics();
 	void showPlayerImage(Texture playerImage, int x, int y);
 
 };

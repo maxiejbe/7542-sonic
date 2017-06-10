@@ -53,8 +53,8 @@ void PlayState::load(Game* game)
 		layerView->loadLayer();
 	}
 
-	// Load statistics player panel (refactor move to Game)
-	statisticsPanel = new InGameStatisticsPanel(); //TODO delete
+	// Load statistics player panel
+	statisticsPanel = new InGameStatisticsPanel();
 
 	PlayerView* playerView = NetworkManager::getInstance().getOwnPlayerView();
 
@@ -65,6 +65,7 @@ int PlayState::unload()
 {
 	entityViews.clear();
 	layerViews.clear();
+	delete statisticsPanel;
 
 	return 0;
 }

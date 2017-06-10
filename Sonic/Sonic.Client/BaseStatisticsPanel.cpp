@@ -13,6 +13,7 @@ void BaseStatisticsPanel::showText(string text, int x, int y, TTF_Font* font, SD
 	destrect.h = surfaceMessage->h;
 
 	SDL_RenderCopy(Renderer::getInstance().gRenderer, textTexture, NULL, &destrect);
+	SDL_FreeSurface(surfaceMessage);
 }
 
 void BaseStatisticsPanel::showPlayerImage(Texture* playerImage, int x, int y)

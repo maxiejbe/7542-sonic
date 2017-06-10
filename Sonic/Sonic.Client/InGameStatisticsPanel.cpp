@@ -9,17 +9,10 @@ InGameStatisticsPanel::InGameStatisticsPanel()
 
 InGameStatisticsPanel::~InGameStatisticsPanel()
 {
-	/*freeSurfaceStatistics();
 	TTF_CloseFont(fontLifes);
 	fontLifes = NULL;
 	TTF_CloseFont(fontScore);
-	fontScore = NULL;*/
-}
-
-void InGameStatisticsPanel::freeSurfaceStatistics()
-{
-	//Call base method
-	//SDL_FreeSurface(surfaceMessage);
+	fontScore = NULL;
 }
 
 void InGameStatisticsPanel::showStatistics(Player* player)
