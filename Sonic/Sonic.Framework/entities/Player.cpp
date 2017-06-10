@@ -19,6 +19,7 @@ const char* PLAYER_FILE_PATH_NODE = "fp";
 const char* PLAYER_TYPE_NODE = "pt";
 const char* PLAYER_IS_CONNECTED_NODE = "ic";
 const char* PLAYER_MILLISECONDS = "ms";
+const char* PLAYER_TEST_MODE_NODE = "tm";
 
 
 Player::Player()
@@ -305,6 +306,8 @@ void Player::unserialize(Value * nodeRef)
 	parseBool(&isConnected, false, nodeRef, PLAYER_IS_CONNECTED_NODE);
 	//time
 	parseInt(&time, 0, nodeRef, PLAYER_MILLISECONDS);
+	//test mode
+	parseBool(&testMode, false, nodeRef, PLAYER_TEST_MODE_NODE);
 }
 
 void Player::serializePlayer()
@@ -350,6 +353,8 @@ string Player::serialize()
 	writer.Bool(this->isConnected);
 	writer.String(PLAYER_MILLISECONDS);
 	writer.Int(this->time);
+	writer.String(PLAYER_TEST_MODE_NODE);
+	writer.Bool(this->testMode);
 
 	int(time);
 
