@@ -31,45 +31,31 @@ void Game::render()
 
 void Game::changeState(GameState* state)
 {
-	// cleanup the current state
 	while (!states.empty()) {
 		states.back()->unload();
 		states.pop_back();
 	}
 
-	// store and init the new state
 	states.push_back(state);
 	states.back()->load(this);
 }
 
 void Game::pushState(GameState* state)
 {
-	//// pause current state
-	//if (!states.empty()) {
-	//	states.back()->Pause();
-	//}
-
-	// store and init the new state
 	states.push_back(state);
 	states.back()->load(this);
 }
 
 void Game::popState()
 {
-	// cleanup the current state
 	if (!states.empty()) {
 		states.back()->unload();
 		states.pop_back();
 	}
-
-	//// resume previous state
-	//if (!states.empty()) {
-	//	states.back()->Resume();
-	//}
 }
 
-void Game::run() {
-
+void Game::run()
+{
 	Timer fpsTimer;
 	Timer capTimer;
 	int countedFrames = 0;
@@ -82,26 +68,20 @@ void Game::run() {
 
 		capTimer.start();
 
-		// Calculate and correct fps
 		float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
-		if (avgFPS > 2000000)
-		{
+		if (avgFPS > 2000000) {
 			avgFPS = 0;
 		}
 
 		this->update();
-
 		this->render();
 
 		SDL_RenderPresent(Renderer::getInstance().gRenderer);
 
 		++countedFrames;
 
-		// If frame finished early
 		int frameTicks = capTimer.getTicks();
-		if (frameTicks < SCREEN_TICK_PER_FRAME)
-		{
-			// Wait remaining time
+		if (frameTicks < SCREEN_TICK_PER_FRAME) {
 			SDL_Delay(SCREEN_TICK_PER_FRAME - frameTicks);
 		}
 	}

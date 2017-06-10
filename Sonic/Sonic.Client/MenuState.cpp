@@ -14,11 +14,15 @@ void MenuState::load(Game* game)
 
 	color[0] = { 255,255,255 };
 	color[1] = { 255,0,0 };
-	color[2] = { 192,192,192 };
+	color[2] = { 32,32,32 };
 
 	connectionStatus = DISCONNECTED;
 
-	labels[0] = this->connectionStatus == DISCONNECTED ? "Connect" : "Resume";
+	if (this->connectionStatus == CONNECTED)
+		labels[0] = "Resume";
+	else 
+		labels[0] = this->modeGameStatus == GRUPAL ? "Choose team" : "Connect";
+	
 	labels[1] = "Disconnect";
 	labels[2] = "Exit";
 
@@ -58,9 +62,19 @@ void MenuState::update(Game* game, float dt)
 
 	if (input->isKeyDown(KEY_RETURN)) {
 		if (selected[0]) {
-			// Connect
-			this->connectionStatus = CONNECTED;
-			game->changeState(ConnectState::Instance());
+
+			if (this->modeGameStatus == GRUPAL)
+			{
+				//Choose Team
+				game->changeState(SelectTeamState::Instance());
+			}
+			else 
+			{
+				// Connect
+				this->connectionStatus = CONNECTED;
+				game->changeState(ConnectState::Instance());
+			}
+			
 		}
 		else if (selected[1]) {
 			// Disconnect

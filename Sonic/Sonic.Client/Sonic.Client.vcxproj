@@ -19,13 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BaseStatisticsPanel.cpp" />
+    <ClCompile Include="EndLevelState.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="ConnectState.cpp" />
+    <ClCompile Include="InGameStatisticsPanel.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="PlayState.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="network\NetworkManager.cpp" />
     <ClCompile Include="network\SocketClient.cpp" />
+    <ClCompile Include="SelectTeamState.cpp" />
     <ClCompile Include="views\CircleView.cpp" />
     <ClCompile Include="views\common\EntityViewResolver.cpp" />
     <ClCompile Include="views\EntityView.cpp" />
@@ -59,14 +63,18 @@
     <None Include="config\params.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseStatisticsPanel.h" />
+    <ClInclude Include="EndLevelState.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="ConnectState.h" />
+    <ClInclude Include="InGameStatisticsPanel.h" />
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="PlayState.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="network\NetworkManager.h" />
     <ClInclude Include="network\SocketClient.h" />
+    <ClInclude Include="SelectTeamState.h" />
     <ClInclude Include="views\CircleView.h" />
     <ClInclude Include="views\common\Drawable.h" />
     <ClInclude Include="views\common\EntityViewResolver.h" />
@@ -94,6 +102,9 @@
     <ProjectReference Include="..\Sonic.Framework\Sonic.Framework.vcxproj">
       <Project>{e64ffe73-794b-4014-b67f-458b633431d6}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\SonicAdvance.ttf" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A3F8E1A0-5C50-4336-A742-6CAFA67F93A0}</ProjectGuid>

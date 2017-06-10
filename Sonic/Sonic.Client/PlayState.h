@@ -11,6 +11,8 @@
 #include "views/LayerView.h"
 #include "views/EntityView.h"
 #include "views/common/EntityViewResolver.h"
+#include "InGameStatisticsPanel.h"
+#include "EndLevelState.h"
 #include "Timer.h"
 #include <stdio.h>
 #include <string>
@@ -42,6 +44,7 @@ private:
 
 	SDL_Rect camera;
 	vector<LayerView> layerViews;
+	InGameStatisticsPanel* statisticsPanel;
 
 	int scenarioWidth;
 	int scenarioHeight;
@@ -52,6 +55,8 @@ private:
 	Timer stepTimer;
 	Message* lastMessage;
 	bool lastMessageFlag;
+
+	Player* ownPlayer;
 };
 
 #endif // !PLAY_STATE_H

@@ -53,6 +53,11 @@ void PlayState::load(Game* game)
 		layerView->loadLayer();
 	}
 
+	// Load statistics player panel
+	statisticsPanel = new InGameStatisticsPanel();
+
+	PlayerView* playerView = NetworkManager::getInstance().getOwnPlayerView();
+
 	game->pushState(WaitingState::Instance());
 }
 
@@ -60,6 +65,7 @@ int PlayState::unload()
 {
 	entityViews.clear();
 	layerViews.clear();
+	delete statisticsPanel;
 
 	return 0;
 }
@@ -82,6 +88,7 @@ void PlayState::update(Game* game, float dt)
 		stepTimer.unpause();
 	}
 
+	// Still online?
 	if (!NetworkManager::getInstance().online()) {
 		stepTimer.pause();
 		game->pushState(ConnectState::Instance());
@@ -99,12 +106,16 @@ void PlayState::update(Game* game, float dt)
 	bool isKPSpace = input->isKeyPressed(KEY_SPACE);
 	bool isKPRight = input->isKeyPressed(KEY_RIGHT);
 	bool isKPUp = input->isKeyPressed(KEY_UP);
+	bool isKPShift = input->isKeyPressed(KEY_LEFT_SHIFT);
 
 	bool isKULeft = input->isKeyUp(KEY_LEFT);
 	bool isKURight = input->isKeyUp(KEY_RIGHT);
 	bool isKUSpace = input->isKeyUp(KEY_SPACE);
+	bool isKUShift = input->isKeyUp(KEY_LEFT_SHIFT);
+	bool isKUTest = input->isKeyUp(KEY_P);
 
-	Message* message = new Message(timeStep, isKPLeft, isKPSpace, isKPRight, isKPUp, isKULeft, isKURight, isKUSpace);
+	// Send message
+	Message* message = new Message(timeStep, isKPLeft, isKPSpace, isKPRight, isKPUp, isKPShift, isKULeft, isKURight, isKUSpace, isKUShift, isKUTest);
 	message->setType(MessageType::status);
 
 	if (lastMessage == nullptr) {
@@ -128,13 +139,13 @@ void PlayState::update(Game* game, float dt)
 
 	stepTimer.start();
 
-	// Initialize player
+	// Get own player
 	PlayerView* playerView = NetworkManager::getInstance().getOwnPlayerView();
-	Player* player = nullptr;
 	if (playerView != nullptr) {
-		player = playerView->getPlayer();
+		this->ownPlayer = playerView->getPlayer();
 	}
 
+	// Update camera
 	cameraModel = NetworkManager::getInstance().getCamera();
 	if (cameraModel) {
 		camera.x = cameraModel->getPosition().x;
@@ -167,6 +178,15 @@ void PlayState::render(Game* game)
 			it->second->render(camera.x, camera.y);
 		}
 	}
+
+	// Render statistics panel
+	if (this->ownPlayer != nullptr) {
+		statisticsPanel->showStatistics(this->ownPlayer);
+	}
+
+	// Render final statistics panel
+	if (camera.x == 2800) //ONLY FOR TEST
+		game->pushState(EndLevelState::Instance());
 }
 
 bool PlayState::clientNumberSet()
