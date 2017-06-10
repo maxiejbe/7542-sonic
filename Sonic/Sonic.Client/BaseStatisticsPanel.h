@@ -12,9 +12,9 @@ class BaseStatisticsPanel
 {
 public:
 	virtual void showText(string text, int x, int y, TTF_Font* font, SDL_Color color);
-	virtual void showStatistics() = 0;
+	virtual void showStatistics(Player* player) = 0;
 	virtual void freeSurfaceStatistics() = 0;
-	virtual void showPlayerImage(Texture playerImage, int x, int y);
+	virtual void showPlayerImage(Texture* playerImage, int x, int y);
 
 private:
 	SDL_Rect destrect;

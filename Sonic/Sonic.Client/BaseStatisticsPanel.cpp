@@ -15,14 +15,14 @@ void BaseStatisticsPanel::showText(string text, int x, int y, TTF_Font* font, SD
 	SDL_RenderCopy(Renderer::getInstance().gRenderer, textTexture, NULL, &destrect);
 }
 
-void BaseStatisticsPanel::showPlayerImage(Texture playerImage, int x, int y)
+void BaseStatisticsPanel::showPlayerImage(Texture* playerImage, int x, int y)
 {
-	if (playerImage.getTexture() != nullptr) {
+	if (playerImage->getTexture() != nullptr) {
 		destrect.x = x;
 		destrect.y = y;
-		destrect.w = playerImage.getWidth() * 2;
-		destrect.h = playerImage.getHeight() * 2;
+		destrect.w = playerImage->getWidth() * 2.5;
+		destrect.h = playerImage->getHeight() * 2.5;
 
-		SDL_RenderCopy(Renderer::getInstance().gRenderer, playerImage.getTexture(), NULL, &destrect);
+		SDL_RenderCopy(Renderer::getInstance().gRenderer, playerImage->getTexture(), NULL, &destrect);
 	}
 }

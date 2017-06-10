@@ -17,7 +17,7 @@ Message::Message()
 {
 }
 
-Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKPShift, bool isKULeft, bool isKURight, bool isKUSpace, bool isKUShift, double isKUTest)
+Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKPShift, bool isKULeft, bool isKURight, bool isKUSpace, bool isKUShift, bool isKUTest)
 {
 	this->dt = dt;
 	this->isKPLeft = isKPLeft;

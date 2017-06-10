@@ -44,7 +44,7 @@ private:
 
 	SDL_Rect camera;
 	vector<LayerView> layerViews;
-	InGameStatisticsPanel statisticsPanel;
+	InGameStatisticsPanel* statisticsPanel;
 
 	int scenarioWidth;
 	int scenarioHeight;
@@ -55,6 +55,8 @@ private:
 	Timer stepTimer;
 	Message* lastMessage;
 	bool lastMessageFlag;
+
+	Player* ownPlayer;
 };
 
 #endif // !PLAY_STATE_H

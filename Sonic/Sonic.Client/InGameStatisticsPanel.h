@@ -15,11 +15,12 @@ public:
 	InGameStatisticsPanel();
 	~InGameStatisticsPanel();
 
-	//void showStatistics(Player* player);
-	void showStatistics();
+	void showStatistics(Player* player);
 	void freeSurfaceStatistics();
 
 private:
+	string calculatePlayerFilePath(Player* player);
+	string calculatePlayerName(Player* player);
 	Player* player;
 	TTF_Font* fontLifes;
 	TTF_Font* fontScore;

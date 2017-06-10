@@ -53,8 +53,10 @@ void PlayState::load(Game* game)
 		layerView->loadLayer();
 	}
 
-	//Load statistics player panel (refactor move to Game)
-	statisticsPanel = InGameStatisticsPanel();
+	// Load statistics player panel (refactor move to Game)
+	statisticsPanel = new InGameStatisticsPanel(); //TODO delete
+
+	PlayerView* playerView = NetworkManager::getInstance().getOwnPlayerView();
 
 	game->pushState(WaitingState::Instance());
 }
@@ -85,6 +87,7 @@ void PlayState::update(Game* game, float dt)
 		stepTimer.unpause();
 	}
 
+	// Still online?
 	if (!NetworkManager::getInstance().online()) {
 		stepTimer.pause();
 		game->pushState(ConnectState::Instance());
@@ -110,6 +113,7 @@ void PlayState::update(Game* game, float dt)
 	bool isKUShift = input->isKeyUp(KEY_LEFT_SHIFT);
 	bool isKUTest = input->isKeyUp(KEY_P);
 
+	// Send message
 	Message* message = new Message(timeStep, isKPLeft, isKPSpace, isKPRight, isKPUp, isKPShift, isKULeft, isKURight, isKUSpace, isKUShift, isKUTest);
 	message->setType(MessageType::status);
 
@@ -134,13 +138,13 @@ void PlayState::update(Game* game, float dt)
 
 	stepTimer.start();
 
-	// Initialize player
+	// Get own player
 	PlayerView* playerView = NetworkManager::getInstance().getOwnPlayerView();
-	Player* player = nullptr;
 	if (playerView != nullptr) {
-		player = playerView->getPlayer();
+		this->ownPlayer = playerView->getPlayer();
 	}
 
+	// Update camera
 	cameraModel = NetworkManager::getInstance().getCamera();
 	if (cameraModel) {
 		camera.x = cameraModel->getPosition().x;
@@ -175,7 +179,10 @@ void PlayState::render(Game* game)
 	}
 
 	// Render statistics panel
-	statisticsPanel.showStatistics(); //Until integration
+	if (this->ownPlayer != nullptr) {
+		statisticsPanel->showStatistics(this->ownPlayer);
+	}
+
 	// Render final statistics panel
 	if (camera.x == 2800) //ONLY FOR TEST
 		game->pushState(EndLevelState::Instance());
