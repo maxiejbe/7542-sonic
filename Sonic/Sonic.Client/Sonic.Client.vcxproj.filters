@@ -223,6 +223,15 @@
     <Image Include="img\sonic_orig.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Font Include="fonts\SonicAdvance.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="fonts\Retro_Stereo_Wide.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="fonts\SEGA.TTF">
+      <Filter>Resource Files</Filter>
+    </Font>
   </ItemGroup>
   <ItemGroup>
     <None Include="config\params.json" />
@@ -231,8 +240,5 @@
     <ResourceCompile Include="Sonic.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="fonts\SonicAdvance.ttf" />
   </ItemGroup>
 </Project>

@@ -104,6 +104,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Font Include="fonts\Retro_Stereo_Wide.ttf" />
+    <Font Include="fonts\SEGA.TTF" />
     <Font Include="fonts\SonicAdvance.ttf" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

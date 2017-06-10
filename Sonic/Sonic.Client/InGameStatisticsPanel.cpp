@@ -9,6 +9,10 @@ InGameStatisticsPanel::InGameStatisticsPanel()
 
 InGameStatisticsPanel::~InGameStatisticsPanel()
 {
+}
+
+void InGameStatisticsPanel::freeSurfaceStatistics()
+{
 	TTF_CloseFont(fontLifes);
 	fontLifes = NULL;
 	TTF_CloseFont(fontScore);
@@ -55,9 +59,9 @@ string InGameStatisticsPanel::calculatePlayerFilePath(Player* player)
 	case TAILS:
 		return "img/tails_avatar.png";
 	case KNUCKLES:
-		return "img/knuckles_avatar.png"; //TODO
+		return "img/knuckles_avatar.png";
 	case SHADOW:
-		return "img/shadow_avatar.png"; //TODO
+		return "img/shadow_avatar.png";
 	default:
 		return "img/sonic_avatar.png";
 	}

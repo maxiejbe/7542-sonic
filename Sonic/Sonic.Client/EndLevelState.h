@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "InputManager.h"
 #include "MenuState.h"
+#include "PlayState.h"
 
 class EndLevelState : public GameState {
 public:

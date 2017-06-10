@@ -22,6 +22,7 @@ protected:
 	TTF_Font* font;
 	Texture image;
 	Texture background;
+	Texture textTexture;
 	float posX, posY;
 	SDL_Color color;
 	SDL_Surface* message;

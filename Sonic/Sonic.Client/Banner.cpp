@@ -31,19 +31,14 @@ void Banner::freeSurfaceBanner()
 
 void Banner::showBanner()
 {
-	/*SDL_SetRenderDrawColor(Renderer::getInstance().gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-	SDL_RenderClear(Renderer::getInstance().gRenderer);*/
-
 	SDL_Rect destrect;
 
 	// Show image
 	if (this->image.getTexture() != nullptr) {
 		destrect.w = image.getWidth();
 		destrect.h = image.getHeight();
-		destrect.x = 0;
-		destrect.y = 0;
 
-		SDL_RenderCopy(Renderer::getInstance().gRenderer, image.getTexture(), NULL, &destrect);
+		this->image.render(0, 0, &destrect);
 	}
 
 	// Show Background
@@ -51,14 +46,22 @@ void Banner::showBanner()
 
 	// Init and show text
 	string allpoint = this->text;
-	message = TTF_RenderText_Solid(font, allpoint.c_str(), { 255, 255, 255 });
+
+	textTexture.loadFromFont(font, allpoint, { 255, 255, 255 });
+
+	int x = SDLWindow::getInstance().getScreenWidth() / 2 - textTexture.getWidth() / 2;
+	int y = (int)(SDLWindow::getInstance().getScreenHeight() - SDLWindow::getInstance().getScreenHeight() / 3.5) + (3 * (textTexture.getHeight()));
+
+	textTexture.render(x, y, NULL);
+
+	/*message = TTF_RenderText_Solid(font, allpoint.c_str(), { 255, 255, 255 });
 
 	SDL_Texture* text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, message);
 	destrect.x = SDLWindow::getInstance().getScreenWidth() / 2 - message->clip_rect.w / 2;
 	destrect.y = (int)(SDLWindow::getInstance().getScreenHeight() - SDLWindow::getInstance().getScreenHeight() / 3.5) + (3 * (message->clip_rect.h));
 	destrect.w = message->w;
 	destrect.h = message->h;
-	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &destrect);
+	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &destrect);*/
 
 	SDL_RenderPresent(Renderer::getInstance().gRenderer);
 }

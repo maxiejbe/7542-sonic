@@ -11,11 +11,19 @@ void EndLevelState::load(Game* game)
 	fontLevel = TTF_OpenFont("fonts/SonicAdvance.ttf", 50);
 
 	levelHasPassed.loadFromFile("img/levelhaspassed.png");
+
+	this->showLevelHasPassed();
+	this->showStatistics();
 }
 
 int EndLevelState::unload()
 {
-	//freeSurfaceStatistics();
+	TTF_CloseFont(fontLifes);
+	fontLifes = NULL;
+	TTF_CloseFont(fontScore);
+	fontScore = NULL;
+	TTF_CloseFont(fontLevel);
+	fontLevel = NULL;
 	return 0;
 }
 
@@ -30,15 +38,13 @@ void EndLevelState::update(Game* game, float dt)
 	}
 
 	if (input->isKeyDown(KEY_RETURN)) {
-		//Go to next level
-		game->pushState(MenuState::Instance());
+		// Go to next level
+		game->changeState(PlayState::Instance());
 	}
 }
 
 void EndLevelState::render(Game* game)
 {
-	this->showLevelHasPassed();
-	this->showStatistics();
 }
 
 void EndLevelState::showLevelHasPassed()
@@ -65,6 +71,7 @@ void EndLevelState::showText(string text, int x, int y, TTF_Font* font, SDL_Colo
 	destrect.h = surfaceMessage->h;
 
 	SDL_RenderCopy(Renderer::getInstance().gRenderer, textTexture, NULL, &destrect);
+	SDL_FreeSurface(surfaceMessage);
 }
 
 void EndLevelState::showPlayerImage(Texture playerImage, int x, int y)
@@ -84,12 +91,11 @@ void EndLevelState::showPlayerImage(Texture playerImage, int x, int y)
 //void FinalLevelStatisticsPanel::showStatistics(vector<Player*> players)
 void EndLevelState::showStatistics()
 {
-	int PLAYERS_SIZE = 3;
+	int PLAYERS_SIZE = 4;
 	int x = 400 - (75 + 100 * (PLAYERS_SIZE - 1));
 
 	//ONLY FOR TEST
 	Texture playerImage;
-	//levelHasPassed.loadFromFile("img/levelhaspassed.png"); Bug
 
 	//Show blur background
 	boxRGBA(Renderer::getInstance().gRenderer, 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight(), 0, 0, 0, 150);
