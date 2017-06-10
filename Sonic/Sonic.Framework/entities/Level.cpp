@@ -25,9 +25,9 @@ vector<EntityLimit> Level::getLimits()
 	return this->limits;
 }
 
-Scenario Level::getScenario()
+Scenario* Level::getScenario()
 {
-	return this->scenario;
+	return &(this->scenario);
 }
 
 void Level::setEntities(vector<Entity*> entities)
