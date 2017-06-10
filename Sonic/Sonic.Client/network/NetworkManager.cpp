@@ -157,8 +157,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 	case team_options:
 		//TODO: HANDLE TEAM OPTIONS
 		//ignore for now and send username
-		clientResponse->setType(MessageType::username);
-		clientResponse->setUserName("User#" + to_string(this->playerNumber));
+		clientResponse->setType(MessageType::team);
 		this->sendMessage(clientResponse);
 		break;
 	case start_game:

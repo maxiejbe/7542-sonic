@@ -12,14 +12,12 @@ const char* MESSAGE_KEY_UNPRESSED_RIGHT_NODE = "kru";
 const char* MESSAGE_KEY_UNPRESSED_SPACE_NODE = "ksu";
 const char* MESSAGE_KEY_UNPRESSED_SHIFT_NODE = "khu";
 const char* MESSAGE_KEY_UNPRESSED_TEST_NODE = "kpu";
-const char* MESSAGE_USERNAME_NODE = "un";
 const char* MESSAGE_TEAMID_NODE = "tid";
 
 const int MESSAGE_DEFAULT_TEAMID = -1;
 
 Message::Message()
 {
-	this->userName = string();
 	this->teamId = MESSAGE_DEFAULT_TEAMID;
 }
 
@@ -103,20 +101,12 @@ bool Message::getIsKUTest()
 	return this->isKUTest;
 }
 
-void Message::setUserName(string userName)
-{
-	this->userName = userName;
-}
 
 void Message::setTeamId(int teamId)
 {
 	this->teamId = teamId;
 }
 
-string Message::getUserName()
-{
-	return this->userName;
-}
 
 int Message::getTeamId()
 {
@@ -163,8 +153,7 @@ void Message::unserialize(Value * nodeRef)
 		parseBool(&isKUShift, false, nodeRef, MESSAGE_KEY_UNPRESSED_SHIFT_NODE);
 		parseBool(&isKUTest, false, nodeRef, MESSAGE_KEY_UNPRESSED_TEST_NODE);
 		break;
-	case username:
-		parseString(&userName, "", nodeRef, MESSAGE_USERNAME_NODE);
+	case team:
 		parseInt(&teamId, MESSAGE_DEFAULT_TEAMID, nodeRef, MESSAGE_TEAMID_NODE, Validator::intGreaterThanOrEqualToZero);
 		break;
 	default:
@@ -217,9 +206,7 @@ void Message::performSerialization(Writer<StringBuffer>& writer) {
 		writer.Bool(this->isKUShift);
 		writer.String(MESSAGE_KEY_UNPRESSED_TEST_NODE);
 		writer.Bool(this->isKUTest);
-	case username:
-		writer.String(MESSAGE_USERNAME_NODE);
-		writer.String(this->userName.c_str());
+	case team:
 		writer.String(MESSAGE_TEAMID_NODE);
 		writer.Int(this->teamId);
 		break;

@@ -46,8 +46,6 @@ public:
 	SOCKET getSocket();
 private:
 	int clientNumber;
-	int teamId;
-	string userName;
 	Player* player;
 	Message * lastReceivedMessage;
 	bool gameStartSent;

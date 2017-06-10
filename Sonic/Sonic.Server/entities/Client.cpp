@@ -22,8 +22,6 @@ const int CLIENT_DEFAULT_TEAM_ID = -1;
 Client::Client(Server* server)
 {
 	this->server = server;
-	this->userName = string();
-	this->teamId = CLIENT_DEFAULT_TEAM_ID;
 }
 
 Client::~Client()
@@ -284,9 +282,8 @@ void Client::handleReceivedMessage(char* recievedMessage)
 		//TODO: check if its a cooperative game
 		this->sendTeamOptions();
 		break;
-	case username:
-		this->userName = message->getUserName();
-		this->teamId = message->getTeamId();
+	case team:
+		this->player->setTeamId(message->getTeamId());
 		this->server->addConnectedClients();
 	case start_game_ok:
 		this->continueRefreshing = true;
