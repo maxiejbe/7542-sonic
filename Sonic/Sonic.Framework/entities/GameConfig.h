@@ -11,6 +11,8 @@ class GameConfig : public Serializable {
 public:
 	GameConfig();
 
+	vector<Level>* getLevels();
+
 private:
 	vector<Level> levels;
 

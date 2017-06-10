@@ -31,6 +31,15 @@
         },
         "limites": [
           {
+            "tipo": "circulo",
+            "cantidad_minima": 15,
+            "cantidad_maxima": 25,
+            "min_x": 10,
+            "max_x": 10,
+            "min_y": 10,
+            "max_y": 10
+          },
+          {
             "tipo": "moneda",
             "cantidad_minima": 20,
             "cantidad_maxima": 30,
@@ -128,8 +137,8 @@
           ]
         },
         "limites": [
-		  {
-			"tipo": "moneda",
+          {
+            "tipo": "moneda",
             "cantidad_minima": 15,
             "cantidad_maxima": 25,
             "min_x": 10,

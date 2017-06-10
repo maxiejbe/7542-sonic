@@ -1,8 +1,10 @@
+#include "EntityResolver.h"
 #include "EntityResolver.h"	
 
 Entity* EntityResolver::resolve(Entity* origin)
 {
 	Entity* destination = nullptr;
+	
 	if (origin->getType() == toTypeString(EntityType::rectangle)) {
 		destination = new Rectangle(origin);
 	}
@@ -13,6 +15,13 @@ Entity* EntityResolver::resolve(Entity* origin)
 		destination = new Square(origin);
 	}
 	return destination;
+}
+
+Entity * EntityResolver::resolve(string entityType)
+{
+	Entity entity;
+	entity.setType(entityType);
+	return resolve(&entity);
 }
 
 Dimensions EntityResolver::getDefaultDimensions(Entity * entity)

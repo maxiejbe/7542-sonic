@@ -14,6 +14,21 @@ Level::~Level()
 {
 }
 
+vector<EntityLimit> Level::getLimits()
+{
+	return this->limits;
+}
+
+Scenario Level::getScenario()
+{
+	return this->scenario;
+}
+
+void Level::setEntities(vector<Entity*> entities)
+{
+	this->scenario.setEntities(entities);
+}
+
 void Level::unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;

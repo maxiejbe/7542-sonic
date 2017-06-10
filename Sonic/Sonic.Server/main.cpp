@@ -4,6 +4,30 @@
 #include "entities/GameConfig.h"
 #include "Parser.h"
 
+int getRandomBetween(int min, int max) {
+	return min + (rand() % static_cast<int>(max - min + 1));
+}
+
+vector<Entity*> generateLevelEntities(Level level) {
+	vector<Entity*> levelEntities;
+	levelEntities.clear();
+	vector<EntityLimit> limits = level.getLimits();
+	for (vector<EntityLimit>::iterator elit = limits.begin(); elit != limits.end(); ++elit) {
+		//Random entities count
+		int entitiesCount = getRandomBetween(elit->getMinCount(), elit->getMaxCount());
+			
+		for (size_t i = 0; i < entitiesCount; i++)
+		{
+			Entity* entity = EntityResolver::resolve(elit->getType());
+			if (entity == nullptr) continue;
+
+			//TODO: Set random position
+			levelEntities.push_back(entity);
+		}
+	}
+	return levelEntities;
+}
+
 int main(int argc, char* args[])
 {
 	Logger::init();
@@ -26,11 +50,18 @@ int main(int argc, char* args[])
 	Configuration config;
 	Camera camera;
 	GameConfig gameConfig;
-
+	
 	parser->parse(&serverConfig);
 	parser->parse(&window);
 	parser->parse(&config);
 	parser->parse(&gameConfig);
+
+	vector<Level>* levels = gameConfig.getLevels();
+	for (vector<Level>::iterator it = levels->begin(); it != levels->end(); ++it)
+	{
+		vector<Entity*> entities = generateLevelEntities(*it);
+		(*it).setEntities(entities);
+	}
 
 	Scenario scenario;
 

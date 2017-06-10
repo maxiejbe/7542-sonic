@@ -10,6 +10,14 @@ class EntityLimit : public Serializable {
 public:
 	EntityLimit();
 
+	string getType();
+
+	int getMinCount();
+	int getMaxCount();
+	int getMinX();
+	int getMaxX();
+	int getMinY();
+	int getMaxY();
 private:
 	string type;
 	int minCount;

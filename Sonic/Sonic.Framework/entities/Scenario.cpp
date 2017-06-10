@@ -33,7 +33,11 @@ void Scenario::setLayers(vector<Layer> layers)
 
 void Scenario::setEntities(vector<Entity*> entities)
 {
-	this->entities = entities;
+	this->entities.clear();
+	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
+	{
+		this->entities.push_back(*it);
+	}
 }
 
 vector<Entity*> Scenario::getEntities()

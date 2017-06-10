@@ -25,6 +25,41 @@ EntityLimit::EntityLimit()
 {
 }
 
+string EntityLimit::getType()
+{
+	return this->type;
+}
+
+int EntityLimit::getMinCount()
+{
+	return this->minCount;
+}
+
+int EntityLimit::getMaxCount()
+{
+	return this->maxCount;
+}
+
+int EntityLimit::getMinX()
+{
+	return this->minX;
+}
+
+int EntityLimit::getMaxX()
+{
+	return this->maxX;
+}
+
+int EntityLimit::getMinY()
+{
+	return this->minY;
+}
+
+int EntityLimit::getMaxY()
+{
+	return this->maxY;
+}
+
 void EntityLimit::unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;

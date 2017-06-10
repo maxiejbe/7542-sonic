@@ -13,6 +13,12 @@ class Level : public Serializable {
 public:
 	Level();
 	~Level();
+
+	vector<EntityLimit> getLimits();
+	Scenario getScenario();
+
+	void setEntities(vector<Entity*> entities);
+
 private:
 	Scenario scenario;
 	vector<EntityLimit> limits;

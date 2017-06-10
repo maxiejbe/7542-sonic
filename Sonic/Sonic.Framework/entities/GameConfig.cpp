@@ -10,6 +10,11 @@ GameConfig::GameConfig()
 {
 }
 
+vector<Level>* GameConfig::getLevels()
+{
+	return &(this->levels);
+}
+
 void GameConfig::unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;
