@@ -11,8 +11,15 @@ public:
 	EntityLimit();
 
 private:
+	string type;
 	int minCount;
 	int maxCount;
+
+	int minX;
+	int maxX;
+	int minY;
+	int maxY;
+
 
 	// Inherited via Serializable
 	virtual void unserialize(Value * nodeRef) override;

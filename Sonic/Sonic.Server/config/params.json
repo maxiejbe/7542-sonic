@@ -29,6 +29,104 @@
             }
           ]
         },
+        "limites": [
+          {
+            "tipo": "moneda",
+            "cantidad_minima": 1,
+            "cantidad_maxima": 10,
+            "min_x": 10,
+            "max_x": 10,
+            "min_y": 10,
+            "max_y": 10
+          },
+          {
+            "tipo": "bonus_super_ring",
+            "cantidad_minima": 1,
+            "cantidad_maxima": 10,
+            "min_x": 10,
+            "max_x": 10,
+            "min_y": 10,
+            "max_y": 10
+          },
+          {
+            "tipo": "bonus_invencibilidad",
+            "cantidad_minima": 1,
+            "cantidad_maxima": 10,
+            "min_x": 10,
+            "max_x": 10,
+            "min_y": 10,
+            "max_y": 10
+          },
+          {
+            "tipo": "bonus_escudo",
+            "cantidad_minima": 1,
+            "cantidad_maxima": 10,
+            "min_x": 10,
+            "max_x": 10,
+            "min_y": 10,
+            "max_y": 10
+          },
+          {
+            "tipo": "enemigo_cangrejo",
+            "cantidad_minima": 1,
+            "cantidad_maxima": 10,
+            "min_x": 10,
+            "max_x": 10,
+            "min_y": 10,
+            "max_y": 10
+          },
+          {
+            "tipo": "enemigo_pez",
+            "cantidad_minima": 1,
+            "cantidad_maxima": 10,
+            "min_x": 10,
+            "max_x": 10,
+            "min_y": 10,
+            "max_y": 10
+          },
+          {
+            "tipo": "enemigo_mosca",
+            "cantidad_minima": 1,
+            "cantidad_maxima": 10,
+            "min_x": 10,
+            "max_x": 10,
+            "min_y": 10,
+            "max_y": 10
+          },
+          {
+            "tipo": "obstaculo_pinche",
+            "cantidad_minima": 1,
+            "cantidad_maxima": 10,
+            "min_x": 10,
+            "max_x": 10,
+            "min_y": 10,
+            "max_y": 10
+          },
+          {
+            "tipo": "obstaculo_piedra",
+            "cantidad_minima": 1,
+            "cantidad_maxima": 10,
+            "min_x": 10,
+            "max_x": 10,
+            "min_y": 10,
+            "max_y": 10
+          }
+        ]
+      },
+      {
+        "escenario": {
+          "dimensiones": {
+            "ancho": 3600,
+            "alto": 600
+          },
+          "capas": [
+            {
+              "id": 1,
+              "index_z": 0,
+              "ruta_imagen": "img/level2.png"
+            }
+          ]
+        },
         "limites": [ ]
       },
       {
@@ -41,7 +139,7 @@
             {
               "id": 1,
               "index_z": 0,
-              "ruta_imagen": "img/level1.png"
+              "ruta_imagen": "img/level3.png"
             }
           ]
         },
