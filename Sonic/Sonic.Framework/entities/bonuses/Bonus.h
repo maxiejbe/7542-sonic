@@ -8,11 +8,6 @@ class Bonus : public Entity
 public:
 	Bonus();
 	~Bonus();
-
-	// Inherited via Serializable
-	void unserialize(Value* nodeRef) override;
-	char* getNodeName() override;
-	string serialize() override;
 private:
 	
 };

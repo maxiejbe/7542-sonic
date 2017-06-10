@@ -108,6 +108,34 @@ void Entity::setDimensions(Dimensions dimensions)
 	this->dimensions = dimensions;
 }
 
+string Entity::serialize() 
+{
+	StringBuffer s;
+	Writer<StringBuffer> writer(s);
+
+	writer.StartObject();
+	basePropertiesSerialization(writer);
+	writer.EndObject();
+
+	return s.GetString();
+}
+
+void Entity::basePropertiesSerialization(Writer<StringBuffer>& writer)
+{
+	writer.String(ENTITY_ID_NODE);
+	writer.Int(id);
+	writer.String(ENTITY_TYPE_NODE);
+	writer.String(type.c_str());
+	writer.String(ENTITY_COLOR_NODE);
+	writer.String(color.c_str());
+	writer.String(ENTITY_ZINDEX_NODE);
+	writer.Int(zIndex);
+	writer.String(coordinate.getNodeName());
+	writer.String(coordinate.serialize().c_str());
+	writer.String(dimensions.getNodeName());
+	writer.String(dimensions.serialize().c_str());
+}
+
 void Entity::unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;

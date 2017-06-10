@@ -32,6 +32,11 @@ public:
 	bool operator< (const Entity &other) const {
 		return zIndex < other.zIndex;
 	}
+	
+	// Inherited via Serializable
+	virtual string serialize() override;
+	virtual void unserialize(Value * nodeRef) override;
+	virtual char * getNodeName() override;
 protected:
 	int id;
 	string type;
@@ -42,10 +47,7 @@ protected:
 	int zIndex;
 	
 	void setColor(string color);
-
-	// Inherited via Serializable
-	virtual void unserialize(Value * nodeRef) override;
-	virtual char * getNodeName() override;
+	void basePropertiesSerialization(Writer<StringBuffer>& writer);
 };
 
 #endif
