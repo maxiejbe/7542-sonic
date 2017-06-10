@@ -30,6 +30,7 @@
     <ClCompile Include="network\NetworkManager.cpp" />
     <ClCompile Include="network\SocketClient.cpp" />
     <ClCompile Include="SelectTeamState.cpp" />
+    <ClCompile Include="utils\PlayerUtils.cpp" />
     <ClCompile Include="views\CircleView.cpp" />
     <ClCompile Include="views\common\EntityViewResolver.cpp" />
     <ClCompile Include="views\EntityView.cpp" />
@@ -75,6 +76,7 @@
     <ClInclude Include="network\NetworkManager.h" />
     <ClInclude Include="network\SocketClient.h" />
     <ClInclude Include="SelectTeamState.h" />
+    <ClInclude Include="utils\PlayerUtils.h" />
     <ClInclude Include="views\CircleView.h" />
     <ClInclude Include="views\common\Drawable.h" />
     <ClInclude Include="views\common\EntityViewResolver.h" />

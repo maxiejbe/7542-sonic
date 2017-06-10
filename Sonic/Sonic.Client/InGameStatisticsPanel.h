@@ -8,6 +8,7 @@
 #include "Texture.h"
 #include "views/PlayerView.h"
 #include "BaseStatisticsPanel.h"
+#include "utils/PlayerUtils.h"
 
 class InGameStatisticsPanel : public BaseStatisticsPanel
 {
@@ -19,8 +20,6 @@ public:
 	void freeSurfaceStatistics();
 
 private:
-	string calculatePlayerFilePath(Player* player);
-	string calculatePlayerName(Player* player);
 	Player* player;
 	TTF_Font* fontLifes;
 	TTF_Font* fontScore;

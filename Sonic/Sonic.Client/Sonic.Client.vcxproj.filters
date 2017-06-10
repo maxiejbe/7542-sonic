@@ -99,6 +99,9 @@
     <ClCompile Include="BaseStatisticsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="utils\PlayerUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -192,6 +195,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BaseStatisticsPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\PlayerUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
