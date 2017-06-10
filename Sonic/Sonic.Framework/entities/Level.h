@@ -16,7 +16,7 @@ public:
 
 	int getNumber();
 	vector<EntityLimit> getLimits();
-	Scenario getScenario();
+	Scenario* getScenario();
 
 	void setEntities(vector<Entity*> entities);
 	virtual string serialize() override;

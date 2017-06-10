@@ -53,7 +53,6 @@ int main(int argc, char* args[])
 	ServerConfiguration serverConfig;
 	Window window;
 	Configuration config;
-	Camera camera;
 	GameConfig gameConfig;
 	
 	parser->parse(&serverConfig);
@@ -62,21 +61,15 @@ int main(int argc, char* args[])
 	parser->parse(&gameConfig);
 
 	vector<Level>* levels = gameConfig.getLevels();
-	string levelSerialized;
 	for (vector<Level>::iterator it = levels->begin(); it != levels->end(); ++it)
 	{
 		vector<Entity*> entities = generateLevelEntities(*it);
 		(*it).setEntities(entities);
-		levelSerialized = (*it).serialize();
 	}
 
 
-
-	Scenario scenario;
-
-	camera = Camera(0, 0, window.getWidth(), window.getHeight(), window.getWidth(), window.getHeight(), scenario.getWidth(), scenario.getHeight());
-
-	Server* server = new Server(&serverConfig, parser->getFileContent(), &window, &config, &scenario, &camera);
+	Server* server = new Server(&serverConfig, parser->getFileContent(), &window, &config, &gameConfig);
+	
 	if (!server->validate()) {
 		return 0;
 	}

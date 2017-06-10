@@ -1,22 +1,20 @@
-#ifndef BONUS_H
-#define BONUS_H
+#ifndef OBSTACLE_H
+#define OBSTACLE_H
 
 #include "../Entity.h"
 
-class Bonus : public Entity
+class Obstacle : public Entity
 {
 public:
-	Bonus();
-	~Bonus();
+	Obstacle();
+	~Obstacle();
 
 	// Inherited via Serializable
 	void unserialize(Value* nodeRef) override;
 	char* getNodeName() override;
 	string serialize() override;
 private:
-	
+
 };
 
 #endif
-
-

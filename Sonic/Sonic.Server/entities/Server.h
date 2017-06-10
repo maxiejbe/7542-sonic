@@ -20,6 +20,7 @@
 #include "entities/Window.h"
 #include "entities/Configuration.h"
 #include "entities/Scenario.h"
+#include "entities/GameConfig.h"
 #include "entities/ServerConfiguration.h"
 #include "../controllers/CameraController.h"
 #include "../controllers/EnemyController.h"
@@ -38,7 +39,7 @@ class Server {
 
 public:
 	~Server();
-	Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario, Camera * camera);
+	Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, GameConfig* gameConfig);
 	bool validate();
 	void waitForClientConnections();
 	void sendBroadcast();
@@ -90,11 +91,14 @@ private:
 	ServerConfiguration* serverConfig;
 	Window* window;
 	Configuration* config;
+	
 	Scenario* scenario;
+	Camera* camera;
+
+	GameConfig* gameConfig;
 
 	unordered_map<int, Client*> clients;
 	vector<Client*> disconnectedClients;
-	Camera* camera;
 	//mutex clientMutex;
 
 	vector<Enemy*> enemies;

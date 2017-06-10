@@ -31,6 +31,8 @@
     <ClCompile Include="utils\StringUtils.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="entities\bonuses\Bonus.cpp" />
+    <ClCompile Include="entities\obstacle\Obstacle.cpp" />
+    <ClCompile Include="entities\rings\Ring.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entities\Camera.h" />
@@ -64,5 +66,7 @@
     <ClInclude Include="utils\StringUtils.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="entities\bonuses\Bonus.h" />
+    <ClInclude Include="entities\obstacle\Obstacle.h" />
+    <ClInclude Include="entities\rings\Ring.h" />
   </ItemGroup>
 </Project>
