@@ -14,12 +14,14 @@ public:
 	Level();
 	~Level();
 
+	int getNumber();
 	vector<EntityLimit> getLimits();
 	Scenario getScenario();
 
 	void setEntities(vector<Entity*> entities);
 
 private:
+	int number;
 	Scenario scenario;
 	vector<EntityLimit> limits;
 

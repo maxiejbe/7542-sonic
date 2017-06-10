@@ -1,5 +1,6 @@
 #include "Level.h"
 
+char* LEVEL_NUMBER_NODE = "numero";
 char* LEVEL_SCENARIO_NODE = "escenario";
 char* LEVEL_LIMITS_NODE = "limites";
 
@@ -12,6 +13,11 @@ Level::Level()
 
 Level::~Level()
 {
+}
+
+int Level::getNumber()
+{
+	return this->number;
 }
 
 vector<EntityLimit> Level::getLimits()
@@ -33,6 +39,8 @@ void Level::unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;
 	LOG(logINFO) << MESSAGE_PARSING_LEVEL_NODE;
+	
+	parseInt(&number, 0, nodeRef, LEVEL_NUMBER_NODE, Validator::intGreaterThanZero);
 
 	scenario.parseObject(nodeRef);
 
