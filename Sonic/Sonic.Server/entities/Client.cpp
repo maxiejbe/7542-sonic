@@ -13,12 +13,17 @@ const char* MESSAGE_CLIENT_DATA_RECV_SUCCESS = "Se recibió correctamente el mens
 
 const char* MESSAGE_CLIENT_SEND_MESSAGE_ERROR = "No se pudo enviar el mensaje ";
 const char* MESSAGE_CLIENT_SEND_FILE_CONTENT_ERROR = "No se pudo enviar el contenido del archivo de configuración";
+const char* MESSAGE_CLIENT_SEND_TEAMS_ERROR = "No se pudo enviar las opciones de equipos";
 const char* MESSAGE_CLIENT_SEND_MESSAGE_SUCCESS = "Se envió correctamente el mensaje ";
+
+const int CLIENT_DEFAULT_TEAM_ID = -1;
 
 
 Client::Client(Server* server)
 {
 	this->server = server;
+	this->userName = string();
+	this->teamId = CLIENT_DEFAULT_TEAM_ID;
 }
 
 Client::~Client()
@@ -179,6 +184,23 @@ bool Client::sendFileContent()
 	return true;
 }
 
+bool Client::sendTeamOptions() 
+{
+	int bytecount;
+
+	ServerMessage * message = this->server->getTeamOptionsMessage();
+	char * serializedMessage = StringUtils::convert(message->serialize());
+	delete message;
+
+	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
+		LOG(logERROR) << MESSAGE_CLIENT_SEND_TEAMS_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
+			<< " (Cliente " << this->getClientNumber() << ")";
+		return false;
+	}
+
+	return true;
+}
+
 bool Client::sendPlayersStatus()
 {
 	int bytecount;
@@ -259,8 +281,13 @@ void Client::handleReceivedMessage(char* recievedMessage)
 		sendFileContent();
 		break;
 	case content_ok:
-		this->server->addConnectedClients();
+		//TODO: check if its a cooperative game
+		this->sendTeamOptions();
 		break;
+	case username:
+		this->userName = message->getUserName();
+		this->teamId = message->getTeamId();
+		this->server->addConnectedClients();
 	case start_game_ok:
 		this->continueRefreshing = true;
 		this->refreshThreadHandle = CreateThread(0, 0, refreshSocketHandler, (void*)this, 0, &this->refreshThreadId);

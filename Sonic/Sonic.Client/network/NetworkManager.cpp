@@ -154,6 +154,13 @@ void NetworkManager::handleMessage(char * receivedMessage)
 	case content:
 		this->fileContent = sMessage->getFileContent();
 		break;
+	case team_options:
+		//TODO: HANDLE TEAM OPTIONS
+		//ignore for now and send username
+		clientResponse->setType(MessageType::username);
+		clientResponse->setUserName("User#" + to_string(this->playerNumber));
+		this->sendMessage(clientResponse);
+		break;
 	case start_game:
 		//if (!this->startGame) {
 		clientResponse->setType(MessageType::start_game_ok);
