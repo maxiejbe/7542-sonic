@@ -21,6 +21,11 @@ vector<Entity*> generateLevelEntities(Level level) {
 			Entity* entity = EntityResolver::resolve(elit->getType());
 			if (entity == nullptr) continue;
 
+			int x = getRandomBetween(elit->getMinX(), elit->getMaxX());
+			int y = getRandomBetween(elit->getMinY(), elit->getMaxY());
+			Coordinate coordinate(x, y);
+			entity->setCoordinate(coordinate);
+
 			//TODO: Set random position
 			levelEntities.push_back(entity);
 		}
