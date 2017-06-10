@@ -16,6 +16,7 @@
   "juego": {
     "niveles": [
       {
+        "numero":  1,
         "escenario": {
           "dimensiones": {
             "ancho": 3600,
@@ -114,6 +115,7 @@
         ]
       },
       {
+        "numero": 2,
         "escenario": {
           "dimensiones": {
             "ancho": 3600,
@@ -209,9 +211,10 @@
             "min_y": 10,
             "max_y": 10
           }
-		]
+        ]
       },
       {
+        "numero": 3,
         "escenario": {
           "dimensiones": {
             "ancho": 3600,
@@ -226,7 +229,7 @@
           ]
         },
         "limites": [
-		  {
+          {
             "tipo": "moneda",
             "cantidad_minima": 10,
             "cantidad_maxima": 20,
@@ -307,7 +310,7 @@
             "min_y": 10,
             "max_y": 10
           }
-		]
+        ]
       }
     ]
   } 
