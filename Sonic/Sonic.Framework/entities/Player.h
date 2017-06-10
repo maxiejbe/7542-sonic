@@ -13,6 +13,8 @@ using namespace std;
 
 enum FacingDirection { FACING_LEFT, FACING_RIGHT };
 
+const int PLAYER_DEFAULT_LIVES = 3;
+
 class Player : public Serializable
 {
 public:
@@ -28,6 +30,11 @@ public:
 		this->isConnected = true;
 		this->time = 0;
 		this->testMode = false;
+
+		this->lives = PLAYER_DEFAULT_LIVES;
+		this->rings = 0;
+		this->score = 0;
+		this->teamId = -1;
 	}
 	Player(Player&);
 
@@ -81,6 +88,19 @@ public:
 	PlayerType calculatePlayerType();
 	double calculateGroundPos(int windowHeight);
 
+	//game properties
+	void resetLives();
+	void loseALive();
+	int getLives();
+	void addScorePoints(int);
+	void resetScore();
+	int getScore();
+	void addRings(int);
+	int getRings();
+	void resetRings();
+	void setTeamId(int);
+	int getTeamId();
+
 	// Inherited via Serializable
 	void unserialize(Value* nodeRef) override;
 	char* getNodeName() override;
@@ -102,6 +122,12 @@ private:
 	bool isConnected;
 	int time;
 	bool testMode;
+
+	//game properties
+	int lives;
+	int score;
+	int rings;
+	int teamId;
 
 	mutex playerMutex;
 };

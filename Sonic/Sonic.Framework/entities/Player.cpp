@@ -19,7 +19,10 @@ const char* PLAYER_FILE_PATH_NODE = "fp";
 const char* PLAYER_TYPE_NODE = "pt";
 const char* PLAYER_IS_CONNECTED_NODE = "ic";
 const char* PLAYER_MILLISECONDS = "ms";
-
+const char* PLAYER_LIVES_NODE = "l";
+const char* PLAYER_SCORE_NODE = "sre";
+const char* PLAYER_RINGS_NODE = "r";
+const char* PLAYER_TEAMID_NODE = "t";
 
 Player::Player()
 {
@@ -38,6 +41,11 @@ Player::Player()
 	this->spriteState = PlayerStatus::idle;
 	this->isConnected = true;
 	this->testMode = false;
+
+	this->lives = PLAYER_DEFAULT_LIVES;
+	this->rings = 0;
+	this->score = 0;
+	this->teamId = -1;
 
 	this->time = 0;
 }
@@ -63,6 +71,12 @@ void Player::copyFrom(Player & anotherPlayer)
 	this->setIsConnected(anotherPlayer.getIsConnected());
 	this->setTime(anotherPlayer.getTime());
 	this->setTestMode(anotherPlayer.getTestMode());
+	
+	//game properties
+	this->lives = anotherPlayer.getLives();
+	this->rings = anotherPlayer.getRings();
+	this->score = anotherPlayer.getScore();
+	this->teamId = anotherPlayer.getTeamId();
 }
 
 void Player::lock()
@@ -275,6 +289,61 @@ double Player::calculateGroundPos(int windowHeight)
 	}
 }
 
+void Player::resetLives()
+{
+	this->lives = 0;
+}
+
+void Player::loseALive()
+{
+	if (this->lives > 0) this->lives--;
+}
+
+int Player::getLives()
+{
+	return this->lives;
+}
+
+void Player::addScorePoints(int points)
+{
+	this->score += points;
+}
+
+void Player::resetScore()
+{
+	this->score = 0;
+}
+
+int Player::getScore()
+{
+	return this->score;
+}
+
+void Player::addRings(int rings)
+{
+	this->rings += rings;
+}
+
+int Player::getRings()
+{
+	return this->rings;
+}
+
+void Player::resetRings()
+{
+	this->rings = 0;
+}
+
+void Player::setTeamId(int teamId)
+{
+	this->teamId = teamId;
+}
+
+int Player::getTeamId()
+{
+	return this->teamId;
+}
+
 void Player::unserialize(Value * nodeRef)
 {
 	//position x
@@ -305,6 +374,12 @@ void Player::unserialize(Value * nodeRef)
 	parseBool(&isConnected, false, nodeRef, PLAYER_IS_CONNECTED_NODE);
 	//time
 	parseInt(&time, 0, nodeRef, PLAYER_MILLISECONDS);
+
+	//game properties
+	parseInt(&lives, 0, nodeRef, PLAYER_LIVES_NODE, Validator::intGreaterThanOrEqualToZero);
+	parseInt(&rings, 0, nodeRef, PLAYER_RINGS_NODE, Validator::intGreaterThanOrEqualToZero);
+	parseInt(&score, 0, nodeRef, PLAYER_SCORE_NODE, Validator::intGreaterThanOrEqualToZero);
+	parseInt(&teamId, -1, nodeRef, PLAYER_TEAMID_NODE, Validator::intGreaterThanOrEqualToZero);
 }
 
 void Player::serializePlayer()
@@ -350,6 +425,16 @@ string Player::serialize()
 	writer.Bool(this->isConnected);
 	writer.String(PLAYER_MILLISECONDS);
 	writer.Int(this->time);
+
+	//game properties
+	writer.String(PLAYER_LIVES_NODE);
+	writer.Int(this->lives);
+	writer.String(PLAYER_RINGS_NODE);
+	writer.Int(this->rings);
+	writer.String(PLAYER_SCORE_NODE);
+	writer.Int(this->score);
+	writer.String(PLAYER_TEAMID_NODE);
+	writer.Int(this->teamId);
 
 	int(time);
 
