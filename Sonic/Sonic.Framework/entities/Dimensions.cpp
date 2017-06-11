@@ -40,10 +40,8 @@ int Dimensions::getRadio()
 	return radio;
 }
 
-string Dimensions::serialize()
+void Dimensions::serialize(Writer<StringBuffer>& writer)
 {
-	StringBuffer s;
-	Writer<StringBuffer> writer(s);
 	writer.StartObject();
 	writer.String(DIMENSIONS_WIDTH_NODE);
 	writer.Int(width);
@@ -52,7 +50,13 @@ string Dimensions::serialize()
 	writer.String(DIMENSIONS_RADIO_NODE);
 	writer.Int(radio);
 	writer.EndObject();
+}
 
+string Dimensions::serialize()
+{
+	StringBuffer s;
+	Writer<StringBuffer> writer(s);
+	serialize(writer);
 	return s.GetString();
 }
 

@@ -74,7 +74,7 @@ string Scenario::serialize()
 void Scenario::serialize(Writer<StringBuffer> &writer) {
 	writer.StartObject();
 	writer.String(dimensions.getNodeName());
-	writer.String(dimensions.serialize().c_str());
+	dimensions.serialize(writer);
 	serializeLayers(writer);
 	writer.EndObject();
 }

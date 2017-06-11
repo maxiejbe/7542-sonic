@@ -16,6 +16,7 @@ public:
 	int getHeight();
 	int getRadio();
 
+	void serialize(Writer<StringBuffer>&writer);
 	// Inherited via Serializable
 	virtual string serialize() override;
 	virtual void unserialize(Value * parentNode) override;
