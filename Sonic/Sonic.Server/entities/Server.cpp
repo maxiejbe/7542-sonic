@@ -254,6 +254,11 @@ void Server::resetLevel()
 	this->camera = &Camera(0, 0, window->getWidth(), window->getHeight(), window->getWidth(), window->getHeight(), scenario->getWidth(), scenario->getHeight());
 }
 
+vector<Level>* Server::getLevels()
+{
+	return this->gameConfig->getLevels();
+}
+
 SOCKET Server::getSocket()
 {
 	return this->_socket;

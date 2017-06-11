@@ -48,6 +48,7 @@ public:
 	void addConnectedClients();
 
 	void resetLevel();
+	vector<Level>* getLevels();
 
 	SOCKET getSocket();
 	string getFileContent();

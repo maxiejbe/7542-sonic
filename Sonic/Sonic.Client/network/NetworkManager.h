@@ -33,7 +33,8 @@ public:
 	bool canStartGame();
 
 	int getPlayerNumber();
-	string getFileContent();
+
+	vector<Level>* getLevels();
 
 	bool connectToServer(ServerConfiguration serverConfig);
 
@@ -46,7 +47,7 @@ private:
 	bool startGame;
 
 	int playerNumber;
-	string fileContent;
+	vector<Level> * gameLevels;
 
 	void updatePlayerViews(vector<Player*> playerStatus);
 	void updateCamera(Camera* camera);

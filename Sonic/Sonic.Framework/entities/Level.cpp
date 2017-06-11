@@ -44,7 +44,7 @@ string Level::serialize()
 	writer.String(LEVEL_NUMBER_NODE);
 	writer.Int(this->number);
 	writer.String(LEVEL_SCENARIO_NODE);
-	writer.String(this->scenario.serialize().c_str());
+	this->scenario.serialize(writer);
 	writer.EndObject();
 	return s.GetString();
 }

@@ -67,13 +67,16 @@ string Scenario::serialize()
 {
 	StringBuffer s;
 	Writer<StringBuffer> writer(s);
+	serialize(writer);
+	return s.GetString();
+}
 
+void Scenario::serialize(Writer<StringBuffer> &writer) {
 	writer.StartObject();
 	writer.String(dimensions.getNodeName());
 	writer.String(dimensions.serialize().c_str());
 	serializeLayers(writer);
 	writer.EndObject();
-	return s.GetString();
 }
 
 void Scenario::unserialize(Value * nodeRef)

@@ -19,15 +19,14 @@ public:
 	Scenario* getScenario();
 
 	void setEntities(vector<Entity*> entities);
+	// Inherited via Serializable
 	virtual string serialize() override;
+	virtual void unserialize(Value * nodeRef) override;
+	virtual char * getNodeName() override;
 private:
 	int number;
 	Scenario scenario;
 	vector<EntityLimit> limits;
-
-	// Inherited via Serializable
-	virtual void unserialize(Value * nodeRef) override;
-	virtual char * getNodeName() override;
 };
 
 #endif

@@ -28,6 +28,7 @@ public:
 	void serializeLayers(Writer<StringBuffer>& writer);
 	// Inherited via Serializable
 	virtual string serialize() override;
+	void serialize(Writer<StringBuffer>& writer);
 	virtual void unserialize(Value * nodeRef) override;
 	virtual char * getNodeName() override;
 private:
