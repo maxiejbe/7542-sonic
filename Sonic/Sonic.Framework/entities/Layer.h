@@ -11,6 +11,8 @@ class Layer : public Serializable {
 public:
 	Layer();
 
+	void serialize(Writer<StringBuffer>& writer);
+
 	int getZIndex();
 	string getImagePath();
 	void setImagePath(string imagePath);

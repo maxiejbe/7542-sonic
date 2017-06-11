@@ -57,7 +57,7 @@ void Scenario::serializeLayers(Writer<StringBuffer>& writer)
 	writer.StartArray();
 
 	for (vector<Layer>::iterator it = layers.begin(); it != layers.end(); it++) {
-		writer.String((*it).serialize().c_str());
+		(*it).serialize(writer);
 	}
 
 	writer.EndArray();

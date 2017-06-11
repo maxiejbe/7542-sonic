@@ -15,18 +15,21 @@ Layer::Layer()
 {
 }
 
-string Layer::serialize()
+void Layer::serialize(Writer<StringBuffer> &writer)
 {
-	StringBuffer s;
-	Writer<StringBuffer> writer(s);
-
 	writer.StartObject();
 	writer.String(LAYER_ID_NODE);
 	writer.Int(id);
 	writer.String(LAYER_ZINDEX_NODE);
 	writer.Int(zIndex);
 	writer.EndObject();
+}
 
+string Layer::serialize()
+{
+	StringBuffer s;
+	Writer<StringBuffer> writer(s);
+	serialize(writer);
 	return s.GetString();
 }
 

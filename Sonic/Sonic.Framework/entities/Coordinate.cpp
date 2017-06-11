@@ -26,16 +26,21 @@ int Coordinate::getY() {
 	return y;
 }
 
-string Coordinate::serialize() 
+void Coordinate::serialize(Writer<StringBuffer>&writer) 
 {
-	StringBuffer s;
-	Writer<StringBuffer> writer(s);
 	writer.StartObject();
 	writer.String(COORDINATE_X_NODE);
 	writer.Int(x);
 	writer.String(COORDINATE_Y_NODE);
 	writer.Int(y);
 	writer.EndObject();
+}
+
+string Coordinate::serialize() 
+{
+	StringBuffer s;
+	Writer<StringBuffer> writer(s);
+	serialize(writer);
 	return s.GetString();
 }
 

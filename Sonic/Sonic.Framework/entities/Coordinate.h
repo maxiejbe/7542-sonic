@@ -11,6 +11,7 @@ public:
 	int getX();
 	int getY();
 
+	void serialize(Writer<StringBuffer>&writer);
 	// Inherited via Serializable
 	virtual string serialize() override;
 	virtual void unserialize(Value * nodeRef) override;
