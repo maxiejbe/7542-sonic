@@ -13,7 +13,7 @@ ServerMessage::ServerMessage()
 	this->type = typeless;
 	this->players = vector<Player*>();
 	this->enemies = vector<Enemy*>();
-	this->levels = &vector<Level>();
+	this->levels = new vector<Level>();
 	this->camera = nullptr;
 }
 
