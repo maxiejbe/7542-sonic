@@ -4,6 +4,7 @@
 #include <string>
 #include "Dimensions.h"
 #include "Coordinate.h"
+#include "Player.h"
 #include "common/Serializable.h"
 #include "common/Validator.h"
 
@@ -29,9 +30,17 @@ public:
 	Dimensions getDimensions();
 	void setDimensions(Dimensions);
 
+	virtual void onCollision(Player* player) = 0;
+
 	bool operator< (const Entity &other) const {
 		return zIndex < other.zIndex;
 	}
+	
+	void serialize(Writer<StringBuffer>& writer);
+	// Inherited via Serializable
+	virtual string serialize() override;
+	virtual void unserialize(Value * nodeRef) override;
+	virtual char * getNodeName() override;
 protected:
 	int id;
 	string type;
@@ -42,10 +51,7 @@ protected:
 	int zIndex;
 	
 	void setColor(string color);
-
-	// Inherited via Serializable
-	virtual void unserialize(Value * nodeRef) override;
-	virtual char * getNodeName() override;
+	void basePropertiesSerialization(Writer<StringBuffer>& writer);
 };
 
 #endif

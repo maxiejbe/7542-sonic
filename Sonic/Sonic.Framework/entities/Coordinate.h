@@ -10,13 +10,15 @@ public:
 	Coordinate(int, int);
 	int getX();
 	int getY();
+
+	void serialize(Writer<StringBuffer>&writer);
+	// Inherited via Serializable
+	virtual string serialize() override;
+	virtual void unserialize(Value * nodeRef) override;
+	virtual char * getNodeName() override;
 private:
 	int x;
 	int y;
-
-	// Inherited via Serializable
-	virtual void unserialize(Value * nodeRef) override;
-	virtual char * getNodeName() override;
 };
 
 #endif

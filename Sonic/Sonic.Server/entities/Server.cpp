@@ -54,7 +54,7 @@ void Server::terminateThreads()
 	}
 }
 
-Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario, Camera * camera)
+Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, GameConfig* gameConfig)
 {
 	this->portNumber = serverConfig->getPortNumber();
 
@@ -62,9 +62,10 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 	this->fileContent = fileContent;
 	this->window = window;
 	this->config = config;
-	this->scenario = scenario;
-	//initialize camera
-	this->camera = camera;
+	this->gameConfig = gameConfig;
+
+	this->currentLevel = 1; // First level 
+	this->resetLevel();
 
 	this->isValid = false;
 
@@ -242,6 +243,20 @@ void Server::addConnectedClients()
 		*/
 		this->sendBroadcast();
 	}
+}
+
+void Server::resetLevel()
+{
+	Level* level = &this->gameConfig->getLevels()->at(this->currentLevel - 1);
+	this->scenario = level->getScenario();
+
+	//initialize camera
+	this->camera = &Camera(0, 0, window->getWidth(), window->getHeight(), window->getWidth(), window->getHeight(), scenario->getWidth(), scenario->getHeight());
+}
+
+vector<Level>* Server::getLevels()
+{
+	return this->gameConfig->getLevels();
 }
 
 SOCKET Server::getSocket()

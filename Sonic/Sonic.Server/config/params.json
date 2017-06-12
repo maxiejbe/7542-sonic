@@ -32,7 +32,7 @@
         },
         "limites": [
           {
-            "tipo": "moneda",
+            "tipo": "anillo",
             "cantidad_minima": 20,
             "cantidad_maxima": 30,
             "min_x": 10,
@@ -131,7 +131,7 @@
         },
         "limites": [
           {
-            "tipo": "moneda",
+            "tipo": "anillo",
             "cantidad_minima": 15,
             "cantidad_maxima": 25,
             "min_x": 10,
@@ -230,7 +230,7 @@
         },
         "limites": [
           {
-            "tipo": "moneda",
+            "tipo": "anillo",
             "cantidad_minima": 10,
             "cantidad_maxima": 20,
             "min_x": 10,

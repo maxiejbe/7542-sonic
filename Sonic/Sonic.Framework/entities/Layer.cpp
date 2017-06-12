@@ -15,6 +15,24 @@ Layer::Layer()
 {
 }
 
+void Layer::serialize(Writer<StringBuffer> &writer)
+{
+	writer.StartObject();
+	writer.String(LAYER_ID_NODE);
+	writer.Int(id);
+	writer.String(LAYER_ZINDEX_NODE);
+	writer.Int(zIndex);
+	writer.EndObject();
+}
+
+string Layer::serialize()
+{
+	StringBuffer s;
+	Writer<StringBuffer> writer(s);
+	serialize(writer);
+	return s.GetString();
+}
+
 void Layer::unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;

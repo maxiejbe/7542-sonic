@@ -14,6 +14,7 @@ const char* MESSAGE_CLIENT_DATA_RECV_SUCCESS = "Se recibió correctamente el mens
 const char* MESSAGE_CLIENT_SEND_MESSAGE_ERROR = "No se pudo enviar el mensaje ";
 const char* MESSAGE_CLIENT_SEND_FILE_CONTENT_ERROR = "No se pudo enviar el contenido del archivo de configuración";
 const char* MESSAGE_CLIENT_SEND_MESSAGE_SUCCESS = "Se envió correctamente el mensaje ";
+const char* MESSAGE_CLIENT_SEND_LEVEL_ERROR = "No se pudo enviar los niveles";
 
 
 Client::Client(Server* server)
@@ -161,20 +162,20 @@ bool Client::sendClientNumber()
 	return true;
 }
 
-bool Client::sendFileContent()
+bool Client::sendLevels()
 {
 	int bytecount;
 
 	ServerMessage * message = new ServerMessage();
-	message->setType(content);
-	message->setFileContent(this->server->getFileContent());
+	message->setType(levels_content);
+	message->setLevels(this->server->getLevels());
 	string serializedMessage = message->serialize();
 
-	const char* fileContentMessage = serializedMessage.c_str();
+	const char* levelsMessage = serializedMessage.c_str();
 	delete message;
 
-	if ((bytecount = send(this->socket, fileContentMessage, strlen(fileContentMessage), 0)) == SOCKET_ERROR) {
-		LOG(logERROR) << MESSAGE_CLIENT_SEND_FILE_CONTENT_ERROR << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
+	if ((bytecount = send(this->socket, levelsMessage, strlen(levelsMessage), 0)) == SOCKET_ERROR) {
+		LOG(logERROR) << MESSAGE_CLIENT_SEND_LEVEL_ERROR << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->clientNumber << ")";
 		return false;
 	}
@@ -209,7 +210,7 @@ bool Client::sendGameStart()
 	int bytecount;
 
 	ServerMessage* message = new ServerMessage();
-	message->setType(ServerMessageType::start_game);
+	message->setType(ServerMessageType::level_start);
 	char* serializedMessage = StringUtils::convert(message->serialize());
 	delete message;
 
@@ -280,7 +281,7 @@ void Client::handleReceivedMessage(char* recievedMessage)
 	switch (message->getType())
 	{
 	case player_assign_ok:
-		sendFileContent();
+		sendLevels();
 		break;
 	case content_ok:
 		this->server->addConnectedClients();

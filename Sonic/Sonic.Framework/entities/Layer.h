@@ -11,20 +11,23 @@ class Layer : public Serializable {
 public:
 	Layer();
 
+	void serialize(Writer<StringBuffer>& writer);
+
 	int getZIndex();
 	string getImagePath();
 	void setImagePath(string imagePath);
 	bool operator< (const Layer &other) const {
 		return zIndex < other.zIndex;
 	}
+
+	// Inherited via Serializable
+	virtual string serialize() override;
+	virtual void unserialize(Value * nodeRef) override;
+	virtual char * getNodeName() override;
 private:
 	int id;
 	int zIndex;
 	string imagePath;
-	
-	// Inherited via Serializable
-	virtual void unserialize(Value * nodeRef) override;
-	virtual char * getNodeName() override;
 };
 
 #endif

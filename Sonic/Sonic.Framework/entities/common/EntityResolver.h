@@ -5,17 +5,16 @@
 #include "../Circle.h"
 #include "../Square.h"
 #include "../Dimensions.h"
-#include "../enemies/Enemy.h";
+#include "../enemies/Enemy.h"
 #include <string>
 
-enum EntityType { obstaculo_pinche, obstaculo_piedra, moneda, bonus_super_ring, bonus_invencibilidad, bonus_escudo, enemigo_cangrejo, enemigo_pez, enemigo_mosca, null };
+enum EntityType { obstaculo_pinche, obstaculo_piedra, anillo, bonus_super_ring, bonus_invencibilidad, bonus_escudo, enemigo_cangrejo, enemigo_pez, enemigo_mosca, null };
 //enum EntityType { rectangle, circle, square, enemy, null };
 
 enum EntityColor {  red, yellow, green, blue };
 
 class EntityResolver {
 public: 
-	static Entity* resolve(Entity* origin);
 	static Entity* resolve(string);
 
 	static Dimensions getDefaultDimensions(Entity* entity);

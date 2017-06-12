@@ -1,6 +1,5 @@
 #include "Enemy.h"
 
-const char* ENEMY_TYPE_NODE = "t";
 const char* ENEMY_FACING_DIRECTION_NODE = "fd";
 const char* EMEMY_ALIVE_NODE = "a";
 
@@ -101,13 +100,9 @@ string Enemy::getSerializedEnemy()
 
 void Enemy::unserialize(Value * nodeRef)
 {
-	/*coordinate.parseObject(nodeRef);
-	parseInt(&width, 0, nodeRef, ENEMY_WIDTH_NODE, Validator::intGreaterThanZero);
-	parseInt(&height, 0, nodeRef, ENEMY_HEIGHT_NODE, Validator::intGreaterThanZero);
-	parseInt((int*)&type, 0, nodeRef, ENEMY_TYPE_NODE, Validator::intGreaterThanOrEqualToZero);
+	Entity::unserialize(nodeRef);
 	parseInt((int*)&facingDirection, 0, nodeRef, ENEMY_FACING_DIRECTION_NODE, Validator::intGreaterThanOrEqualToZero);
-	parseBool(&alive, true, nodeRef, EMEMY_ALIVE_NODE);*/
-	
+	parseBool(&alive, true, nodeRef, EMEMY_ALIVE_NODE);
 }
 
 char * Enemy::getNodeName()
@@ -117,30 +112,20 @@ char * Enemy::getNodeName()
 
 string Enemy::serialize()
 {
-	/*StringBuffer s;
+	StringBuffer s;
 	Writer<StringBuffer> writer(s);
-
-	writer.SetMaxDecimalPlaces(4);
 	writer.StartObject();
-
-	writer.String(ENEMY_X_POSITION_NODE);
-	writer.Double(this->position.x);
-	writer.String(ENEMY_Y_POSITION_NODE);
-	writer.Double(this->position.y);
-	writer.String(ENEMY_WIDTH_NODE);
-	writer.Int(this->width);
-	writer.String(ENEMY_HEIGHT_NODE);
-	writer.Int(this->height);
-	writer.String(ENEMY_TYPE_NODE);
-	writer.Int(this->type);
-	writer.String(ENEMY_FACING_DIRECTION_NODE);
-	writer.Int(this->facingDirection);
+	basePropertiesSerialization(writer);
 	writer.String(EMEMY_ALIVE_NODE);
-	writer.Bool(this->alive);
-
+	writer.Bool(alive);
+	writer.String(ENEMY_FACING_DIRECTION_NODE);
+	writer.Int(facingDirection);
 	writer.EndObject();
-	return s.GetString();*/
 
-	return string();
+	return s.GetString();
+}
+
+void Enemy::onCollision(Player * player)
+{
 }
 
