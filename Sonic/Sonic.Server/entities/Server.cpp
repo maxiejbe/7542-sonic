@@ -332,7 +332,7 @@ ServerMessage* Server::getStatusMessage()
 	CameraController::updateCamera(this->camera, clientsPlayers);
 
 	ServerMessage * message = new ServerMessage();
-	message->setType(level_status);
+	message->setType(player_entities_status);
 	message->setPlayers(clientsPlayers);
 	message->setEntities(this->gameConfig->getLevel(this->currentLevel)->getScenario()->getEntities());
 	message->setCamera(new Camera(*this->camera));
