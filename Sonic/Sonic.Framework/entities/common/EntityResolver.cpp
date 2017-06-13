@@ -1,16 +1,45 @@
 #include "EntityResolver.h"
 #include "EntityResolver.h"	
 
+const char* ENTITYRESOLVER_ENTITY_TYPE_NODE = "tipo";
+
 Entity * EntityResolver::resolve(string entityType)
 {
 	Entity* destination = nullptr;
 
-	if ((entityType == toTypeString(EntityType::enemigo_cangrejo)) ||
-		(entityType == toTypeString(EntityType::enemigo_mosca)) ||
-		(entityType == toTypeString(EntityType::enemigo_pez))) {
+	if (entityType == toTypeString(EntityType::obstaculo_pinche) ||
+		entityType == toTypeString(EntityType::obstaculo_piedra)) {
+		//destination = new Obstacle(entityType); //TODO
+	}
+	else if (entityType == toTypeString(EntityType::moneda)) {
+		//destination = new Ring(entityType); //TODO
+	}
+	else if (entityType == toTypeString(EntityType::bonus_super_ring) ||
+		entityType == toTypeString(EntityType::bonus_invencibilidad) ||
+		entityType == toTypeString(EntityType::bonus_escudo)) {
+		//destination = new Bonus(entityType); //TODO
+	}
+	else if (entityType == toTypeString(EntityType::enemigo_cangrejo) ||
+		entityType == toTypeString(EntityType::enemigo_pez) ||
+		entityType == toTypeString(EntityType::enemigo_mosca)) {
 		destination = new Enemy(entityType);
 	}
+
 	return destination;
+}
+
+Entity * EntityResolver::parse(Value* nodeRef)
+{
+	Value& node = *nodeRef;
+	if (nodeRef == nullptr || !node.HasMember(ENTITYRESOLVER_ENTITY_TYPE_NODE)) return nullptr;
+
+	const Value& entityType = node[ENTITYRESOLVER_ENTITY_TYPE_NODE];
+
+	if (!entityType.IsString()) return nullptr;
+
+	Entity* entity = resolve(string(entityType.GetString()));
+	entity->unserialize(nodeRef);
+	return entity;
 }
 
 Dimensions EntityResolver::getDefaultDimensions(Entity * entity)
@@ -30,7 +59,19 @@ Dimensions EntityResolver::getDefaultDimensions(Entity * entity)
 
 EntityType EntityResolver::fromTypeString(string entityType)
 {
-	if (entityType == "enemigo_cangrejo")
+	if (entityType == "obstaculo_pinche")
+		return EntityType::obstaculo_pinche;
+	else if (entityType == "obstaculo_piedra")
+		return EntityType::obstaculo_piedra;
+	else if (entityType == "moneda")
+		return EntityType::moneda;
+	else if (entityType == "bonus_super_ring")
+		return EntityType::bonus_super_ring;
+	else if (entityType == "bonus_invencibilidad")
+		return EntityType::bonus_invencibilidad;
+	else if (entityType == "bonus_escudo")
+		return EntityType::bonus_escudo;
+	else if (entityType == "enemigo_cangrejo")
 		return EntityType::enemigo_cangrejo;
 	else if (entityType == "enemigo_pez")
 		return EntityType::enemigo_pez;
@@ -43,14 +84,26 @@ EntityType EntityResolver::fromTypeString(string entityType)
 string EntityResolver::toTypeString(EntityType entityType)
 {
 	switch (entityType) {
-		case EntityType::enemigo_cangrejo:
-			return "enemigo_cangrejo";
-		case EntityType::enemigo_pez:
-			return "enemigo_pez";
-		case EntityType::enemigo_mosca:
-			return "enemigo_mosca";
-		default:
-			return "";
+	case EntityType::obstaculo_pinche:
+		return "obstaculo_pinche";
+	case EntityType::obstaculo_piedra:
+		return "obstaculo_piedra";
+	case EntityType::moneda:
+		return "moneda";
+	case EntityType::bonus_super_ring:
+		return "bonus_super_ring";
+	case EntityType::bonus_invencibilidad:
+		return "bonus_invencibilidad";
+	case EntityType::bonus_escudo:
+		return "bonus_escudo";
+	case EntityType::enemigo_cangrejo:
+		return "enemigo_cangrejo";
+	case EntityType::enemigo_pez:
+		return "enemigo_pez";
+	case EntityType::enemigo_mosca:
+		return "enemigo_mosca";
+	default:
+		return "";
 	}
 }
 

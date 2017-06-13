@@ -35,6 +35,7 @@ public:
 	bool sendGameStart();
 	bool sendEnemiesStatus(string);
 	bool sendPlayersStatus();
+	bool sendEntitiesStatus();
 	bool refreshPlayer();
 
 	void setClientNumber(int);

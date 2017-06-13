@@ -339,6 +339,14 @@ ServerMessage* Server::getPlayersStatusMessage()
 	return message;
 }
 
+ServerMessage * Server::getEntitiesStatusMessage()
+{
+	ServerMessage * message = new ServerMessage();
+	message->setType(entities_status);
+	message->setEntities(this->gameConfig->getLevel(this->currentLevel)->getScenario()->getEntities());
+	return message;
+}
+
 
 vector<Player*> Server::clientsPlayers()
 {

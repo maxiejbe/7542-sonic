@@ -12,6 +12,7 @@ public:
 	GameConfig();
 
 	vector<Level>* getLevels();
+	Level * getLevel(int);
 
 private:
 	vector<Level> levels;

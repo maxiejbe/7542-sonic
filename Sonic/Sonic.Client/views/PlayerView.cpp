@@ -28,14 +28,14 @@ PlayerView::~PlayerView()
 void PlayerView::render(int camX, int camY)
 {
 	// Check texture
-	if (this->texture.getTexture() == nullptr && !this->texture.loadFromFile(calculatePlayerFilePath())) {
-		LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << calculatePlayerFilePath() << "'.";
+	if (this->texture.getTexture() == nullptr && !this->texture.loadFromFile(PlayerUtils::getPlayerSpritesheetPath(this->player))) {
+		LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << PlayerUtils::getPlayerSpritesheetPath(this->player) << "'.";
 		return;
 	}
 
 	if (!this->player->getIsConnected() && !this->isGreyed) {
 		// Se desconecto, lo griso
-		string filePath = calculateDisconnectedPlayerPath();
+		string filePath = PlayerUtils::getDisconnectedPlayerSpritesheetPath(this->player);
 		if (!this->texture.loadFromFile(filePath)) {
 			LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << filePath << "'.";
 			return;
@@ -44,27 +44,20 @@ void PlayerView::render(int camX, int camY)
 	}
 	else if (this->player->getIsConnected() && this->isGreyed) {
 		// Volvio a conectarse, lo coloreo
-		if (!this->texture.loadFromFile(calculatePlayerFilePath())) {
-			LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << calculatePlayerFilePath() << "'.";
+		if (!this->texture.loadFromFile(PlayerUtils::getPlayerSpritesheetPath(this->player))) {
+			LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << PlayerUtils::getPlayerSpritesheetPath(this->player) << "'.";
 			return;
 		}
 		this->isGreyed = false;
 	}
 
-	//// Calculate current sprite
-	//Uint32 ticks = SDL_GetTicks();
-	//Uint32 sprite = (ticks / 90) % getFramesCount(this->player->getSpriteState());
+	// Calculate current sprite
 	Uint32 sprite = (this->player->getTime() / getFramesDivision(this->player->getSpriteState())) % getFramesCount(this->player->getSpriteState()); //90
 
 	SDL_Rect* currentClip = &spriteClips[player->getSpriteState()][sprite];
 
 	// Scale
 	SDL_Rect dest = { (int)(player->getPosition().x - camX), (int)(player->getPosition().y - camY), currentClip->w * 2, currentClip->h * 2 };
-	//SDL_RenderCopy(Renderer::getInstance().gRenderer, texture.getTexture(), currentClip, &dest);
-
-	//// Set dimensions
-	//this->player->setWidth(dest.w);
-	//this->player->setHeight(dest.h);
 
 	// Calculate facing direction
 	SDL_RendererFlip flip = (this->player->getFacingDirection() == FACING_RIGHT) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
@@ -653,7 +646,7 @@ void PlayerView::loadSpriteClips()
 		spriteClips[PlayerStatus::spinning][0].y = 238;// 248;
 		spriteClips[PlayerStatus::spinning][0].w = 30;
 		spriteClips[PlayerStatus::spinning][0].h = 40;// 30;
-		
+
 		spriteClips[PlayerStatus::spinning][1].x = 623;
 		spriteClips[PlayerStatus::spinning][1].y = 238;// 248;
 		spriteClips[PlayerStatus::spinning][1].w = 30;
@@ -674,38 +667,6 @@ void PlayerView::loadSpriteClips()
 		spriteClips[PlayerStatus::spinning][4].w = 30;
 		spriteClips[PlayerStatus::spinning][4].h = 40;// 30;
 		break;
-	}
-}
-
-string PlayerView::calculatePlayerFilePath()
-{
-	switch (this->player->getPlayerType()) {
-	case SONIC:
-		return "img/sonic-spritesheet.png";
-	case TAILS:
-		return "img/tails-spritesheet.png";
-	case KNUCKLES:
-		return "img/knuckles-spritesheet.png";
-	case SHADOW:
-		return "img/shadow-spritesheet.png";
-	default:
-		return "img/sonic-spritesheet.png";
-	}
-}
-
-string PlayerView::calculateDisconnectedPlayerPath()
-{
-	switch (this->player->getPlayerType()) {
-	case SONIC:
-		return "img/sonic-spritesheet-grey.png";
-	case TAILS:
-		return "img/tails-spritesheet-grey.png";
-	case KNUCKLES:
-		return "img/knuckles-spritesheet-grey.png";
-	case SHADOW:
-		return "img/shadow-spritesheet-grey.png";
-	default:
-		return "img/sonic-spritesheet-grey.png";
 	}
 }
 

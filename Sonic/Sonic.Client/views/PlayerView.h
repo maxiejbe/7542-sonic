@@ -10,6 +10,7 @@
 #include "InputManager.h"
 #include "protocol/Message.h"
 #include "entities/Player.h"
+#include "../utils/PlayerUtils.h"
 
 using namespace std;
 
@@ -26,8 +27,6 @@ private:
 	int getFramesCount(PlayerStatus status);
 	int getFramesDivision(PlayerStatus status);
 	void loadSpriteClips();
-	string calculateDisconnectedPlayerPath();
-	string calculatePlayerFilePath();
 
 	Texture texture;
 	Player* player;

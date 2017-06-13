@@ -102,6 +102,18 @@
     <ClCompile Include="utils\PlayerUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="views\ObstacleView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="views\BonusView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="views\EnemyView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="views\RingView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -198,6 +210,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utils\PlayerUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="views\ObstacleView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="views\BonusView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="views\EnemyView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="views\RingView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
