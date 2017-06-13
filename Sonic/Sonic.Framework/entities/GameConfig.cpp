@@ -15,6 +15,14 @@ vector<Level>* GameConfig::getLevels()
 	return &(this->levels);
 }
 
+Level * GameConfig::getLevel(int levelNumber)
+{
+	int lvlIdx = levelNumber - 1;
+	if (lvlIdx < 0 || lvlIdx >= this->levels.size()) return nullptr;
+
+	return &this->levels[lvlIdx];
+}
+
 void GameConfig::unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;

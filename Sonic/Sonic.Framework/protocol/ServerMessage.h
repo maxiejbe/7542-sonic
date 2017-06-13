@@ -5,10 +5,9 @@
 #include "SerializableMessage.h"
 #include "../entities/common/Validator.h"
 #include "../entities/Camera.h"
-#include "../entities/enemies/Enemy.h"
 #include "../entities/Level.h"
 
-enum ServerMessageType {player_assign, levels_content, level_start, players_status, enemies_status, typeless, heart_beat_server };
+enum ServerMessageType {player_assign, levels_content, level_start, players_status, entities_status, typeless, heart_beat_server };
 
 //TODO: Apply polimorphism with server message type 
 class ServerMessage : public SerializableMessage {
@@ -20,23 +19,24 @@ public:
 	void setPlayerNumber(int);
 	int getPlayerNumber();
 	vector<Player*> getPlayers();
-	vector<Enemy*> getEnemies();
+	vector<Entity*> getEntities();
 	vector<Level>* getLevels();
 	int getLevelToStart();
 	Camera * getCamera();
 	void setCamera(Camera * camera);
 	void setPlayers(vector<Player*> players);
-	void setEnemies(vector<Enemy*> enemies);
+	void setEntities(vector<Entity*> enemies);
 	void setLevels(vector<Level>* levels);
 	void setLevelToStart(int);
 	
 	void serializePlayers(Writer<StringBuffer>& writer);
 	void serializeLevels(Writer<StringBuffer>& writer);
-	//void serializeEnemies(Writer<StringBuffer>& writer);
+	void serializeEntities(Writer<StringBuffer>& writer);
+
 	void serializeCamera(Writer<StringBuffer>& writer);
 	void parsePlayersStatus(Value *);
 	void parseLevels(Value * nodeRef);
-	//void parseEnemiesStatus(Value *);
+	void parseEntitiesStatus(Value *);
 	void parseCameraStatus(Value *);
 	// Inherited via Serializable
 	void unserialize(Value* nodeRef) override;
@@ -45,7 +45,7 @@ public:
 private:
 	ServerMessageType type;
 	vector<Player*> players;
-	vector<Enemy*> enemies;
+	vector<Entity*> entities;
 	vector<Level>* levels;
 	int levelToStart;
 	Camera * camera;

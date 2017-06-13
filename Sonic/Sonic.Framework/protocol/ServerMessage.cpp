@@ -7,13 +7,14 @@ const char* SERVER_MESSAGE_LEVELS_STATUS_NODE = "lvs";
 const char* SERVER_MESSAGE_LEVEL_START_NODE = "l2s";
 const char* SERVER_MESSAGE_CAMERA_NODE = "ca";
 const char* SERVER_MESSAGE_FILE_CONTENT_NODE = "fc";
+const char* SERVER_MESSAGE_ENTITIES_STATUS_NODE = "ets";
 
 ServerMessage::ServerMessage()
 {
 	this->playerNumber = -1;
 	this->type = typeless;
 	this->players = vector<Player*>();
-	this->enemies = vector<Enemy*>();
+	this->entities = vector<Entity*>();
 	this->levels = new vector<Level>();
 	this->camera = nullptr;
 	this->levelToStart = 0;
@@ -50,9 +51,9 @@ vector<Player*> ServerMessage::getPlayers()
 	return this->players;
 }
 
-vector<Enemy*> ServerMessage::getEnemies()
+vector<Entity*> ServerMessage::getEntities()
 {
-	return this->enemies;
+	return this->entities;
 }
 
 vector<Level>* ServerMessage::getLevels()
@@ -80,9 +81,9 @@ void ServerMessage::setPlayers(vector<Player*> players)
 	this->players = players;
 }
 
-void ServerMessage::setEnemies(vector<Enemy*> enemies)
+void ServerMessage::setEntities(vector<Entity*> entities)
 {
-	this->enemies = enemies;
+	this->entities = entities;
 }
 
 void ServerMessage::setLevels(vector<Level>* levels)
@@ -106,15 +107,18 @@ void ServerMessage::unserialize(Value* nodeRef)
 		//player number
 		parseInt(&playerNumber, -1, nodeRef, SERVER_MESSAGE_PLAYER_NUMBER_NODE);
 		break;
-	case players_status:
-		parsePlayersStatus(nodeRef);
-		parseCameraStatus(nodeRef);
-		break;
 	case level_start:
 		parseInt(&levelToStart, 0, nodeRef, SERVER_MESSAGE_LEVEL_START_NODE);
 		break;
 	case levels_content:
 		parseLevels(nodeRef);
+		break;
+	case players_status:
+		parsePlayersStatus(nodeRef);
+		parseCameraStatus(nodeRef);
+		break;
+	case entities_status:
+		parseEntitiesStatus(nodeRef);
 		break;
 	default:
 		break;
@@ -156,6 +160,9 @@ string ServerMessage::serialize()
 	case level_start:
 		writer.String(SERVER_MESSAGE_LEVEL_START_NODE);
 		writer.Int(levelToStart);
+		break;
+	case entities_status:
+		this->serializeEntities(writer);
 		break;
 	default:
 		break;
@@ -202,6 +209,22 @@ void ServerMessage::serializeLevels(Writer<StringBuffer>& writer)
 	}
 	writer.EndArray();
 }
+
+void ServerMessage::serializeEntities(Writer<StringBuffer>& writer)
+{
+	writer.String(SERVER_MESSAGE_ENTITIES_STATUS_NODE);
+	writer.StartArray();
+
+	vector<Entity*>::iterator it = this->entities.begin();
+	while (it != this->entities.end()) {
+		if (*it == NULL) continue;
+		string serializedEntity = (*it)->serialize();
+		writer.String(serializedEntity.c_str());
+		it++;
+	}
+	writer.EndArray();
+}
+
 
 void ServerMessage::parseCameraStatus(Value * nodeRef)
 {
@@ -293,6 +316,38 @@ void ServerMessage::parseLevels(Value * nodeRef)
 		Level newLevel = Level();
 		newLevel.unserialize(&jsonEnemy);
 		this->levels->push_back(newLevel);
+	}
+}
+
+void ServerMessage::parseEntitiesStatus(Value * nodeRef) 
+{
+	//free players and clear vector
+	Value& node = *nodeRef;
+
+	//LOG(logINFO) << MESSAGE_PARSING_NODE_FIELD + string(fieldName);
+
+	if (nodeRef == nullptr || !node.HasMember(SERVER_MESSAGE_ENTITIES_STATUS_NODE)) {
+		LOG(logWARNING) << "Server Message: Fallo parseo de entidades";
+		return;
+	}
+
+	//string childNodeValue = getNodeContent(&node[SERVER_MESSAGE_PLAYERS_STATUS_NODE]);
+	const Value& entitiesStatus = node[SERVER_MESSAGE_ENTITIES_STATUS_NODE];
+	if (!entitiesStatus.IsArray()) {
+		LOG(logWARNING) << "Server Message: Campo incorrecto de entidades " << SERVER_MESSAGE_ENTITIES_STATUS_NODE;
+		return;
+	}
+
+	//unserialize players
+	Document jsonEntity;
+	for (Value::ConstValueIterator itr = entitiesStatus.Begin(); itr != entitiesStatus.End(); ++itr) {
+		if (jsonEntity.Parse((*itr).GetString()).HasParseError()) {
+			//LOG
+			continue;
+		}
+
+		//unsearialize player and add to vector
+		this->entities.push_back(EntityResolver::parse(&jsonEntity));
 	}
 }
 

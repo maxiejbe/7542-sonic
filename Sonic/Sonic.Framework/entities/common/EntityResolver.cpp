@@ -1,6 +1,8 @@
 #include "EntityResolver.h"
 #include "EntityResolver.h"	
 
+const char* ENTITYRESOLVER_ENTITY_TYPE_NODE = "tipo";
+
 Entity * EntityResolver::resolve(string entityType)
 {
 	Entity* destination = nullptr;
@@ -11,6 +13,20 @@ Entity * EntityResolver::resolve(string entityType)
 		destination = new Enemy(entityType);
 	}
 	return destination;
+}
+
+Entity * EntityResolver::parse(Value* nodeRef)
+{
+	Value& node = *nodeRef;
+	if (nodeRef == nullptr || !node.HasMember(ENTITYRESOLVER_ENTITY_TYPE_NODE)) return nullptr;
+
+	const Value& entityType = node[ENTITYRESOLVER_ENTITY_TYPE_NODE];
+
+	if (!entityType.IsString()) return nullptr;
+
+	Entity* entity = resolve(string(entityType.GetString()));
+	entity->unserialize(nodeRef);
+	return entity;
 }
 
 Dimensions EntityResolver::getDefaultDimensions(Entity * entity)
