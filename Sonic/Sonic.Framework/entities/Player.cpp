@@ -422,7 +422,12 @@ void Player::setNumber(int number)
 
 void Player::sumPoints(int points)
 {
-	this->points = this->points + points;
+	this->points += points;
+}
+
+void Player::sumRings(int rings)
+{
+	this->rings += rings;
 }
 
 string Player::getSerializedPlayer()

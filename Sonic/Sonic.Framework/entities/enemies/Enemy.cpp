@@ -160,6 +160,8 @@ string Enemy::serialize()
 
 void Enemy::onCollision(Player * player)
 {
+	if (!isAlive()) return;
+
 	if (!player->isDamaging()) {
 		player->damage();
 		return;

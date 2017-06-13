@@ -57,6 +57,7 @@ public:
 	void setNumber(int number);
 
 	void sumPoints(int points);
+	void sumRings(int points);
 
 	string getSerializedPlayer();
 
