@@ -2,7 +2,10 @@
 
 void RingView::draw(SDL_Rect camera) {
 
-	// TODO: sprites
+	if (this->entity->getImagePath() != "") {
+		this->entity->setImagePath("img/ring.png");
+	}
 
 	CircleView::draw(camera);
 }
+
