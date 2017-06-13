@@ -16,11 +16,11 @@ Enemy::Enemy(string type)
 {
 	this->coordinate = Coordinate(ENEMY_DEFAULT_POSX, ENEMY_DEFAULT_POSY);
 	this->velocity = Vector2(ENEMY_DEFAULT_VELX, ENEMY_DEFAULT_VELY);
-	this->type= type;
+	this->type = type;
 	InitializeProperties();
 }
 
-void Enemy::InitializeProperties() 
+void Enemy::InitializeProperties()
 {
 	this->dimensions = Dimensions(ENEMY_DEFAULT_WIDTH, ENEMY_DEFAULT_HEIGHT, 0);
 	this->points = ENEMY_DEFAULT_POINTS;
@@ -34,6 +34,15 @@ void Enemy::InitializeProperties()
 
 Enemy::~Enemy()
 {
+}
+
+void Enemy::copyFrom(Enemy& anotherEnemy)
+{
+	Entity::copyFrom(anotherEnemy);
+
+	this->alive = anotherEnemy.isAlive();
+	this->points = anotherEnemy.getPoints();
+	this->facingDirection = anotherEnemy.getFacingDirection();
 }
 
 

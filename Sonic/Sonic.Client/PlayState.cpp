@@ -20,26 +20,22 @@ void PlayState::load(Game* game)
 		Sleep(3000);
 	}
 
-	scenarioWidth = scenario.getWidth();
-	scenarioHeight = scenario.getHeight();
+	Level level = NetworkManager::getInstance().getLevels()->at(0); // Nivel 0
+
+	Scenario* scenario = level.getScenario();
+
+	scenarioWidth = scenario->getWidth();
+	scenarioHeight = scenario->getHeight();
 
 	// Initialize camera
 	camera = { 0, 0, SDLWindow::getInstance().getScreenWidth(), SDLWindow::getInstance().getScreenHeight() };
 
 	// Initialize layers
-	vector<Layer> layers = scenario.getLayers();
+	vector<Layer> layers = scenario->getLayers();
 	for (vector<Layer>::iterator it = layers.begin(); it != layers.end(); ++it) {
 		Layer* layer = &(*it);
 		LayerView layerView(layer);
 		layerViews.push_back(layerView);
-	}
-
-	// Initialize entities
-	vector<Entity*> entities = scenario.getEntities();
-	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it) {
-		Entity* entity = *it;
-		EntityView* entityView = EntityViewResolver::resolve(entity);
-		entityViews.push_back(entityView);
 	}
 
 	// Load layers
@@ -164,10 +160,18 @@ void PlayState::render(Game* game)
 		layerView->renderLayer(0, 0, &camera);
 	}
 
-	// Render entities
-	for (vector<EntityView*>::iterator it = entityViews.begin(); it != entityViews.end(); ++it) {
-		EntityView* entityView = *it;
-		entityView->draw(camera);
+	//// Render entities
+	//for (vector<EntityView*>::iterator it = entityViews.begin(); it != entityViews.end(); ++it) {
+	//	EntityView* entityView = *it;
+	//	entityView->draw(camera);
+	//}
+
+	// Render Entities
+	unordered_map<int, EntityView*> entityViews = NetworkManager::getInstance().getEntityViews();
+	if (!entityViews.empty()) {
+		for (unordered_map<int, EntityView*>::iterator it = entityViews.begin(); it != entityViews.end(); ++it) {
+			it->second->draw(camera);
+		}
 	}
 
 	// Render players

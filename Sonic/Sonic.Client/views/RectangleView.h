@@ -11,6 +11,8 @@ public:
 	}
 
 	virtual void draw(SDL_Rect camera) override;
+	void draw_ex(SDL_Rect camera, SDL_Rect* clip, SDL_Rect dest, SDL_RendererFlip flip);
+private:
 };
 
 #endif // !RECTANGLE_H

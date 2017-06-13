@@ -14,6 +14,9 @@ class Entity : public Serializable {
 public:
 	Entity();
 	Entity(Entity* entity);
+
+	void copyFrom(Entity&);
+
 	virtual bool validate();
 
 	virtual Dimensions getDefaultDimensions();
@@ -29,6 +32,9 @@ public:
 	void setCoordinate(Coordinate);
 	Dimensions getDimensions();
 	void setDimensions(Dimensions);
+	int getTime();
+	void setTime(int time);
+	int getId();
 
 	virtual void onCollision(Player* player) = 0;
 
@@ -49,6 +55,7 @@ protected:
 	Coordinate coordinate;
 	string imagePath;
 	int zIndex;
+	int time;
 	
 	void setColor(string color);
 	void basePropertiesSerialization(Writer<StringBuffer>& writer);

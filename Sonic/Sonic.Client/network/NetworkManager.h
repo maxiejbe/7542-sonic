@@ -3,6 +3,8 @@
 #include "entities/Player.h"
 #include "protocol/Message.h"
 #include "../views/PlayerView.h"
+#include "../views/EntityView.h"
+#include "../views/common/EntityViewResolver.h"
 #include "protocol/ServerMessage.h"
 #include "entities/ServerConfiguration.h"
 
@@ -28,6 +30,7 @@ public:
 	void sendMessage(Message * message, bool disconnect);
 	Camera * getCamera();
 	unordered_map<int, PlayerView*> getPlayerViews();
+	unordered_map<int, EntityView*> getEntityViews();
 
 	PlayerView* getOwnPlayerView();
 	bool canStartGame();
@@ -44,12 +47,14 @@ private:
 	SocketClient * client;
 	Camera * camera;
 	unordered_map<int, PlayerView*> playerViews;
+	unordered_map<int, EntityView*> entityViews;
 	bool startGame;
 
 	int playerNumber;
 	vector<Level> * gameLevels;
 
 	void updatePlayerViews(vector<Player*> playerStatus);
+	void updateEntityViews(vector<Entity*> entities);
 	void updateCamera(Camera* camera);
 	
 	/*HANDLERS*/
