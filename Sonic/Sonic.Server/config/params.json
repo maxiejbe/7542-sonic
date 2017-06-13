@@ -72,9 +72,9 @@
             "cantidad_minima": 1,
             "cantidad_maxima": 3,
             "min_x": 10,
-            "max_x": 10,
-            "min_y": 10,
-            "max_y": 10
+            "max_x": 100,
+            "min_y": 400,
+            "max_y": 500
           },
           {
             "tipo": "enemigo_pez",
