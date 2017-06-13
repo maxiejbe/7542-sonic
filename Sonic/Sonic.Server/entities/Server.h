@@ -60,8 +60,7 @@ public:
 
 	Camera* getCamera();
 
-	ServerMessage* getPlayersStatusMessage();
-	ServerMessage* getEntitiesStatusMessage();
+	ServerMessage * getStatusMessage();
 private:
 	/*
 	Initialize socket support WINDOWS ONLY!
