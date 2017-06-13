@@ -22,11 +22,13 @@ public:
 	vector<Player*> getPlayers();
 	vector<Enemy*> getEnemies();
 	vector<Level>* getLevels();
+	int getLevelToStart();
 	Camera * getCamera();
 	void setCamera(Camera * camera);
 	void setPlayers(vector<Player*> players);
 	void setEnemies(vector<Enemy*> enemies);
 	void setLevels(vector<Level>* levels);
+	void setLevelToStart(int);
 	
 	void serializePlayers(Writer<StringBuffer>& writer);
 	void serializeLevels(Writer<StringBuffer>& writer);
@@ -45,6 +47,7 @@ private:
 	vector<Player*> players;
 	vector<Enemy*> enemies;
 	vector<Level>* levels;
+	int levelToStart;
 	Camera * camera;
 	int playerNumber;
 };

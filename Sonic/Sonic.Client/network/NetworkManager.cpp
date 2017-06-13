@@ -155,7 +155,8 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		this->gameLevels = sMessage->getLevels();
 		break;
 	case level_start:
-		clientResponse->setType(MessageType::start_game_ok);
+		clientResponse->setType(MessageType::level_start_ok);
+		//TODO: SETEAR CONFIGURACION DE NIVEL RECIBIDO
 		this->sendMessage(clientResponse);
 		this->startGame = true;
 

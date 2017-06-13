@@ -46,6 +46,7 @@ public:
 	void removeClientConnection(int clientNumber);
 	void terminateThreads();
 	void addConnectedClients();
+	int getCurrentLevel();
 
 	void resetLevel();
 	vector<Level>* getLevels();

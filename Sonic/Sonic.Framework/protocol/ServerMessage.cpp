@@ -4,6 +4,7 @@ const char* SERVER_MESSAGE_TYPE_NODE = "t";
 const char* SERVER_MESSAGE_PLAYER_NUMBER_NODE = "pn";
 const char* SERVER_MESSAGE_PLAYERS_STATUS_NODE = "ps";
 const char* SERVER_MESSAGE_LEVELS_STATUS_NODE = "lvs";
+const char* SERVER_MESSAGE_LEVEL_START_NODE = "l2s";
 const char* SERVER_MESSAGE_CAMERA_NODE = "ca";
 const char* SERVER_MESSAGE_FILE_CONTENT_NODE = "fc";
 
@@ -15,6 +16,7 @@ ServerMessage::ServerMessage()
 	this->enemies = vector<Enemy*>();
 	this->levels = new vector<Level>();
 	this->camera = nullptr;
+	this->levelToStart = 0;
 }
 
 ServerMessage::~ServerMessage()
@@ -58,6 +60,11 @@ vector<Level>* ServerMessage::getLevels()
 	return this->levels;
 }
 
+int ServerMessage::getLevelToStart() 
+{
+	return this->levelToStart;
+}
+
 Camera * ServerMessage::getCamera()
 {
 	return this->camera;
@@ -83,6 +90,11 @@ void ServerMessage::setLevels(vector<Level>* levels)
 	this->levels = levels;
 }
 
+void ServerMessage::setLevelToStart(int levelToStart) 
+{
+	this->levelToStart = levelToStart;
+}
+
 
 void ServerMessage::unserialize(Value* nodeRef)
 {
@@ -97,6 +109,9 @@ void ServerMessage::unserialize(Value* nodeRef)
 	case players_status:
 		parsePlayersStatus(nodeRef);
 		parseCameraStatus(nodeRef);
+		break;
+	case level_start:
+		parseInt(&levelToStart, 0, nodeRef, SERVER_MESSAGE_LEVEL_START_NODE);
 		break;
 	case levels_content:
 		parseLevels(nodeRef);
@@ -137,6 +152,10 @@ string ServerMessage::serialize()
 		break;
 	case levels_content:
 		this->serializeLevels(writer);
+		break;
+	case level_start:
+		writer.String(SERVER_MESSAGE_LEVEL_START_NODE);
+		writer.Int(levelToStart);
 		break;
 	default:
 		break;

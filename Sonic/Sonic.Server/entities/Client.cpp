@@ -211,6 +211,7 @@ bool Client::sendGameStart()
 
 	ServerMessage* message = new ServerMessage();
 	message->setType(ServerMessageType::level_start);
+	message->setLevelToStart(this->server->getCurrentLevel());
 	char* serializedMessage = StringUtils::convert(message->serialize());
 	delete message;
 
@@ -283,10 +284,10 @@ void Client::handleReceivedMessage(char* recievedMessage)
 	case player_assign_ok:
 		sendLevels();
 		break;
-	case content_ok:
+	case levels_content_ok:
 		this->server->addConnectedClients();
 		break;
-	case start_game_ok:
+	case level_start_ok:
 		this->continueRefreshing = true;
 		this->refreshThreadHandle = CreateThread(0, 0, refreshSocketHandler, (void*)this, 0, &this->refreshThreadId);
 
