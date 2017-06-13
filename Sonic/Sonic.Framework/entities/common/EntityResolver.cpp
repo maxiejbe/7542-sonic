@@ -1,5 +1,4 @@
 #include "EntityResolver.h"
-#include "EntityResolver.h"	
 
 const char* ENTITYRESOLVER_ENTITY_TYPE_NODE = "tipo";
 

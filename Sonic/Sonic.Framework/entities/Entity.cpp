@@ -226,6 +226,11 @@ void Entity::setTime(int time)
 	this->time = time;
 }
 
+void Entity::setId(int id)
+{
+	this->id = id;
+}
+
 int Entity::getId()
 {
 	return this->id;
