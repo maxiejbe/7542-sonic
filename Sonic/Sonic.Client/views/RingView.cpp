@@ -10,8 +10,8 @@ void RingView::draw(int camX, int camY)
 
 	int x = entity->getCoordinate().getX() - camX;
 	int y = entity->getCoordinate().getY() - camY;
-	int w = entity->getDimensions().getWidth() * 3;
-	int h = entity->getDimensions().getHeight() * 3;
+	int w = entity->getDimensions().getWidth() * 1.5;
+	int h = entity->getDimensions().getHeight() * 1.5;
 
 	texture.render(x, y, w, h);
 }

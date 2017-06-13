@@ -5,9 +5,9 @@ const char* ENTITY_LIMIT_MIN_COUNT_NODE = "cantidad_minima";
 const char* ENTITY_LIMIT_MAX_COUNT_NODE = "cantidad_maxima";
 
 const char* ENTITY_LIMIT_MIN_X_NODE = "min_x";
-const char* ENTITY_LIMIT_MAX_X_NODE = "min_x";
+const char* ENTITY_LIMIT_MAX_X_NODE = "max_x";
 const char* ENTITY_LIMIT_MIN_Y_NODE = "min_y";
-const char* ENTITY_LIMIT_MAX_Y_NODE = "min_y";
+const char* ENTITY_LIMIT_MAX_Y_NODE = "max_y";
 
 const char* MESSAGE_PARSING_ENTITY_LIMIT_NODE = "Inicio de parseo de nodo limites de entidades.";
 const char* MESSAGE_END_PARSING_ENTITY_LIMIT_NODE = "Fin de parseo de nodo limites de entidades.";

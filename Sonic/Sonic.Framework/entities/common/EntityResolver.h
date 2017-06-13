@@ -8,7 +8,7 @@
 #include "../rings/Ring.h"
 #include <string>
 
-enum EntityType { obstaculo_pinche, obstaculo_piedra, moneda, bonus_super_ring, bonus_invencibilidad, bonus_escudo, enemigo_cangrejo, enemigo_pez, enemigo_mosca, null };
+enum EntityType { obstaculo_pinche, obstaculo_piedra, anillo, bonus_super_ring, bonus_invencibilidad, bonus_escudo, enemigo_cangrejo, enemigo_pez, enemigo_mosca, null };
 enum EntityColor { red, yellow, green, blue };
 
 class EntityResolver {

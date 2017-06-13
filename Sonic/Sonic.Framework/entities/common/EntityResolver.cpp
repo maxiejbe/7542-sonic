@@ -10,7 +10,7 @@ Entity * EntityResolver::resolve(string entityType)
 		entityType == toTypeString(EntityType::obstaculo_piedra)) {
 		destination = new Obstacle(entityType);
 	}
-	else if (entityType == toTypeString(EntityType::moneda)) {
+	else if (entityType == toTypeString(EntityType::anillo)) {
 		destination = new Ring(entityType);
 	}
 	else if (entityType == toTypeString(EntityType::bonus_super_ring) ||
@@ -62,8 +62,8 @@ EntityType EntityResolver::fromTypeString(string entityType)
 		return EntityType::obstaculo_pinche;
 	else if (entityType == "obstaculo_piedra")
 		return EntityType::obstaculo_piedra;
-	else if (entityType == "moneda")
-		return EntityType::moneda;
+	else if (entityType == "anillo")
+		return EntityType::anillo;
 	else if (entityType == "bonus_super_ring")
 		return EntityType::bonus_super_ring;
 	else if (entityType == "bonus_invencibilidad")
@@ -87,8 +87,8 @@ string EntityResolver::toTypeString(EntityType entityType)
 		return "obstaculo_pinche";
 	case EntityType::obstaculo_piedra:
 		return "obstaculo_piedra";
-	case EntityType::moneda:
-		return "moneda";
+	case EntityType::anillo:
+		return "anillo";
 	case EntityType::bonus_super_ring:
 		return "bonus_super_ring";
 	case EntityType::bonus_invencibilidad:

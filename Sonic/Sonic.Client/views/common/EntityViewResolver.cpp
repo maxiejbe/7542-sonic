@@ -8,7 +8,7 @@ EntityView * EntityViewResolver::resolve(Entity * origin)
 		origin->getType() == EntityResolver::toTypeString(EntityType::obstaculo_piedra)) {
 		destination = new ObstacleView(origin);
 	}
-	else if (origin->getType() == EntityResolver::toTypeString(EntityType::moneda)) {
+	else if (origin->getType() == EntityResolver::toTypeString(EntityType::anillo)) {
 		destination = new RingView(origin);
 	}
 	else if (origin->getType() == EntityResolver::toTypeString(EntityType::bonus_super_ring) ||

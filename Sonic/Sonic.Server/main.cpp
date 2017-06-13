@@ -12,11 +12,11 @@ vector<Entity*> generateLevelEntities(Level level) {
 	vector<Entity*> levelEntities;
 	levelEntities.clear();
 	vector<EntityLimit> limits = level.getLimits();
+	int eid = 1;
 	for (vector<EntityLimit>::iterator elit = limits.begin(); elit != limits.end(); ++elit) {
 		//Random entities count
 		int entitiesCount = getRandomBetween(elit->getMinCount(), elit->getMaxCount());
 		
-		int eid = 0;
 		for (size_t i = 0; i < entitiesCount; i++)
 		{
 			Entity* entity = EntityResolver::resolve(elit->getType());
