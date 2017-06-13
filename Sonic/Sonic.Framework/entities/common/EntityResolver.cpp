@@ -1,5 +1,4 @@
 #include "EntityResolver.h"
-#include "EntityResolver.h"	
 
 const char* ENTITYRESOLVER_ENTITY_TYPE_NODE = "tipo";
 
@@ -9,15 +8,15 @@ Entity * EntityResolver::resolve(string entityType)
 
 	if (entityType == toTypeString(EntityType::obstaculo_pinche) ||
 		entityType == toTypeString(EntityType::obstaculo_piedra)) {
-		//destination = new Obstacle(entityType); //TODO
+		destination = new Obstacle(entityType);
 	}
 	else if (entityType == toTypeString(EntityType::moneda)) {
-		//destination = new Ring(entityType); //TODO
+		destination = new Ring(entityType);
 	}
 	else if (entityType == toTypeString(EntityType::bonus_super_ring) ||
 		entityType == toTypeString(EntityType::bonus_invencibilidad) ||
 		entityType == toTypeString(EntityType::bonus_escudo)) {
-		//destination = new Bonus(entityType); //TODO
+		destination = new Bonus(entityType);
 	}
 	else if (entityType == toTypeString(EntityType::enemigo_cangrejo) ||
 		entityType == toTypeString(EntityType::enemigo_pez) ||

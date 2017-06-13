@@ -14,7 +14,7 @@ EnemyView::~EnemyView()
 {
 }
 
-void EnemyView::draw(SDL_Rect camera)
+void EnemyView::draw(int camX, int camY)
 {
 	// Load image
 	if (texture.getTexture() == nullptr && !texture.loadFromFile("img/enemies-spritesheet.png")) {
@@ -28,17 +28,14 @@ void EnemyView::draw(SDL_Rect camera)
 
 	SDL_Rect* currentClip = &spriteClips[sprite];
 
+	int x = this->entity->getCoordinate().getX() - camX;
+	int y = this->entity->getCoordinate().getY() - camY;
+
 	// Scale
-	SDL_Rect dest = { (int)(this->entity->getCoordinate().getX() - camera.x),
-		(int)(this->entity->getCoordinate().getY() - camera.y),
-		currentClip->w * 2,
-		currentClip->h * 2 };
+	SDL_Rect dest = { x, y, currentClip->w * 2, currentClip->h * 2 };
 
 	// Calculate facing direction
 	SDL_RendererFlip flip = /*(this->entity->getFacingDirection() == FACING_RIGHT) ?*/ SDL_FLIP_NONE;// : SDL_FLIP_HORIZONTAL;
-
-	int x = this->entity->getCoordinate().getX() - camera.x;
-	int y = this->entity->getCoordinate().getY() - camera.y;
 
 	texture.render(x, y, currentClip, dest, 0, NULL, flip);
 }

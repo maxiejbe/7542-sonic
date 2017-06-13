@@ -6,7 +6,7 @@
 class Ring : public Entity
 {
 public:
-	Ring();
+	Ring(string);
 	~Ring();
 
 	virtual void onCollision(Player* player) override;

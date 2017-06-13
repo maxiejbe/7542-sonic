@@ -16,7 +16,7 @@ public:
 	EntityView();
 	EntityView(Entity* entity);
 
-	void draw(SDL_Rect camera) override;
+	void draw(int camX, int camY) override;
 	Uint32 getColorRgba();
 	Entity* getEntity();
 

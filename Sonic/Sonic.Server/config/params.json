@@ -33,39 +33,39 @@
         "limites": [
           {
             "tipo": "anillo",
-            "cantidad_minima": 20,
-            "cantidad_maxima": 30,
-            "min_x": 10,
-            "max_x": 10,
-            "min_y": 10,
-            "max_y": 10
+            "cantidad_minima": 1,
+            "cantidad_maxima": 5,
+            "min_x": 200,
+            "max_x": 300,
+            "min_y": 500,
+            "max_y": 500
           },
           {
             "tipo": "bonus_super_ring",
             "cantidad_minima": 1,
             "cantidad_maxima": 1,
-            "min_x": 10,
-            "max_x": 10,
-            "min_y": 10,
-            "max_y": 10
+            "min_x": 300,
+            "max_x": 400,
+            "min_y": 500,
+            "max_y": 500
           },
           {
             "tipo": "bonus_invencibilidad",
             "cantidad_minima": 1,
             "cantidad_maxima": 1,
-            "min_x": 10,
-            "max_x": 10,
-            "min_y": 10,
-            "max_y": 10
+            "min_x": 400,
+            "max_x": 500,
+            "min_y": 500,
+            "max_y": 500
           },
           {
             "tipo": "bonus_escudo",
             "cantidad_minima": 1,
             "cantidad_maxima": 1,
-            "min_x": 10,
-            "max_x": 10,
-            "min_y": 10,
-            "max_y": 10
+            "min_x": 500,
+            "max_x": 600,
+            "min_y": 500,
+            "max_y": 500
           },
           {
             "tipo": "enemigo_cangrejo",
@@ -77,40 +77,22 @@
             "max_y": 500
           },
           {
-            "tipo": "enemigo_pez",
-            "cantidad_minima": 1,
-            "cantidad_maxima": 3,
-            "min_x": 10,
-            "max_x": 10,
-            "min_y": 10,
-            "max_y": 10
-          },
-          {
-            "tipo": "enemigo_mosca",
-            "cantidad_minima": 1,
-            "cantidad_maxima": 3,
-            "min_x": 10,
-            "max_x": 10,
-            "min_y": 10,
-            "max_y": 10
-          },
-          {
             "tipo": "obstaculo_pinche",
             "cantidad_minima": 2,
             "cantidad_maxima": 3,
-            "min_x": 10,
-            "max_x": 10,
-            "min_y": 10,
-            "max_y": 10
+            "min_x": 600,
+            "max_x": 700,
+            "min_y": 500,
+            "max_y": 500
           },
           {
             "tipo": "obstaculo_piedra",
             "cantidad_minima": 3,
             "cantidad_maxima": 5,
-            "min_x": 10,
-            "max_x": 10,
-            "min_y": 10,
-            "max_y": 10
+            "min_x": 700,
+            "max_x": 800,
+            "min_y": 500,
+            "max_y": 500
           }
         ]
       },

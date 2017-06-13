@@ -12,7 +12,7 @@ public:
 	EnemyView(Enemy* enemy);
 	~EnemyView();
 
-	virtual void draw(SDL_Rect camera) override;
+	virtual void draw(int camX, int camY) override;
 
 private:
 	int getFramesCount();

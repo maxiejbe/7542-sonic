@@ -1,6 +1,6 @@
 #include "RingView.h"
 
-void RingView::draw(SDL_Rect camera)
+void RingView::draw(int camX, int camY)
 {
 	// Load image
 	if (texture.getTexture() == nullptr && !texture.loadFromFile("img/ring.png")) {
@@ -8,9 +8,11 @@ void RingView::draw(SDL_Rect camera)
 		return;
 	}
 
-	int x = entity->getCoordinate().getX() - camera.x;
-	int y = entity->getCoordinate().getY() - camera.y;
+	int x = entity->getCoordinate().getX() - camX;
+	int y = entity->getCoordinate().getY() - camY;
+	int w = entity->getDimensions().getWidth() * 3;
+	int h = entity->getDimensions().getHeight() * 3;
 
-	texture.render(x, y, &camera);
+	texture.render(x, y, w, h);
 }
 

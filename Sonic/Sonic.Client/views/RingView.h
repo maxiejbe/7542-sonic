@@ -8,7 +8,7 @@ public:
 	RingView(Entity* entity) : EntityView(entity) {
 	}
 
-	virtual void draw(SDL_Rect camera) override;
+	virtual void draw(int camX, int camY) override;
 };
 
 #endif // !RINGVIEW_H

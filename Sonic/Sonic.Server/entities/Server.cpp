@@ -34,6 +34,10 @@ Server::~Server()
 		if ((*it) != NULL) delete *it;
 	}
 
+	if (camera != nullptr) {
+		delete camera;
+	}
+
 	LOG(logINFO) << MESSAGE_SERVER_EXECUTION_END;
 }
 
@@ -256,7 +260,7 @@ void Server::resetLevel()
 	this->scenario = level->getScenario();
 
 	//initialize camera
-	this->camera = &Camera(0, 0, window->getWidth(), window->getHeight(), window->getWidth(), window->getHeight(), scenario->getWidth(), scenario->getHeight());
+	this->camera = new Camera(0, 0, window->getWidth(), window->getHeight(), window->getWidth(), window->getHeight(), scenario->getWidth(), scenario->getHeight());
 }
 
 vector<Level>* Server::getLevels()

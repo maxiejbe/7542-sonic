@@ -164,7 +164,7 @@ void PlayState::render(Game* game)
 	unordered_map<int, EntityView*> entityViews = NetworkManager::getInstance().getEntityViews();
 	if (!entityViews.empty()) {
 		for (unordered_map<int, EntityView*>::iterator it = entityViews.begin(); it != entityViews.end(); ++it) {
-			it->second->draw(camera);
+			it->second->draw(camera.x, camera.y);
 		}
 	}
 

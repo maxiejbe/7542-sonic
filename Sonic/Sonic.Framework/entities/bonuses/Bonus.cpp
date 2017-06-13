@@ -1,5 +1,8 @@
 #include "Bonus.h"
 
+const int BONUS_DEFAULT_WIDTH = 20;
+const int BONUS_DEFAULT_HEIGHT = 20;
+
 void Bonus::onCollision(Player * player)
 {
 	switch (EntityResolver::fromTypeString(type))
@@ -14,4 +17,10 @@ void Bonus::onCollision(Player * player)
 			break;
 	}
 	this->isActive = false;
+}
+
+Bonus::Bonus(string type)
+{
+	this->type = type;
+	this->dimensions = Dimensions(BONUS_DEFAULT_WIDTH, BONUS_DEFAULT_HEIGHT, 0); //TODO
 }

@@ -27,7 +27,22 @@ Enemy::Enemy(string type)
 
 void Enemy::InitializeProperties()
 {
-	this->dimensions = Dimensions(ENEMY_DEFAULT_WIDTH, ENEMY_DEFAULT_HEIGHT, 0);
+	EntityType eType = EntityResolver::fromTypeString(type);
+	switch (eType) {
+	case EntityType::enemigo_cangrejo:
+		this->dimensions = Dimensions(ENEMY_DEFAULT_WIDTH, ENEMY_DEFAULT_HEIGHT, 0); //TODO
+		break;
+	case EntityType::enemigo_pez:
+		this->dimensions = Dimensions(ENEMY_DEFAULT_WIDTH, ENEMY_DEFAULT_HEIGHT, 0); //TODO
+		break;
+	case EntityType::enemigo_mosca:
+		this->dimensions = Dimensions(ENEMY_DEFAULT_WIDTH, ENEMY_DEFAULT_HEIGHT, 0); //TODO
+		break;
+	default:
+		this->dimensions = Dimensions(ENEMY_DEFAULT_WIDTH, ENEMY_DEFAULT_HEIGHT, 0); //TODO
+		break;
+	}
+
 	this->points = ENEMY_DEFAULT_POINTS;
 	this->maxDistance = ENEMY_DEFAULT_MAX_DISTANCE;
 	this->facingDirection = FACING_LEFT;
@@ -107,16 +122,16 @@ int Enemy::getGivenPoints()
 	switch (EntityResolver::fromTypeString(type))
 	{
 		//Sorry, this should be implemented in player with polimorfic methods
-		case enemigo_cangrejo:
-			return CRAB_GIVEN_POINTS;
-		case enemigo_mosca:
-			return FLY_GIVEN_POINTS;
-			break;
-		case enemigo_pez:
-			return FISH_GIVEN_POINTS;
-			break;
-		default:
-			return 0;
+	case enemigo_cangrejo:
+		return CRAB_GIVEN_POINTS;
+	case enemigo_mosca:
+		return FLY_GIVEN_POINTS;
+		break;
+	case enemigo_pez:
+		return FISH_GIVEN_POINTS;
+		break;
+	default:
+		return 0;
 	}
 }
 

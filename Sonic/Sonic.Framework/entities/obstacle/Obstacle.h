@@ -6,7 +6,7 @@
 class Obstacle : public Entity
 {
 public:
-	Obstacle();
+	Obstacle(string);
 	~Obstacle();
 
 	virtual void onCollision(Player* player) override;

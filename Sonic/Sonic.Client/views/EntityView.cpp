@@ -16,7 +16,7 @@ EntityView::EntityView(Entity * entity)
 	}
 }
 
-void EntityView::draw(SDL_Rect camera)
+void EntityView::draw(int camX, int camY)
 {
 }
 
