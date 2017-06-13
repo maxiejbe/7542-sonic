@@ -1,11 +1,12 @@
 #ifndef ENEMYVIEW_H
 #define ENEMYVIEW_H
 
-#include "RectangleView.h"
+#include "EntityView.h"
 
-class EnemyView : public RectangleView {
+class EnemyView : public EntityView {
 public:
-	EnemyView(Entity* entity) : RectangleView(entity) {
+	EnemyView(Entity* entity) : EntityView(entity) {
+		loadSpriteClips();
 	}
 
 	EnemyView(Enemy* enemy);

@@ -16,13 +16,15 @@ EnemyView::~EnemyView()
 
 void EnemyView::draw(SDL_Rect camera)
 {
-	if (this->entity->getImagePath() == "") {
-		this->entity->setImagePath("img/enemies-spritesheet.png");
+	// Load image
+	if (texture.getTexture() == nullptr && !texture.loadFromFile("img/enemies-spritesheet.png")) {
+		LOG(logWARNING) << "No se pudo cargar la imagen del bonus '" << "img/enemies-spritesheet.png" << "'.";
+		return;
 	}
 
 	// Calculate current sprite
 	//Uint32 sprite = (this->entity->getTime() / getFramesDivision(this->player->getSpriteState())) % getFramesCount(this->player->getSpriteState()); //90
-	Uint32 sprite = (this->entity->getTime() / 85) % getFramesCount();
+	Uint32 sprite = 0;// (this->entity->getTime() / 85) % getFramesCount();
 
 	SDL_Rect* currentClip = &spriteClips[sprite];
 
@@ -35,7 +37,10 @@ void EnemyView::draw(SDL_Rect camera)
 	// Calculate facing direction
 	SDL_RendererFlip flip = /*(this->entity->getFacingDirection() == FACING_RIGHT) ?*/ SDL_FLIP_NONE;// : SDL_FLIP_HORIZONTAL;
 
-	RectangleView::draw_ex(camera, currentClip, dest, flip);
+	int x = this->entity->getCoordinate().getX() - camera.x;
+	int y = this->entity->getCoordinate().getY() - camera.y;
+
+	texture.render(x, y, currentClip, dest, 0, NULL, flip);
 }
 
 int EnemyView::getFramesCount()

@@ -2,11 +2,16 @@
 
 void ObstacleView::draw(SDL_Rect camera)
 {
-	if (this->entity->getImagePath() == "") {
-		this->entity->setImagePath(getObstacleFilePath());
+	// Load image
+	if (texture.getTexture() == nullptr && !texture.loadFromFile(getObstacleFilePath())) {
+		LOG(logWARNING) << "No se pudo cargar la imagen del obstaculo '" << getObstacleFilePath() << "'.";
+		return;
 	}
 
-	RectangleView::draw(camera);
+	int x = entity->getCoordinate().getX() - camera.x;
+	int y = entity->getCoordinate().getY() - camera.y;
+
+	texture.render(x, y, &camera);
 }
 
 string ObstacleView::getObstacleFilePath()
