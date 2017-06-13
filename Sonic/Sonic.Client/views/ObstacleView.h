@@ -9,6 +9,8 @@ public:
 	}
 
 	virtual void draw(SDL_Rect camera) override;
+private:
+	string getObstacleFilePath();
 };
 
 #endif // !OBSTACLEVIEW_H

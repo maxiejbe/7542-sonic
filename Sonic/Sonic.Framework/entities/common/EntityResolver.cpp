@@ -5,19 +5,21 @@ Entity* EntityResolver::resolve(Entity* origin)
 {
 	Entity* destination = nullptr;
 
-	/*if (origin->getType() == toTypeString(EntityType::rectangle)) {
-		destination = new Rectangle(origin);
+	if (origin->getType() == toTypeString(EntityType::obstaculo_pinche) ||
+		origin->getType() == toTypeString(EntityType::obstaculo_piedra)) {
+		//destination = new Obstacle(origin->getType()); //TODO
 	}
-	else if (origin->getType() == toTypeString(EntityType::circle)) {
-		destination = new Circle(origin);
+	else if (origin->getType() == toTypeString(EntityType::moneda)) {
+		//destination = new Ring(origin->getType()); //TODO
 	}
-	else if (origin->getType() == toTypeString(EntityType::square)) {
-		destination = new Square(origin);
-	}*/
-
-	if ((origin->getType() == toTypeString(EntityType::enemigo_cangrejo)) || 
-		(origin->getType() == toTypeString(EntityType::enemigo_mosca)) || 
-		(origin->getType() == toTypeString(EntityType::enemigo_pez))) {
+	else if (origin->getType() == toTypeString(EntityType::bonus_super_ring) ||
+		origin->getType() == toTypeString(EntityType::bonus_invencibilidad) ||
+		origin->getType() == toTypeString(EntityType::bonus_escudo)) {
+		//destination = new Bonus(origin->getType()); //TODO
+	}
+	else if (origin->getType() == toTypeString(EntityType::enemigo_cangrejo) ||
+		origin->getType() == toTypeString(EntityType::enemigo_pez) ||
+		origin->getType() == toTypeString(EntityType::enemigo_mosca)) {
 		destination = new Enemy(origin->getType());
 	}
 
@@ -48,7 +50,19 @@ Dimensions EntityResolver::getDefaultDimensions(Entity * entity)
 
 EntityType EntityResolver::fromTypeString(string entityType)
 {
-	if (entityType == "enemigo_cangrejo")
+	if (entityType == "obstaculo_pinche")
+		return EntityType::obstaculo_pinche;
+	else if (entityType == "obstaculo_piedra")
+		return EntityType::obstaculo_piedra;
+	else if (entityType == "moneda")
+		return EntityType::moneda;
+	else if (entityType == "bonus_super_ring")
+		return EntityType::bonus_super_ring;
+	else if (entityType == "bonus_invencibilidad")
+		return EntityType::bonus_invencibilidad;
+	else if (entityType == "bonus_escudo")
+		return EntityType::bonus_escudo;
+	else if (entityType == "enemigo_cangrejo")
 		return EntityType::enemigo_cangrejo;
 	else if (entityType == "enemigo_pez")
 		return EntityType::enemigo_pez;
@@ -61,14 +75,26 @@ EntityType EntityResolver::fromTypeString(string entityType)
 string EntityResolver::toTypeString(EntityType entityType)
 {
 	switch (entityType) {
-		case EntityType::enemigo_cangrejo:
-			return "enemigo_cangrejo";
-		case EntityType::enemigo_pez:
-			return "enemigo_pez";
-		case EntityType::enemigo_mosca:
-			return "enemigo_mosca";
-		default:
-			return "";
+	case EntityType::obstaculo_pinche:
+		return "obstaculo_pinche";
+	case EntityType::obstaculo_piedra:
+		return "obstaculo_piedra";
+	case EntityType::moneda:
+		return "moneda";
+	case EntityType::bonus_super_ring:
+		return "bonus_super_ring";
+	case EntityType::bonus_invencibilidad:
+		return "bonus_invencibilidad";
+	case EntityType::bonus_escudo:
+		return "bonus_escudo";
+	case EntityType::enemigo_cangrejo:
+		return "enemigo_cangrejo";
+	case EntityType::enemigo_pez:
+		return "enemigo_pez";
+	case EntityType::enemigo_mosca:
+		return "enemigo_mosca";
+	default:
+		return "";
 	}
 }
 
