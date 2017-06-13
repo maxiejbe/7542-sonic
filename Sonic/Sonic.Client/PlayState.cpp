@@ -16,11 +16,11 @@ void PlayState::load(Game* game)
 		return;
 	}
 
-	while (NetworkManager::getInstance().getLevels() == nullptr) {
+	while (NetworkManager::getInstance().getLevels() == nullptr || NetworkManager::getInstance().getLevels()->size() < 1) {
 		Sleep(3000);
 	}
 
-	Level level = NetworkManager::getInstance().getLevels()->at(0); // Nivel 0
+	Level level = NetworkManager::getInstance().getLevels()->at(0); // TODO: tomar nivel actual
 
 	Scenario* scenario = level.getScenario();
 
@@ -159,12 +159,6 @@ void PlayState::render(Game* game)
 		LayerView* layerView = &(*it);
 		layerView->renderLayer(0, 0, &camera);
 	}
-
-	//// Render entities
-	//for (vector<EntityView*>::iterator it = entityViews.begin(); it != entityViews.end(); ++it) {
-	//	EntityView* entityView = *it;
-	//	entityView->draw(camera);
-	//}
 
 	// Render Entities
 	unordered_map<int, EntityView*> entityViews = NetworkManager::getInstance().getEntityViews();
