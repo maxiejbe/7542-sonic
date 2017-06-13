@@ -58,6 +58,7 @@ public:
 
 	void sumPoints(int points);
 	void sumRings(int points);
+	void setHasShield(bool hasShield);
 
 	string getSerializedPlayer();
 
@@ -120,6 +121,7 @@ private:
 	int lives;
 	int points;
 	bool isActive;
+	bool hasShield;
 
 	mutex playerMutex;
 };

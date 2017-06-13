@@ -108,6 +108,11 @@ bool Player::isDamaging() {
 
 void Player::damage()
 {
+	if (this->hasShield) {
+		this->hasShield = false;
+		return;
+	}
+
 	if (this->rings > 0) {
 		rings = 0;
 		return;
@@ -428,6 +433,11 @@ void Player::sumPoints(int points)
 void Player::sumRings(int rings)
 {
 	this->rings += rings;
+}
+
+void Player::setHasShield(bool hasShield)
+{
+	this->hasShield = hasShield;
 }
 
 string Player::getSerializedPlayer()

@@ -8,6 +8,8 @@ class Obstacle : public Entity
 public:
 	Obstacle();
 	~Obstacle();
+
+	virtual void onCollision(Player* player) override;
 private:
 
 };
