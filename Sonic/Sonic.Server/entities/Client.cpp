@@ -182,11 +182,11 @@ bool Client::sendLevels()
 	return true;
 }
 
-bool Client::sendPlayersStatus()
+bool Client::sendStatus()
 {
 	int bytecount;
 
-	ServerMessage * message = this->server->getPlayersStatusMessage();
+	ServerMessage * message = this->server->getStatusMessage();
 	char * serializedMessage = StringUtils::convert(message->serialize());
 
 	delete message;
@@ -228,27 +228,6 @@ bool Client::sendGameStart()
 	delete serializedMessage;
 	return true;
 }
-
-bool Client::sendEntitiesStatus()
-{
-	int bytecount;
-
-	ServerMessage * message = this->server->getEntitiesStatusMessage();
-	char * serializedMessage = StringUtils::convert(message->serialize());
-
-	delete message;
-
-	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
-		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
-			<< " (Cliente " << this->getClientNumber() << ")";
-		delete serializedMessage;
-		return false;
-	}
-
-	delete serializedMessage;
-	return true;
-}
-
 
 Player* Client::getPlayer()
 {
@@ -373,7 +352,7 @@ DWORD WINAPI Client::runSendSocketHandler(void * args)
 DWORD Client::sendSocketHandler()
 {
 	while (this->continueSending) {
-		this->sendPlayersStatus();
+		this->sendStatus();
 
 		if (this->getLastMessage() == NULL) {
 			Sleep(10);
@@ -383,10 +362,6 @@ DWORD Client::sendSocketHandler()
 		if (this->getLastMessage()->getTimeStep() * 1000 - 2 > 0) {
 			Sleep(this->getLastMessage()->getTimeStep() * 1000 - 2);
 		}
-
-		//send entities
-		this->sendEntitiesStatus();
-		Sleep(10);
 	}
 
 	return 0;

@@ -4,10 +4,15 @@ RectangleView::RectangleView()
 {
 }
 
-void RectangleView::draw(SDL_Rect camera) {
+void RectangleView::draw(SDL_Rect camera)
+{
+}
+
+void RectangleView::draw_ex(SDL_Rect camera, SDL_Rect* clip, SDL_Rect dest, SDL_RendererFlip flip)
+{
 	SDL_Renderer * gRenderer = Renderer::getInstance().gRenderer;
 	if (gRenderer != NULL) {
-		
+
 		Coordinate coordinate = this->entity->getCoordinate();
 		Dimensions dimensions = this->entity->getDimensions();
 		string imagePath = this->entity->getImagePath();
@@ -47,7 +52,9 @@ void RectangleView::draw(SDL_Rect camera) {
 			croprect = { 0, 0, dimensions.getWidth(), dimensions.getHeight() };
 		}
 
-		SDL_RenderCopy(Renderer::getInstance().gRenderer, texture.getTexture(), &croprect, &dstrect);
+		//SDL_RenderCopy(Renderer::getInstance().gRenderer, texture.getTexture(), &croprect, &dstrect);
+
+		SDL_RenderCopyEx(Renderer::getInstance().gRenderer, texture.getTexture(), clip, &dest, 0, NULL, flip);
 	}
 	else {
 		LOG(logERROR) << "No se pudo dibujar el rectangulo. El renderer es nulo.";

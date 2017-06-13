@@ -58,3 +58,8 @@ Uint32 EntityView::getColorRgba()
 	return colorCode;
 }
 
+Entity * EntityView::getEntity()
+{
+	return this->entity;
+}
+

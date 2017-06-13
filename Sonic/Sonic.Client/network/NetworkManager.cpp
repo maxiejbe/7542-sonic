@@ -146,12 +146,10 @@ void NetworkManager::handleMessage(char * receivedMessage)
 
 		this->playerNumber = sMessage->getPlayerNumber();
 		break;
-	case players_status:
+	case level_status:
 		if (this->playerNumber < 0) break;
 		this->updatePlayerViews(sMessage->getPlayers());
 		this->updateCamera(sMessage->getCamera());
-		break;
-	case entities_status:
 		//TODO: handle entities views
 		break;
 	case levels_content:
@@ -228,6 +226,11 @@ unordered_map<int, PlayerView*> NetworkManager::getPlayerViews()
 	return this->playerViews;
 }
 
+unordered_map<int, EntityView*> NetworkManager::getEntityViews()
+{
+	return this->entityViews;
+}
+
 Camera * NetworkManager::getCamera()
 {
 	return this->camera;
@@ -273,6 +276,28 @@ void NetworkManager::updatePlayerViews(vector<Player*> players)
 		//Player view already exists, just update
 		Player* player = playerViews[index]->getPlayer();
 		player->copyFrom(*(*it));
+
+		delete *it;
+	}
+}
+
+void NetworkManager::updateEntityViews(vector<Entity*> entities)
+{
+	//TODO: MUTEX HERE
+	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
+	{
+		int id = (*it)->getId();
+		if (!entityViews.count(id)) {
+			// Create new entity view and include in map
+			Entity* entity = EntityResolver::resolve((*it)->getType());
+			EntityView* entityView = EntityViewResolver::resolve(entity);
+			entityViews[id] = entityView;
+			continue;
+		}
+
+		// Player view already exists, just update
+		Entity* entity = entityViews[id]->getEntity();
+		entity->copyFrom(*(*it));
 
 		delete *it;
 	}

@@ -14,6 +14,8 @@ class Enemy : public Entity
 public:
 	Enemy(string);
 	~Enemy();
+
+	void copyFrom(Enemy&);
 	
 	Vector2 getVelocity();
 	FacingDirection getFacingDirection();

@@ -18,6 +18,7 @@ public:
 
 	void draw(SDL_Rect camera) override;
 	Uint32 getColorRgba();
+	Entity* getEntity();
 
 protected:
 	Texture texture;
