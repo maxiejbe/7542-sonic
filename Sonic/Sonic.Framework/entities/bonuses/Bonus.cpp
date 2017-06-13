@@ -10,7 +10,7 @@ Bonus::Bonus(string type)
 }
 
 
-void Bonus::onCollision(Player * player)
+void Bonus::onCollision(Player * player, Camera* camera)
 {
 	switch (EntityResolver::fromTypeString(type))
 	{

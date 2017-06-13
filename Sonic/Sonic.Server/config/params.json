@@ -96,8 +96,8 @@
           },
           {
             "tipo": "obstaculo_pinche",
-            "cantidad_minima": 2,
-            "cantidad_maxima": 3,
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
             "min_x": 600,
             "max_x": 700,
             "min_y": 445,
@@ -105,8 +105,8 @@
           },
           {
             "tipo": "obstaculo_piedra",
-            "cantidad_minima": 3,
-            "cantidad_maxima": 5,
+            "cantidad_minima": 1,
+            "cantidad_maxima": 1,
             "min_x": 700,
             "max_x": 800,
             "min_y": 425,

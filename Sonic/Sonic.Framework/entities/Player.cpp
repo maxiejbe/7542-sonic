@@ -20,6 +20,11 @@ const char* PLAYER_TYPE_NODE = "pt";
 const char* PLAYER_IS_CONNECTED_NODE = "ic";
 const char* PLAYER_MILLISECONDS = "ms";
 const char* PLAYER_TEST_MODE_NODE = "tm";
+const char* PLAYER_RINGS_NODE = "ri";
+const char* PLAYER_LIVES_NODE = "li";
+const char* PLAYER_POINTS_NODE = "po";
+const char* PLAYER_IS_ACTIVE_NODE = "ia";
+const char* PLAYER_HAS_SHIELD_NODE = "hs";
 
 
 Player::Player()
@@ -69,6 +74,11 @@ void Player::copyFrom(Player & anotherPlayer)
 	this->setIsConnected(anotherPlayer.getIsConnected());
 	this->setTime(anotherPlayer.getTime());
 	this->setTestMode(anotherPlayer.getTestMode());
+	this->setRings(anotherPlayer.getRings());
+	this->setLives(anotherPlayer.getLives());
+	this->setPoints(anotherPlayer.getPoints());
+	this->setIsActive(anotherPlayer.getIsActive());
+	this->setHasShield(anotherPlayer.getHasShield());
 }
 
 void Player::lock()
@@ -118,7 +128,7 @@ void Player::damage()
 		return;
 	}
 	this->lives--;
-	
+
 	if (lives == 0) {
 		isActive = false;
 	}
@@ -294,6 +304,51 @@ bool Player::getTestMode()
 	return this->testMode;
 }
 
+int Player::getRings()
+{
+	return this->rings;
+}
+
+void Player::setRings(int rings)
+{
+	this->rings = rings;
+}
+
+int Player::getLives()
+{
+	return this->lives;
+}
+
+void Player::setLives(int lives)
+{
+	this->lives = lives;
+}
+
+int Player::getPoints()
+{
+	return this->points;
+}
+
+void Player::setPoints(int points)
+{
+	this->points = points;
+}
+
+bool Player::getIsActive()
+{
+	return this->isActive;
+}
+
+void Player::setIsActive(bool isActive)
+{
+	this->isActive = isActive;
+}
+
+bool Player::getHasShield()
+{
+	return this->hasShield;
+}
+
 PlayerType Player::calculatePlayerType()
 {
 	switch (this->getNumber() % 4) {
@@ -356,6 +411,16 @@ void Player::unserialize(Value * nodeRef)
 	parseInt(&time, 0, nodeRef, PLAYER_MILLISECONDS);
 	//test mode
 	parseBool(&testMode, false, nodeRef, PLAYER_TEST_MODE_NODE);
+	//rings
+	parseInt(&rings, 0, nodeRef, PLAYER_RINGS_NODE);
+	//lives
+	parseInt(&lives, 0, nodeRef, PLAYER_LIVES_NODE);
+	//points
+	parseInt(&points, 0, nodeRef, PLAYER_POINTS_NODE);
+	//is active
+	parseBool(&isActive, 0, nodeRef, PLAYER_IS_ACTIVE_NODE);
+	//has shield
+	parseBool(&hasShield, 0, nodeRef, PLAYER_HAS_SHIELD_NODE);
 }
 
 void Player::serializePlayer()
@@ -403,6 +468,16 @@ string Player::serialize()
 	writer.Int(this->time);
 	writer.String(PLAYER_TEST_MODE_NODE);
 	writer.Bool(this->testMode);
+	writer.String(PLAYER_RINGS_NODE);
+	writer.Int(this->rings);
+	writer.String(PLAYER_LIVES_NODE);
+	writer.Int(this->lives);
+	writer.String(PLAYER_POINTS_NODE);
+	writer.Int(this->points);
+	writer.String(PLAYER_IS_ACTIVE_NODE);
+	writer.Bool(this->isActive);
+	writer.String(PLAYER_HAS_SHIELD_NODE);
+	writer.Bool(this->hasShield);
 
 	int(time);
 

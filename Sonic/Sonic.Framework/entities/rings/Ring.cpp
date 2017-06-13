@@ -10,7 +10,7 @@ Ring::Ring(string type)
 	this->dimensions = Dimensions(RING_DEFAULT_WIDTH, RING_DEFAULT_HEIGHT, 0);
 }
 
-void Ring::onCollision(Player * player)
+void Ring::onCollision(Player * player, Camera* camera)
 {
 	if (!isActive) return;
 	player->sumRings(RING_GIVEN_POINTS);

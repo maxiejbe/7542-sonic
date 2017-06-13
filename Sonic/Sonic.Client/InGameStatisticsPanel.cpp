@@ -38,15 +38,15 @@ void InGameStatisticsPanel::showStatistics(Player* player)
 	showText(namePlayer, 80, 545, fontLifes, { 255, 255, 0 });
 
 	// Show lifes
-	string lifesPlayer = "X 3"; //Refactor when player has lifes
+	string lifesPlayer = "X " + to_string(player->getLives());
 	showText(lifesPlayer, 80, 570, fontLifes, { 255, 255, 255 });
 
 	// Show score
-	string score = "SCORE   " + to_string(100); //Refactor when player has score
+	string score = "SCORE   " + to_string(player->getPoints());
 	showText(score, 30, 10, fontScore, { 255, 255, 0 });
 
 	// Show rings
-	string rings = "RINGS   " + to_string(50); //Refactor when player has rings
+	string rings = "RINGS   " + to_string(player->getRings());
 	showText(rings, 30, 65, fontScore, { 255, 255, 0 });
 
 	// Show team

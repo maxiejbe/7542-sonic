@@ -40,7 +40,7 @@ public:
 	virtual char* getNodeName() override;
 	virtual string serialize() override;
 	// Inherited via Entity
-	virtual void onCollision(Player* player) override;
+	virtual void onCollision(Player* player, Camera* camera) override;
 private:
 	Vector2 velocity;
 	bool alive;

@@ -12,7 +12,7 @@ public:
 	Bonus(string);
 	~Bonus();
 
-	virtual void onCollision(Player* player) override;
+	virtual void onCollision(Player* player, Camera* camera) override;
 private:
 	
 };

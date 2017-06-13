@@ -12,7 +12,7 @@
 
 using namespace std;
 
-enum FacingDirection { FACING_LEFT, FACING_RIGHT, FACING_UP, FACING_DOWN};
+enum FacingDirection { FACING_LEFT, FACING_RIGHT, FACING_UP, FACING_DOWN };
 
 class Player : public Serializable, public Collisionable
 {
@@ -89,6 +89,15 @@ public:
 	void setTime(int time);
 	void setTestMode(bool testMode);
 	bool getTestMode();
+	int getRings();
+	void setRings(int rings);
+	int getLives();
+	void setLives(int lives);
+	int getPoints();
+	void setPoints(int points);
+	bool getIsActive();
+	void setIsActive(bool isActive);
+	bool getHasShield();
 
 	string serializedPlayer;
 

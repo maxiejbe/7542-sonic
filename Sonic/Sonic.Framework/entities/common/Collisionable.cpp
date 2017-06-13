@@ -1,5 +1,8 @@
 #include "Collisionable.h"
 
+const int WIDTH_PLAYER_SPRITE = 72;
+const int HEIGHT_PLAYER_SPRITE = 72;
+
 bool Collisionable::isCollisioning(Collisionable * otherCollisionable)
 {
 	if (otherCollisionable->getCollisionableType() == CollisionableType::circle) return isCollisioningCircle(otherCollisionable);
@@ -11,9 +14,9 @@ bool Collisionable::isCollisioningRectangle(Collisionable * otherCollisionable)
 	bool collision = true;
 
 	int borderLeft = getXPosition();
-	int borderRight = getXPosition() + getWidth();
+	int borderRight = getXPosition() + WIDTH_PLAYER_SPRITE;
 	int borderTop = getYPosition();
-	int borderBotton = getYPosition() + getHeight();
+	int borderBotton = getYPosition() + HEIGHT_PLAYER_SPRITE;
 
 	int otherBorderLeft = otherCollisionable->getXPosition();
 	int otherBorderRight = otherCollisionable->getXPosition() + otherCollisionable->getWidth();

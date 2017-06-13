@@ -18,7 +18,7 @@ void PlayerController::update(Message* message, Player* player, Camera* camera, 
 	if (message == nullptr) return;
 	updateInput(message, player);
 	move(player, message->getTimeStep(), camera);
-	calculateCollisions(player, scenario);
+	calculateCollisions(player, scenario, camera);
 
 	player->unlock();
 }
@@ -142,13 +142,13 @@ void PlayerController::move(Player* player, double dt, Camera* camera)
 	}
 }
 
-void PlayerController::calculateCollisions(Player * player, Scenario* scenario)
+void PlayerController::calculateCollisions(Player * player, Scenario* scenario, Camera* camera)
 {
 	vector<Entity*> entities = scenario->getEntities();
 	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
 	{
 		if (player->isCollisioning(*it)) {
-			(*it)->onCollision(player);
+			(*it)->onCollision(player, camera);
 		}
 	}
 }
