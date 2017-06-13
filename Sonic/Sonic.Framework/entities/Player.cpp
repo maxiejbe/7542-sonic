@@ -117,9 +117,11 @@ void Player::damage()
 		rings = 0;
 		return;
 	}
-	this->lives--;
 	
-	if (lives == 0) {
+	if (lives > 0) {
+		this->lives--;
+	}
+	else {
 		isActive = false;
 	}
 }
