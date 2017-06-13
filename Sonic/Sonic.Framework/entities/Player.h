@@ -45,6 +45,9 @@ public:
 	int getHeight() override;
 	CollisionableType getCollisionableType() override;
 
+	bool isDamaging();
+	void damage();
+
 	Vector2 getPosition();
 	void setXPosition(double x);
 	void setYPosition(double y);
@@ -52,6 +55,8 @@ public:
 	void setXVelocity(double x);
 	void setYVelocity(double y);
 	void setNumber(int number);
+
+	void sumPoints(int points);
 
 	string getSerializedPlayer();
 
@@ -109,6 +114,11 @@ private:
 	bool isConnected;
 	int time;
 	bool testMode;
+
+	int rings;
+	int lives;
+	int points;
+	bool isActive;
 
 	mutex playerMutex;
 };

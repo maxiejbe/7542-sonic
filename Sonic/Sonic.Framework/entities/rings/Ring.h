@@ -8,6 +8,8 @@ class Ring : public Entity
 public:
 	Ring();
 	~Ring();
+
+	virtual void onCollision(Player* player) override;
 private:
 
 };

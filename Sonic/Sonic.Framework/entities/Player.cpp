@@ -40,6 +40,11 @@ Player::Player()
 	this->isConnected = true;
 	this->testMode = false;
 
+	this->lives = 3;
+	this->rings = 0;
+	this->points = 0;
+	this->isActive = true;
+
 	this->time = 0;
 }
 
@@ -94,6 +99,24 @@ int Player::getRadio()
 CollisionableType Player::getCollisionableType()
 {
 	return CollisionableType::rectangle;
+}
+
+bool Player::isDamaging() {
+	//If we have a kind of bonus, apply here
+	return spriteState == PlayerStatus::jumping || spriteState == PlayerStatus::spinning;
+}
+
+void Player::damage()
+{
+	if (this->rings > 0) {
+		rings = 0;
+		return;
+	}
+	this->lives--;
+	
+	if (lives == 0) {
+
+	}
 }
 
 Vector2 Player::getPosition()
@@ -395,6 +418,11 @@ int Player::getNumber()
 void Player::setNumber(int number)
 {
 	this->number = number;
+}
+
+void Player::sumPoints(int points)
+{
+	this->points = this->points + points;
 }
 
 string Player::getSerializedPlayer()

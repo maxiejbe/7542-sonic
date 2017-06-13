@@ -12,6 +12,11 @@ const int ENEMY_DEFAULT_HEIGHT = 20;
 const int ENEMY_DEFAULT_POINTS = 10;
 const int ENEMY_DEFAULT_MAX_DISTANCE = 10;
 
+const int CRAB_GIVEN_POINTS = 100;
+const int FLY_GIVEN_POINTS = 500;
+const int FISH_GIVEN_POINTS = 200;
+
+
 Enemy::Enemy(string type)
 {
 	this->coordinate = Coordinate(ENEMY_DEFAULT_POSX, ENEMY_DEFAULT_POSY);
@@ -88,6 +93,25 @@ int Enemy::getPoints()
 	return this->points;
 }
 
+int Enemy::getGivenPoints()
+{
+	switch (EntityResolver::fromTypeString(type))
+	{
+		//Sorry, this should be implemented in player with polimorfic methods
+		case enemigo_cangrejo:
+			return CRAB_GIVEN_POINTS;
+		case enemigo_mosca:
+			return FLY_GIVEN_POINTS;
+			break;
+		case enemigo_pez:
+			return FISH_GIVEN_POINTS;
+			break;
+		default:
+			return 0;
+	}
+}
+
+
 void Enemy::serializeEnemy()
 {
 	this->serializedEnemy = this->serialize();
@@ -127,5 +151,11 @@ string Enemy::serialize()
 
 void Enemy::onCollision(Player * player)
 {
+	if (!player->isDamaging()) {
+		player->damage();
+		return;
+	}
+	player->sumPoints(getGivenPoints());
+	this->kill();
 }
 

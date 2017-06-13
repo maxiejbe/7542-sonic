@@ -59,6 +59,8 @@ protected:
 	string imagePath;
 	int zIndex;
 	
+	bool isActive;
+
 	void setColor(string color);
 	void basePropertiesSerialization(Writer<StringBuffer>& writer);
 };
