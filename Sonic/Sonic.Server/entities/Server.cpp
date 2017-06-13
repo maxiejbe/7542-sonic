@@ -245,6 +245,11 @@ void Server::addConnectedClients()
 	}
 }
 
+int Server::getCurrentLevel()
+{
+	return this->currentLevel;
+}
+
 void Server::resetLevel()
 {
 	Level* level = &this->gameConfig->getLevels()->at(this->currentLevel - 1);
