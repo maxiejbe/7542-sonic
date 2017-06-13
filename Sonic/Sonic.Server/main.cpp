@@ -15,11 +15,14 @@ vector<Entity*> generateLevelEntities(Level level) {
 	for (vector<EntityLimit>::iterator elit = limits.begin(); elit != limits.end(); ++elit) {
 		//Random entities count
 		int entitiesCount = getRandomBetween(elit->getMinCount(), elit->getMaxCount());
-			
+		
+		int eid = 0;
 		for (size_t i = 0; i < entitiesCount; i++)
 		{
 			Entity* entity = EntityResolver::resolve(elit->getType());
 			if (entity == nullptr) continue;
+
+			entity->setId(eid);
 
 			int x = getRandomBetween(elit->getMinX(), elit->getMaxX());
 			int y = getRandomBetween(elit->getMinY(), elit->getMaxY());
@@ -28,6 +31,7 @@ vector<Entity*> generateLevelEntities(Level level) {
 
 			//TODO: Set random position
 			levelEntities.push_back(entity);
+			eid++;
 		}
 	}
 	return levelEntities;

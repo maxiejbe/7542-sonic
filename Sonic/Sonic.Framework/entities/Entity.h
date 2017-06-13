@@ -43,6 +43,8 @@ public:
 	void setDimensions(Dimensions);
 	int getTime();
 	void setTime(int time);
+	
+	void setId(int);
 	int getId();
 
 	virtual void onCollision(Player* player) = 0;
