@@ -14,7 +14,7 @@ enum BonusType { RING, INVINCIBILITY, SHIELD };
 enum ObstacleType { BLOCK, SPYKES };
 enum EnemyType { FISH, FLY, CRAB };
 
-enum MessageType { player_assign_ok, content_ok, start_game_ok, status, heart_beat, no_type };
+enum MessageType { player_assign_ok, levels_content_ok, level_start_ok, status, heart_beat, no_type };
 
 struct Message : public SerializableMessage {
 public:

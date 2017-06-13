@@ -1,6 +1,7 @@
 #include "Dimensions.h"
 
 char* DIMENSIONS_NODE = "dimensiones";
+
 const char* DIMENSIONS_WIDTH_NODE = "ancho";
 const char* DIMENSIONS_HEIGHT_NODE = "alto";
 const char* DIMENSIONS_RADIO_NODE = "radio";
@@ -37,6 +38,26 @@ int Dimensions::getHeight()
 int Dimensions::getRadio()
 {
 	return radio;
+}
+
+void Dimensions::serialize(Writer<StringBuffer>& writer)
+{
+	writer.StartObject();
+	writer.String(DIMENSIONS_WIDTH_NODE);
+	writer.Int(width);
+	writer.String(DIMENSIONS_HEIGHT_NODE);
+	writer.Int(height);
+	writer.String(DIMENSIONS_RADIO_NODE);
+	writer.Int(radio);
+	writer.EndObject();
+}
+
+string Dimensions::serialize()
+{
+	StringBuffer s;
+	Writer<StringBuffer> writer(s);
+	serialize(writer);
+	return s.GetString();
 }
 
 void Dimensions::unserialize(Value* nodeRef)

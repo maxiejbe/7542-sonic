@@ -8,7 +8,7 @@ void WaitingState::load(Game * game)
 	Banner waitingConnectionsBanner = Banner("Waiting for other connections", { 0,0,0,150 }, "img/menu-background.jpg");
 
 	Message* clientResponse = new Message();
-	clientResponse->setType(MessageType::content_ok);
+	clientResponse->setType(MessageType::levels_content_ok);
 	NetworkManager::getInstance().sendMessage(clientResponse);
 	delete clientResponse;
 

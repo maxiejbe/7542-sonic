@@ -53,7 +53,6 @@ int main(int argc, char* args[])
 	ServerConfiguration serverConfig;
 	Window window;
 	Configuration config;
-	Camera camera;
 	GameConfig gameConfig;
 	
 	parser->parse(&serverConfig);
@@ -68,11 +67,9 @@ int main(int argc, char* args[])
 		(*it).setEntities(entities);
 	}
 
-	Scenario scenario;
 
-	camera = Camera(0, 0, window.getWidth(), window.getHeight(), window.getWidth(), window.getHeight(), scenario.getWidth(), scenario.getHeight());
-
-	Server* server = new Server(&serverConfig, parser->getFileContent(), &window, &config, &scenario, &camera);
+	Server* server = new Server(&serverConfig, parser->getFileContent(), &window, &config, &gameConfig);
+	
 	if (!server->validate()) {
 		return 0;
 	}

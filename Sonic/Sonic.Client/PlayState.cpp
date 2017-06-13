@@ -16,14 +16,9 @@ void PlayState::load(Game* game)
 		return;
 	}
 
-	while (NetworkManager::getInstance().getFileContent().empty()) {
+	while (NetworkManager::getInstance().getLevels() == nullptr) {
 		Sleep(3000);
 	}
-
-	// Parse scenario
-	Parser * parser = new Parser(game->getConfigPath(), NetworkManager::getInstance().getFileContent());
-	parser->parse(&scenario);
-	delete parser;
 
 	scenarioWidth = scenario.getWidth();
 	scenarioHeight = scenario.getHeight();

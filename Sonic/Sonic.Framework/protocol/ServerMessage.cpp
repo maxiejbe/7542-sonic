@@ -3,18 +3,21 @@
 const char* SERVER_MESSAGE_TYPE_NODE = "t";
 const char* SERVER_MESSAGE_PLAYER_NUMBER_NODE = "pn";
 const char* SERVER_MESSAGE_PLAYERS_STATUS_NODE = "ps";
-const char* SERVER_MESSAGE_ENEMIES_STATUS_NODE = "es";
+const char* SERVER_MESSAGE_LEVELS_STATUS_NODE = "lvs";
+const char* SERVER_MESSAGE_LEVEL_START_NODE = "l2s";
 const char* SERVER_MESSAGE_CAMERA_NODE = "ca";
 const char* SERVER_MESSAGE_FILE_CONTENT_NODE = "fc";
+const char* SERVER_MESSAGE_ENTITIES_STATUS_NODE = "ets";
 
 ServerMessage::ServerMessage()
 {
 	this->playerNumber = -1;
 	this->type = typeless;
 	this->players = vector<Player*>();
-	this->enemies = vector<Enemy*>();
+	this->entities = vector<Entity*>();
+	this->levels = new vector<Level>();
 	this->camera = nullptr;
-	this->fileContent = "";
+	this->levelToStart = 0;
 }
 
 ServerMessage::~ServerMessage()
@@ -48,9 +51,19 @@ vector<Player*> ServerMessage::getPlayers()
 	return this->players;
 }
 
-vector<Enemy*> ServerMessage::getEnemies()
+vector<Entity*> ServerMessage::getEntities()
 {
-	return this->enemies;
+	return this->entities;
+}
+
+vector<Level>* ServerMessage::getLevels()
+{
+	return this->levels;
+}
+
+int ServerMessage::getLevelToStart() 
+{
+	return this->levelToStart;
 }
 
 Camera * ServerMessage::getCamera()
@@ -68,19 +81,19 @@ void ServerMessage::setPlayers(vector<Player*> players)
 	this->players = players;
 }
 
-void ServerMessage::setEnemies(vector<Enemy*> enemies)
+void ServerMessage::setEntities(vector<Entity*> entities)
 {
-	this->enemies = enemies;
+	this->entities = entities;
 }
 
-void ServerMessage::setFileContent(string content)
+void ServerMessage::setLevels(vector<Level>* levels)
 {
-	this->fileContent = content;
+	this->levels = levels;
 }
 
-string ServerMessage::getFileContent()
+void ServerMessage::setLevelToStart(int levelToStart) 
 {
-	return this->fileContent;
+	this->levelToStart = levelToStart;
 }
 
 
@@ -94,12 +107,18 @@ void ServerMessage::unserialize(Value* nodeRef)
 		//player number
 		parseInt(&playerNumber, -1, nodeRef, SERVER_MESSAGE_PLAYER_NUMBER_NODE);
 		break;
+	case level_start:
+		parseInt(&levelToStart, 0, nodeRef, SERVER_MESSAGE_LEVEL_START_NODE);
+		break;
+	case levels_content:
+		parseLevels(nodeRef);
+		break;
 	case players_status:
 		parsePlayersStatus(nodeRef);
 		parseCameraStatus(nodeRef);
 		break;
-	case content:
-		parseString(&this->fileContent, "", nodeRef, SERVER_MESSAGE_FILE_CONTENT_NODE);
+	case entities_status:
+		parseEntitiesStatus(nodeRef);
 		break;
 	default:
 		break;
@@ -134,9 +153,17 @@ string ServerMessage::serialize()
 	case players_status:
 		this->serializePlayers(writer);
 		this->serializeCamera(writer);
-	case content:
-		writer.String(SERVER_MESSAGE_FILE_CONTENT_NODE);
-		writer.String(this->fileContent.c_str());
+		break;
+	case levels_content:
+		this->serializeLevels(writer);
+		break;
+	case level_start:
+		writer.String(SERVER_MESSAGE_LEVEL_START_NODE);
+		writer.Int(levelToStart);
+		break;
+	case entities_status:
+		this->serializeEntities(writer);
+		break;
 	default:
 		break;
 	}
@@ -169,20 +196,35 @@ void ServerMessage::serializePlayers(Writer<StringBuffer>& writer)
 	writer.EndArray();
 }
 
-/*void ServerMessage::serializeEnemies(Writer<StringBuffer>& writer)
+void ServerMessage::serializeLevels(Writer<StringBuffer>& writer)
 {
-	writer.String(SERVER_MESSAGE_ENEMIES_STATUS_NODE);
+	writer.String(SERVER_MESSAGE_LEVELS_STATUS_NODE);
 	writer.StartArray();
 
-	vector<Enemy*>::iterator it = this->enemies.begin();
-	while (it != this->enemies.end()) {
-		if (*it == NULL) continue;
-		string serializedEnemy = (*it)->getSerializedEnemy();
-		writer.String(serializedEnemy.c_str());
+	vector<Level>::iterator it = this->levels->begin();
+	while (it != this->levels->end()) {
+		string serializedLevel = (*it).serialize();
+		writer.String(serializedLevel.c_str());
 		it++;
 	}
 	writer.EndArray();
-}*/
+}
+
+void ServerMessage::serializeEntities(Writer<StringBuffer>& writer)
+{
+	writer.String(SERVER_MESSAGE_ENTITIES_STATUS_NODE);
+	writer.StartArray();
+
+	vector<Entity*>::iterator it = this->entities.begin();
+	while (it != this->entities.end()) {
+		if (*it == NULL) continue;
+		string serializedEntity = (*it)->serialize();
+		writer.String(serializedEntity.c_str());
+		it++;
+	}
+	writer.EndArray();
+}
+
 
 void ServerMessage::parseCameraStatus(Value * nodeRef)
 {
@@ -245,35 +287,67 @@ void ServerMessage::parsePlayersStatus(Value * nodeRef)
 	}
 }
 
-/*void ServerMessage::parseEnemiesStatus(Value * nodeRef)
+void ServerMessage::parseLevels(Value * nodeRef)
 {
 	//free enemies and clear vector
 	Value& node = *nodeRef;
 
-	if (nodeRef == nullptr || !node.HasMember(SERVER_MESSAGE_ENEMIES_STATUS_NODE)) {
-		LOG(logWARNING) << "Server Message: Fallo parseo de enemigos";
+	if (nodeRef == nullptr || !node.HasMember(SERVER_MESSAGE_LEVELS_STATUS_NODE)) {
+		LOG(logWARNING) << "Server Message: Fallo parseo de niveles";
 		return;
 	}
 
 	//string childNodeValue = getNodeContent(&node[SERVER_MESSAGE_PLAYERS_STATUS_NODE]);
-	const Value& enemiesStatus = node[SERVER_MESSAGE_ENEMIES_STATUS_NODE];
-	if (!enemiesStatus.IsArray()) {
-		LOG(logWARNING) << "Server Message: Campo incorrecto de enemigos " << SERVER_MESSAGE_ENEMIES_STATUS_NODE;
+	const Value& levels = node[SERVER_MESSAGE_LEVELS_STATUS_NODE];
+	if (!levels.IsArray()) {
+		LOG(logWARNING) << "Server Message: Campo incorrecto de enemigos " << SERVER_MESSAGE_LEVELS_STATUS_NODE;
 		return;
 	}
 
 	//unserialize enemies
 	Document jsonEnemy;
-	for (Value::ConstValueIterator itr = enemiesStatus.Begin(); itr != enemiesStatus.End(); ++itr) {
+	for (Value::ConstValueIterator itr = levels.Begin(); itr != levels.End(); ++itr) {
 		if (jsonEnemy.Parse((*itr).GetString()).HasParseError()) {
 			//LOG
 			continue;
 		}
 
 		//unsearialize player and add to vector
-		Enemy* newEnemy = new Enemy();
-		newEnemy->unserialize(&jsonEnemy);
-		this->enemies.push_back(newEnemy);
+		Level newLevel = Level();
+		newLevel.unserialize(&jsonEnemy);
+		this->levels->push_back(newLevel);
 	}
-}*/
+}
+
+void ServerMessage::parseEntitiesStatus(Value * nodeRef) 
+{
+	//free players and clear vector
+	Value& node = *nodeRef;
+
+	//LOG(logINFO) << MESSAGE_PARSING_NODE_FIELD + string(fieldName);
+
+	if (nodeRef == nullptr || !node.HasMember(SERVER_MESSAGE_ENTITIES_STATUS_NODE)) {
+		LOG(logWARNING) << "Server Message: Fallo parseo de entidades";
+		return;
+	}
+
+	//string childNodeValue = getNodeContent(&node[SERVER_MESSAGE_PLAYERS_STATUS_NODE]);
+	const Value& entitiesStatus = node[SERVER_MESSAGE_ENTITIES_STATUS_NODE];
+	if (!entitiesStatus.IsArray()) {
+		LOG(logWARNING) << "Server Message: Campo incorrecto de entidades " << SERVER_MESSAGE_ENTITIES_STATUS_NODE;
+		return;
+	}
+
+	//unserialize players
+	Document jsonEntity;
+	for (Value::ConstValueIterator itr = entitiesStatus.Begin(); itr != entitiesStatus.End(); ++itr) {
+		if (jsonEntity.Parse((*itr).GetString()).HasParseError()) {
+			//LOG
+			continue;
+		}
+
+		//unsearialize player and add to vector
+		this->entities.push_back(EntityResolver::parse(&jsonEntity));
+	}
+}
 

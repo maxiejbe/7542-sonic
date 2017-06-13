@@ -8,6 +8,7 @@ NetworkManager::NetworkManager()
 	this->playerNumber = -1;
 	this->camera = new Camera();
 	this->startGame = false;
+	this->gameLevels = nullptr;
 }
 
 NetworkManager::~NetworkManager()
@@ -150,11 +151,15 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		this->updatePlayerViews(sMessage->getPlayers());
 		this->updateCamera(sMessage->getCamera());
 		break;
-	case content:
-		this->fileContent = sMessage->getFileContent();
+	case entities_status:
+		//TODO: handle entities views
 		break;
-	case start_game:
-		clientResponse->setType(MessageType::start_game_ok);
+	case levels_content:
+		this->gameLevels = sMessage->getLevels();
+		break;
+	case level_start:
+		clientResponse->setType(MessageType::level_start_ok);
+		//TODO: SETEAR CONFIGURACION DE NIVEL RECIBIDO
 		this->sendMessage(clientResponse);
 		this->startGame = true;
 
@@ -246,9 +251,9 @@ int NetworkManager::getPlayerNumber()
 	return this->playerNumber;
 }
 
-string NetworkManager::getFileContent()
+vector<Level>* NetworkManager::getLevels()
 {
-	return this->fileContent;
+	return this->gameLevels;
 }
 
 void NetworkManager::updatePlayerViews(vector<Player*> players)

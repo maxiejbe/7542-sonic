@@ -20,6 +20,7 @@
 #include "entities/Window.h"
 #include "entities/Configuration.h"
 #include "entities/Scenario.h"
+#include "entities/GameConfig.h"
 #include "entities/ServerConfiguration.h"
 #include "../controllers/CameraController.h"
 #include "../controllers/EnemyController.h"
@@ -38,13 +39,17 @@ class Server {
 
 public:
 	~Server();
-	Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, Scenario* scenario, Camera * camera);
+	Server(ServerConfiguration* serverConfig, string fileContent, Window* window, Configuration* config, GameConfig* gameConfig);
 	bool validate();
 	void waitForClientConnections();
 	void sendBroadcast();
 	void removeClientConnection(int clientNumber);
 	void terminateThreads();
 	void addConnectedClients();
+	int getCurrentLevel();
+
+	void resetLevel();
+	vector<Level>* getLevels();
 
 	SOCKET getSocket();
 	string getFileContent();
@@ -56,7 +61,7 @@ public:
 	Camera* getCamera();
 
 	ServerMessage* getPlayersStatusMessage();
-	string getEnemiesStatusMessage();
+	ServerMessage* getEntitiesStatusMessage();
 private:
 	/*
 	Initialize socket support WINDOWS ONLY!
@@ -86,15 +91,19 @@ private:
 	string fileContent;
 
 	bool gameStarted;
+	int currentLevel;
 
 	ServerConfiguration* serverConfig;
 	Window* window;
 	Configuration* config;
+	
 	Scenario* scenario;
+	Camera* camera;
+
+	GameConfig* gameConfig;
 
 	unordered_map<int, Client*> clients;
 	vector<Client*> disconnectedClients;
-	Camera* camera;
 	//mutex clientMutex;
 
 	vector<Enemy*> enemies;

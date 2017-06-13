@@ -1,36 +1,45 @@
 #include "EntityResolver.h"
 #include "EntityResolver.h"	
 
-Entity* EntityResolver::resolve(Entity* origin)
+const char* ENTITYRESOLVER_ENTITY_TYPE_NODE = "tipo";
+
+Entity * EntityResolver::resolve(string entityType)
 {
 	Entity* destination = nullptr;
 
-	if (origin->getType() == toTypeString(EntityType::obstaculo_pinche) ||
-		origin->getType() == toTypeString(EntityType::obstaculo_piedra)) {
-		//destination = new Obstacle(origin->getType()); //TODO
+	if (entityType == toTypeString(EntityType::obstaculo_pinche) ||
+		entityType == toTypeString(EntityType::obstaculo_piedra)) {
+		//destination = new Obstacle(entityType); //TODO
 	}
-	else if (origin->getType() == toTypeString(EntityType::moneda)) {
-		//destination = new Ring(origin->getType()); //TODO
+	else if (entityType == toTypeString(EntityType::moneda)) {
+		//destination = new Ring(entityType); //TODO
 	}
-	else if (origin->getType() == toTypeString(EntityType::bonus_super_ring) ||
-		origin->getType() == toTypeString(EntityType::bonus_invencibilidad) ||
-		origin->getType() == toTypeString(EntityType::bonus_escudo)) {
-		//destination = new Bonus(origin->getType()); //TODO
+	else if (entityType == toTypeString(EntityType::bonus_super_ring) ||
+		entityType == toTypeString(EntityType::bonus_invencibilidad) ||
+		entityType == toTypeString(EntityType::bonus_escudo)) {
+		//destination = new Bonus(entityType); //TODO
 	}
-	else if (origin->getType() == toTypeString(EntityType::enemigo_cangrejo) ||
-		origin->getType() == toTypeString(EntityType::enemigo_pez) ||
-		origin->getType() == toTypeString(EntityType::enemigo_mosca)) {
-		destination = new Enemy(origin->getType());
+	else if (entityType == toTypeString(EntityType::enemigo_cangrejo) ||
+		entityType == toTypeString(EntityType::enemigo_pez) ||
+		entityType == toTypeString(EntityType::enemigo_mosca)) {
+		destination = new Enemy(entityType);
 	}
 
 	return destination;
 }
 
-Entity * EntityResolver::resolve(string entityType)
+Entity * EntityResolver::parse(Value* nodeRef)
 {
-	Entity entity;
-	entity.setType(entityType);
-	return resolve(&entity);
+	Value& node = *nodeRef;
+	if (nodeRef == nullptr || !node.HasMember(ENTITYRESOLVER_ENTITY_TYPE_NODE)) return nullptr;
+
+	const Value& entityType = node[ENTITYRESOLVER_ENTITY_TYPE_NODE];
+
+	if (!entityType.IsString()) return nullptr;
+
+	Entity* entity = resolve(string(entityType.GetString()));
+	entity->unserialize(nodeRef);
+	return entity;
 }
 
 Dimensions EntityResolver::getDefaultDimensions(Entity * entity)

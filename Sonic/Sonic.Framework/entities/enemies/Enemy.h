@@ -31,9 +31,11 @@ public:
 	string getSerializedEnemy();
 
 	// Inherited via Serializable
-	void unserialize(Value* nodeRef) override;
-	char* getNodeName() override;
-	string serialize() override;
+	virtual void unserialize(Value* nodeRef);
+	virtual char* getNodeName() override;
+	virtual string serialize() override;
+	// Inherited via Entity
+	virtual void onCollision(Player* player) override;
 private:
 	Vector2 velocity;
 	bool alive;

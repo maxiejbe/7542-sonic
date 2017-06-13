@@ -14,6 +14,7 @@ const char* MESSAGE_CLIENT_DATA_RECV_SUCCESS = "Se recibió correctamente el mens
 const char* MESSAGE_CLIENT_SEND_MESSAGE_ERROR = "No se pudo enviar el mensaje ";
 const char* MESSAGE_CLIENT_SEND_FILE_CONTENT_ERROR = "No se pudo enviar el contenido del archivo de configuración";
 const char* MESSAGE_CLIENT_SEND_MESSAGE_SUCCESS = "Se envió correctamente el mensaje ";
+const char* MESSAGE_CLIENT_SEND_LEVEL_ERROR = "No se pudo enviar los niveles";
 
 
 Client::Client(Server* server)
@@ -161,20 +162,20 @@ bool Client::sendClientNumber()
 	return true;
 }
 
-bool Client::sendFileContent()
+bool Client::sendLevels()
 {
 	int bytecount;
 
 	ServerMessage * message = new ServerMessage();
-	message->setType(content);
-	message->setFileContent(this->server->getFileContent());
+	message->setType(levels_content);
+	message->setLevels(this->server->getLevels());
 	string serializedMessage = message->serialize();
 
-	const char* fileContentMessage = serializedMessage.c_str();
+	const char* levelsMessage = serializedMessage.c_str();
 	delete message;
 
-	if ((bytecount = send(this->socket, fileContentMessage, strlen(fileContentMessage), 0)) == SOCKET_ERROR) {
-		LOG(logERROR) << MESSAGE_CLIENT_SEND_FILE_CONTENT_ERROR << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
+	if ((bytecount = send(this->socket, levelsMessage, strlen(levelsMessage), 0)) == SOCKET_ERROR) {
+		LOG(logERROR) << MESSAGE_CLIENT_SEND_LEVEL_ERROR << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->clientNumber << ")";
 		return false;
 	}
@@ -209,7 +210,8 @@ bool Client::sendGameStart()
 	int bytecount;
 
 	ServerMessage* message = new ServerMessage();
-	message->setType(ServerMessageType::start_game);
+	message->setType(ServerMessageType::level_start);
+	message->setLevelToStart(this->server->getCurrentLevel());
 	char* serializedMessage = StringUtils::convert(message->serialize());
 	delete message;
 
@@ -227,18 +229,23 @@ bool Client::sendGameStart()
 	return true;
 }
 
-bool Client::sendEnemiesStatus(string enemiesStatusMessage)
+bool Client::sendEntitiesStatus()
 {
 	int bytecount;
 
-	char* serializedMessage = StringUtils::convert(enemiesStatusMessage);
+	ServerMessage * message = this->server->getEntitiesStatusMessage();
+	char * serializedMessage = StringUtils::convert(message->serialize());
+
+	delete message;
 
 	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
 		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->getClientNumber() << ")";
+		delete serializedMessage;
 		return false;
 	}
 
+	delete serializedMessage;
 	return true;
 }
 
@@ -280,12 +287,12 @@ void Client::handleReceivedMessage(char* recievedMessage)
 	switch (message->getType())
 	{
 	case player_assign_ok:
-		sendFileContent();
+		sendLevels();
 		break;
-	case content_ok:
+	case levels_content_ok:
 		this->server->addConnectedClients();
 		break;
-	case start_game_ok:
+	case level_start_ok:
 		this->continueRefreshing = true;
 		this->refreshThreadHandle = CreateThread(0, 0, refreshSocketHandler, (void*)this, 0, &this->refreshThreadId);
 
@@ -377,6 +384,9 @@ DWORD Client::sendSocketHandler()
 			Sleep(this->getLastMessage()->getTimeStep() * 1000 - 2);
 		}
 
+		//send entities
+		this->sendEntitiesStatus();
+		Sleep(10);
 	}
 
 	return 0;
