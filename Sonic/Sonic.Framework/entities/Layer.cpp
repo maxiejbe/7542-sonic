@@ -22,6 +22,8 @@ void Layer::serialize(Writer<StringBuffer> &writer)
 	writer.Int(id);
 	writer.String(LAYER_ZINDEX_NODE);
 	writer.Int(zIndex);
+	writer.String(LAYER_IMAGE_PATH_NODE);
+	writer.String(imagePath.c_str());
 	writer.EndObject();
 }
 
