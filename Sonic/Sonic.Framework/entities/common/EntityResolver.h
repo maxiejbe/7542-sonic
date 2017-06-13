@@ -16,6 +16,7 @@ enum EntityColor {  red, yellow, green, blue };
 class EntityResolver {
 public: 
 	static Entity* resolve(string);
+	static Entity* parse(Value* nodeRef);
 
 	static Dimensions getDefaultDimensions(Entity* entity);
 
