@@ -147,6 +147,7 @@ void PlayerController::calculateCollisions(Player * player, Scenario* scenario, 
 	vector<Entity*> entities = scenario->getEntities();
 	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
 	{
+		if (!(*it)->getIsActive()) continue;
 		if (player->isCollisioning(*it)) {
 			(*it)->onCollision(player, camera);
 		}

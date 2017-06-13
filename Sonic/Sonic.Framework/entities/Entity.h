@@ -31,6 +31,8 @@ public:
 	int getHeight() override;
 	CollisionableType getCollisionableType() override;
 
+	bool getIsActive();
+
 	string getType();
 	string getColor();
 	string getImagePath();

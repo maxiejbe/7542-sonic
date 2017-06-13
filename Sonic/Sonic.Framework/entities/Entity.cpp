@@ -107,6 +107,11 @@ CollisionableType Entity::getCollisionableType()
 	return CollisionableType::rectangle;
 }
 
+bool Entity::getIsActive()
+{
+	return this->isActive;
+}
+
 string Entity::getType()
 {
 	return type;
