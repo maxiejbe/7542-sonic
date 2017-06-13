@@ -120,7 +120,7 @@ void Player::damage()
 	this->lives--;
 	
 	if (lives == 0) {
-
+		isActive = false;
 	}
 }
 
