@@ -1,12 +1,19 @@
 #include "ObstacleView.h"
 
-void ObstacleView::draw(SDL_Rect camera)
+void ObstacleView::draw(int camX, int camY)
 {
-	if (this->entity->getImagePath() == "") {
-		this->entity->setImagePath(getObstacleFilePath());
+	// Load image
+	if (texture.getTexture() == nullptr && !texture.loadFromFile(getObstacleFilePath())) {
+		LOG(logWARNING) << "No se pudo cargar la imagen del obstaculo '" << getObstacleFilePath() << "'.";
+		return;
 	}
 
-	RectangleView::draw(camera);
+	int x = entity->getCoordinate().getX() - camX;
+	int y = entity->getCoordinate().getY() - camY;
+	int w = entity->getDimensions().getWidth();
+	int h = entity->getDimensions().getHeight();
+
+	texture.render(x, y, w, h);
 }
 
 string ObstacleView::getObstacleFilePath()

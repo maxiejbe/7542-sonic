@@ -1,14 +1,14 @@
 #ifndef OBSTACLEVIEW_H
 #define OBSTACLEVIEW_H
 
-#include "RectangleView.h"
+#include "EntityView.h"
 
-class ObstacleView : public RectangleView {
+class ObstacleView : public EntityView {
 public:
-	ObstacleView(Entity* entity) : RectangleView(entity) {
+	ObstacleView(Entity* entity) : EntityView(entity) {
 	}
 
-	virtual void draw(SDL_Rect camera) override;
+	virtual void draw(int camX, int camY) override;
 private:
 	string getObstacleFilePath();
 };

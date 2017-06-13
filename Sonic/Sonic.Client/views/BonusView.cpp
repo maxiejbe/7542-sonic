@@ -1,12 +1,19 @@
 #include "BonusView.h"
 
-void BonusView::draw(SDL_Rect camera) {
-
-	if (this->entity->getImagePath() != "") {
-		this->entity->setImagePath(getBonusFilePath());
+void BonusView::draw(int camX, int camY)
+{
+	// Load image
+	if (texture.getTexture() == nullptr && !texture.loadFromFile(getBonusFilePath())) {
+		LOG(logWARNING) << "No se pudo cargar la imagen del bonus '" << getBonusFilePath() << "'.";
+		return;
 	}
 
-	RectangleView::draw(camera);
+	int x = entity->getCoordinate().getX() - camX;
+	int y = entity->getCoordinate().getY() - camY;
+	int w = entity->getDimensions().getWidth();
+	int h = entity->getDimensions().getHeight();
+
+	texture.render(x, y, w, h);
 }
 
 string BonusView::getBonusFilePath() {

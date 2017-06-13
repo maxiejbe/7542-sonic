@@ -40,6 +40,11 @@ Player::Player()
 	this->isConnected = true;
 	this->testMode = false;
 
+	this->lives = 3;
+	this->rings = 0;
+	this->points = 0;
+	this->isActive = true;
+
 	this->time = 0;
 }
 
@@ -74,6 +79,49 @@ void Player::lock()
 void Player::unlock()
 {
 	this->playerMutex.unlock();
+}
+
+int Player::getXPosition()
+{
+	return position.x;
+}
+
+int Player::getYPosition()
+{
+	return position.y;
+}
+
+int Player::getRadio()
+{
+	return 0;
+}
+
+CollisionableType Player::getCollisionableType()
+{
+	return CollisionableType::rectangle;
+}
+
+bool Player::isDamaging() {
+	//If we have a kind of bonus, apply here
+	return spriteState == PlayerStatus::jumping || spriteState == PlayerStatus::spinning;
+}
+
+void Player::damage()
+{
+	if (this->hasShield) {
+		this->hasShield = false;
+		return;
+	}
+
+	if (this->rings > 0) {
+		rings = 0;
+		return;
+	}
+	this->lives--;
+	
+	if (lives == 0) {
+		isActive = false;
+	}
 }
 
 Vector2 Player::getPosition()
@@ -375,6 +423,21 @@ int Player::getNumber()
 void Player::setNumber(int number)
 {
 	this->number = number;
+}
+
+void Player::sumPoints(int points)
+{
+	this->points += points;
+}
+
+void Player::sumRings(int rings)
+{
+	this->rings += rings;
+}
+
+void Player::setHasShield(bool hasShield)
+{
+	this->hasShield = hasShield;
 }
 
 string Player::getSerializedPlayer()

@@ -4,20 +4,32 @@
 #include <string>
 #include "Dimensions.h"
 #include "Coordinate.h"
+#include "common/Collisionable.h"
 #include "Player.h"
 #include "common/Serializable.h"
 #include "common/Validator.h"
 
 using namespace std;
 
-class Entity : public Serializable {
+class Entity : public Serializable, public Collisionable {
 public:
 	Entity();
 	Entity(Entity* entity);
+
+	void copyFrom(Entity&);
+
 	virtual bool validate();
 
 	virtual Dimensions getDefaultDimensions();
 	
+	//Collisionable
+	int getXPosition() override;
+	int getYPosition() override;
+	int getRadio() override;
+	int getWidth() override;
+	int getHeight() override;
+	CollisionableType getCollisionableType() override;
+
 	string getType();
 	string getColor();
 	string getImagePath();
@@ -29,6 +41,11 @@ public:
 	void setCoordinate(Coordinate);
 	Dimensions getDimensions();
 	void setDimensions(Dimensions);
+	int getTime();
+	void setTime(int time);
+	
+	void setId(int);
+	int getId();
 
 	virtual void onCollision(Player* player) = 0;
 
@@ -49,7 +66,10 @@ protected:
 	Coordinate coordinate;
 	string imagePath;
 	int zIndex;
+	int time;
 	
+	bool isActive;
+
 	void setColor(string color);
 	void basePropertiesSerialization(Writer<StringBuffer>& writer);
 };

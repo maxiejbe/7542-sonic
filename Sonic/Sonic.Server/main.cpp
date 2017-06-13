@@ -5,21 +5,26 @@
 #include "Parser.h"
 
 int getRandomBetween(int min, int max) {
-	return min + (rand() % static_cast<int>(max - min + 1));
+	return rand() % ((max - min) + 1) + min;
 }
 
 vector<Entity*> generateLevelEntities(Level level) {
 	vector<Entity*> levelEntities;
 	levelEntities.clear();
 	vector<EntityLimit> limits = level.getLimits();
+	int eid = 1;
+	srand(time(0));
+
 	for (vector<EntityLimit>::iterator elit = limits.begin(); elit != limits.end(); ++elit) {
 		//Random entities count
 		int entitiesCount = getRandomBetween(elit->getMinCount(), elit->getMaxCount());
-			
+
 		for (size_t i = 0; i < entitiesCount; i++)
 		{
 			Entity* entity = EntityResolver::resolve(elit->getType());
 			if (entity == nullptr) continue;
+
+			entity->setId(eid);
 
 			int x = getRandomBetween(elit->getMinX(), elit->getMaxX());
 			int y = getRandomBetween(elit->getMinY(), elit->getMaxY());
@@ -28,6 +33,7 @@ vector<Entity*> generateLevelEntities(Level level) {
 
 			//TODO: Set random position
 			levelEntities.push_back(entity);
+			eid++;
 		}
 	}
 	return levelEntities;
@@ -54,7 +60,7 @@ int main(int argc, char* args[])
 	Window window;
 	Configuration config;
 	GameConfig gameConfig;
-	
+
 	parser->parse(&serverConfig);
 	parser->parse(&window);
 	parser->parse(&config);
@@ -69,7 +75,7 @@ int main(int argc, char* args[])
 
 
 	Server* server = new Server(&serverConfig, parser->getFileContent(), &window, &config, &gameConfig);
-	
+
 	if (!server->validate()) {
 		return 0;
 	}

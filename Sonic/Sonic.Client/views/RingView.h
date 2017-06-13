@@ -1,14 +1,14 @@
 #ifndef RINGVIEW_H
 #define RINGVIEW_H
 
-#include "CircleView.h"
+#include "EntityView.h"
 
-class RingView : public CircleView {
+class RingView : public EntityView {
 public:
-	RingView(Entity* entity) : CircleView(entity) {
+	RingView(Entity* entity) : EntityView(entity) {
 	}
 
-	virtual void draw(SDL_Rect camera) override;
+	virtual void draw(int camX, int camY) override;
 };
 
 #endif // !RINGVIEW_H

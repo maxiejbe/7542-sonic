@@ -154,6 +154,7 @@
     <ClCompile Include="entities\bonuses\Bonus.cpp" />
     <ClCompile Include="entities\Camera.cpp" />
     <ClCompile Include="entities\Circle.cpp" />
+    <ClCompile Include="entities\common\Collisionable.cpp" />
     <ClCompile Include="entities\common\EntityResolver.cpp" />
     <ClCompile Include="entities\common\Serializable.cpp" />
     <ClCompile Include="entities\common\Validator.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="entities\Camera.h" />
     <ClInclude Include="entities\Circle.h" />
     <ClInclude Include="entities\common\BoostSerializable.h" />
+    <ClInclude Include="entities\common\Collisionable.h" />
     <ClInclude Include="entities\common\EntityResolver.h" />
     <ClInclude Include="entities\common\Serializable.h" />
     <ClInclude Include="entities\common\Validator.h" />

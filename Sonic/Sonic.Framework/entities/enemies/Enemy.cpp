@@ -7,22 +7,46 @@ const double ENEMY_DEFAULT_POSX = 0;
 const double ENEMY_DEFAULT_POSY = 0;
 const double ENEMY_DEFAULT_VELX = 0;
 const double ENEMY_DEFAULT_VELY = 0;
-const int ENEMY_DEFAULT_WIDTH = 20;
-const int ENEMY_DEFAULT_HEIGHT = 20;
+const int ENEMY_CRAB_WIDTH = 88;
+const int ENEMY_CRAB_HEIGHT = 70;
+const int ENEMY_FISH_WIDTH = 60;
+const int ENEMY_FISH_HEIGHT = 64;
+const int ENEMY_FLY_WIDTH = 90;
+const int ENEMY_FLY_HEIGHT = 38;
 const int ENEMY_DEFAULT_POINTS = 10;
 const int ENEMY_DEFAULT_MAX_DISTANCE = 10;
+
+const int CRAB_GIVEN_POINTS = 100;
+const int FLY_GIVEN_POINTS = 500;
+const int FISH_GIVEN_POINTS = 200;
+
 
 Enemy::Enemy(string type)
 {
 	this->coordinate = Coordinate(ENEMY_DEFAULT_POSX, ENEMY_DEFAULT_POSY);
 	this->velocity = Vector2(ENEMY_DEFAULT_VELX, ENEMY_DEFAULT_VELY);
-	this->type= type;
+	this->type = type;
 	InitializeProperties();
 }
 
-void Enemy::InitializeProperties() 
+void Enemy::InitializeProperties()
 {
-	this->dimensions = Dimensions(ENEMY_DEFAULT_WIDTH, ENEMY_DEFAULT_HEIGHT, 0);
+	EntityType eType = EntityResolver::fromTypeString(type);
+	switch (eType) {
+	case EntityType::enemigo_cangrejo:
+		this->dimensions = Dimensions(ENEMY_CRAB_WIDTH, ENEMY_CRAB_HEIGHT, 0); //TODO
+		break;
+	case EntityType::enemigo_pez:
+		this->dimensions = Dimensions(ENEMY_FISH_WIDTH, ENEMY_FISH_HEIGHT, 0); //TODO
+		break;
+	case EntityType::enemigo_mosca:
+		this->dimensions = Dimensions(ENEMY_FLY_WIDTH, ENEMY_FLY_HEIGHT, 0); //TODO
+		break;
+	default:
+		this->dimensions = Dimensions(0, 0, 0);
+		break;
+	}
+
 	this->points = ENEMY_DEFAULT_POINTS;
 	this->maxDistance = ENEMY_DEFAULT_MAX_DISTANCE;
 	this->facingDirection = FACING_LEFT;
@@ -34,6 +58,15 @@ void Enemy::InitializeProperties()
 
 Enemy::~Enemy()
 {
+}
+
+void Enemy::copyFrom(Enemy& anotherEnemy)
+{
+	Entity::copyFrom(anotherEnemy);
+
+	this->alive = anotherEnemy.isAlive();
+	this->points = anotherEnemy.getPoints();
+	this->facingDirection = anotherEnemy.getFacingDirection();
 }
 
 
@@ -88,6 +121,25 @@ int Enemy::getPoints()
 	return this->points;
 }
 
+int Enemy::getGivenPoints()
+{
+	switch (EntityResolver::fromTypeString(type))
+	{
+		//Sorry, this should be implemented in player with polimorfic methods
+	case enemigo_cangrejo:
+		return CRAB_GIVEN_POINTS;
+	case enemigo_mosca:
+		return FLY_GIVEN_POINTS;
+		break;
+	case enemigo_pez:
+		return FISH_GIVEN_POINTS;
+		break;
+	default:
+		return 0;
+	}
+}
+
+
 void Enemy::serializeEnemy()
 {
 	this->serializedEnemy = this->serialize();
@@ -127,5 +179,13 @@ string Enemy::serialize()
 
 void Enemy::onCollision(Player * player)
 {
+	if (!isAlive()) return;
+
+	if (!player->isDamaging()) {
+		player->damage();
+		return;
+	}
+	player->sumPoints(getGivenPoints());
+	this->kill();
 }
 

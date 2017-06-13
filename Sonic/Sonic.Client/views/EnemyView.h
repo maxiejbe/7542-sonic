@@ -1,14 +1,24 @@
 #ifndef ENEMYVIEW_H
 #define ENEMYVIEW_H
 
-#include "RectangleView.h"
+#include "EntityView.h"
 
-class EnemyView : public RectangleView {
+class EnemyView : public EntityView {
 public:
-	EnemyView(Entity* entity) : RectangleView(entity) {
+	EnemyView(Entity* entity) : EntityView(entity) {
+		loadSpriteClips();
 	}
 
-	virtual void draw(SDL_Rect camera) override;
+	EnemyView(Enemy* enemy);
+	~EnemyView();
+
+	virtual void draw(int camX, int camY) override;
+
+private:
+	int getFramesCount();
+	void loadSpriteClips();
+
+	SDL_Rect* spriteClips;
 };
 
 #endif // !ENEMYVIEW_H

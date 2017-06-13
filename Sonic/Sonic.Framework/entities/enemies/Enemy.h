@@ -4,6 +4,7 @@
 #include "../Player.h"
 #include "../Entity.h"
 #include <mutex>
+#include "../common/EntityResolver.h"
 
 //TODO: Enemy and player should hava a common parent class
 //enum EnemyType {crab, bee, fish};
@@ -13,6 +14,8 @@ class Enemy : public Entity
 public:
 	Enemy(string);
 	~Enemy();
+
+	void copyFrom(Enemy&);
 	
 	Vector2 getVelocity();
 	FacingDirection getFacingDirection();
@@ -23,7 +26,9 @@ public:
 	void resetDistanceTravelled();
 	bool isAlive();
 	void kill();
+
 	int getPoints();
+	int getGivenPoints();
 
 	mutex enemyMutex;
 

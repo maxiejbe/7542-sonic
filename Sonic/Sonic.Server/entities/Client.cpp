@@ -371,7 +371,7 @@ bool Client::refreshPlayer() {
 	if (this->player == nullptr) return false;
 
 	if (this->getLastMessage() != nullptr && this->getLastMessage()->getType() == MessageType::status) {
-		PlayerController::update(this->getLastMessage(), this->getPlayer(), this->server->getCamera(), timer.elapsed());
+		PlayerController::update(this->getLastMessage(), this->getPlayer(), this->server->getCamera(), this->server->getScenario(), timer.elapsed());
 	}
 
 	player->serializePlayer();

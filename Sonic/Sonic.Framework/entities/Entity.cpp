@@ -38,9 +38,20 @@ Entity::Entity(Entity* entity)
 	this->zIndex = entity->zIndex;
 }
 
+void Entity::copyFrom(Entity & anotherEntity)
+{
+	this->id = anotherEntity.id;
+	this->type = anotherEntity.type;
+	this->color = anotherEntity.color;
+	this->dimensions = anotherEntity.dimensions;
+	this->coordinate = anotherEntity.coordinate;
+	this->imagePath = anotherEntity.imagePath;
+	this->zIndex = anotherEntity.zIndex;
+}
+
 bool Entity::validate()
 {
-	if (type.empty()) 
+	if (type.empty())
 	{
 		LOG(logERROR) << ERROR_ENTITY_NO_TYPE;
 		return false;
@@ -61,6 +72,39 @@ bool Entity::validate()
 Dimensions Entity::getDefaultDimensions()
 {
 	return Dimensions();
+}
+
+int Entity::getXPosition()
+{
+	return coordinate.getX();
+}
+
+int Entity::getYPosition()
+{
+	return coordinate.getY();
+}
+
+int Entity::getRadio()
+{
+	//Use when entity is a circle
+	return dimensions.getRadio();
+}
+
+int Entity::getWidth()
+{
+	return dimensions.getWidth();
+}
+
+int Entity::getHeight()
+{
+	return dimensions.getHeight();
+}
+
+CollisionableType Entity::getCollisionableType()
+{
+	//For now, every entity is a rectangle
+	//We should override this on each child
+	return CollisionableType::rectangle;
 }
 
 string Entity::getType()
@@ -108,14 +152,14 @@ void Entity::setDimensions(Dimensions dimensions)
 	this->dimensions = dimensions;
 }
 
-void Entity::serialize(Writer<StringBuffer> &writer) 
+void Entity::serialize(Writer<StringBuffer> &writer)
 {
 	writer.StartObject();
 	basePropertiesSerialization(writer);
 	writer.EndObject();
 }
 
-string Entity::serialize() 
+string Entity::serialize()
 {
 	StringBuffer s;
 	Writer<StringBuffer> writer(s);
@@ -147,7 +191,7 @@ void Entity::unserialize(Value * nodeRef)
 	LOG(logINFO) << MESSAGE_PARSING_ENTITY_NODE;
 
 	parseInt(&id, ENTITY_DEFAULT_ID, nodeRef, ENTITY_ID_NODE, Validator::intGreaterThanZero);
-	
+
 	parseString(&type, ENTITY_DEFAULT_TYPE, nodeRef, ENTITY_TYPE_NODE);
 	type = EntityResolver::toTypeString(EntityResolver::fromTypeString(type));
 
@@ -170,4 +214,24 @@ void Entity::unserialize(Value * nodeRef)
 char* Entity::getNodeName()
 {
 	return nullptr;
+}
+
+int Entity::getTime()
+{
+	return this->time;
+}
+
+void Entity::setTime(int time)
+{
+	this->time = time;
+}
+
+void Entity::setId(int id)
+{
+	this->id = id;
+}
+
+int Entity::getId()
+{
+	return this->id;
 }

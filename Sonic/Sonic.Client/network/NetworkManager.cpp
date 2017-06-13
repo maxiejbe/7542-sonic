@@ -111,8 +111,8 @@ DWORD WINAPI NetworkManager::runRecvSocketHandler(void * args)
 
 DWORD NetworkManager::recvSocketHandler()
 {
-	char receivedMsg[4096];
-	int receivedMsgLen = 4096;
+	char receivedMsg[12288];
+	int receivedMsgLen = 12288;
 	while (this->online() && this->continueReceiving)
 	{
 		if (!this->client->receiveMessage(receivedMsg, receivedMsgLen))
@@ -149,6 +149,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 	case player_entities_status:
 		if (this->playerNumber < 0) break;
 		this->updatePlayerViews(sMessage->getPlayers());
+		this->updateEntityViews(sMessage->getEntities());
 		this->updateCamera(sMessage->getCamera());
 		//TODO: handle entities views
 		break;
@@ -226,6 +227,11 @@ unordered_map<int, PlayerView*> NetworkManager::getPlayerViews()
 	return this->playerViews;
 }
 
+unordered_map<int, EntityView*> NetworkManager::getEntityViews()
+{
+	return this->entityViews;
+}
+
 Camera * NetworkManager::getCamera()
 {
 	return this->camera;
@@ -271,6 +277,28 @@ void NetworkManager::updatePlayerViews(vector<Player*> players)
 		//Player view already exists, just update
 		Player* player = playerViews[index]->getPlayer();
 		player->copyFrom(*(*it));
+
+		delete *it;
+	}
+}
+
+void NetworkManager::updateEntityViews(vector<Entity*> entities)
+{
+	//TODO: MUTEX HERE
+	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
+	{
+		int id = (*it)->getId();
+		if (!entityViews.count(id)) {
+			// Create new entity view and include in map
+			Entity* entity = EntityResolver::resolve((*it)->getType());
+			EntityView* entityView = EntityViewResolver::resolve(entity);
+			entityViews[id] = entityView;
+			continue;
+		}
+
+		// Player view already exists, just update
+		Entity* entity = entityViews[id]->getEntity();
+		entity->copyFrom(*(*it));
 
 		delete *it;
 	}

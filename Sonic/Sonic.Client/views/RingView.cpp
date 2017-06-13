@@ -1,11 +1,18 @@
 #include "RingView.h"
 
-void RingView::draw(SDL_Rect camera) {
-
-	if (this->entity->getImagePath() != "") {
-		this->entity->setImagePath("img/ring.png");
+void RingView::draw(int camX, int camY)
+{
+	// Load image
+	if (texture.getTexture() == nullptr && !texture.loadFromFile("img/ring.png")) {
+		LOG(logWARNING) << "No se pudo cargar la imagen del anillo '" << "img/ring.png" << "'.";
+		return;
 	}
 
-	CircleView::draw(camera);
+	int x = entity->getCoordinate().getX() - camX;
+	int y = entity->getCoordinate().getY() - camY;
+	int w = entity->getDimensions().getWidth();
+	int h = entity->getDimensions().getHeight();
+
+	texture.render(x, y, w, h);
 }
 

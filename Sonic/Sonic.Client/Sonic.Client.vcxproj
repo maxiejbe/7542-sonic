@@ -32,7 +32,6 @@
     <ClCompile Include="SelectTeamState.cpp" />
     <ClCompile Include="utils\PlayerUtils.cpp" />
     <ClCompile Include="views\BonusView.cpp" />
-    <ClCompile Include="views\CircleView.cpp" />
     <ClCompile Include="views\common\EntityViewResolver.cpp" />
     <ClCompile Include="views\EnemyView.cpp" />
     <ClCompile Include="views\EntityView.cpp" />
@@ -48,9 +47,7 @@
     <ClCompile Include="views\LayerView.cpp" />
     <ClCompile Include="views\ObstacleView.cpp" />
     <ClCompile Include="views\PlayerView.cpp" />
-    <ClCompile Include="views\RectangleView.cpp" />
     <ClCompile Include="views\RingView.cpp" />
-    <ClCompile Include="views\SquareView.cpp" />
     <ClCompile Include="WaitingState.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -82,7 +79,6 @@
     <ClInclude Include="SelectTeamState.h" />
     <ClInclude Include="utils\PlayerUtils.h" />
     <ClInclude Include="views\BonusView.h" />
-    <ClInclude Include="views\CircleView.h" />
     <ClInclude Include="views\common\Drawable.h" />
     <ClInclude Include="views\common\EntityViewResolver.h" />
     <ClInclude Include="views\EnemyView.h" />
@@ -100,9 +96,7 @@
     <ClInclude Include="views\LayerView.h" />
     <ClInclude Include="views\ObstacleView.h" />
     <ClInclude Include="views\PlayerView.h" />
-    <ClInclude Include="views\RectangleView.h" />
     <ClInclude Include="views\RingView.h" />
-    <ClInclude Include="views\SquareView.h" />
     <ClInclude Include="WaitingState.h" />
   </ItemGroup>
   <ItemGroup>

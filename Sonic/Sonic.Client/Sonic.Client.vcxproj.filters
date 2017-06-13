@@ -39,16 +39,7 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="views\CircleView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="views\EntityView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="views\SquareView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="views\RectangleView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="views\LayerView.cpp">
@@ -146,16 +137,7 @@
     <ClInclude Include="views\common\Drawable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="views\CircleView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="views\EntityView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="views\SquareView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="views\RectangleView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="views\LayerView.h">

@@ -61,7 +61,7 @@ vector<Level>* ServerMessage::getLevels()
 	return this->levels;
 }
 
-int ServerMessage::getLevelToStart() 
+int ServerMessage::getLevelToStart()
 {
 	return this->levelToStart;
 }
@@ -91,7 +91,7 @@ void ServerMessage::setLevels(vector<Level>* levels)
 	this->levels = levels;
 }
 
-void ServerMessage::setLevelToStart(int levelToStart) 
+void ServerMessage::setLevelToStart(int levelToStart)
 {
 	this->levelToStart = levelToStart;
 }
@@ -315,7 +315,7 @@ void ServerMessage::parseLevels(Value * nodeRef)
 	}
 }
 
-void ServerMessage::parseEntitiesStatus(Value * nodeRef) 
+void ServerMessage::parseEntitiesStatus(Value * nodeRef)
 {
 	//free players and clear vector
 	Value& node = *nodeRef;
