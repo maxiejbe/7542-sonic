@@ -324,7 +324,7 @@ bool Server::validate()
 	return this->isValid;
 }
 
-ServerMessage* Server::getPlayersStatusMessage()
+ServerMessage* Server::getStatusMessage()
 {
 	vector<Player*> clientsPlayers = this->clientsPlayers();
 
@@ -332,21 +332,13 @@ ServerMessage* Server::getPlayersStatusMessage()
 	CameraController::updateCamera(this->camera, clientsPlayers);
 
 	ServerMessage * message = new ServerMessage();
-	message->setType(players_status);
+	message->setType(level_status);
 	message->setPlayers(clientsPlayers);
+	message->setEntities(this->gameConfig->getLevel(this->currentLevel)->getScenario()->getEntities());
 	message->setCamera(new Camera(*this->camera));
 
 	return message;
 }
-
-ServerMessage * Server::getEntitiesStatusMessage()
-{
-	ServerMessage * message = new ServerMessage();
-	message->setType(entities_status);
-	message->setEntities(this->gameConfig->getLevel(this->currentLevel)->getScenario()->getEntities());
-	return message;
-}
-
 
 vector<Player*> Server::clientsPlayers()
 {

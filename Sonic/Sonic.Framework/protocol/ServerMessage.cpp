@@ -113,11 +113,9 @@ void ServerMessage::unserialize(Value* nodeRef)
 	case levels_content:
 		parseLevels(nodeRef);
 		break;
-	case players_status:
+	case level_status:
 		parsePlayersStatus(nodeRef);
 		parseCameraStatus(nodeRef);
-		break;
-	case entities_status:
 		parseEntitiesStatus(nodeRef);
 		break;
 	default:
@@ -150,9 +148,10 @@ string ServerMessage::serialize()
 		writer.String(SERVER_MESSAGE_PLAYER_NUMBER_NODE);
 		writer.Int(this->playerNumber);
 		break;
-	case players_status:
+	case level_status:
 		this->serializePlayers(writer);
 		this->serializeCamera(writer);
+		this->serializeEntities(writer);
 		break;
 	case levels_content:
 		this->serializeLevels(writer);
@@ -160,9 +159,6 @@ string ServerMessage::serialize()
 	case level_start:
 		writer.String(SERVER_MESSAGE_LEVEL_START_NODE);
 		writer.Int(levelToStart);
-		break;
-	case entities_status:
-		this->serializeEntities(writer);
 		break;
 	default:
 		break;

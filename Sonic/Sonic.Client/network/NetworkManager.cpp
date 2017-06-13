@@ -146,12 +146,10 @@ void NetworkManager::handleMessage(char * receivedMessage)
 
 		this->playerNumber = sMessage->getPlayerNumber();
 		break;
-	case players_status:
+	case level_status:
 		if (this->playerNumber < 0) break;
 		this->updatePlayerViews(sMessage->getPlayers());
 		this->updateCamera(sMessage->getCamera());
-		break;
-	case entities_status:
 		//TODO: handle entities views
 		break;
 	case levels_content:
