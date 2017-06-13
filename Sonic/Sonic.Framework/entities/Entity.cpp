@@ -63,6 +63,39 @@ Dimensions Entity::getDefaultDimensions()
 	return Dimensions();
 }
 
+int Entity::getXPosition()
+{
+	return coordinate.getX();
+}
+
+int Entity::getYPosition()
+{
+	return coordinate.getY();
+}
+
+int Entity::getRadio()
+{
+	//Use when entity is a circle
+	return dimensions.getRadio();
+}
+
+int Entity::getWidth()
+{
+	return dimensions.getWidth();
+}
+
+int Entity::getHeight()
+{
+	return dimensions.getHeight();
+}
+
+CollisionableType Entity::getCollisionableType()
+{
+	//For now, every entity is a rectangle
+	//We should override this on each child
+	return CollisionableType::rectangle;
+}
+
 string Entity::getType()
 {
 	return type;

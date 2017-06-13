@@ -76,6 +76,26 @@ void Player::unlock()
 	this->playerMutex.unlock();
 }
 
+int Player::getXPosition()
+{
+	return position.x;
+}
+
+int Player::getYPosition()
+{
+	return position.y;
+}
+
+int Player::getRadio()
+{
+	return 0;
+}
+
+CollisionableType Player::getCollisionableType()
+{
+	return CollisionableType::rectangle;
+}
+
 Vector2 Player::getPosition()
 {
 	return this->position;

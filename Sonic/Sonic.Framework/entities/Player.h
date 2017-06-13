@@ -6,6 +6,7 @@
 #include "../Vector2.h"
 #include "../protocol/Message.h"
 #include <chrono>
+#include "common/Collisionable.h"
 
 #include <mutex>
 
@@ -13,7 +14,7 @@ using namespace std;
 
 enum FacingDirection { FACING_LEFT, FACING_RIGHT, FACING_UP, FACING_DOWN};
 
-class Player : public Serializable
+class Player : public Serializable, public Collisionable
 {
 public:
 	Player();
@@ -36,6 +37,14 @@ public:
 	void lock();
 	void unlock();
 
+	//Collisionable
+	int getXPosition() override;
+	int getYPosition() override;
+	int getRadio() override;
+	int getWidth() override;
+	int getHeight() override;
+	CollisionableType getCollisionableType() override;
+
 	Vector2 getPosition();
 	void setXPosition(double x);
 	void setYPosition(double y);
@@ -47,8 +56,6 @@ public:
 	string getSerializedPlayer();
 
 	int getNumber();
-	int getWidth();
-	int getHeight();
 	void setWidth(int w);
 	void setHeight(int h);
 	FacingDirection getFacingDirection();

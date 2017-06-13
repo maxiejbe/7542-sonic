@@ -33,6 +33,7 @@
     <ClCompile Include="entities\bonuses\Bonus.cpp" />
     <ClCompile Include="entities\obstacle\Obstacle.cpp" />
     <ClCompile Include="entities\rings\Ring.cpp" />
+    <ClCompile Include="entities\common\Collisionable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entities\Camera.h" />
@@ -68,5 +69,6 @@
     <ClInclude Include="entities\bonuses\Bonus.h" />
     <ClInclude Include="entities\obstacle\Obstacle.h" />
     <ClInclude Include="entities\rings\Ring.h" />
+    <ClInclude Include="entities\common\Collisionable.h" />
   </ItemGroup>
 </Project>

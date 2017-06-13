@@ -4,13 +4,14 @@
 #include <string>
 #include "Dimensions.h"
 #include "Coordinate.h"
+#include "common/Collisionable.h"
 #include "Player.h"
 #include "common/Serializable.h"
 #include "common/Validator.h"
 
 using namespace std;
 
-class Entity : public Serializable {
+class Entity : public Serializable, public Collisionable {
 public:
 	Entity();
 	Entity(Entity* entity);
@@ -18,6 +19,14 @@ public:
 
 	virtual Dimensions getDefaultDimensions();
 	
+	//Collisionable
+	int getXPosition() override;
+	int getYPosition() override;
+	int getRadio() override;
+	int getWidth() override;
+	int getHeight() override;
+	CollisionableType getCollisionableType() override;
+
 	string getType();
 	string getColor();
 	string getImagePath();
