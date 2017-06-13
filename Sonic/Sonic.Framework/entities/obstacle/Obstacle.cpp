@@ -28,7 +28,7 @@ void Obstacle::onCollision(Player * player, Camera* camera)
 
 	if (borderBotton <= otherBorderTop) {
 		if (this->getType() == EntityResolver::toTypeString(EntityType::obstaculo_pinche)) {
-			//TODO: damage
+			player->damage();
 		}
 		if (player->getFacingDirection() == FACING_RIGHT)
 			player->setXVelocity(-10);
