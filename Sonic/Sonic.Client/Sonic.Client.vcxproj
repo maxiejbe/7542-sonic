@@ -23,6 +23,7 @@
     <ClCompile Include="EndLevelState.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="ConnectState.cpp" />
+    <ClCompile Include="GameOverState.cpp" />
     <ClCompile Include="InGameStatisticsPanel.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="PlayState.cpp" />
@@ -68,6 +69,7 @@
     <ClInclude Include="BaseStatisticsPanel.h" />
     <ClInclude Include="EndLevelState.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameOverState.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="ConnectState.h" />
     <ClInclude Include="InGameStatisticsPanel.h" />
