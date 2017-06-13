@@ -1,20 +1,15 @@
 #ifndef I_ENTITY_RESOLVER_H
 #define I_ENTITY_RESOLVER_H
 
-#include "../Rectangle.h"
-#include "../Circle.h"
-#include "../Square.h"
 #include "../Dimensions.h"
 #include "../enemies/Enemy.h"
 #include <string>
 
-enum EntityType { obstaculo_pinche, obstaculo_piedra, anillo, bonus_super_ring, bonus_invencibilidad, bonus_escudo, enemigo_cangrejo, enemigo_pez, enemigo_mosca, null };
-//enum EntityType { rectangle, circle, square, enemy, null };
-
-enum EntityColor {  red, yellow, green, blue };
+enum EntityType { obstaculo_pinche, obstaculo_piedra, moneda, bonus_super_ring, bonus_invencibilidad, bonus_escudo, enemigo_cangrejo, enemigo_pez, enemigo_mosca, null };
+enum EntityColor { red, yellow, green, blue };
 
 class EntityResolver {
-public: 
+public:
 	static Entity* resolve(string);
 	static Entity* parse(Value* nodeRef);
 

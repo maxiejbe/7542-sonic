@@ -23,6 +23,7 @@ private:
 	Player* player;
 	TTF_Font* fontLifes;
 	TTF_Font* fontScore;
+	TTF_Font* fontTestMode;
 	Texture playerImage;
 };
 

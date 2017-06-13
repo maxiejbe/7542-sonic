@@ -1,4 +1,37 @@
 #include "PlayerUtils.h"
+#include "..\views\PlayerView.h"
+
+string PlayerUtils::getPlayerSpritesheetPath(Player* player)
+{
+	switch (player->getPlayerType()) {
+	case SONIC:
+		return "img/sonic-spritesheet.png";
+	case TAILS:
+		return "img/tails-spritesheet.png";
+	case KNUCKLES:
+		return "img/knuckles-spritesheet.png";
+	case SHADOW:
+		return "img/shadow-spritesheet.png";
+	default:
+		return "img/sonic-spritesheet.png";
+	}
+}
+
+string PlayerUtils::getDisconnectedPlayerSpritesheetPath(Player* player)
+{
+	switch (player->getPlayerType()) {
+	case SONIC:
+		return "img/sonic-spritesheet-grey.png";
+	case TAILS:
+		return "img/tails-spritesheet-grey.png";
+	case KNUCKLES:
+		return "img/knuckles-spritesheet-grey.png";
+	case SHADOW:
+		return "img/shadow-spritesheet-grey.png";
+	default:
+		return "img/sonic-spritesheet-grey.png";
+	}
+}
 
 string PlayerUtils::getPlayerAvatarFilePath(Player* player)
 {
