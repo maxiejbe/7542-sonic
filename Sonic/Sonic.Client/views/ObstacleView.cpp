@@ -2,7 +2,7 @@
 
 void ObstacleView::draw(SDL_Rect camera)
 {
-	if (this->entity->getImagePath() != "") {
+	if (this->entity->getImagePath() == "") {
 		this->entity->setImagePath(getObstacleFilePath());
 	}
 
