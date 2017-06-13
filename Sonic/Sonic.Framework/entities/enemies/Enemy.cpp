@@ -7,8 +7,12 @@ const double ENEMY_DEFAULT_POSX = 0;
 const double ENEMY_DEFAULT_POSY = 0;
 const double ENEMY_DEFAULT_VELX = 0;
 const double ENEMY_DEFAULT_VELY = 0;
-const int ENEMY_DEFAULT_WIDTH = 20;
-const int ENEMY_DEFAULT_HEIGHT = 20;
+const int ENEMY_CRAB_WIDTH = 88;
+const int ENEMY_CRAB_HEIGHT = 70;
+const int ENEMY_FISH_WIDTH = 60;
+const int ENEMY_FISH_HEIGHT = 64;
+const int ENEMY_FLY_WIDTH = 90;
+const int ENEMY_FLY_HEIGHT = 38;
 const int ENEMY_DEFAULT_POINTS = 10;
 const int ENEMY_DEFAULT_MAX_DISTANCE = 10;
 
@@ -30,16 +34,16 @@ void Enemy::InitializeProperties()
 	EntityType eType = EntityResolver::fromTypeString(type);
 	switch (eType) {
 	case EntityType::enemigo_cangrejo:
-		this->dimensions = Dimensions(ENEMY_DEFAULT_WIDTH, ENEMY_DEFAULT_HEIGHT, 0); //TODO
+		this->dimensions = Dimensions(ENEMY_CRAB_WIDTH, ENEMY_CRAB_HEIGHT, 0); //TODO
 		break;
 	case EntityType::enemigo_pez:
-		this->dimensions = Dimensions(ENEMY_DEFAULT_WIDTH, ENEMY_DEFAULT_HEIGHT, 0); //TODO
+		this->dimensions = Dimensions(ENEMY_FISH_WIDTH, ENEMY_FISH_HEIGHT, 0); //TODO
 		break;
 	case EntityType::enemigo_mosca:
-		this->dimensions = Dimensions(ENEMY_DEFAULT_WIDTH, ENEMY_DEFAULT_HEIGHT, 0); //TODO
+		this->dimensions = Dimensions(ENEMY_FLY_WIDTH, ENEMY_FLY_HEIGHT, 0); //TODO
 		break;
 	default:
-		this->dimensions = Dimensions(ENEMY_DEFAULT_WIDTH, ENEMY_DEFAULT_HEIGHT, 0); //TODO
+		this->dimensions = Dimensions(0, 0, 0);
 		break;
 	}
 

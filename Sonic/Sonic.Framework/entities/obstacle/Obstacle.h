@@ -2,6 +2,7 @@
 #define OBSTACLE_H
 
 #include "../Entity.h"
+#include "../common/EntityResolver.h"
 
 class Obstacle : public Entity
 {
