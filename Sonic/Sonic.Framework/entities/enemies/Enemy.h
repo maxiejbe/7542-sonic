@@ -31,6 +31,9 @@ public:
 
 	mutex enemyMutex;
 
+	void lock();
+	void unlock();
+
 	void serializeEnemy();
 	string getSerializedEnemy();
 

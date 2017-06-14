@@ -103,11 +103,6 @@ private:
 
 	unordered_map<int, Client*> clients;
 	vector<Client*> disconnectedClients;
-	//mutex clientMutex;
-
-	vector<Enemy*> enemies;
-	vector<Enemy*> visibleEnemies;
-	mutex visibleEnemiesMutex;
 
 	//update enemies handler
 	DWORD updateEnemiesThreadId;
@@ -115,14 +110,6 @@ private:
 	static DWORD WINAPI runUpdateEnemiesHandler(void* args);
 	DWORD updateEnemiesHandler();
 	bool continueUpdatingEnemies;
-
-	//send enemies handler
-	DWORD sendEnemiesThreadId;
-	HANDLE sendEnemiesThreadHandle;
-	static DWORD WINAPI runSendEnemiesHandler(void* args);
-	DWORD sendEnemiesHandler();
-	bool continueSendingEnemies;
-
 };
 
 #endif

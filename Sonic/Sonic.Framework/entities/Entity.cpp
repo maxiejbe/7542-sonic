@@ -110,9 +110,24 @@ CollisionableType Entity::getCollisionableType()
 	return CollisionableType::rectangle;
 }
 
+bool Entity::getIsMoving()
+{
+	return this->isMoving;
+}
+
 bool Entity::getIsActive()
 {
 	return this->isActive;
+}
+
+void Entity::lock()
+{
+	this->entityMutex.lock();
+}
+
+void Entity::unlock()
+{
+	this->entityMutex.unlock();
 }
 
 string Entity::getType()

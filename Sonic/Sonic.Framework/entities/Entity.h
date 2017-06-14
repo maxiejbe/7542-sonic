@@ -31,7 +31,12 @@ public:
 	int getHeight() override;
 	CollisionableType getCollisionableType() override;
 
+	bool getIsMoving();
+
 	bool getIsActive();
+	
+	void lock();
+	void unlock();
 
 	string getType();
 	string getColor();
@@ -72,9 +77,12 @@ protected:
 	int time;
 	
 	bool isActive;
+	bool isMoving = false;
 
 	void setColor(string color);
 	void basePropertiesSerialization(Writer<StringBuffer>& writer);
+
+	mutex entityMutex;
 };
 
 #endif
