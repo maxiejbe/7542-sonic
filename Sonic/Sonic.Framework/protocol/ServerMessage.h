@@ -19,6 +19,7 @@ public:
 	ServerMessageType getType();
 	void setPlayerNumber(int);
 	void setGameMode(GameMode);
+	GameMode getGameMode();
 	int getPlayerNumber();
 	vector<Player*> getPlayers();
 	vector<Entity*> getEntities();

@@ -1,5 +1,6 @@
 #include "ServerMessage.h"
 #include "ServerMessage.h"
+#include "ServerMessage.h"
 
 const char* SERVER_MESSAGE_TYPE_NODE = "t";
 const char* SERVER_MESSAGE_GAME_MODE_NODE = "gm";
@@ -45,6 +46,11 @@ void ServerMessage::setPlayerNumber(int playerNumber)
 void ServerMessage::setGameMode(GameMode gameMode)
 {
 	this->gameMode = gameMode;
+}
+
+GameMode ServerMessage::getGameMode()
+{
+	return this->gameMode;
 }
 
 
