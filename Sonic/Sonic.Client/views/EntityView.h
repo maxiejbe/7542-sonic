@@ -15,6 +15,7 @@ class EntityView : public Drawable {
 public:
 	EntityView();
 	EntityView(Entity* entity);
+	virtual ~EntityView();
 
 	void draw(int camX, int camY) override;
 	Entity* getEntity();

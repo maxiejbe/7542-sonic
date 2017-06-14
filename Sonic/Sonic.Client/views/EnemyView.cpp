@@ -6,12 +6,15 @@ const int ANIMATION_MAX_FRAMES_CRAB = 5;
 
 EnemyView::EnemyView(Enemy * enemy)
 {
-	//this->enemy = enemy;
-	loadSpriteClips();
 }
 
 EnemyView::~EnemyView()
 {
+	if (this->spriteClips != nullptr) {
+		delete this->spriteClips;
+	}
+	if (this->entity == nullptr) return;
+	delete this->entity;
 }
 
 void EnemyView::draw(int camX, int camY)

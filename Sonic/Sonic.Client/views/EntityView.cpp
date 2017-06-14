@@ -16,6 +16,11 @@ EntityView::EntityView(Entity * entity)
 	}
 }
 
+EntityView::~EntityView()
+{
+
+}
+
 void EntityView::draw(int camX, int camY)
 {
 }
