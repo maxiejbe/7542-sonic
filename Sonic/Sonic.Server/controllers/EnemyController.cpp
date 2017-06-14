@@ -36,6 +36,7 @@ void EnemyController::moveCrab(Enemy * enemy)
 	if (enemy->getDistanceTravelled() >= enemy->getMaxDistance()) {
 		FacingDirection newDirection = (enemy->getFacingDirection() == FACING_LEFT) ? FACING_RIGHT : FACING_LEFT;
 		enemy->setFacingDirection(newDirection);
+		enemy->resetDistanceTravelled();
 	}
 }
 
