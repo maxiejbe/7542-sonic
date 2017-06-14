@@ -17,6 +17,10 @@ NetworkManager::~NetworkManager()
 		if (it->second) delete it->second;
 	}
 
+	for (unordered_map<int, EntityView*>::iterator it = entityViews.begin(); it != entityViews.end(); ++it) {
+		if (it->second) delete it->second;
+	}
+
 	if (this->camera != nullptr) delete this->camera;
 }
 
