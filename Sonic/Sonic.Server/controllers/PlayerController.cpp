@@ -30,7 +30,6 @@ void PlayerController::updateInput(Message* message, Player* player)
 
 	if (message->getIsKUTest()) {
 		player->setTestMode(!player->getTestMode());
-		// TODO: activar modo fantasma
 	}
 
 	if (message->getIsKPSpace() && player->getSpriteState() == PlayerStatus::idle) {
@@ -144,6 +143,9 @@ void PlayerController::move(Player* player, double dt, Camera* camera)
 
 void PlayerController::calculateCollisions(Player * player, Scenario* scenario, Camera* camera)
 {
+	//dont calculate collisions if user is in test mode
+	if (player->getTestMode()) return;
+
 	vector<Entity*> entities = scenario->getEntities();
 	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
 	{
