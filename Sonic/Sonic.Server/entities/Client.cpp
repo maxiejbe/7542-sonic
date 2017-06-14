@@ -98,6 +98,9 @@ bool Client::welcome(int clientNumber, Player* player)
 	this->continueReceiving = true;
 	this->recvThreadHandle = CreateThread(0, 0, runReceiveSocketHandler, (void*)this, 0, &this->threadId);
 
+	this->pauseRefreshing = false;
+	this->pauseSending = false;
+
 	return true;
 }
 
@@ -202,10 +205,10 @@ bool Client::sendStatus()
 	return true;
 }
 
-bool Client::sendGameStart()
+bool Client::sendLevelStart()
 {
 	//if send game notification was sent, don't send it again
-	if (this->gameStartSent) return true;
+	//if (this->gameStartSent) return true;
 
 	int bytecount;
 
@@ -224,6 +227,27 @@ bool Client::sendGameStart()
 
 	//set flag
 	this->gameStartSent = true;
+
+	delete serializedMessage;
+	return true;
+}
+
+bool Client::sendLevelFinish()
+{
+	int bytecount;
+
+	ServerMessage * message = this->server->getStatusMessage();
+	message->setType(level_finish);
+	char * serializedMessage = StringUtils::convert(message->serialize());
+
+	delete message;
+
+	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
+		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
+			<< " (Cliente " << this->getClientNumber() << ")";
+		delete serializedMessage;
+		return false;
+	}
 
 	delete serializedMessage;
 	return true;
@@ -272,14 +296,9 @@ void Client::handleReceivedMessage(char* recievedMessage)
 		this->server->addConnectedClients();
 		break;
 	case level_start_ok:
-		this->continueRefreshing = true;
-		this->refreshThreadHandle = CreateThread(0, 0, refreshSocketHandler, (void*)this, 0, &this->refreshThreadId);
-
-		this->continueSending = true;
-		this->sendThreadHandle = CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
-
-		this->continueHeartBeating = true;
-		this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
+		startRefereshing();
+		startSending();
+		startHeartBeating();
 	case status:
 		if (this->lastReceivedMessage != nullptr) delete this->lastReceivedMessage;
 		this->lastReceivedMessage = message;
@@ -289,6 +308,41 @@ void Client::handleReceivedMessage(char* recievedMessage)
 	}
 
 	delete message;
+}
+
+void Client::startRefereshing()
+{
+	if (this->pauseRefreshing)
+	{
+		this->pauseRefreshing = false;
+		return;
+	}
+
+	if (this->continueRefreshing) return;
+	
+	this->continueRefreshing = true;
+	this->refreshThreadHandle = CreateThread(0, 0, refreshSocketHandler, (void*)this, 0, &this->refreshThreadId);
+}
+
+void Client::startSending()
+{
+	if (this->pauseSending) {
+		this->pauseSending = false;
+		return;
+	}
+
+	if (this->continueSending) return;
+	
+	this->continueSending = true;
+	this->sendThreadHandle = CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
+}
+
+void Client::startHeartBeating()
+{
+	if (this->continueHeartBeating) return;
+
+	this->continueHeartBeating = true;
+	this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
 }
 
 DWORD WINAPI Client::runReceiveSocketHandler(void * args)
@@ -328,8 +382,10 @@ DWORD WINAPI Client::refreshSocketHandler(void * args)
 DWORD Client::refreshSocketHandler()
 {
 	while (this->continueRefreshing) {
-		this->refreshPlayer();
-
+		if (!this->pauseRefreshing) {
+			this->refreshPlayer();
+		}
+		
 		if (this->getLastMessage() == NULL) {
 			Sleep(10);
 			continue;
@@ -352,7 +408,9 @@ DWORD WINAPI Client::runSendSocketHandler(void * args)
 DWORD Client::sendSocketHandler()
 {
 	while (this->continueSending) {
-		this->sendStatus();
+		if (!this->pauseSending) {
+			this->sendStatus();
+		}
 
 		if (this->getLastMessage() == NULL) {
 			Sleep(10);
@@ -372,9 +430,28 @@ bool Client::refreshPlayer() {
 
 	if (this->getLastMessage() != nullptr && this->getLastMessage()->getType() == MessageType::status) {
 		PlayerController::update(this->getLastMessage(), this->getPlayer(), this->server->getCamera(), this->server->getScenario(), timer.elapsed());
+		if ((this->getPlayer()->getPosition().x + this->getPlayer()->getWidth()) >= (this->server->getScenario()->getWidth() - 100)) {
+			//level final reached
+			this->server->levelFinished();
+		}
 	}
 
 	player->serializePlayer();
+	return true;
+}
+
+bool Client::notifyLevelFinished()
+{
+	//send finish level
+	this->sendLevelFinish();
+	//wait 5 seconds for client to display statistics
+	Sleep(3000);
+	//finish update and send status threads
+	this->pauseRefreshing = true;
+	this->pauseSending = true;
+	//reset user position
+	this->player->reset();
+	this->sendLevelStart();
 	return true;
 }
 

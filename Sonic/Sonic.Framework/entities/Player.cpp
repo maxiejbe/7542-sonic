@@ -129,6 +129,11 @@ Vector2 Player::getPosition()
 	return this->position;
 }
 
+void Player::reset()
+{
+	this->position = Vector2(0, getGroundPos());
+}
+
 void Player::setXPosition(double x)
 {
 	this->position.x = x;

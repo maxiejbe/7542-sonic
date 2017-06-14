@@ -261,6 +261,7 @@ void Server::resetLevel()
 
 	//initialize camera
 	this->camera = new Camera(0, 0, window->getWidth(), window->getHeight(), window->getWidth(), window->getHeight(), scenario->getWidth(), scenario->getHeight());
+	this->levelFinishedNotified = false;
 }
 
 vector<Level>* Server::getLevels()
@@ -319,7 +320,7 @@ void Server::sendBroadcast()
 		int bytecount;
 		//If client is not connected, just set to false
 		if (!it->second->getPlayer()->getIsConnected()) continue;
-		it->second->sendGameStart();
+		it->second->sendLevelStart();
 	}
 }
 
@@ -342,6 +343,35 @@ ServerMessage* Server::getStatusMessage()
 	message->setCamera(new Camera(*this->camera));
 
 	return message;
+}
+
+void Server::levelFinished()
+{
+	//mutex in order to avoid multiple level finished notifications
+	bool notifyLevelFinish = false;
+	this->levelFinishedMutex.lock();
+	if (!this->levelFinishedNotified) {
+		this->levelFinishedNotified = true;
+		notifyLevelFinish = true;
+	}
+	this->levelFinishedMutex.unlock();
+	
+	if (notifyLevelFinish)
+	{
+		//increment level
+		this->currentLevel++;
+		//TODO: CHECK FOR LAST LEVEL AND SEND GAME OVER
+		for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+			int bytecount;
+			//If client is not connected, just set to false
+			if (!it->second->getPlayer()->getIsConnected()) continue;
+			it->second->notifyLevelFinished();
+		}
+
+		this->resetLevel();
+	}
+
+	
 }
 
 vector<Player*> Server::clientsPlayers()

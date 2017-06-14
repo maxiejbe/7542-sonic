@@ -167,6 +167,9 @@ void NetworkManager::handleMessage(char * receivedMessage)
 
 		lastHeartBeat = NULL;
 		break;
+	case level_finish:
+		//TODO display statistics, reset player view
+		break;
 	case heart_beat_server:
 		time(&lastHeartBeat);
 		break;
