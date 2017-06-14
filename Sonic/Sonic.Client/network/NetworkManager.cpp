@@ -158,7 +158,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		break;
 	case level_start:
 		clientResponse->setType(MessageType::level_start_ok);
-		//TODO: SETEAR CONFIGURACION DE NIVEL RECIBIDO
+		this->actualLevel = sMessage->getLevelToStart();
 		this->sendMessage(clientResponse);
 		this->startGame = true;
 
@@ -261,6 +261,11 @@ int NetworkManager::getPlayerNumber()
 vector<Level>* NetworkManager::getLevels()
 {
 	return this->gameLevels;
+}
+
+int NetworkManager::getActualLevel()
+{
+	return this->actualLevel;
 }
 
 void NetworkManager::updatePlayerViews(vector<Player*> players)

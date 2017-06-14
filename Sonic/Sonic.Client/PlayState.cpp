@@ -20,7 +20,7 @@ void PlayState::load(Game* game)
 		Sleep(3000);
 	}
 
-	Level level = NetworkManager::getInstance().getLevels()->at(0); // TODO: tomar nivel actual
+	Level level = NetworkManager::getInstance().getLevels()->at(NetworkManager::getInstance().getActualLevel());
 
 	Scenario* scenario = level.getScenario();
 
@@ -48,6 +48,10 @@ void PlayState::load(Game* game)
 	statisticsPanel = new InGameStatisticsPanel();
 
 	PlayerView* playerView = NetworkManager::getInstance().getOwnPlayerView();
+
+	// Put player at the start
+	if (playerView != NULL)
+		playerView->getPlayer()->reset();
 
 	game->pushState(WaitingState::Instance());
 }

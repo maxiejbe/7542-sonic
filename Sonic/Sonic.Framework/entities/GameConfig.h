@@ -7,6 +7,8 @@
 
 using namespace std;
 
+enum GameMode { individual, grupal, colaborativo };
+
 class GameConfig : public Serializable {
 public:
 	GameConfig();
@@ -14,8 +16,15 @@ public:
 	vector<Level>* getLevels();
 	Level * getLevel(int);
 
+	GameMode getMode();
+
 private:
 	vector<Level> levels;
+
+	GameMode fromStringMode(string mode);
+	string toStringMode(GameMode mode);
+
+	GameMode mode;
 
 	// Inherited via Serializable
 	virtual void unserialize(Value * nodeRef) override;

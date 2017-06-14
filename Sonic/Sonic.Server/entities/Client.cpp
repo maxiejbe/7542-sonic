@@ -135,6 +135,7 @@ bool Client::sendHeartBeat() {
 	int bytecount;
 	ServerMessage sMessage;
 	sMessage.setType(heart_beat_server);
+	sMessage.setGameMode(this->server->getGameConfig()->getMode());
 	string serializedMsg = sMessage.serialize();
 	const char* messageToSend = serializedMsg.c_str();
 
