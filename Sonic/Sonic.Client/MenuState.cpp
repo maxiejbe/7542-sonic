@@ -16,12 +16,14 @@ void MenuState::load(Game* game)
 	color[1] = { 255,0,0 };
 	color[2] = { 32,32,32 };
 
+	gameMode = NetworkManager::getInstance().getGameMode();
+
 	connectionStatus = DISCONNECTED;
 
 	if (this->connectionStatus == CONNECTED)
 		labels[0] = "Resume";
 	else
-		labels[0] = this->modeGameStatus == GRUPAL ? "Choose team" : "Connect";
+		labels[0] = gameMode == GameMode::grupal ? "Choose team" : "Connect";
 
 	labels[1] = "Disconnect";
 	labels[2] = "Exit";
@@ -66,7 +68,7 @@ void MenuState::update(Game* game, float dt)
 	if (input->isKeyDown(KEY_RETURN)) {
 		if (selected[0]) {
 
-			if (this->modeGameStatus == GRUPAL)
+			if (NetworkManager::getInstance().getGameMode() == GameMode::grupal)
 			{
 				//Choose Team
 				game->changeState(SelectTeamState::Instance());

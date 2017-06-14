@@ -145,6 +145,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		}
 
 		this->playerNumber = sMessage->getPlayerNumber();
+		this->gameMode = sMessage->getGameMode();
 		break;
 	case player_entities_status:
 		if (this->playerNumber < 0) break;
@@ -256,6 +257,11 @@ int NetworkManager::getPlayerNumber()
 {
 	//TODO: MUTEX HERE
 	return this->playerNumber;
+}
+
+GameMode NetworkManager::getGameMode()
+{
+	return this->gameMode;
 }
 
 vector<Level>* NetworkManager::getLevels()
