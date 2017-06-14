@@ -14,6 +14,8 @@ public:
 
 	virtual void draw(int camX, int camY) override;
 
+	int getFramesDivision();
+
 private:
 	int getFramesCount();
 	void loadSpriteClips();

@@ -13,7 +13,10 @@ const int ENEMY_FISH_HEIGHT = 64;
 const int ENEMY_FLY_WIDTH = 90;
 const int ENEMY_FLY_HEIGHT = 38;
 const int ENEMY_DEFAULT_POINTS = 10;
-const int ENEMY_DEFAULT_MAX_DISTANCE = 180;
+
+const int ENEMY_CRAB_MAX_DISTANCE = 180;
+const int ENEMY_FISH_MAX_DISTANCE = 350;
+const int ENEMY_FLY_MAX_DISTANCE = 180;
 
 const int CRAB_GIVEN_POINTS = 100;
 const int FLY_GIVEN_POINTS = 500;
@@ -33,13 +36,16 @@ void Enemy::InitializeProperties()
 	EntityType eType = EntityResolver::fromTypeString(type);
 	switch (eType) {
 	case EntityType::enemigo_cangrejo:
-		this->dimensions = Dimensions(ENEMY_CRAB_WIDTH, ENEMY_CRAB_HEIGHT, 0); //TODO
+		this->dimensions = Dimensions(ENEMY_CRAB_WIDTH, ENEMY_CRAB_HEIGHT, 0);
+		this->maxDistance = ENEMY_CRAB_MAX_DISTANCE;
 		break;
 	case EntityType::enemigo_pez:
-		this->dimensions = Dimensions(ENEMY_FISH_WIDTH, ENEMY_FISH_HEIGHT, 0); //TODO
+		this->dimensions = Dimensions(ENEMY_FISH_WIDTH, ENEMY_FISH_HEIGHT, 0);
+		this->maxDistance = ENEMY_FISH_MAX_DISTANCE;
 		break;
 	case EntityType::enemigo_mosca:
-		this->dimensions = Dimensions(ENEMY_FLY_WIDTH, ENEMY_FLY_HEIGHT, 0); //TODO
+		this->dimensions = Dimensions(ENEMY_FLY_WIDTH, ENEMY_FLY_HEIGHT, 0);
+		this->maxDistance = ENEMY_FLY_MAX_DISTANCE;
 		break;
 	default:
 		this->dimensions = Dimensions(0, 0, 0);
@@ -47,7 +53,6 @@ void Enemy::InitializeProperties()
 	}
 
 	this->points = ENEMY_DEFAULT_POINTS;
-	this->maxDistance = ENEMY_DEFAULT_MAX_DISTANCE;
 	this->facingDirection = FACING_LEFT;
 	this->distanceTravelled = 0;
 	this->serializedEnemy = string();

@@ -29,7 +29,7 @@ void EnemyView::draw(int camX, int camY)
 
 	// Calculate current sprite
 	//Uint32 sprite = (this->entity->getTime() / getFramesDivision(this->player->getSpriteState())) % getFramesCount(this->player->getSpriteState()); //90
-	Uint32 sprite = (this->entity->getTime() / 90) % getFramesCount();
+	Uint32 sprite = (this->entity->getTime() / getFramesDivision()) % getFramesCount();
 
 	SDL_Rect* currentClip = &spriteClips[sprite];
 
@@ -43,6 +43,20 @@ void EnemyView::draw(int camX, int camY)
 	SDL_RendererFlip flip = (((Enemy*)this->entity)->getFacingDirection() == FACING_RIGHT) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 
 	texture.render(x, y, currentClip, dest, 0, NULL, flip);
+}
+
+int EnemyView::getFramesDivision()
+{
+	string type = this->entity->getType();
+
+	if (type == EntityResolver::toTypeString(EntityType::enemigo_pez))
+		return 120;
+	else if (type == EntityResolver::toTypeString(EntityType::enemigo_mosca))
+		return 90;
+	else if (type == EntityResolver::toTypeString(EntityType::enemigo_cangrejo))
+		return 85;
+
+	return 0;
 }
 
 int EnemyView::getFramesCount()

@@ -14,7 +14,9 @@ public:
 	static bool isEnemyVisible(Enemy*, Camera*);
 private:
 	static void moveCrab(Enemy*);
+	static void moveFish(Enemy*);
 	static void horizontalMovement(Enemy*);
+	static void verticalMovement(Enemy*);
 };
 #endif // !ENEMYCONTROLLER_H
 
