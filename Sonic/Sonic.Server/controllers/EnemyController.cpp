@@ -12,13 +12,13 @@ void EnemyController::update(Enemy * enemy, Camera * camera)
 	enemy->lock();
 
 	switch (EntityResolver::fromTypeString(enemy->getType())) {
-		case enemigo_cangrejo:
-			moveCrab(enemy);
-			break;
-		case enemigo_pez:
-			break;
-		case enemigo_mosca:
-			break;
+	case enemigo_cangrejo:
+		moveCrab(enemy);
+		break;
+	case enemigo_pez:
+		break;
+	case enemigo_mosca:
+		break;
 	}
 
 	enemy->unlock();
@@ -31,21 +31,29 @@ bool EnemyController::isEnemyVisible(Enemy * enemy, Camera * camera)
 
 void EnemyController::moveCrab(Enemy * enemy)
 {
+	if (abs(enemy->getVelocity().x) > 100) {
+		enemy->setVelocity(Vector2(0, 0));
+	}
+
 	horizontalMovement(enemy);
+
 	//if reached max distance change direction
 	if (enemy->getDistanceTravelled() >= enemy->getMaxDistance()) {
 		FacingDirection newDirection = (enemy->getFacingDirection() == FACING_LEFT) ? FACING_RIGHT : FACING_LEFT;
 		enemy->setFacingDirection(newDirection);
+		enemy->resetDistanceTravelled();
 	}
 }
 
 void EnemyController::horizontalMovement(Enemy * enemy)
 {
+	enemy->setVelocity(Vector2(0.01, 0));
 	Coordinate newEnemyCoordinate;
 	Coordinate enemyCoordinate = enemy->getCoordinate();
 	if (enemy->getFacingDirection() == FACING_LEFT) {
 		newEnemyCoordinate = Coordinate(enemyCoordinate.getX() - enemy->getVelocity().x, enemyCoordinate.getY());
-	}else if (enemy->getFacingDirection() == FACING_RIGHT) {
+	}
+	else if (enemy->getFacingDirection() == FACING_RIGHT) {
 		newEnemyCoordinate = Coordinate(enemyCoordinate.getX() + enemy->getVelocity().x, enemyCoordinate.getY());
 	}
 

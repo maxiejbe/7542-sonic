@@ -18,11 +18,12 @@ public:
 	void copyFrom(Enemy&);
 
 	Vector2 getVelocity();
+	void setVelocity(Vector2 velocity);
 	FacingDirection getFacingDirection();
 	void setFacingDirection(FacingDirection);
-	int getMaxDistance();
-	void incrementDistanceTravelled(int);
-	int getDistanceTravelled();
+	double getMaxDistance();
+	void incrementDistanceTravelled(double);
+	double getDistanceTravelled();
 	void resetDistanceTravelled();
 	void kill();
 
@@ -47,8 +48,8 @@ private:
 	Vector2 velocity;
 	int points;
 	FacingDirection facingDirection;
-	int maxDistance;
-	int distanceTravelled;
+	double maxDistance;
+	double distanceTravelled;
 	string serializedEnemy;
 
 	void InitializeProperties();

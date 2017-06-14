@@ -7,9 +7,9 @@
 class Coordinate : public Serializable {
 public:
 	Coordinate();
-	Coordinate(int, int);
-	int getX();
-	int getY();
+	Coordinate(double, double);
+	double getX();
+	double getY();
 
 	void serialize(Writer<StringBuffer>&writer);
 	// Inherited via Serializable
@@ -17,8 +17,8 @@ public:
 	virtual void unserialize(Value * nodeRef) override;
 	virtual char * getNodeName() override;
 private:
-	int x;
-	int y;
+	double x;
+	double y;
 };
 
 #endif

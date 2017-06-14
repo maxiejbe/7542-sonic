@@ -13,7 +13,7 @@ const int ENEMY_FISH_HEIGHT = 64;
 const int ENEMY_FLY_WIDTH = 90;
 const int ENEMY_FLY_HEIGHT = 38;
 const int ENEMY_DEFAULT_POINTS = 10;
-const int ENEMY_DEFAULT_MAX_DISTANCE = 10;
+const int ENEMY_DEFAULT_MAX_DISTANCE = 180;
 
 const int CRAB_GIVEN_POINTS = 100;
 const int FLY_GIVEN_POINTS = 500;
@@ -72,6 +72,11 @@ Vector2 Enemy::getVelocity()
 	return this->velocity;
 }
 
+void Enemy::setVelocity(Vector2 velocity)
+{
+	this->velocity = velocity;
+}
+
 
 FacingDirection Enemy::getFacingDirection()
 {
@@ -83,19 +88,19 @@ void Enemy::setFacingDirection(FacingDirection facingDirection)
 	this->facingDirection = facingDirection;
 }
 
-int Enemy::getMaxDistance()
+double Enemy::getMaxDistance()
 {
 	return this->maxDistance;
 }
 
-int Enemy::getDistanceTravelled()
+double Enemy::getDistanceTravelled()
 {
 	return this->distanceTravelled;
 }
 
 
-void Enemy::incrementDistanceTravelled(int distance) {
-	this->distanceTravelled += distance;
+void Enemy::incrementDistanceTravelled(double distance) {
+	this->distanceTravelled += abs(distance);
 }
 
 void Enemy::resetDistanceTravelled()
@@ -204,7 +209,5 @@ void Enemy::onCollision(Player * player, Camera* camera)
 		else
 			player->setXVelocity(5);
 	}
-
-
 }
 
