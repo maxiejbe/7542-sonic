@@ -291,6 +291,9 @@ void Client::handleReceivedMessage(char* recievedMessage)
 	switch (message->getType())
 	{
 	case player_assign_ok:
+		if (message->getTeamId() > 0) {
+			this->player->setTeamId(message->getTeamId());
+		}
 		sendLevels();
 		break;
 	case levels_content_ok:

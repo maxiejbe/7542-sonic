@@ -255,6 +255,16 @@ vector<Level>* Server::getLevels()
 	return this->gameConfig->getLevels();
 }
 
+void Server::sumPoints(int teamId, int points)
+{
+	this->teamPoints.at(teamId) += points;
+}
+
+void Server::sumRings(int teamId, int rings)
+{
+	this->teamRings.at(teamId) += rings;
+}
+
 SOCKET Server::getSocket()
 {
 	return this->_socket;
@@ -371,8 +381,24 @@ vector<Player*> Server::clientsPlayers()
 	vector<Player*> clientPlayers = vector<Player*>();
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		clientPlayers.push_back((*it).second->getPlayer());
+		Player* player = (*it).second->getPlayer();
+		clientPlayers.push_back(player);
+
+		if (player->getTeamId() <= 0) continue;
+		//Total team points and rings
+		sumPoints(player->getTeamId(), player->getPoints());
+		sumRings(player->getTeamId(), player->getPoints());
 	}
+
+	for (vector<Player*>::iterator it = clientPlayers.begin(); it != clientPlayers.end(); ++it)
+	{
+		Player* player = (*it);
+		if (player->getTeamId() <= 0) continue;
+
+		player->setTeamPoints(teamPoints.at(player->getTeamId()));
+		player->setTeamRings(teamRings.at(player->getTeamId()));
+	}
+
 
 	return clientPlayers;
 }
