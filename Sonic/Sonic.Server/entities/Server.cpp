@@ -16,6 +16,9 @@ const char* MESSAGE_SERVER_SEND_MESSAGE_SUCCESS = "Se envió correctamente el men
 
 const int CLIENT_NUMBER_MAX_CONNECTED_PLAYERS = -99;
 
+const int DEFAULT_COLLABORATIVE_TEAM_ID = 1;
+const int TEAMS_COUNT = 2;
+
 Server::~Server()
 {
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
@@ -257,12 +260,12 @@ vector<Level>* Server::getLevels()
 
 void Server::sumPoints(int teamId, int points)
 {
-	this->teamPoints.at(teamId) += points;
+	this->teamPoints[teamId - 1] += points;
 }
 
 void Server::sumRings(int teamId, int rings)
 {
-	this->teamRings.at(teamId) += rings;
+	this->teamRings[teamId - 1] += rings;
 }
 
 SOCKET Server::getSocket()
@@ -377,6 +380,12 @@ void Server::levelFinished()
 
 vector<Player*> Server::clientsPlayers()
 {
+	for (size_t i = 0; i < TEAMS_COUNT; i++)
+	{
+		teamPoints[i] = 0;
+		teamRings[i] = 0;
+	}
+
 	//TODO: ADD MUTEX
 	vector<Player*> clientPlayers = vector<Player*>();
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
@@ -384,21 +393,26 @@ vector<Player*> Server::clientsPlayers()
 		Player* player = (*it).second->getPlayer();
 		clientPlayers.push_back(player);
 
-		if (player->getTeamId() <= 0) continue;
+		int teamId = player->getTeamId();
+		if (gameConfig->getMode() == colaborativo) teamId = DEFAULT_COLLABORATIVE_TEAM_ID;
+		
+		if (teamId <= 0) continue;
 		//Total team points and rings
-		sumPoints(player->getTeamId(), player->getPoints());
-		sumRings(player->getTeamId(), player->getPoints());
+		sumPoints(teamId, player->getPoints());
+		sumRings(teamId, player->getRings());
 	}
 
 	for (vector<Player*>::iterator it = clientPlayers.begin(); it != clientPlayers.end(); ++it)
 	{
 		Player* player = (*it);
-		if (player->getTeamId() <= 0) continue;
-
-		player->setTeamPoints(teamPoints.at(player->getTeamId()));
-		player->setTeamRings(teamRings.at(player->getTeamId()));
+		
+		int teamId = player->getTeamId();
+		if (gameConfig->getMode() == colaborativo) teamId = DEFAULT_COLLABORATIVE_TEAM_ID;
+		
+		if (teamId <= 0) continue;
+		player->setTeamPoints(teamPoints[teamId -1]);
+		player->setTeamRings(teamRings[teamId-1]);
 	}
-
 
 	return clientPlayers;
 }

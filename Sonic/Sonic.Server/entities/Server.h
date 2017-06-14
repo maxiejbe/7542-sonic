@@ -109,8 +109,8 @@ private:
 	unordered_map<int, Client*> clients;
 	vector<Client*> disconnectedClients;
 
-	vector<int> teamPoints;
-	vector<int> teamRings;
+	unordered_map<int, int> teamPoints;
+	unordered_map <int, int> teamRings;
 
 	bool levelFinishedNotified;
 	mutex levelFinishedMutex;
