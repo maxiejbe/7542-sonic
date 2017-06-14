@@ -69,7 +69,7 @@ int EnemyView::getFramesCount()
 	else if (type == EntityResolver::toTypeString(EntityType::enemigo_cangrejo))
 		return ANIMATION_MAX_FRAMES_CRAB;
 
-	return 0;
+	return 1;
 }
 
 void EnemyView::loadSpriteClips()

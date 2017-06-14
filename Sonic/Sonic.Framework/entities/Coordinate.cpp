@@ -28,6 +28,7 @@ double Coordinate::getY() {
 
 void Coordinate::serialize(Writer<StringBuffer>&writer)
 {
+	writer.SetMaxDecimalPlaces(4);
 	writer.StartObject();
 	writer.String(COORDINATE_X_NODE);
 	writer.Double(x);

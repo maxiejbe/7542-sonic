@@ -69,6 +69,7 @@ string Camera::serialize()
 {
 	StringBuffer s;
 	Writer<StringBuffer> writer(s);
+	writer.SetMaxDecimalPlaces(4);
 	writer.StartObject();
 
 	writer.String(CAMERA_X_POSITION_NODE);

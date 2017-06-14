@@ -39,7 +39,6 @@ public:
 	void unlock();
 
 	string getType();
-	string getColor();
 	string getImagePath();
 	void setImagePath(string);
 
@@ -69,7 +68,6 @@ public:
 protected:
 	int id;
 	string type;
-	string color;
 	Dimensions dimensions;
 	Coordinate coordinate;
 	string imagePath;

@@ -17,7 +17,6 @@ public:
 	EntityView(Entity* entity);
 
 	void draw(int camX, int camY) override;
-	Uint32 getColorRgba();
 	Entity* getEntity();
 
 protected:

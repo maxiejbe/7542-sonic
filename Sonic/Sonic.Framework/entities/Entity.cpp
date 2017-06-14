@@ -6,9 +6,8 @@
 const char* ENTITY_NODE = "entidades";
 const char* ENTITY_ID_NODE = "id";
 const char* ENTITY_TYPE_NODE = "tipo";
-const char* ENTITY_COLOR_NODE = "color";
 const char* ENTITY_IMAGE_PATH_NODE = "ruta_imagen";
-const char* ENTITY_ZINDEX_NODE = "index_z";
+//const char* ENTITY_ZINDEX_NODE = "index_z";
 const char* ENTITY_IS_ACTIVE_NODE = "is_active";
 const char* ENTITY_TIME_NODE = "time";
 
@@ -21,9 +20,8 @@ const char* ERROR_ENTITY_NO_COORDINATE_Y = "No puede dibujarse la entidad ya que
 
 const int ENTITY_DEFAULT_ID = 1;
 const string ENTITY_DEFAULT_TYPE = "";
-const string ENTITY_DEFAULT_COLOR = "";
 const string ENTITY_DEFAULT_IMAGE_PATH = ""; // Vacio = no hay imagen (solo color)
-const int ENTITY_DEFAULT_ZINDEX = 0;
+//const int ENTITY_DEFAULT_ZINDEX = 0;
 
 Entity::Entity()
 {
@@ -33,11 +31,10 @@ Entity::Entity(Entity* entity)
 {
 	this->id = entity->id;
 	this->type = entity->type;
-	this->color = entity->color;
 	this->dimensions = entity->dimensions;
 	this->coordinate = entity->coordinate;
 	this->imagePath = entity->imagePath;
-	this->zIndex = entity->zIndex;
+	//this->zIndex = entity->zIndex;
 	this->isActive = entity->isActive;
 	this->time = entity->time;
 }
@@ -46,11 +43,10 @@ void Entity::copyFrom(Entity & anotherEntity)
 {
 	this->id = anotherEntity.id;
 	this->type = anotherEntity.type;
-	this->color = anotherEntity.color;
 	this->dimensions = anotherEntity.dimensions;
 	this->coordinate = anotherEntity.coordinate;
 	this->imagePath = anotherEntity.imagePath;
-	this->zIndex = anotherEntity.zIndex;
+	//this->zIndex = anotherEntity.zIndex;
 	this->isActive = anotherEntity.isActive;
 	this->time = anotherEntity.time;
 }
@@ -138,11 +134,6 @@ string Entity::getType()
 	return type;
 }
 
-string Entity::getColor()
-{
-	return color;
-}
-
 void Entity::setImagePath(string imagePath)
 {
 	this->imagePath = imagePath;
@@ -199,10 +190,8 @@ void Entity::basePropertiesSerialization(Writer<StringBuffer>& writer)
 	writer.Int(id);
 	writer.String(ENTITY_TYPE_NODE);
 	writer.String(type.c_str());
-	writer.String(ENTITY_COLOR_NODE);
-	writer.String(color.c_str());
-	writer.String(ENTITY_ZINDEX_NODE);
-	writer.Int(zIndex);
+	//writer.String(ENTITY_ZINDEX_NODE);
+	//writer.Int(zIndex);
 	writer.String(ENTITY_IS_ACTIVE_NODE);
 	writer.Bool(isActive);
 	writer.String(ENTITY_TIME_NODE);
@@ -229,14 +218,11 @@ void Entity::unserialize(Value * nodeRef)
 	dimensions.setDefaults(defaultDimensions.getWidth(), defaultDimensions.getHeight(), defaultDimensions.getRadio());
 	dimensions.parseObject(nodeRef);
 
-	parseString(&color, ENTITY_DEFAULT_COLOR, nodeRef, ENTITY_COLOR_NODE);
-	color = EntityResolver::toColorString(EntityResolver::fromColorString(color));
-
 	coordinate.parseObject(nodeRef);
 
 	parseString(&imagePath, ENTITY_DEFAULT_IMAGE_PATH, nodeRef, ENTITY_IMAGE_PATH_NODE);
 
-	parseInt(&zIndex, ENTITY_DEFAULT_ZINDEX, nodeRef, ENTITY_ZINDEX_NODE);
+	//parseInt(&zIndex, ENTITY_DEFAULT_ZINDEX, nodeRef, ENTITY_ZINDEX_NODE);
 
 	parseBool(&isActive, true, nodeRef, ENTITY_IS_ACTIVE_NODE);
 
