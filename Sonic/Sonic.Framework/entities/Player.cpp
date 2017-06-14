@@ -420,9 +420,9 @@ void Player::unserialize(Value * nodeRef)
 	//points
 	parseInt(&points, 0, nodeRef, PLAYER_POINTS_NODE);
 	//is active
-	parseBool(&isActive, 0, nodeRef, PLAYER_IS_ACTIVE_NODE);
+	parseBool(&isActive, false, nodeRef, PLAYER_IS_ACTIVE_NODE);
 	//has shield
-	parseBool(&hasShield, 0, nodeRef, PLAYER_HAS_SHIELD_NODE);
+	parseBool(&hasShield, false, nodeRef, PLAYER_HAS_SHIELD_NODE);
 }
 
 void Player::serializePlayer()

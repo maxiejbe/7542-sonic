@@ -17,9 +17,14 @@ EnemyView::~EnemyView()
 void EnemyView::draw(int camX, int camY)
 {
 	// Load image
-	if (texture.getTexture() == nullptr && !texture.loadFromFile("img/enemies-spritesheet.png")) {
+	if (texture.getTexture() == nullptr && this->entity->getIsActive() && !texture.loadFromFile("img/enemies-spritesheet.png")) {
 		LOG(logWARNING) << "No se pudo cargar la imagen del bonus '" << "img/enemies-spritesheet.png" << "'.";
 		return;
+	}
+
+	if (!this->entity->getIsActive()) {
+		if (texture.getTexture() == nullptr) return;
+		texture.free();
 	}
 
 	// Calculate current sprite

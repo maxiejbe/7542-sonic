@@ -1,7 +1,6 @@
 #include "Enemy.h"
 
 const char* ENEMY_FACING_DIRECTION_NODE = "fd";
-const char* EMEMY_ALIVE_NODE = "a";
 
 const double ENEMY_DEFAULT_POSX = 0;
 const double ENEMY_DEFAULT_POSY = 0;
@@ -51,7 +50,6 @@ void Enemy::InitializeProperties()
 	this->maxDistance = ENEMY_DEFAULT_MAX_DISTANCE;
 	this->facingDirection = FACING_LEFT;
 	this->distanceTravelled = 0;
-	this->alive = true;
 	this->serializedEnemy = string();
 }
 
@@ -64,7 +62,6 @@ void Enemy::copyFrom(Enemy& anotherEnemy)
 {
 	Entity::copyFrom(anotherEnemy);
 
-	this->alive = anotherEnemy.isAlive();
 	this->points = anotherEnemy.getPoints();
 	this->facingDirection = anotherEnemy.getFacingDirection();
 }
@@ -106,14 +103,9 @@ void Enemy::resetDistanceTravelled()
 	this->distanceTravelled = 0;
 }
 
-bool Enemy::isAlive()
-{
-	return this->alive;
-}
-
 void Enemy::kill()
 {
-	this->alive = false;
+	this->isActive = false;
 }
 
 int Enemy::getPoints()
@@ -154,7 +146,6 @@ void Enemy::unserialize(Value * nodeRef)
 {
 	Entity::unserialize(nodeRef);
 	parseInt((int*)&facingDirection, 0, nodeRef, ENEMY_FACING_DIRECTION_NODE, Validator::intGreaterThanOrEqualToZero);
-	parseBool(&alive, true, nodeRef, EMEMY_ALIVE_NODE);
 }
 
 char * Enemy::getNodeName()
@@ -168,8 +159,6 @@ string Enemy::serialize()
 	Writer<StringBuffer> writer(s);
 	writer.StartObject();
 	basePropertiesSerialization(writer);
-	writer.String(EMEMY_ALIVE_NODE);
-	writer.Bool(alive);
 	writer.String(ENEMY_FACING_DIRECTION_NODE);
 	writer.Int(facingDirection);
 	writer.EndObject();
@@ -179,13 +168,19 @@ string Enemy::serialize()
 
 void Enemy::onCollision(Player * player, Camera* camera)
 {
-	if (!isAlive()) return;
+	if (!getIsActive()) return;
 
 	if (player->isDamaging()) {
 		player->sumPoints(getGivenPoints());
 		this->kill();
 		if (player->getIsJumping()) {
-			player->setYVelocity(-8);
+			// If is falling, bounce
+			if (player->getVelocity().y > 0) {
+				player->setYVelocity(-8);
+			}
+			else {
+				player->setYVelocity(0);
+			}
 		}
 	}
 	else {

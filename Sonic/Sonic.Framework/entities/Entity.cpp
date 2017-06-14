@@ -9,6 +9,7 @@ const char* ENTITY_TYPE_NODE = "tipo";
 const char* ENTITY_COLOR_NODE = "color";
 const char* ENTITY_IMAGE_PATH_NODE = "ruta_imagen";
 const char* ENTITY_ZINDEX_NODE = "index_z";
+const char* ENTITY_IS_ACTIVE_NODE = "is_active";
 
 const char* MESSAGE_PARSING_ENTITY_NODE = "Inicio de parseo de nodo entidad.";
 const char* MESSAGE_END_PARSING_ENTITY_NODE = "Fin de parseo de nodo entidad.";
@@ -36,6 +37,7 @@ Entity::Entity(Entity* entity)
 	this->coordinate = entity->coordinate;
 	this->imagePath = entity->imagePath;
 	this->zIndex = entity->zIndex;
+	this->isActive = entity->isActive;
 }
 
 void Entity::copyFrom(Entity & anotherEntity)
@@ -47,6 +49,7 @@ void Entity::copyFrom(Entity & anotherEntity)
 	this->coordinate = anotherEntity.coordinate;
 	this->imagePath = anotherEntity.imagePath;
 	this->zIndex = anotherEntity.zIndex;
+	this->isActive = anotherEntity.isActive;
 }
 
 bool Entity::validate()
@@ -182,6 +185,8 @@ void Entity::basePropertiesSerialization(Writer<StringBuffer>& writer)
 	writer.String(color.c_str());
 	writer.String(ENTITY_ZINDEX_NODE);
 	writer.Int(zIndex);
+	writer.String(ENTITY_IS_ACTIVE_NODE);
+	writer.Bool(isActive);
 	writer.String(coordinate.getNodeName());
 	coordinate.serialize(writer);
 	writer.String(dimensions.getNodeName());
@@ -212,6 +217,8 @@ void Entity::unserialize(Value * nodeRef)
 	parseString(&imagePath, ENTITY_DEFAULT_IMAGE_PATH, nodeRef, ENTITY_IMAGE_PATH_NODE);
 
 	parseInt(&zIndex, ENTITY_DEFAULT_ZINDEX, nodeRef, ENTITY_ZINDEX_NODE);
+
+	parseBool(&isActive, true, nodeRef, ENTITY_IS_ACTIVE_NODE);
 
 	LOG(logINFO) << MESSAGE_END_PARSING_ENTITY_NODE;
 }

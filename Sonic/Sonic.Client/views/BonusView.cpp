@@ -3,9 +3,14 @@
 void BonusView::draw(int camX, int camY)
 {
 	// Load image
-	if (texture.getTexture() == nullptr && !texture.loadFromFile(getBonusFilePath())) {
+	if (texture.getTexture() == nullptr && this->entity->getIsActive() && !texture.loadFromFile(getBonusFilePath())) {
 		LOG(logWARNING) << "No se pudo cargar la imagen del bonus '" << getBonusFilePath() << "'.";
 		return;
+	}
+
+	if (!this->entity->getIsActive()) {
+		if (texture.getTexture() == nullptr) return;
+		texture.free();
 	}
 
 	int x = entity->getCoordinate().getX() - camX;

@@ -16,7 +16,7 @@ public:
 	~Enemy();
 
 	void copyFrom(Enemy&);
-	
+
 	Vector2 getVelocity();
 	FacingDirection getFacingDirection();
 	void setFacingDirection(FacingDirection);
@@ -24,7 +24,6 @@ public:
 	void incrementDistanceTravelled(int);
 	int getDistanceTravelled();
 	void resetDistanceTravelled();
-	bool isAlive();
 	void kill();
 
 	int getPoints();
@@ -43,7 +42,6 @@ public:
 	virtual void onCollision(Player* player, Camera* camera) override;
 private:
 	Vector2 velocity;
-	bool alive;
 	int points;
 	FacingDirection facingDirection;
 	int maxDistance;
