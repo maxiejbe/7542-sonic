@@ -6,6 +6,7 @@
 #include "../entities/common/Validator.h"
 #include "../entities/Camera.h"
 #include "../entities/Level.h"
+#include "../entities/GameConfig.h"
 
 enum ServerMessageType {player_assign, levels_content, level_start, level_finish, player_entities_status, typeless, heart_beat_server };
 
@@ -17,6 +18,7 @@ public:
 	void setType(ServerMessageType);
 	ServerMessageType getType();
 	void setPlayerNumber(int);
+	void setGameMode(GameMode);
 	int getPlayerNumber();
 	vector<Player*> getPlayers();
 	vector<Entity*> getEntities();
@@ -50,6 +52,7 @@ private:
 	int levelToStart;
 	Camera * camera;
 	int playerNumber;
+	GameMode gameMode;
 };
 
 #endif

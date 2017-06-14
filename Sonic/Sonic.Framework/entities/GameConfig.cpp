@@ -57,6 +57,11 @@ Level * GameConfig::getLevel(int levelNumber)
 	return &this->levels[lvlIdx];
 }
 
+GameMode GameConfig::getMode()
+{
+	return this->mode;
+}
+
 void GameConfig::unserialize(Value * nodeRef)
 {
 	Value& node = *nodeRef;

@@ -280,6 +280,11 @@ Scenario * Server::getScenario()
 	return this->scenario;
 }
 
+GameConfig * Server::getGameConfig()
+{
+	return this->gameConfig;
+}
+
 Camera * Server::getCamera()
 {
 	return this->camera;

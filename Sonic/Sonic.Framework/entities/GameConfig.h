@@ -16,6 +16,8 @@ public:
 	vector<Level>* getLevels();
 	Level * getLevel(int);
 
+	GameMode getMode();
+
 private:
 	vector<Level> levels;
 
