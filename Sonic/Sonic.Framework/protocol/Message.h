@@ -39,6 +39,7 @@ public:
 	bool getIsKUShift();
 	bool getIsKUTest();
 
+	int getTeamId();
 	void setTeamId(int team);
 
 	//bool unserialize(string json);

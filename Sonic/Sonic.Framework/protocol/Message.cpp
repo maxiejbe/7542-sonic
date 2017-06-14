@@ -98,6 +98,11 @@ bool Message::getIsKUTest()
 	return this->isKUTest;
 }
 
+int Message::getTeamId()
+{
+	return this->teamId;
+}
+
 void Message::setTeamId(int team)
 {
 	this->teamId = team;
