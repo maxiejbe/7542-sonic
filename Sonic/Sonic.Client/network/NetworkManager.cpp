@@ -146,7 +146,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 
 		this->playerNumber = sMessage->getPlayerNumber();
 		break;
-	case level_status:
+	case player_entities_status:
 		if (this->playerNumber < 0) break;
 		this->updatePlayerViews(sMessage->getPlayers());
 		this->updateEntityViews(sMessage->getEntities());
@@ -166,6 +166,9 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
 
 		lastHeartBeat = NULL;
+		break;
+	case level_finish:
+		//TODO display statistics, reset player view
 		break;
 	case heart_beat_server:
 		time(&lastHeartBeat);

@@ -32,9 +32,11 @@ public:
 	bool sendHeartBeat();
 	bool sendClientNumber();
 	bool sendLevels();
-	bool sendGameStart();
+	bool sendLevelStart();
+	bool sendLevelFinish();
 	bool sendStatus();
 	bool refreshPlayer();
+	bool notifyLevelFinished();
 
 	void setClientNumber(int);
 
@@ -62,6 +64,9 @@ private:
 	DWORD receiveSocketHandler();
 	bool parseReceivedMessage();
 	void handleReceivedMessage(char* recievedMessage);
+	void startRefereshing();
+	void startSending();
+	void startHeartBeating();
 	bool continueReceiving;
 
 	//refresh handler
@@ -70,6 +75,7 @@ private:
 	static DWORD WINAPI refreshSocketHandler(void* args);
 	DWORD refreshSocketHandler();
 	bool continueRefreshing;
+	bool pauseRefreshing;
 
 	//send handler
 	DWORD sendThreadId;
@@ -77,6 +83,7 @@ private:
 	static DWORD WINAPI runSendSocketHandler(void* args);
 	DWORD sendSocketHandler();
 	bool continueSending;
+	bool pauseSending;
 
 	mutex playerMutex;
 	mutex sendMutex;

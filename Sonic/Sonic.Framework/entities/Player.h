@@ -51,6 +51,7 @@ public:
 	Vector2 getPosition();
 	void setXPosition(double x);
 	void setYPosition(double y);
+	void reset();
 	Vector2 getVelocity();
 	void setXVelocity(double x);
 	void setYVelocity(double y);
