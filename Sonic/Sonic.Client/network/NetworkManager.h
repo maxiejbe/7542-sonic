@@ -31,6 +31,7 @@ public:
 	Camera * getCamera();
 	unordered_map<int, PlayerView*> getPlayerViews();
 	unordered_map<int, EntityView*> getEntityViews();
+	int getActualLevel();
 
 	PlayerView* getOwnPlayerView();
 	bool canStartGame();
@@ -49,6 +50,7 @@ private:
 	unordered_map<int, PlayerView*> playerViews;
 	unordered_map<int, EntityView*> entityViews;
 	bool startGame;
+	int actualLevel;
 
 	int playerNumber;
 	vector<Level> * gameLevels;
