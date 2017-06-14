@@ -14,8 +14,17 @@ void ConnectState::load(Game* game)
 		connected = NetworkManager::getInstance().connectToServer(game->getServerConfig());
 
 		if (connected) {
-			game->changeState(PlayState::Instance());
-			return;
+
+			if (NetworkManager::getInstance().getGameMode() == GameMode::grupal)
+			{
+				// Choose Team
+				game->changeState(SelectTeamState::Instance());
+			}
+			else
+			{ 
+				game->changeState(PlayState::Instance());
+				return;
+			}
 		}
 	}
 }

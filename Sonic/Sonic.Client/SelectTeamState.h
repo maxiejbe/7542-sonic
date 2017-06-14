@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "InputManager.h"
 #include "ConnectState.h"
+#include "PlayState.h"
 
 class SelectTeamState : public GameState {
 public:

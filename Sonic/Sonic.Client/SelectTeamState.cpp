@@ -68,8 +68,7 @@ void SelectTeamState::update(Game* game, float dt)
 		clientResponse->setTeamId(selectedTeam);
 		NetworkManager::getInstance().sendMessage(clientResponse);
 
-		// Connect
-		game->changeState(ConnectState::Instance());
+		game->changeState(PlayState::Instance());
 	}
 }
 
@@ -77,6 +76,11 @@ void SelectTeamState::render(Game* game)
 {
 	this->updateAndRenderOptions();
 	this->renderSelectedOption();
+}
+
+int SelectTeamState::getTeam()
+{
+	return this->selectedTeam;
 }
 
 void SelectTeamState::initColorNameOptions()

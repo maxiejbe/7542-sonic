@@ -67,19 +67,8 @@ void MenuState::update(Game* game, float dt)
 
 	if (input->isKeyDown(KEY_RETURN)) {
 		if (selected[0]) {
-
-			if (NetworkManager::getInstance().getGameMode() == GameMode::grupal)
-			{
-				// Choose Team
-				game->changeState(SelectTeamState::Instance());
-			}
-			else
-			{
-				// Connect
-				this->connectionStatus = CONNECTED;
-				game->changeState(ConnectState::Instance());
-			}
-
+			this->connectionStatus = CONNECTED;
+			game->changeState(ConnectState::Instance());
 		}
 		else if (selected[1]) {
 			// Disconnect
