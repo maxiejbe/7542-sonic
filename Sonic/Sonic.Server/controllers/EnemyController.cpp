@@ -13,16 +13,7 @@ void EnemyController::update(Enemy * enemy, Camera * camera, int milliseconds)
 
 	enemy->setTime(milliseconds);
 
-	switch (EntityResolver::fromTypeString(enemy->getType())) {
-	case enemigo_cangrejo:
-		moveCrab(enemy);
-		break;
-	case enemigo_pez:
-		moveFish(enemy);
-		break;
-	case enemigo_mosca:
-		break;
-	}
+	move(enemy);
 
 	enemy->unlock();
 }
@@ -32,41 +23,36 @@ bool EnemyController::isEnemyVisible(Enemy * enemy, Camera * camera)
 	return (enemy->getCoordinate().getX() >= camera->getPosition().x && enemy->getCoordinate().getX() <= (camera->getPosition().x + camera->getScreenWidth() - enemy->getDimensions().getWidth()));
 }
 
-void EnemyController::moveCrab(Enemy * enemy)
+void EnemyController::move(Enemy * enemy)
+{
+	switch (EntityResolver::fromTypeString(enemy->getType())) {
+	case enemigo_cangrejo:
+		horizontalMovement(enemy, 0.01);
+		break;
+	case enemigo_pez:
+		verticalMovement(enemy, 0.08);
+		break;
+	case enemigo_mosca:
+		horizontalMovement(enemy, 0.03);
+		break;
+	}
+
+	// If reached max distance change direction
+	if (enemy->getDistanceTravelled() >= enemy->getMaxDistance()) {
+		FacingDirection newDirection = (enemy->getFacingDirection() == FACING_LEFT) ? FACING_RIGHT : FACING_LEFT;
+		enemy->setFacingDirection(newDirection);
+		enemy->resetDistanceTravelled();
+	}
+}
+
+void EnemyController::horizontalMovement(Enemy * enemy, double velocityX)
 {
 	if (abs(enemy->getVelocity().x) > 100) {
 		enemy->setVelocity(Vector2(0, 0));
 	}
 
-	horizontalMovement(enemy);
+	enemy->setVelocity(Vector2(velocityX, 0));
 
-	//if reached max distance change direction
-	if (enemy->getDistanceTravelled() >= enemy->getMaxDistance()) {
-		FacingDirection newDirection = (enemy->getFacingDirection() == FACING_LEFT) ? FACING_RIGHT : FACING_LEFT;
-		enemy->setFacingDirection(newDirection);
-		enemy->resetDistanceTravelled();
-	}
-}
-
-void EnemyController::moveFish(Enemy * enemy)
-{
-	if (abs(enemy->getVelocity().y) > 100) {
-		enemy->setVelocity(Vector2(0, 0));
-	}
-
-	verticalMovement(enemy);
-
-	//if reached max distance change direction
-	if (enemy->getDistanceTravelled() >= enemy->getMaxDistance()) {
-		FacingDirection newDirection = (enemy->getFacingDirection() == FACING_LEFT) ? FACING_RIGHT : FACING_LEFT;
-		enemy->setFacingDirection(newDirection);
-		enemy->resetDistanceTravelled();
-	}
-}
-
-void EnemyController::horizontalMovement(Enemy * enemy)
-{
-	enemy->setVelocity(Vector2(0.01, 0));
 	Coordinate newEnemyCoordinate;
 	Coordinate enemyCoordinate = enemy->getCoordinate();
 	if (enemy->getFacingDirection() == FACING_LEFT) {
@@ -80,9 +66,14 @@ void EnemyController::horizontalMovement(Enemy * enemy)
 	enemy->incrementDistanceTravelled(enemy->getVelocity().x);
 }
 
-void EnemyController::verticalMovement(Enemy * enemy)
+void EnemyController::verticalMovement(Enemy * enemy, double velocityY)
 {
-	enemy->setVelocity(Vector2(0, 0.08));
+	if (abs(enemy->getVelocity().y) > 100) {
+		enemy->setVelocity(Vector2(0, 0));
+	}
+
+	enemy->setVelocity(Vector2(0, velocityY));
+
 	Coordinate newEnemyCoordinate;
 	Coordinate enemyCoordinate = enemy->getCoordinate();
 	if (enemy->getFacingDirection() == FACING_LEFT) {

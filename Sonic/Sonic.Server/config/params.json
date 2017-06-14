@@ -69,8 +69,8 @@
           },
           {
             "tipo": "enemigo_cangrejo",
-            "cantidad_minima": 1,
-            "cantidad_maxima": 1,
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
             "min_x": 100,
             "max_x": 400,
             "min_y": 445,
@@ -78,8 +78,8 @@
           },
           {
             "tipo": "enemigo_pez",
-            "cantidad_minima": 1,
-            "cantidad_maxima": 1,
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
             "min_x": 100,
             "max_x": 200,
             "min_y": 600,
@@ -87,10 +87,10 @@
           },
           {
             "tipo": "enemigo_mosca",
-            "cantidad_minima": 0,
-            "cantidad_maxima": 0,
-            "min_x": 200,
-            "max_x": 300,
+            "cantidad_minima": 1,
+            "cantidad_maxima": 1,
+            "min_x": 400,
+            "max_x": 500,
             "min_y": 250,
             "max_y": 350
           },

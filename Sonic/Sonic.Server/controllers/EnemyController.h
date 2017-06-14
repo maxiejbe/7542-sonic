@@ -13,10 +13,9 @@ public:
 	//check if enemy is seen in the scenario
 	static bool isEnemyVisible(Enemy*, Camera*);
 private:
-	static void moveCrab(Enemy*);
-	static void moveFish(Enemy*);
-	static void horizontalMovement(Enemy*);
-	static void verticalMovement(Enemy*);
+	static void EnemyController::move(Enemy * enemy);
+	static void horizontalMovement(Enemy*, double velocityX);
+	static void verticalMovement(Enemy*, double velocityX);
 };
 #endif // !ENEMYCONTROLLER_H
 

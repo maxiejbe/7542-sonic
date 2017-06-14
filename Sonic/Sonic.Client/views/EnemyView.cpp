@@ -28,7 +28,6 @@ void EnemyView::draw(int camX, int camY)
 	}
 
 	// Calculate current sprite
-	//Uint32 sprite = (this->entity->getTime() / getFramesDivision(this->player->getSpriteState())) % getFramesCount(this->player->getSpriteState()); //90
 	Uint32 sprite = (this->entity->getTime() / getFramesDivision()) % getFramesCount();
 
 	SDL_Rect* currentClip = &spriteClips[sprite];
