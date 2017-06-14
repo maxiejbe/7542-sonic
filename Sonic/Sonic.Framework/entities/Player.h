@@ -104,6 +104,10 @@ public:
 
 	void setTeamPoints(int teamPoints);
 	void setTeamRings(int teamRings);
+	bool getIsInvincible();
+	void setIsInvincible(bool isInvincible);
+	int getInvincibleTime();
+	void setInvincibleTime(int ms);
 
 	string serializedPlayer;
 
@@ -141,6 +145,8 @@ private:
 	int points;
 	bool isActive;
 	bool hasShield;
+	bool isInvincible;
+	int invincibleTime;
 
 	mutex playerMutex;
 };

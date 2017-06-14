@@ -21,6 +21,9 @@ void Bonus::onCollision(Player * player, Camera* camera)
 		case bonus_escudo:
 			player->setHasShield(true);
 			break;
+		case bonus_invencibilidad:
+			player->setIsInvincible(true);
+			break;
 		default:
 			break;
 		}

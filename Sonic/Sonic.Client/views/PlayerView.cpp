@@ -6,6 +6,10 @@ const int ANIMATION_FRAMES_SONIC = 8;
 const int ANIMATION_FRAMES_TAILS = 9;
 const int ANIMATION_FRAMES_KNUCKLES = 8;
 const int ANIMATION_FRAMES_SHADOW = 8;
+const int SHIELD_WIDTH = 96;
+const int SHIELD_HEIGHT = 92;
+const int INVINCIBILITY_WIDTH = 96;
+const int INVINCIBILITY_HEIGHT = 96;
 
 PlayerView::PlayerView(Player* player)
 {
@@ -61,6 +65,24 @@ void PlayerView::render(int camX, int camY)
 
 	// Calculate facing direction
 	SDL_RendererFlip flip = (this->player->getFacingDirection() == FACING_RIGHT) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+
+	if (player->getHasShield()) {
+		if (this->textureExtra.getTexture() == nullptr && !this->textureExtra.loadFromFile("img/shield.png")) {
+			LOG(logWARNING) << "No se pudo cargar la imagen del shield '" << "img/shield.png" << "'.";
+		}
+		else {
+			textureExtra.render((int)(player->getPosition().x - camX) - SHIELD_WIDTH / 4, (int)(player->getPosition().y - camY) - SHIELD_HEIGHT / 8, SHIELD_WIDTH, SHIELD_HEIGHT);
+		}
+	}
+
+	if (player->getIsInvincible()) {
+		if (this->textureExtra.getTexture() == nullptr && !this->textureExtra.loadFromFile("img/invincibility.png")) {
+			LOG(logWARNING) << "No se pudo cargar la imagen del shield '" << "img/invincibility.png" << "'.";
+		}
+		else {
+			textureExtra.render((int)(player->getPosition().x - camX) - INVINCIBILITY_WIDTH / 4, (int)(player->getPosition().y - camY) - INVINCIBILITY_HEIGHT / 8, SHIELD_WIDTH, INVINCIBILITY_HEIGHT);
+		}
+	}
 
 	texture.render((int)(player->getPosition().x - camX), (int)(player->getPosition().y - camY), currentClip, dest, 0, NULL, flip);
 }

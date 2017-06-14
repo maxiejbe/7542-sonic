@@ -19,6 +19,7 @@ private:
 	static void updateInput(Message* message, Player* player);
 	static void move(Player* player, double timeStep, Camera* camera);
 	static void calculateCollisions(Player* player, Scenario* scenario, Camera* camera);
+	static void checkInvincibility(Player * player, int ms);
 };
 
 #endif // !PLAYERCONTROLLER_H

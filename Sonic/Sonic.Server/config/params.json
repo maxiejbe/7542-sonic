@@ -52,10 +52,10 @@
           },
           {
             "tipo": "bonus_invencibilidad",
-            "cantidad_minima": 1,
-            "cantidad_maxima": 1,
-            "min_x": 1600,
-            "max_x": 1700,
+            "cantidad_minima": 2,
+            "cantidad_maxima": 2,
+            "min_x": 400,
+            "max_x": 500,
             "min_y": 441,
             "max_y": 441
           },
@@ -63,8 +63,8 @@
             "tipo": "bonus_escudo",
             "cantidad_minima": 1,
             "cantidad_maxima": 1,
-            "min_x": 3000,
-            "max_x": 3100,
+            "min_x": 100,
+            "max_x": 200,
             "min_y": 441,
             "max_y": 441
           },

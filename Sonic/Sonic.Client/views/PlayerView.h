@@ -29,6 +29,7 @@ private:
 	void loadSpriteClips();
 
 	Texture texture;
+	Texture textureExtra;
 	Player* player;
 	SDL_Rect** spriteClips;
 	bool isGreyed;

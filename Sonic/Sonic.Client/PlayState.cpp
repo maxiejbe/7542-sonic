@@ -147,8 +147,8 @@ void PlayState::update(Game* game, float dt)
 	// Update camera
 	cameraModel = NetworkManager::getInstance().getCamera();
 	if (cameraModel) {
-		camera.x = cameraModel->getPosition().x;
-		camera.y = cameraModel->getPosition().y;
+		camera.x = (int)round(cameraModel->getPosition().x);
+		camera.y = (int)round(cameraModel->getPosition().y);
 	}
 }
 
