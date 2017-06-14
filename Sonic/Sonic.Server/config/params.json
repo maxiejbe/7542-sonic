@@ -14,6 +14,7 @@
     "vel_scroll": 400
   },
   "juego": {
+    "modo": "grupal",
     "niveles": [
       {
         "numero": 1,
