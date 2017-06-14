@@ -65,6 +65,11 @@ void SelectTeamState::update(Game* game, float dt)
 
 	if (input->isKeyDown(KEY_RETURN)) {
 		if (selected[0]) {
+			// Send selected team
+			Message* clientResponse = new Message(selectedTeam);
+			clientResponse->setType(MessageType::team_assign);
+			NetworkManager::getInstance().sendMessage(clientResponse);
+
 			// Connect
 			game->changeState(ConnectState::Instance());
 		}
