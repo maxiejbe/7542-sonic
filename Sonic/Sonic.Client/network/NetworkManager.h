@@ -38,6 +38,7 @@ public:
 
 	int getPlayerNumber();
 
+	GameMode getGameMode();
 	vector<Level>* getLevels();
 
 	bool connectToServer(ServerConfiguration serverConfig);
@@ -53,6 +54,7 @@ private:
 	int actualLevel;
 
 	int playerNumber;
+	GameMode gameMode;
 	vector<Level> * gameLevels;
 
 	void updatePlayerViews(vector<Player*> playerStatus);
