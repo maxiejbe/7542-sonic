@@ -194,7 +194,7 @@ void Enemy::onCollision(Player * player, Camera* camera)
 {
 	if (!getIsActive()) return;
 
-	if (player->isDamaging()) {
+	if (player->isDamaging() || player->getIsInvincible()) {
 		player->sumPoints(getGivenPoints());
 		this->kill();
 		if (player->getIsJumping()) {

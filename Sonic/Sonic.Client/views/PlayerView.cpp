@@ -31,10 +31,18 @@ PlayerView::~PlayerView()
 
 void PlayerView::render(int camX, int camY)
 {
+	checkTextures();
+	renderShield(camX, camY);
+	renderInvincibility(camX, camY);
+	renderPlayer(camX, camY);
+}
+
+bool PlayerView::checkTextures()
+{
 	// Check texture
 	if (this->texture.getTexture() == nullptr && !this->texture.loadFromFile(PlayerUtils::getPlayerSpritesheetPath(this->player))) {
 		LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << PlayerUtils::getPlayerSpritesheetPath(this->player) << "'.";
-		return;
+		return false;
 	}
 
 	if (!this->player->getIsConnected() && !this->isGreyed) {
@@ -42,7 +50,7 @@ void PlayerView::render(int camX, int camY)
 		string filePath = PlayerUtils::getDisconnectedPlayerSpritesheetPath(this->player);
 		if (!this->texture.loadFromFile(filePath)) {
 			LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << filePath << "'.";
-			return;
+			return false;
 		}
 		this->isGreyed = true;
 	}
@@ -50,11 +58,46 @@ void PlayerView::render(int camX, int camY)
 		// Volvio a conectarse, lo coloreo
 		if (!this->texture.loadFromFile(PlayerUtils::getPlayerSpritesheetPath(this->player))) {
 			LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << PlayerUtils::getPlayerSpritesheetPath(this->player) << "'.";
-			return;
+			return false;
 		}
 		this->isGreyed = false;
 	}
 
+	return true;
+}
+
+void PlayerView::renderShield(int camX, int camY)
+{
+	if (player->getHasShield()) {
+		if (this->textureShield.getTexture() == nullptr && !this->textureShield.loadFromFile("img/shield.png")) {
+			LOG(logWARNING) << "No se pudo cargar la imagen del shield '" << "img/shield.png" << "'.";
+		}
+		else {
+			textureShield.render((int)(player->getPosition().x - camX) - SHIELD_WIDTH / 4, (int)(player->getPosition().y - camY) - SHIELD_HEIGHT / 8, SHIELD_WIDTH, SHIELD_HEIGHT);
+		}
+	}
+	else if (this->textureShield.getTexture() != nullptr) {
+		this->textureShield.free();
+	}
+}
+
+void PlayerView::renderInvincibility(int camX, int camY)
+{
+	if (player->getIsInvincible()) {
+		if (this->textureInvincible.getTexture() == nullptr && !this->textureInvincible.loadFromFile("img/invincibility.png")) {
+			LOG(logWARNING) << "No se pudo cargar la imagen del shield '" << "img/invincibility.png" << "'.";
+		}
+		else {
+			textureInvincible.render((int)(player->getPosition().x - camX) - INVINCIBILITY_WIDTH / 4, (int)(player->getPosition().y - camY) - INVINCIBILITY_HEIGHT / 8, SHIELD_WIDTH, INVINCIBILITY_HEIGHT);
+		}
+	}
+	else if (this->textureInvincible.getTexture() != nullptr) {
+		this->textureInvincible.free();
+	}
+}
+
+void PlayerView::renderPlayer(int camX, int camY)
+{
 	// Calculate current sprite
 	Uint32 sprite = (this->player->getTime() / getFramesDivision(this->player->getSpriteState())) % getFramesCount(this->player->getSpriteState()); //90
 
@@ -65,24 +108,6 @@ void PlayerView::render(int camX, int camY)
 
 	// Calculate facing direction
 	SDL_RendererFlip flip = (this->player->getFacingDirection() == FACING_RIGHT) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-
-	if (player->getHasShield()) {
-		if (this->textureExtra.getTexture() == nullptr && !this->textureExtra.loadFromFile("img/shield.png")) {
-			LOG(logWARNING) << "No se pudo cargar la imagen del shield '" << "img/shield.png" << "'.";
-		}
-		else {
-			textureExtra.render((int)(player->getPosition().x - camX) - SHIELD_WIDTH / 4, (int)(player->getPosition().y - camY) - SHIELD_HEIGHT / 8, SHIELD_WIDTH, SHIELD_HEIGHT);
-		}
-	}
-
-	if (player->getIsInvincible()) {
-		if (this->textureExtra.getTexture() == nullptr && !this->textureExtra.loadFromFile("img/invincibility.png")) {
-			LOG(logWARNING) << "No se pudo cargar la imagen del shield '" << "img/invincibility.png" << "'.";
-		}
-		else {
-			textureExtra.render((int)(player->getPosition().x - camX) - INVINCIBILITY_WIDTH / 4, (int)(player->getPosition().y - camY) - INVINCIBILITY_HEIGHT / 8, SHIELD_WIDTH, INVINCIBILITY_HEIGHT);
-		}
-	}
 
 	texture.render((int)(player->getPosition().x - camX), (int)(player->getPosition().y - camY), currentClip, dest, 0, NULL, flip);
 }
