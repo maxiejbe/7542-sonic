@@ -181,11 +181,22 @@ void Enemy::onCollision(Player * player, Camera* camera)
 {
 	if (!isAlive()) return;
 
-	if (!player->isDamaging()) {
-		player->damage();
-		return;
+	if (player->isDamaging()) {
+		player->sumPoints(getGivenPoints());
+		this->kill();
+		if (player->getIsJumping()) {
+			player->setYVelocity(-8);
+		}
 	}
-	player->sumPoints(getGivenPoints());
-	this->kill();
+	else {
+		player->damage();
+
+		if (player->getFacingDirection() == FACING_RIGHT)
+			player->setXVelocity(-5);
+		else
+			player->setXVelocity(5);
+	}
+
+
 }
 
