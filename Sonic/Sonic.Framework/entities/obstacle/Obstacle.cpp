@@ -20,23 +20,27 @@ void Obstacle::onCollision(Player * player, Camera* camera)
 {
 	int borderLeft = player->getXPosition();
 	int borderRight = player->getXPosition() + 72;
-	int borderBotton = player->getYPosition() + 54;
+	int borderBottom = player->getYPosition() + 54;
 
 	int otherBorderLeft = this->getXPosition();
 	int otherBorderRight = this->getXPosition() + this->getWidth();
 	int otherBorderTop = this->getYPosition();
 
-	if (borderBotton <= otherBorderTop) {
+	// Jumping
+	if (borderBottom <= otherBorderTop) {
 		if (this->getType() == EntityResolver::toTypeString(EntityType::obstaculo_pinche)) {
 			player->damage();
 		}
+
 		player->setYVelocity(-7);
-		if (player->getFacingDirection() == FACING_RIGHT)
-			player->setXVelocity(-8);
+
+		int middleOfObstacle = ((otherBorderRight - otherBorderLeft) / 2) + otherBorderLeft;
+		if (player->getXPosition() <= middleOfObstacle)
+			player->setXVelocity(-10);
 		else
-			player->setXVelocity(8);
+			player->setXVelocity(10);
 	}
-	else {
+	else { // From sides
 		if (borderRight >= otherBorderLeft && borderLeft < otherBorderLeft) {
 			if (player->getVelocity().x < 0) return;
 			player->setXPosition(this->getCoordinate().getX() - 72);

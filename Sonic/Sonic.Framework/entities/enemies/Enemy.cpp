@@ -186,7 +186,7 @@ void Enemy::onCollision(Player * player, Camera* camera)
 	else {
 		player->damage();
 
-		if (player->getFacingDirection() == FACING_RIGHT)
+		if (player->getVelocity().x > 0)
 			player->setXVelocity(-5);
 		else
 			player->setXVelocity(5);
