@@ -28,12 +28,6 @@ Server::~Server()
 		delete *it;
 	}
 
-	//this->terminateThreads();
-
-	for (vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); it++) {
-		if ((*it) != NULL) delete *it;
-	}
-
 	if (camera != nullptr) {
 		delete camera;
 	}
@@ -48,13 +42,6 @@ void Server::terminateThreads()
 		this->continueUpdatingEnemies = false;
 		CloseHandle(this->updateEnemiesThreadHandle);
 		this->updateEnemiesThreadHandle = NULL;
-	}
-
-	if (this->sendEnemiesThreadHandle != NULL)
-	{
-		this->continueSendingEnemies = false;
-		CloseHandle(this->sendEnemiesThreadHandle);
-		this->sendEnemiesThreadHandle = NULL;
 	}
 }
 
@@ -239,13 +226,12 @@ void Server::addConnectedClients()
 	if (this->gameStarted || this->connectedClients == this->serverConfig->getMaxAllowedClients())
 	{
 		if (!this->gameStarted) { this->gameStarted = true; }
-		//start enemies update thread
-		/*this->continueUpdatingEnemies = true;
-		this->updateEnemiesThreadHandle = CreateThread(0, 0, runUpdateEnemiesHandler, (void*)this, 0, &this->updateEnemiesThreadId);
-		//start enemies send thread
-		this->sendEnemiesThreadHandle = CreateThread(0, 0, runSendEnemiesHandler, (void*)this, 0, &this->sendEnemiesThreadId);
-		*/
+		
 		this->sendBroadcast();
+
+		//start enemies update thread
+		this->continueUpdatingEnemies = true;
+		this->updateEnemiesThreadHandle = CreateThread(0, 0, runUpdateEnemiesHandler, (void*)this, 0, &this->updateEnemiesThreadId);
 	}
 }
 
@@ -396,65 +382,21 @@ DWORD Server::runUpdateEnemiesHandler(void * args)
 DWORD Server::updateEnemiesHandler()
 {
 	while (this->continueUpdatingEnemies) {
-		if (this->enemies.size() <= 0) continue;
-		
-		this->visibleEnemiesMutex.lock();
-		this->visibleEnemies.empty();
-		for (vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); it++) {
-			if (EnemyController::isEnemyVisible((*it), this->camera)) {
-				//move enemy
-				EnemyController::update((*it), this->camera);
-				//serialize it
-				(*it)->serializeEnemy();
-				//add to visible enemies
-				this->visibleEnemies.push_back((*it));
+		vector<Entity*> entities = scenario->getEntities();
+		for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); it++) {
+			if (!(*it)->getIsMoving()) continue;
+			
+			//We should find a more elegant solution
+			Enemy* enemy = (Enemy*) *it;
+			if (EnemyController::isEnemyVisible(enemy, this->camera)) {
+				EnemyController::update(enemy, this->camera);
 			}
+			enemy->serializeEnemy();
 		}
-		this->visibleEnemiesMutex.unlock();
-
+		
 		Sleep(1000);
 	}
 
 	return 0;
 }
-
-/*DWORD Server::runSendEnemiesHandler(void * args)
-{
-	Server * client = (Server *)args;
-	client->sendEnemiesHandler();
-	return 0;
-}
-
-DWORD Server::sendEnemiesHandler()
-{
-	string enemiesStatusMessage = string();
-	while (this->continueSendingEnemies) {
-		enemiesStatusMessage = this->getEnemiesStatusMessage();
-		for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
-			int bytecount;
-			//If client is not connected, just set to false
-			if (!it->second->getPlayer()->getIsConnected()) continue;
-			it->second->sendEnemiesStatus(enemiesStatusMessage);
-		}
-		Sleep(1000);
-	}
-
-	return 0;
-}
-
-string Server::getEnemiesStatusMessage() 
-{
-	string enemiesStatusMessage = string();
-
-	this->visibleEnemiesMutex.lock();
-	ServerMessage * message = new ServerMessage();
-	message->setType(enemies_status);
-	message->setEnemies(this->visibleEnemies);
-	enemiesStatusMessage = message->serialize();
-	delete message;
-	this->visibleEnemiesMutex.unlock();
-
-	return enemiesStatusMessage;
-}*/
-
 

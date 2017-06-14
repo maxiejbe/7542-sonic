@@ -3,6 +3,7 @@
 
 #include "entities/enemies/Enemy.h"
 #include "entities/Camera.h"
+#include "entities/common/EntityResolver.h"
 
 class EnemyController
 {

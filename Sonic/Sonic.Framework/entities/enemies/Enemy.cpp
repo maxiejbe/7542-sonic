@@ -51,6 +51,7 @@ void Enemy::InitializeProperties()
 	this->facingDirection = FACING_LEFT;
 	this->distanceTravelled = 0;
 	this->serializedEnemy = string();
+	this->isMoving = true;
 }
 
 
@@ -65,7 +66,6 @@ void Enemy::copyFrom(Enemy& anotherEnemy)
 	this->points = anotherEnemy.getPoints();
 	this->facingDirection = anotherEnemy.getFacingDirection();
 }
-
 
 Vector2 Enemy::getVelocity()
 {
@@ -131,10 +131,23 @@ int Enemy::getGivenPoints()
 	}
 }
 
+void Enemy::lock()
+{
+	this->enemyMutex.lock();
+}
+
+void Enemy::unlock()
+{
+	this->enemyMutex.unlock();
+}
+
+
 
 void Enemy::serializeEnemy()
 {
+	this->lock();
 	this->serializedEnemy = this->serialize();
+	this->unlock();
 }
 
 string Enemy::getSerializedEnemy()
