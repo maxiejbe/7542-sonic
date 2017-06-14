@@ -12,16 +12,36 @@ Bonus::Bonus(string type)
 
 void Bonus::onCollision(Player * player, Camera* camera)
 {
-	switch (EntityResolver::fromTypeString(type))
-	{
-	case bonus_super_ring:
-		player->sumPoints(SUPER_RING_GIVEN_POINTS);
-		break;
-	case bonus_escudo:
-		player->setHasShield(true);
-		break;
-	default:
-		break;
+	if (player->isDamaging()) {
+		switch (EntityResolver::fromTypeString(type))
+		{
+		case bonus_super_ring:
+			player->sumPoints(SUPER_RING_GIVEN_POINTS);
+			break;
+		case bonus_escudo:
+			player->setHasShield(true);
+			break;
+		default:
+			break;
+		}
+		this->isActive = false;
+		if (player->getIsJumping()) {
+			player->setYVelocity(-8);
+		}
 	}
-	this->isActive = false;
+	else {
+		int borderLeft = player->getXPosition();
+		int borderRight = player->getXPosition() + 72;
+		int otherBorderLeft = this->getXPosition();
+		int otherBorderRight = this->getXPosition() + this->getWidth();
+
+		if (borderRight >= otherBorderLeft && borderLeft < otherBorderLeft) {
+			if (player->getVelocity().x < 0) return;
+			player->setXPosition(this->getCoordinate().getX() - 72);
+		}
+		else if (borderLeft <= otherBorderRight && borderRight > otherBorderRight) {
+			if (player->getVelocity().x > 0) return;
+			player->setXPosition(this->getCoordinate().getX() + this->getDimensions().getWidth());
+		}
+	}
 }
