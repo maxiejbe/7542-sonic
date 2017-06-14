@@ -356,6 +356,16 @@ bool Player::getHasShield()
 	return this->hasShield;
 }
 
+void Player::setTeamPoints(int teamPoints)
+{
+	this->teamPoints = teamPoints;
+}
+
+void Player::setTeamRings(int teamRings)
+{
+	this->teamRings = teamRings;
+}
+
 PlayerType Player::calculatePlayerType()
 {
 	switch (this->getNumber() % 4) {
@@ -520,6 +530,16 @@ void Player::sumRings(int rings)
 void Player::setHasShield(bool hasShield)
 {
 	this->hasShield = hasShield;
+}
+
+int Player::getTeamId()
+{
+	return this->teamId;
+}
+
+void Player::setTeamId(int teamId)
+{
+	this->teamId = teamId;
 }
 
 string Player::getSerializedPlayer()

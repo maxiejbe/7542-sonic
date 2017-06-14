@@ -291,6 +291,9 @@ void Client::handleReceivedMessage(char* recievedMessage)
 	switch (message->getType())
 	{
 	case player_assign_ok:
+		if (message->getTeamId() > 0) {
+			this->player->setTeamId(message->getTeamId());
+		}
 		sendLevels();
 		break;
 	case levels_content_ok:
@@ -443,13 +446,15 @@ bool Client::refreshPlayer() {
 
 bool Client::notifyLevelFinished()
 {
+	//finish update and send status threads
+	this->pauseRefreshing = true;
+	this->pauseSending = true;
+	//calculate points obtained from rings
+	this->player->sumPoints(this->player->getRings() * this->server->getGameConfig()->getRingPointsMultiplier());
 	//send finish level
 	this->sendLevelFinish();
 	//wait 5 seconds for client to display statistics
 	Sleep(3000);
-	//finish update and send status threads
-	this->pauseRefreshing = true;
-	this->pauseSending = true;
 	//reset user position
 	this->player->reset();
 	this->sendLevelStart();

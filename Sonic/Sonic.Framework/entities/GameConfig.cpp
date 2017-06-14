@@ -11,6 +11,7 @@ string GAME_CONFIG_MODE_DEFAULT = "individual";
 
 GameConfig::GameConfig()
 {
+	this->ringPointsMultiplier = 2;
 }
 
 GameMode GameConfig::fromStringMode(string gameMode)
@@ -81,4 +82,9 @@ void GameConfig::unserialize(Value * nodeRef)
 char* GameConfig::getNodeName()
 {
 	return GAME_CONFIG_NODE;
+}
+
+int GameConfig::getRingPointsMultiplier()
+{
+	return this->ringPointsMultiplier;
 }
