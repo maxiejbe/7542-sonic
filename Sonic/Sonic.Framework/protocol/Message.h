@@ -20,7 +20,6 @@ struct Message : public SerializableMessage {
 public:
 
 	Message::Message();
-	Message::Message(int teamId);
 	Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKPShift, bool isKULeft, bool isKURight, bool isKUSpace, bool isKUShift, bool isKUTest);
 
 	void setType(MessageType);
@@ -39,6 +38,9 @@ public:
 	bool getIsKUSpace();
 	bool getIsKUShift();
 	bool getIsKUTest();
+
+	int getTeamId();
+	void setTeamId(int team);
 
 	//bool unserialize(string json);
 

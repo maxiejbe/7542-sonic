@@ -30,7 +30,7 @@ void EnemyController::move(Enemy * enemy)
 		horizontalMovement(enemy, 0.01);
 		break;
 	case enemigo_pez:
-		verticalMovement(enemy, 0.08);
+		verticalMovement(enemy, 0.2);
 		break;
 	case enemigo_mosca:
 		horizontalMovement(enemy, 0.03);

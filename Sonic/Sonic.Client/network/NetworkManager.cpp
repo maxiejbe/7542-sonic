@@ -145,6 +145,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		}
 
 		this->playerNumber = sMessage->getPlayerNumber();
+		this->gameMode = sMessage->getGameMode();
 		break;
 	case player_entities_status:
 		if (this->playerNumber < 0) break;
@@ -158,7 +159,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		break;
 	case level_start:
 		clientResponse->setType(MessageType::level_start_ok);
-		//TODO: SETEAR CONFIGURACION DE NIVEL RECIBIDO
+		this->actualLevel = sMessage->getLevelToStart();
 		this->sendMessage(clientResponse);
 		this->startGame = true;
 
@@ -168,7 +169,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		lastHeartBeat = NULL;
 		break;
 	case level_finish:
-		//TODO display statistics, reset player view
+		this->updatePlayerViews(sMessage->getPlayers());
 		break;
 	case heart_beat_server:
 		time(&lastHeartBeat);
@@ -258,9 +259,19 @@ int NetworkManager::getPlayerNumber()
 	return this->playerNumber;
 }
 
+GameMode NetworkManager::getGameMode()
+{
+	return this->gameMode;
+}
+
 vector<Level>* NetworkManager::getLevels()
 {
 	return this->gameLevels;
+}
+
+int NetworkManager::getActualLevel()
+{
+	return this->actualLevel;
 }
 
 void NetworkManager::updatePlayerViews(vector<Player*> players)

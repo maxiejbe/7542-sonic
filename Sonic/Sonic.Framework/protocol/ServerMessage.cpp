@@ -1,6 +1,9 @@
 #include "ServerMessage.h"
+#include "ServerMessage.h"
+#include "ServerMessage.h"
 
 const char* SERVER_MESSAGE_TYPE_NODE = "t";
+const char* SERVER_MESSAGE_GAME_MODE_NODE = "gm";
 const char* SERVER_MESSAGE_PLAYER_NUMBER_NODE = "pn";
 const char* SERVER_MESSAGE_PLAYERS_STATUS_NODE = "ps";
 const char* SERVER_MESSAGE_LEVELS_STATUS_NODE = "lvs";
@@ -39,6 +42,17 @@ void ServerMessage::setPlayerNumber(int playerNumber)
 {
 	this->playerNumber = playerNumber;
 }
+
+void ServerMessage::setGameMode(GameMode gameMode)
+{
+	this->gameMode = gameMode;
+}
+
+GameMode ServerMessage::getGameMode()
+{
+	return this->gameMode;
+}
+
 
 int ServerMessage::getPlayerNumber()
 {
@@ -105,6 +119,7 @@ void ServerMessage::unserialize(Value* nodeRef)
 	{
 	case player_assign:
 		//player number
+		parseInt((int*)&gameMode, individual, nodeRef, SERVER_MESSAGE_GAME_MODE_NODE, Validator::intGreaterThanOrEqualToZero);
 		parseInt(&playerNumber, -1, nodeRef, SERVER_MESSAGE_PLAYER_NUMBER_NODE);
 		break;
 	case level_start:
@@ -145,6 +160,8 @@ string ServerMessage::serialize()
 	switch (this->type)
 	{
 	case player_assign:
+		writer.String(SERVER_MESSAGE_GAME_MODE_NODE);
+		writer.Int(this->gameMode);
 		writer.String(SERVER_MESSAGE_PLAYER_NUMBER_NODE);
 		writer.Int(this->playerNumber);
 		break;

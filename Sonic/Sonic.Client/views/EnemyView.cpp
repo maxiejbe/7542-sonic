@@ -55,7 +55,7 @@ int EnemyView::getFramesDivision()
 	else if (type == EntityResolver::toTypeString(EntityType::enemigo_cangrejo))
 		return 85;
 
-	return 0;
+	return 1;
 }
 
 int EnemyView::getFramesCount()

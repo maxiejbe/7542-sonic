@@ -12,6 +12,7 @@ const int ENEMY_FISH_WIDTH = 60;
 const int ENEMY_FISH_HEIGHT = 64;
 const int ENEMY_FLY_WIDTH = 90;
 const int ENEMY_FLY_HEIGHT = 38;
+
 const int ENEMY_DEFAULT_POINTS = 10;
 
 const int ENEMY_CRAB_MAX_DISTANCE = 180;

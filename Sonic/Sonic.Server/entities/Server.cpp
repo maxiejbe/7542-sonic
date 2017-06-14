@@ -280,6 +280,11 @@ Scenario * Server::getScenario()
 	return this->scenario;
 }
 
+GameConfig * Server::getGameConfig()
+{
+	return this->gameConfig;
+}
+
 Camera * Server::getCamera()
 {
 	return this->camera;
@@ -325,7 +330,7 @@ ServerMessage* Server::getStatusMessage()
 	ServerMessage * message = new ServerMessage();
 	message->setType(player_entities_status);
 	message->setPlayers(clientsPlayers);
-	message->setEntities(this->gameConfig->getLevel(this->currentLevel)->getScenario()->getEntities());
+	message->setEntities(this->scenario->getEntities());
 	message->setCamera(new Camera(*this->camera));
 
 	return message;
@@ -388,9 +393,9 @@ DWORD Server::updateEnemiesHandler()
 
 			//We should find a more elegant solution. JA!
 			Enemy* enemy = (Enemy*)*it;
-			if (EnemyController::isEnemyVisible(enemy, this->camera)) {
-				EnemyController::update(enemy, this->camera, timer.elapsed());
-			}
+			//if (EnemyController::isEnemyVisible(enemy, this->camera)) {
+			EnemyController::update(enemy, this->camera, timer.elapsed());
+			//}
 			enemy->serializeEnemy();
 		}
 	}

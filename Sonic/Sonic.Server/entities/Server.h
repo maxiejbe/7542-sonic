@@ -58,7 +58,7 @@ public:
 	Window* getWindow();
 	Configuration* getConfiguration();
 	Scenario* getScenario();
-
+	GameConfig* getGameConfig();
 	Camera* getCamera();
 
 	ServerMessage * getStatusMessage();

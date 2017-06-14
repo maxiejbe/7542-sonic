@@ -31,12 +31,14 @@ public:
 	Camera * getCamera();
 	unordered_map<int, PlayerView*> getPlayerViews();
 	unordered_map<int, EntityView*> getEntityViews();
+	int getActualLevel();
 
 	PlayerView* getOwnPlayerView();
 	bool canStartGame();
 
 	int getPlayerNumber();
 
+	GameMode getGameMode();
 	vector<Level>* getLevels();
 
 	bool connectToServer(ServerConfiguration serverConfig);
@@ -49,8 +51,10 @@ private:
 	unordered_map<int, PlayerView*> playerViews;
 	unordered_map<int, EntityView*> entityViews;
 	bool startGame;
+	int actualLevel;
 
 	int playerNumber;
+	GameMode gameMode;
 	vector<Level> * gameLevels;
 
 	void updatePlayerViews(vector<Player*> playerStatus);
