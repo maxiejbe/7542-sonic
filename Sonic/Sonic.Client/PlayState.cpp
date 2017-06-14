@@ -182,8 +182,8 @@ void PlayState::render(Game* game)
 	}
 
 	// Render final statistics panel
-	if (camera.x == 2800) //ONLY FOR TEST
-		game->changeState(EndLevelState::Instance());
+	/*if (camera.x == 2800) //ONLY FOR TEST
+		game->changeState(EndLevelState::Instance());*/
 }
 
 bool PlayState::clientNumberSet()

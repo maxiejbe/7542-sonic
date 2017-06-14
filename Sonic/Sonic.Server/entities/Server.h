@@ -61,6 +61,8 @@ public:
 	Camera* getCamera();
 
 	ServerMessage * getStatusMessage();
+
+	void levelFinished();
 private:
 	/*
 	Initialize socket support WINDOWS ONLY!
@@ -103,6 +105,9 @@ private:
 
 	unordered_map<int, Client*> clients;
 	vector<Client*> disconnectedClients;
+
+	bool levelFinishedNotified;
+	mutex levelFinishedMutex;
 
 	//update enemies handler
 	DWORD updateEnemiesThreadId;
