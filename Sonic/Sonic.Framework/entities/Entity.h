@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "common/Serializable.h"
 #include "common/Validator.h"
+#include "Camera.h"
 
 using namespace std;
 
@@ -30,6 +31,8 @@ public:
 	int getHeight() override;
 	CollisionableType getCollisionableType() override;
 
+	bool getIsActive();
+
 	string getType();
 	string getColor();
 	string getImagePath();
@@ -47,7 +50,7 @@ public:
 	void setId(int);
 	int getId();
 
-	virtual void onCollision(Player* player) = 0;
+	virtual void onCollision(Player* player, Camera* camera) = 0;
 
 	bool operator< (const Entity &other) const {
 		return zIndex < other.zIndex;

@@ -14,12 +14,13 @@ enum BonusType { RING, INVINCIBILITY, SHIELD };
 enum ObstacleType { BLOCK, SPYKES };
 enum EnemyType { FISH, FLY, CRAB };
 
-enum MessageType { player_assign_ok, levels_content_ok, level_start_ok, status, heart_beat, no_type };
+enum MessageType { player_assign_ok, levels_content_ok, level_start_ok, status, heart_beat, no_type, team_assign };
 
 struct Message : public SerializableMessage {
 public:
 
 	Message::Message();
+	Message::Message(int teamId);
 	Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKPShift, bool isKULeft, bool isKURight, bool isKUSpace, bool isKUShift, bool isKUTest);
 
 	void setType(MessageType);
@@ -53,6 +54,7 @@ private:
 
 	MessageType type;
 	double dt;
+	int teamId;
 	bool isKPLeft, isKPRight, isKPUp, isKPSpace, isKPShift, isKULeft, isKURight, isKUSpace, isKUShift, isKUTest;
 
 	void performSerialization(Writer<StringBuffer>& writer);

@@ -2,6 +2,7 @@
 
 const char* MESSAGE_TYPE_NODE = "t";
 const char* MESSAGE_TIME_STEP_NODE = "dt";
+const char* MESSAGE_TEAM_NUMBER_NODE = "tn";
 const char* MESSAGE_KEY_PRESSED_LEFT_NODE = "klp";
 const char* MESSAGE_KEY_PRESSED_SPACE_NODE = "ksp";
 const char* MESSAGE_KEY_PRESSED_RIGHT_NODE = "krp";
@@ -15,6 +16,11 @@ const char* MESSAGE_KEY_UNPRESSED_TEST_NODE = "kpu";
 
 Message::Message()
 {
+}
+
+Message::Message(int team)
+{
+	this->teamId = team;
 }
 
 Message::Message(double dt, bool isKPLeft, bool isKPSpace, bool isKPRight, bool isKPUp, bool isKPShift, bool isKULeft, bool isKURight, bool isKUSpace, bool isKUShift, bool isKUTest)
@@ -187,7 +193,11 @@ void Message::performSerialization(Writer<StringBuffer>& writer) {
 		writer.Bool(this->isKUShift);
 		writer.String(MESSAGE_KEY_UNPRESSED_TEST_NODE);
 		writer.Bool(this->isKUTest);
-
+		break;
+	case team_assign:
+		writer.String(MESSAGE_TEAM_NUMBER_NODE);
+		writer.Int(this->teamId);
+		break;
 	default:
 		break;
 	}

@@ -3,9 +3,14 @@
 void RingView::draw(int camX, int camY)
 {
 	// Load image
-	if (texture.getTexture() == nullptr && !texture.loadFromFile("img/ring.png")) {
+	if (texture.getTexture() == nullptr && this->entity->getIsActive() && !texture.loadFromFile("img/ring.png")) {
 		LOG(logWARNING) << "No se pudo cargar la imagen del anillo '" << "img/ring.png" << "'.";
 		return;
+	}
+
+	if (!this->entity->getIsActive()) {
+		if (texture.getTexture() == nullptr) return;
+		texture.free();
 	}
 
 	int x = entity->getCoordinate().getX() - camX;

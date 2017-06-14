@@ -16,7 +16,34 @@ Obstacle::Obstacle(string type)
 	}
 }
 
-void Obstacle::onCollision(Player * player)
+void Obstacle::onCollision(Player * player, Camera* camera)
 {
+	int borderLeft = player->getXPosition();
+	int borderRight = player->getXPosition() + 72;
+	int borderBotton = player->getYPosition() + 54;
 
+	int otherBorderLeft = this->getXPosition();
+	int otherBorderRight = this->getXPosition() + this->getWidth();
+	int otherBorderTop = this->getYPosition();
+
+	if (borderBotton <= otherBorderTop) {
+		if (this->getType() == EntityResolver::toTypeString(EntityType::obstaculo_pinche)) {
+			player->damage();
+		}
+		player->setYVelocity(-7);
+		if (player->getFacingDirection() == FACING_RIGHT)
+			player->setXVelocity(-8);
+		else
+			player->setXVelocity(8);
+	}
+	else {
+		if (borderRight >= otherBorderLeft && borderLeft < otherBorderLeft) {
+			if (player->getVelocity().x < 0) return;
+			player->setXPosition(this->getCoordinate().getX() - 72);
+		}
+		else if (borderLeft <= otherBorderRight && borderRight > otherBorderRight) {
+			if (player->getVelocity().x > 0) return;
+			player->setXPosition(this->getCoordinate().getX() + this->getDimensions().getWidth());
+		}
+	}
 }

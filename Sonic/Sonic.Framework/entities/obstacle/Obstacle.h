@@ -10,7 +10,7 @@ public:
 	Obstacle(string);
 	~Obstacle();
 
-	virtual void onCollision(Player* player) override;
+	virtual void onCollision(Player* player, Camera* camera) override;
 private:
 
 };

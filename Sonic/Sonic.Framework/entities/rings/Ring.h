@@ -9,7 +9,7 @@ public:
 	Ring(string);
 	~Ring();
 
-	virtual void onCollision(Player* player) override;
+	virtual void onCollision(Player* player, Camera* camera) override;
 private:
 
 };
