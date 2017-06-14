@@ -12,8 +12,12 @@ const int ENEMY_FISH_WIDTH = 60;
 const int ENEMY_FISH_HEIGHT = 64;
 const int ENEMY_FLY_WIDTH = 90;
 const int ENEMY_FLY_HEIGHT = 38;
+
+const double ENEMY_CRAB_VELOCITY_X = 10;
+const double ENEMY_CRAB_VELOCITY_Y = 0;
+
 const int ENEMY_DEFAULT_POINTS = 10;
-const int ENEMY_DEFAULT_MAX_DISTANCE = 10;
+const int ENEMY_DEFAULT_MAX_DISTANCE = 200;
 
 const int CRAB_GIVEN_POINTS = 100;
 const int FLY_GIVEN_POINTS = 500;
@@ -34,6 +38,7 @@ void Enemy::InitializeProperties()
 	switch (eType) {
 	case EntityType::enemigo_cangrejo:
 		this->dimensions = Dimensions(ENEMY_CRAB_WIDTH, ENEMY_CRAB_HEIGHT, 0); //TODO
+		this->velocity = Vector2(ENEMY_CRAB_VELOCITY_X, ENEMY_CRAB_VELOCITY_Y);
 		break;
 	case EntityType::enemigo_pez:
 		this->dimensions = Dimensions(ENEMY_FISH_WIDTH, ENEMY_FISH_HEIGHT, 0); //TODO
