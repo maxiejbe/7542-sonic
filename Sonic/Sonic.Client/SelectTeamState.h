@@ -29,8 +29,8 @@ protected:
 private:
 	static SelectTeamState m_SelectTeamState;
 
-	static const int OPCMENU = 3;
-	static const int TEAMS_COUNT = 3; //One for not selected team
+	static const int OPCMENU = 2;
+	static const int TEAMS_COUNT = 2;
 
 	TTF_Font* fontTeam;
 	Texture texture;

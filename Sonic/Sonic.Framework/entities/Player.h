@@ -60,6 +60,8 @@ public:
 	void sumPoints(int points);
 	void sumRings(int points);
 	void setHasShield(bool hasShield);
+	int getTeamId();
+	void setTeamId(int teamId);
 
 	string getSerializedPlayer();
 
@@ -100,6 +102,9 @@ public:
 	void setIsActive(bool isActive);
 	bool getHasShield();
 
+	void setTeamPoints(int teamPoints);
+	void setTeamRings(int teamRings);
+
 	string serializedPlayer;
 
 	PlayerType calculatePlayerType();
@@ -126,6 +131,10 @@ private:
 	bool isConnected;
 	int time;
 	bool testMode;
+
+	int teamId;
+	int teamPoints;
+	int teamRings;
 
 	int rings;
 	int lives;

@@ -52,6 +52,9 @@ public:
 	void resetLevel();
 	vector<Level>* getLevels();
 
+	void sumPoints(int teamId, int points);
+	void sumRings(int teamId, int rings);
+
 	SOCKET getSocket();
 	string getFileContent();
 
@@ -106,6 +109,9 @@ private:
 
 	unordered_map<int, Client*> clients;
 	vector<Client*> disconnectedClients;
+
+	unordered_map<int, int> teamPoints;
+	unordered_map <int, int> teamRings;
 
 	bool levelFinishedNotified;
 	mutex levelFinishedMutex;

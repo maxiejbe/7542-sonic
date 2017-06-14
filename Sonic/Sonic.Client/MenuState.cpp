@@ -23,7 +23,7 @@ void MenuState::load(Game* game)
 	if (this->connectionStatus == CONNECTED)
 		labels[0] = "Resume";
 	else
-		labels[0] = gameMode == GameMode::grupal ? "Choose team" : "Connect";
+		labels[0] = "Connect";
 
 	labels[1] = "Disconnect";
 	labels[2] = "Exit";
@@ -70,7 +70,7 @@ void MenuState::update(Game* game, float dt)
 
 			if (NetworkManager::getInstance().getGameMode() == GameMode::grupal)
 			{
-				//Choose Team
+				// Choose Team
 				game->changeState(SelectTeamState::Instance());
 			}
 			else

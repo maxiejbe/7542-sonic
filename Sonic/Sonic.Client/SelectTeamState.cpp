@@ -9,18 +9,17 @@ void SelectTeamState::load(Game* game)
 	texture.loadFromFile("img/fiuba1.jpg");
 	backgroundTexture.loadFromFile("img/teams-background.jpg");
 
-	selected[1] = true;
-	selected[0] = selected[2] = false;
+	selected[0] = true;
+	selected[1] = false;
 
-	team[0] = team[1] = team[2] = false;
+	team[0] = team[1] = false;
 
 	color[0] = { 255,255,255 }; //Blanco
 	color[1] = { 255,0,0 }; //Rojo
 	color[2] = { 255,255,0 }; //Amarillo
 
-	labels[0] = "CONNECT";
-	labels[1] = "TEAM 1";
-	labels[2] = "TEAM 2";
+	labels[0] = "TEAM 1";
+	labels[1] = "TEAM 2";
 
 	initColorNameOptions();
 	showBackgroundImage();
@@ -55,33 +54,22 @@ void SelectTeamState::update(Game* game, float dt)
 		option = this->getNextOption(option, 1);
 	}
 
-	if (input->isKeyDown(KEY_DOWN)) {
-		option = 0; //Connect
-	}
-
-	if (input->isKeyDown(KEY_UP)) {
-		option = 1; //Team1
-	}
-
-	if (input->isKeyDown(KEY_RETURN)) {
-		if (selected[0]) {
-			// Send selected team
-			Message* clientResponse = new Message();
-			clientResponse->setType(MessageType::player_assign_ok);
-			clientResponse->setTeamId(selectedTeam);
-			NetworkManager::getInstance().sendMessage(clientResponse);
-
-			// Connect
-			game->changeState(ConnectState::Instance());
+	if (input->isKeyDown(KEY_RETURN)) {		
+		team[option] = true;
+		selectedTeam = option + 1;
+		for (int i = 0; i < OPCMENU; i++)
+		{
+			if (i != option) { team[i] = false; }
 		}
-		else {
-			team[option] = true;
-			selectedTeam = option;
-			for (int i = 0; i < OPCMENU; i++)
-			{
-				if (i != option) { team[i] = false; }
-			}
-		}
+
+		// Send selected team
+		Message* clientResponse = new Message();
+		clientResponse->setType(MessageType::player_assign_ok);
+		clientResponse->setTeamId(selectedTeam);
+		NetworkManager::getInstance().sendMessage(clientResponse);
+
+		// Connect
+		game->changeState(ConnectState::Instance());
 	}
 }
 
@@ -93,7 +81,7 @@ void SelectTeamState::render(Game* game)
 
 void SelectTeamState::initColorNameOptions()
 {
-	option = 1;
+	option = 0;
 	menus[option] = TTF_RenderText_Solid(fontTeam, labels[option], color[1]);
 
 	for (int i = 0; i < OPCMENU; i++)
@@ -141,28 +129,20 @@ void SelectTeamState::updateAndRenderOptions()
 	SDL_Rect Message_rect;
 	SDL_Texture* text;
 
-	//Show connect text
+	//Show team1 text
 	text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, menus[0]);
-	Message_rect.x = SDLWindow::getInstance().getScreenWidth() / 2 - menus[0]->clip_rect.w / 2;
-	Message_rect.y = 520;
+	Message_rect.x = 190;
+	Message_rect.y = 410;
 	Message_rect.w = menus[0]->w;
 	Message_rect.h = menus[0]->h;
 	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &Message_rect);
 
-	//Show team1 text
+	//Show team2 text
 	text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, menus[1]);
-	Message_rect.x = 190;
+	Message_rect.x = 490;
 	Message_rect.y = 410;
 	Message_rect.w = menus[1]->w;
 	Message_rect.h = menus[1]->h;
-	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &Message_rect);
-
-	//Show team2 text
-	text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, menus[2]);
-	Message_rect.x = 490;
-	Message_rect.y = 410;
-	Message_rect.w = menus[2]->w;
-	Message_rect.h = menus[2]->h;
 	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &Message_rect);
 
 
