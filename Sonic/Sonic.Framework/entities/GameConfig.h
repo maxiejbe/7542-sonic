@@ -17,7 +17,7 @@ public:
 	Level * getLevel(int);
 
 	GameMode getMode();
-
+	int getRingPointsMultiplier();
 private:
 	vector<Level> levels;
 
@@ -25,6 +25,7 @@ private:
 	string toStringMode(GameMode mode);
 
 	GameMode mode;
+	int ringPointsMultiplier;
 
 	// Inherited via Serializable
 	virtual void unserialize(Value * nodeRef) override;
