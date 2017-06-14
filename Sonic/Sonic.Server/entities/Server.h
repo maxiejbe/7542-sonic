@@ -24,6 +24,7 @@
 #include "entities/ServerConfiguration.h"
 #include "../controllers/CameraController.h"
 #include "../controllers/EnemyController.h"
+#include "Timer.h"
 
 #include <mutex>
 
@@ -97,7 +98,7 @@ private:
 	ServerConfiguration* serverConfig;
 	Window* window;
 	Configuration* config;
-	
+
 	Scenario* scenario;
 	Camera* camera;
 
@@ -108,6 +109,8 @@ private:
 
 	bool levelFinishedNotified;
 	mutex levelFinishedMutex;
+
+	Timer timer;
 
 	//update enemies handler
 	DWORD updateEnemiesThreadId;

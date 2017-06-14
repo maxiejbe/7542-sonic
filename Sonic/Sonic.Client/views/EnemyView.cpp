@@ -2,7 +2,7 @@
 
 const int ANIMATION_MAX_FRAMES_FISH = 2;
 const int ANIMATION_MAX_FRAMES_FLY = 1;
-const int ANIMATION_MAX_FRAMES_CRAB = 4;
+const int ANIMATION_MAX_FRAMES_CRAB = 5;
 
 EnemyView::EnemyView(Enemy * enemy)
 {
@@ -29,7 +29,7 @@ void EnemyView::draw(int camX, int camY)
 
 	// Calculate current sprite
 	//Uint32 sprite = (this->entity->getTime() / getFramesDivision(this->player->getSpriteState())) % getFramesCount(this->player->getSpriteState()); //90
-	Uint32 sprite = 0;// (this->entity->getTime() / 85) % getFramesCount();
+	Uint32 sprite = (this->entity->getTime() / 90) % getFramesCount();
 
 	SDL_Rect* currentClip = &spriteClips[sprite];
 
@@ -40,7 +40,7 @@ void EnemyView::draw(int camX, int camY)
 	SDL_Rect dest = { x, y, currentClip->w * 2, currentClip->h * 2 };
 
 	// Calculate facing direction
-	SDL_RendererFlip flip = /*(this->entity->getFacingDirection() == FACING_RIGHT) ?*/ SDL_FLIP_NONE;// : SDL_FLIP_HORIZONTAL;
+	SDL_RendererFlip flip = (((Enemy*)this->entity)->getFacingDirection() == FACING_RIGHT) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 
 	texture.render(x, y, currentClip, dest, 0, NULL, flip);
 }
@@ -106,5 +106,10 @@ void EnemyView::loadSpriteClips()
 		spriteClips[3].y = 32;
 		spriteClips[3].w = 42;
 		spriteClips[3].h = 35;
+
+		spriteClips[4].x = 298;
+		spriteClips[4].y = 73;
+		spriteClips[4].w = 48;
+		spriteClips[4].h = 30;
 	}
 }

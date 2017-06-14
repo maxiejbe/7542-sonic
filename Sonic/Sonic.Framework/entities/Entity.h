@@ -22,7 +22,7 @@ public:
 	virtual bool validate();
 
 	virtual Dimensions getDefaultDimensions();
-	
+
 	//Collisionable
 	int getXPosition() override;
 	int getYPosition() override;
@@ -34,7 +34,7 @@ public:
 	bool getIsMoving();
 
 	bool getIsActive();
-	
+
 	void lock();
 	void unlock();
 
@@ -51,7 +51,7 @@ public:
 	void setDimensions(Dimensions);
 	int getTime();
 	void setTime(int time);
-	
+
 	void setId(int);
 	int getId();
 
@@ -60,7 +60,7 @@ public:
 	bool operator< (const Entity &other) const {
 		return zIndex < other.zIndex;
 	}
-	
+
 	void serialize(Writer<StringBuffer>& writer);
 	// Inherited via Serializable
 	virtual string serialize() override;
@@ -75,11 +75,10 @@ protected:
 	string imagePath;
 	int zIndex;
 	int time;
-	
+
 	bool isActive;
 	bool isMoving = false;
 
-	void setColor(string color);
 	void basePropertiesSerialization(Writer<StringBuffer>& writer);
 
 	mutex entityMutex;

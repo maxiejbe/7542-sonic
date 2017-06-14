@@ -9,7 +9,7 @@ class EnemyController
 {
 public:
 	EnemyController();
-	static void update(Enemy*, Camera *);
+	static void update(Enemy * enemy, Camera * camera, int milliseconds);
 	//check if enemy is seen in the scenario
 	static bool isEnemyVisible(Enemy*, Camera*);
 private:

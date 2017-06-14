@@ -226,7 +226,7 @@ void Server::addConnectedClients()
 	if (this->gameStarted || this->connectedClients == this->serverConfig->getMaxAllowedClients())
 	{
 		if (!this->gameStarted) { this->gameStarted = true; }
-		
+
 		this->sendBroadcast();
 
 		//start enemies update thread
@@ -341,7 +341,7 @@ void Server::levelFinished()
 		notifyLevelFinish = true;
 	}
 	this->levelFinishedMutex.unlock();
-	
+
 	if (notifyLevelFinish)
 	{
 		//increment level
@@ -357,7 +357,7 @@ void Server::levelFinished()
 		this->resetLevel();
 	}
 
-	
+
 }
 
 vector<Player*> Server::clientsPlayers()
@@ -385,16 +385,14 @@ DWORD Server::updateEnemiesHandler()
 		vector<Entity*> entities = scenario->getEntities();
 		for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); it++) {
 			if (!(*it)->getIsMoving()) continue;
-			
-			//We should find a more elegant solution
-			Enemy* enemy = (Enemy*) *it;
+
+			//We should find a more elegant solution. JA!
+			Enemy* enemy = (Enemy*)*it;
 			if (EnemyController::isEnemyVisible(enemy, this->camera)) {
-				EnemyController::update(enemy, this->camera);
+				EnemyController::update(enemy, this->camera, timer.elapsed());
 			}
 			enemy->serializeEnemy();
 		}
-		
-		//Sleep(1000);
 	}
 
 	return 0;

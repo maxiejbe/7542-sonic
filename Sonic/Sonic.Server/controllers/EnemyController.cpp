@@ -4,12 +4,14 @@ EnemyController::EnemyController()
 {
 }
 
-void EnemyController::update(Enemy * enemy, Camera * camera)
+void EnemyController::update(Enemy * enemy, Camera * camera, int milliseconds)
 {
 	//if enemy is out of screen don't update
 	if (!isEnemyVisible(enemy, camera)) return;
 
 	enemy->lock();
+
+	enemy->setTime(milliseconds);
 
 	switch (EntityResolver::fromTypeString(enemy->getType())) {
 	case enemigo_cangrejo:
