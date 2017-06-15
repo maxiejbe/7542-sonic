@@ -7,7 +7,7 @@ ConnectState ConnectState::m_ConnectState;
 
 void ConnectState::load(Game* game)
 {
-	if (connected && NetworkManager::getInstance().online()) {
+	if (connected && !NetworkManager::getInstance().online()) {
 		reconnect(game);
 	}
 	else {
@@ -15,16 +15,10 @@ void ConnectState::load(Game* game)
 
 		if (connected) {
 
-			if (NetworkManager::getInstance().getGameMode() == GameMode::grupal)
-			{
-				// Choose Team
+			if (NetworkManager::getInstance().getGameMode() == GameMode::grupal) // Choose Team				
 				game->changeState(SelectTeamState::Instance());
-			}
-			else
-			{ 
+			else // Start game
 				game->changeState(PlayState::Instance());
-				return;
-			}
 		}
 	}
 }
@@ -76,8 +70,8 @@ void ConnectState::reconnect(Game* game)
 
 	if (game->statesSize() > 1) {
 		// Comming from PlayState, so return there.
-		//game->popState();
-		game->changeState(PlayState::Instance());
+		game->popState();
+		//game->changeState(PlayState::Instance());
 	}
 	else {
 		game->changeState(PlayState::Instance());

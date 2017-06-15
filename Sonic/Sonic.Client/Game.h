@@ -30,7 +30,7 @@ public:
 
 	void quit() { running = false; }
 
-	int statesSize();
+	size_t statesSize();
 	string getConfigPath();
 	ServerConfiguration getServerConfig();
 
