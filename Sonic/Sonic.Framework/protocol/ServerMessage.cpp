@@ -134,6 +134,7 @@ void ServerMessage::unserialize(Value* nodeRef)
 		parseEntitiesStatus(nodeRef);
 		break;
 	case level_finish:
+	case game_finish:
 		parsePlayersStatus(nodeRef);
 		break;
 	default:
@@ -181,6 +182,7 @@ string ServerMessage::serialize()
 		writer.Int(levelToStart);
 		break;
 	case level_finish:
+	case game_finish:
 		this->serializePlayers(writer);
 		break;
 	default:

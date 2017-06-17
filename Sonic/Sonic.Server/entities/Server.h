@@ -70,6 +70,8 @@ public:
 	ServerMessage * getStatusMessage();
 
 	void levelFinished();
+	void notifyClientsLevelFinished();
+	void notifyClientsGameFinished();
 private:
 	/*
 	Initialize socket support WINDOWS ONLY!
@@ -100,6 +102,7 @@ private:
 
 	bool gameStarted;
 	int currentLevel;
+	int lastLevel;
 
 	ServerConfiguration* serverConfig;
 	Window* window;

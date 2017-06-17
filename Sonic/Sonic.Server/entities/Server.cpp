@@ -58,7 +58,8 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 	this->config = config;
 	this->gameConfig = gameConfig;
 
-	this->currentLevel = 1; // First level 
+	this->currentLevel = 1; // First level
+	this->lastLevel = gameConfig->getLevels()->size();
 	this->resetLevel();
 
 	this->isValid = false;
@@ -368,20 +369,36 @@ void Server::levelFinished()
 
 	if (notifyLevelFinish)
 	{
-		//increment level
-		this->currentLevel++;
-		//TODO: CHECK FOR LAST LEVEL AND SEND GAME OVER
-		for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
-			int bytecount;
-			//If client is not connected, just set to false
-			if (!it->second->getPlayer()->getIsConnected()) continue;
-			it->second->notifyLevelFinished();
+		if (this->currentLevel == this->lastLevel) {
+			this->notifyClientsGameFinished();
+		}else {
+			//increment level
+			this->currentLevel++;
+			this->notifyClientsLevelFinished();
 		}
+	}
+}
 
-		this->resetLevel();
+void Server::notifyClientsLevelFinished()
+{
+	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+		int bytecount;
+		//If client is not connected, just set to false
+		if (!it->second->getPlayer()->getIsConnected()) continue;
+		it->second->notifyLevelFinished();
 	}
 
+	this->resetLevel();
+}
 
+void Server::notifyClientsGameFinished() 
+{
+	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+		int bytecount;
+		//If client is not connected, just set to false
+		if (!it->second->getPlayer()->getIsConnected()) continue;
+		it->second->notifyGameFinished();
+	}
 }
 
 vector<Player*> Server::clientsPlayers()

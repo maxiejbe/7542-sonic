@@ -8,7 +8,7 @@
 #include "../entities/Level.h"
 #include "../entities/GameConfig.h"
 
-enum ServerMessageType {player_assign, levels_content, level_start, level_finish, player_entities_status, typeless, heart_beat_server };
+enum ServerMessageType {player_assign, levels_content, level_start, level_finish, game_finish, player_entities_status, typeless, heart_beat_server };
 
 //TODO: Apply polimorphism with server message type 
 class ServerMessage : public SerializableMessage {
