@@ -6,7 +6,6 @@ void SelectTeamState::load(Game* game)
 {
 	TTF_Init();
 	fontTeam = TTF_OpenFont("fonts/Retro_Stereo_Wide.ttf", 35);
-	texture.loadFromFile("img/fiuba1.jpg");
 	backgroundTexture.loadFromFile("img/teams-background.jpg");
 
 	selected[0] = true;
@@ -33,6 +32,9 @@ int SelectTeamState::unload()
 		}
 	}
 
+	TTF_CloseFont(fontTeam);
+	fontTeam = NULL;
+
 	return 0;
 }
 
@@ -54,12 +56,13 @@ void SelectTeamState::update(Game* game, float dt)
 		option = this->getNextOption(option, 1);
 	}
 
-	if (input->isKeyDown(KEY_RETURN)) {		
+	if (input->isKeyDown(KEY_RETURN)) {
 		team[option] = true;
 		selectedTeam = option + 1;
-		for (int i = 0; i < OPCMENU; i++)
-		{
-			if (i != option) { team[i] = false; }
+		for (int i = 0; i < OPCMENU; i++) {
+			if (i != option) {
+				team[i] = false;
+			}
 		}
 
 		// Send selected team
@@ -88,10 +91,8 @@ void SelectTeamState::initColorNameOptions()
 	option = 0;
 	menus[option] = TTF_RenderText_Solid(fontTeam, labels[option], color[1]);
 
-	for (int i = 0; i < OPCMENU; i++)
-	{
-		if (i != option)
-		{
+	for (int i = 0; i < OPCMENU; i++) {
+		if (i != option) {
 			selected[i] = false;
 			menus[i] = TTF_RenderText_Solid(fontTeam, labels[i], color[0]);
 		}
@@ -101,28 +102,34 @@ void SelectTeamState::initColorNameOptions()
 void SelectTeamState::renderSelectedOption()
 {
 	selected[option] = true;
-	for (int i = 0; i < OPCMENU; i++)
-	{
-		if (i != option) { selected[i] = false; }
+	for (int i = 0; i < OPCMENU; i++) {
+		if (i != option) {
+			selected[i] = false;
+		}
 	}
 
-	for (int i = 0; i < OPCMENU; i++)
-	{
-		if (selected[i] == true) { menus[i] = TTF_RenderText_Solid(fontTeam, labels[i], color[1]); }
-		else if (team[i] == true) { menus[i] = TTF_RenderText_Solid(fontTeam, labels[i], color[2]); }
-		else { menus[i] = TTF_RenderText_Solid(fontTeam, labels[i], color[0]); }
+	for (int i = 0; i < OPCMENU; i++) {
+		if (selected[i] == true) {
+			menus[i] = TTF_RenderText_Solid(fontTeam, labels[i], color[1]);
+		}
+		else if (team[i] == true) {
+			menus[i] = TTF_RenderText_Solid(fontTeam, labels[i], color[2]);
+		}
+		else {
+			menus[i] = TTF_RenderText_Solid(fontTeam, labels[i], color[0]);
+		}
 	}
 }
 
 int SelectTeamState::getNextOption(int option, int order) {
 	if (order > 0) {
 		for (int i = option + 1; i < OPCMENU; i++) {
-				return i;
+			return i;
 		}
 	}
 	else if (order < 0) {
 		for (int i = option - 1; i >= 0; i--) {
-				return i;
+			return i;
 		}
 	}
 	return option;
