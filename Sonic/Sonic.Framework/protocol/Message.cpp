@@ -148,6 +148,9 @@ void Message::unserialize(Value * nodeRef)
 		parseBool(&isKUShift, false, nodeRef, MESSAGE_KEY_UNPRESSED_SHIFT_NODE);
 		parseBool(&isKUTest, false, nodeRef, MESSAGE_KEY_UNPRESSED_TEST_NODE);
 		break;
+	case player_assign_ok:
+		parseInt(&teamId, 0, nodeRef, MESSAGE_TEAM_NUMBER_NODE, Validator::intGreaterThanOrEqualToZero);
+		break;
 	default:
 		break;
 	}
@@ -199,7 +202,7 @@ void Message::performSerialization(Writer<StringBuffer>& writer) {
 		writer.String(MESSAGE_KEY_UNPRESSED_TEST_NODE);
 		writer.Bool(this->isKUTest);
 		break;
-	case team_assign:
+	case player_assign_ok:
 		writer.String(MESSAGE_TEAM_NUMBER_NODE);
 		writer.Int(this->teamId);
 		break;
