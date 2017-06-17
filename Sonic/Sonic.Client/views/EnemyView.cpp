@@ -52,7 +52,7 @@ int EnemyView::getFramesDivision()
 	string type = this->entity->getType();
 
 	if (type == EntityResolver::toTypeString(EntityType::enemigo_pez))
-		return 75;
+		return 130;
 	else if (type == EntityResolver::toTypeString(EntityType::enemigo_mosca))
 		return 90;
 	else if (type == EntityResolver::toTypeString(EntityType::enemigo_cangrejo))
