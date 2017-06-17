@@ -34,9 +34,12 @@ public:
 	bool sendLevels();
 	bool sendLevelStart();
 	bool sendLevelFinish();
+	bool sendGameFinish();
 	bool sendStatus();
 	bool refreshPlayer();
 	bool notifyLevelFinished();
+	bool notifyGameFinished();
+	void levelFinishedActions();
 
 	void setClientNumber(int);
 

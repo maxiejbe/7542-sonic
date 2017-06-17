@@ -254,6 +254,27 @@ bool Client::sendLevelFinish()
 	return true;
 }
 
+bool Client::sendGameFinish()
+{
+	int bytecount;
+
+	ServerMessage * message = this->server->getStatusMessage();
+	message->setType(game_finish);
+	char * serializedMessage = StringUtils::convert(message->serialize());
+
+	delete message;
+
+	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
+		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
+			<< " (Cliente " << this->getClientNumber() << ")";
+		delete serializedMessage;
+		return false;
+	}
+
+	delete serializedMessage;
+	return true;
+}
+
 Player* Client::getPlayer()
 {
 	return this->player;
@@ -446,11 +467,7 @@ bool Client::refreshPlayer() {
 
 bool Client::notifyLevelFinished()
 {
-	//finish update and send status threads
-	this->pauseRefreshing = true;
-	this->pauseSending = true;
-	//calculate points obtained from rings
-	this->player->sumPoints(this->player->getRings() * this->server->getGameConfig()->getRingPointsMultiplier());
+	this->levelFinishedActions();
 	//send finish level
 	this->sendLevelFinish();
 	//wait 5 seconds for client to display statistics
@@ -459,6 +476,22 @@ bool Client::notifyLevelFinished()
 	this->player->reset();
 	this->sendLevelStart();
 	return true;
+}
+
+bool Client::notifyGameFinished() 
+{
+	this->levelFinishedActions();
+	this->sendGameFinish();
+	return true;
+}
+
+void Client::levelFinishedActions()
+{
+	//finish update and send status threads
+	this->pauseRefreshing = true;
+	this->pauseSending = true;
+	//calculate points obtained from rings
+	this->player->sumPoints(this->player->getRings() * this->server->getGameConfig()->getRingPointsMultiplier());
 }
 
 void Client::setClientNumber(int clientNumber)
