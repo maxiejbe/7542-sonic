@@ -19,11 +19,12 @@ public:
 
 	Vector2 getVelocity();
 	void setVelocity(Vector2 velocity);
-	double getMaxDistance();
 	void incrementDistanceTravelled(double);
 	double getDistanceTravelled();
 	void resetDistanceTravelled();
 	void kill();
+
+	double getMaxDistance();
 
 	int getPoints();
 	int getGivenPoints();
@@ -45,7 +46,6 @@ public:
 private:
 	Vector2 velocity;
 	int points;
-	double maxDistance;
 	double distanceTravelled;
 	string serializedEnemy;
 

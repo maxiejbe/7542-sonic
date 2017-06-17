@@ -24,6 +24,7 @@
 #include "entities/ServerConfiguration.h"
 #include "../controllers/CameraController.h"
 #include "../controllers/EnemyController.h"
+#include "../controllers/EntityController.h"
 #include "Timer.h"
 
 #include <mutex>
@@ -48,6 +49,7 @@ public:
 	void terminateThreads();
 	void addConnectedClients();
 	int getCurrentLevel();
+	vector<Entity*> getVisibleEntities();
 
 	void resetLevel();
 	vector<Level>* getLevels();

@@ -31,6 +31,9 @@ public:
 	int getHeight() override;
 	CollisionableType getCollisionableType() override;
 
+	double getMaxHorizontalDistance();
+	double getMaxVerticalDistance();
+	
 	bool getIsMoving();
 
 	bool getIsActive();
@@ -78,6 +81,8 @@ protected:
 	int zIndex;
 	int time;
 	FacingDirection facingDirection;
+	double maxHorizontalDistance;
+	double maxVerticalDistance;
 
 	bool isActive;
 	bool isMoving = false;

@@ -41,15 +41,15 @@ void Enemy::InitializeProperties()
 	switch (eType) {
 	case EntityType::enemigo_cangrejo:
 		this->dimensions = Dimensions(ENEMY_CRAB_WIDTH, ENEMY_CRAB_HEIGHT, 0);
-		this->maxDistance = ENEMY_CRAB_MAX_DISTANCE;
+		this->maxHorizontalDistance = ENEMY_CRAB_MAX_DISTANCE;
 		break;
 	case EntityType::enemigo_pez:
 		this->dimensions = Dimensions(ENEMY_FISH_WIDTH, ENEMY_FISH_HEIGHT, 0);
-		this->maxDistance = ENEMY_FISH_MAX_DISTANCE;
+		this->maxVerticalDistance = ENEMY_FISH_MAX_DISTANCE;
 		break;
 	case EntityType::enemigo_mosca:
 		this->dimensions = Dimensions(ENEMY_FLY_WIDTH, ENEMY_FLY_HEIGHT, 0);
-		this->maxDistance = ENEMY_FLY_MAX_DISTANCE;
+		this->maxHorizontalDistance = ENEMY_FLY_MAX_DISTANCE;
 		break;
 	default:
 		this->dimensions = Dimensions(0, 0, 0);
@@ -85,11 +85,6 @@ void Enemy::setVelocity(Vector2 velocity)
 	this->velocity = velocity;
 }
 
-double Enemy::getMaxDistance()
-{
-	return this->maxDistance;
-}
-
 double Enemy::getDistanceTravelled()
 {
 	return this->distanceTravelled;
@@ -102,6 +97,25 @@ void Enemy::incrementDistanceTravelled(double distance) {
 void Enemy::resetDistanceTravelled()
 {
 	this->distanceTravelled = 0;
+}
+
+double Enemy::getMaxDistance()
+{
+	EntityType eType = EntityResolver::fromTypeString(type);
+	switch (eType) {
+	case EntityType::enemigo_cangrejo:
+		return this->maxHorizontalDistance;
+		break;
+	case EntityType::enemigo_pez:
+		return this->maxVerticalDistance;
+		break;
+	case EntityType::enemigo_mosca:
+		return this->maxHorizontalDistance;
+		break;
+	default:
+		return 0;
+		break;
+	}
 }
 
 void Enemy::kill()
