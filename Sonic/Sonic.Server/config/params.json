@@ -14,7 +14,7 @@
     "vel_scroll": 400
   },
   "juego": {
-    "modo": "colaborativo",
+    "modo": "grupal",
     "niveles": [
       {
         "numero": 1,

@@ -80,7 +80,7 @@ bool Client::welcome(int clientNumber, Player* player)
 	int scrollSpeed = this->server->getConfiguration()->getScrollSpeed();
 
 	//Player and last received message can handle reconnection
-	this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed, this->server->getTeamPoints(), 
+	this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed, this->server->getTeamPoints(),
 		this->server->getTeamRings(), this->server->getGameConfig()->getMode());
 	if (player != nullptr) {
 		this->player->copyFrom(*player);
@@ -136,7 +136,6 @@ bool Client::sendHeartBeat() {
 	int bytecount;
 	ServerMessage sMessage;
 	sMessage.setType(heart_beat_server);
-	sMessage.setGameMode(this->server->getGameConfig()->getMode());
 	string serializedMsg = sMessage.serialize();
 	const char* messageToSend = serializedMsg.c_str();
 
@@ -154,6 +153,7 @@ bool Client::sendClientNumber()
 	int bytecount;
 	ServerMessage sMessage;
 	sMessage.setType(player_assign);
+	sMessage.setGameMode(this->server->getGameConfig()->getMode());
 	sMessage.setPlayerNumber(this->clientNumber);
 	string serializedMsg = sMessage.serialize();
 	const char* messageToSend = serializedMsg.c_str();
@@ -345,7 +345,7 @@ void Client::startRefereshing()
 	}
 
 	if (this->continueRefreshing) return;
-	
+
 	this->continueRefreshing = true;
 	this->refreshThreadHandle = CreateThread(0, 0, refreshSocketHandler, (void*)this, 0, &this->refreshThreadId);
 }
@@ -358,7 +358,7 @@ void Client::startSending()
 	}
 
 	if (this->continueSending) return;
-	
+
 	this->continueSending = true;
 	this->sendThreadHandle = CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
 }
@@ -411,7 +411,7 @@ DWORD Client::refreshSocketHandler()
 		if (!this->pauseRefreshing) {
 			this->refreshPlayer();
 		}
-		
+
 		if (this->getLastMessage() == NULL) {
 			Sleep(10);
 			continue;
@@ -479,7 +479,7 @@ bool Client::notifyLevelFinished()
 	return true;
 }
 
-bool Client::notifyGameFinished() 
+bool Client::notifyGameFinished()
 {
 	this->levelFinishedActions();
 	this->sendGameFinish();

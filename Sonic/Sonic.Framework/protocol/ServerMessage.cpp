@@ -119,7 +119,7 @@ void ServerMessage::unserialize(Value* nodeRef)
 	{
 	case player_assign:
 		//player number
-		parseInt((int*)&gameMode, individual, nodeRef, SERVER_MESSAGE_GAME_MODE_NODE, Validator::intGreaterThanOrEqualToZero);
+		parseInt((int*)&gameMode, individual, nodeRef, SERVER_MESSAGE_GAME_MODE_NODE);
 		parseInt(&playerNumber, -1, nodeRef, SERVER_MESSAGE_PLAYER_NUMBER_NODE);
 		break;
 	case level_start:
