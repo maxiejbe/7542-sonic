@@ -9,7 +9,6 @@ const char* ENTITY_TYPE_NODE = "tipo";
 const char* ENTITY_IMAGE_PATH_NODE = "ruta_imagen";
 //const char* ENTITY_ZINDEX_NODE = "index_z";
 const char* ENTITY_IS_ACTIVE_NODE = "is_active";
-const char* ENTITY_TIME_NODE = "time";
 
 const char* MESSAGE_PARSING_ENTITY_NODE = "Inicio de parseo de nodo entidad.";
 const char* MESSAGE_END_PARSING_ENTITY_NODE = "Fin de parseo de nodo entidad.";
@@ -36,6 +35,7 @@ Entity::Entity(Entity* entity)
 	this->imagePath = entity->imagePath;
 	//this->zIndex = entity->zIndex;
 	this->isActive = entity->isActive;
+	this->facingDirection = entity->facingDirection;
 	this->time = entity->time;
 }
 
@@ -48,6 +48,7 @@ void Entity::copyFrom(Entity & anotherEntity)
 	this->imagePath = anotherEntity.imagePath;
 	//this->zIndex = anotherEntity.zIndex;
 	this->isActive = anotherEntity.isActive;
+	this->facingDirection = anotherEntity.facingDirection;
 	this->time = anotherEntity.time;
 }
 
@@ -194,12 +195,8 @@ void Entity::basePropertiesSerialization(Writer<StringBuffer>& writer)
 	//writer.Int(zIndex);
 	writer.String(ENTITY_IS_ACTIVE_NODE);
 	writer.Bool(isActive);
-	writer.String(ENTITY_TIME_NODE);
-	writer.Int(time);
 	writer.String(coordinate.getNodeName());
 	coordinate.serialize(writer);
-	writer.String(dimensions.getNodeName());
-	dimensions.serialize(writer);
 }
 
 void Entity::unserialize(Value * nodeRef)
@@ -214,10 +211,6 @@ void Entity::unserialize(Value * nodeRef)
 	parseString(&type, ENTITY_DEFAULT_TYPE, nodeRef, ENTITY_TYPE_NODE);
 	type = EntityResolver::toTypeString(EntityResolver::fromTypeString(type));
 
-	Dimensions defaultDimensions = EntityResolver::getDefaultDimensions(this);
-	dimensions.setDefaults(defaultDimensions.getWidth(), defaultDimensions.getHeight(), defaultDimensions.getRadio());
-	dimensions.parseObject(nodeRef);
-
 	coordinate.parseObject(nodeRef);
 
 	parseString(&imagePath, ENTITY_DEFAULT_IMAGE_PATH, nodeRef, ENTITY_IMAGE_PATH_NODE);
@@ -225,8 +218,6 @@ void Entity::unserialize(Value * nodeRef)
 	//parseInt(&zIndex, ENTITY_DEFAULT_ZINDEX, nodeRef, ENTITY_ZINDEX_NODE);
 
 	parseBool(&isActive, true, nodeRef, ENTITY_IS_ACTIVE_NODE);
-
-	parseInt(&time, 0, nodeRef, ENTITY_TIME_NODE);
 
 	LOG(logINFO) << MESSAGE_END_PARSING_ENTITY_NODE;
 }
@@ -254,4 +245,14 @@ void Entity::setId(int id)
 int Entity::getId()
 {
 	return this->id;
+}
+
+FacingDirection Entity::getFacingDirection()
+{
+	return this->facingDirection;
+}
+
+void Entity::setFacingDirection(FacingDirection facingDirection)
+{
+	this->facingDirection = facingDirection;
 }

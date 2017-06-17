@@ -34,8 +34,8 @@
         "limites": [
           {
             "tipo": "anillo",
-            "cantidad_minima": 10,
-            "cantidad_maxima": 20,
+            "cantidad_minima": 5,
+            "cantidad_maxima": 10,
             "min_x": 1500,
             "max_x": 3000,
             "min_y": 300,
@@ -70,10 +70,10 @@
           },
           {
             "tipo": "enemigo_cangrejo",
-            "cantidad_minima": 1,
+            "cantidad_minima": 2,
             "cantidad_maxima": 2,
-            "min_x": 1600,
-            "max_x": 2000,
+            "min_x": 300,
+            "max_x": 400,
             "min_y": 445,
             "max_y": 445
           },
@@ -90,8 +90,8 @@
             "tipo": "enemigo_mosca",
             "cantidad_minima": 1,
             "cantidad_maxima": 2,
-            "min_x": 2100,
-            "max_x": 3000,
+            "min_x": 1000,
+            "max_x": 1200,
             "min_y": 250,
             "max_y": 350
           },

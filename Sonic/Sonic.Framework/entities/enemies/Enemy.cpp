@@ -1,6 +1,7 @@
 #include "Enemy.h"
 
 const char* ENEMY_FACING_DIRECTION_NODE = "fd";
+const char* ENTITY_TIME_NODE = "time";
 
 const double ENEMY_DEFAULT_POSX = 0;
 const double ENEMY_DEFAULT_POSY = 0;
@@ -54,10 +55,10 @@ void Enemy::InitializeProperties()
 	}
 
 	this->points = ENEMY_DEFAULT_POINTS;
-	this->facingDirection = FACING_LEFT;
 	this->distanceTravelled = 0;
 	this->serializedEnemy = string();
 	this->isMoving = true;
+	this->facingDirection = FacingDirection::FACING_LEFT;
 }
 
 
@@ -70,7 +71,6 @@ void Enemy::copyFrom(Enemy& anotherEnemy)
 	Entity::copyFrom(anotherEnemy);
 
 	this->points = anotherEnemy.getPoints();
-	this->facingDirection = anotherEnemy.getFacingDirection();
 }
 
 Vector2 Enemy::getVelocity()
@@ -83,17 +83,6 @@ void Enemy::setVelocity(Vector2 velocity)
 	this->velocity = velocity;
 }
 
-
-FacingDirection Enemy::getFacingDirection()
-{
-	return this->facingDirection;
-}
-
-void Enemy::setFacingDirection(FacingDirection facingDirection)
-{
-	this->facingDirection = facingDirection;
-}
-
 double Enemy::getMaxDistance()
 {
 	return this->maxDistance;
@@ -103,7 +92,6 @@ double Enemy::getDistanceTravelled()
 {
 	return this->distanceTravelled;
 }
-
 
 void Enemy::incrementDistanceTravelled(double distance) {
 	this->distanceTravelled += abs(distance);
@@ -152,8 +140,6 @@ void Enemy::unlock()
 	this->enemyMutex.unlock();
 }
 
-
-
 void Enemy::serializeEnemy()
 {
 	this->lock();
@@ -170,6 +156,7 @@ void Enemy::unserialize(Value * nodeRef)
 {
 	Entity::unserialize(nodeRef);
 	parseInt((int*)&facingDirection, 0, nodeRef, ENEMY_FACING_DIRECTION_NODE, Validator::intGreaterThanOrEqualToZero);
+	parseInt(&time, 0, nodeRef, ENTITY_TIME_NODE);
 }
 
 char * Enemy::getNodeName()
@@ -185,6 +172,8 @@ string Enemy::serialize()
 	basePropertiesSerialization(writer);
 	writer.String(ENEMY_FACING_DIRECTION_NODE);
 	writer.Int(facingDirection);
+	writer.String(ENTITY_TIME_NODE);
+	writer.Int(time);
 	writer.EndObject();
 
 	return s.GetString();

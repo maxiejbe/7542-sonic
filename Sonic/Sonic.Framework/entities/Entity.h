@@ -48,11 +48,15 @@ public:
 	void setCoordinate(Coordinate);
 	Dimensions getDimensions();
 	void setDimensions(Dimensions);
-	int getTime();
-	void setTime(int time);
 
 	void setId(int);
 	int getId();
+
+	int getTime();
+	void setTime(int time);
+
+	FacingDirection getFacingDirection();
+	void setFacingDirection(FacingDirection);
 
 	virtual void onCollision(Player* player, Camera* camera) = 0;
 
@@ -73,6 +77,7 @@ protected:
 	string imagePath;
 	int zIndex;
 	int time;
+	FacingDirection facingDirection;
 
 	bool isActive;
 	bool isMoving = false;
