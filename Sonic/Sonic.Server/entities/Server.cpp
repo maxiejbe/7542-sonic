@@ -362,7 +362,7 @@ vector<Entity*> Server::getVisibleEntities()
 	vector<Entity*> visibleEntities;
 	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); it++) {
 		
-		if (EntityController::isEntityVisible((*it), this->camera)) {
+		if ((*it)->getIsActive() && EntityController::isEntityVisible((*it), this->camera)) {
 			visibleEntities.push_back((*it));
 		}
 	}
@@ -422,7 +422,7 @@ vector<Player*> Server::clientsPlayers()
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
 		Player* player = (*it).second->getPlayer();
-		clientPlayers.push_back(player);
+		if (player->getIsActive()) clientPlayers.push_back(player);
 	}
 	return clientPlayers;
 }
@@ -443,7 +443,7 @@ DWORD Server::updateEnemiesHandler()
 
 			//We should find a more elegant solution. JA!
 			Enemy* enemy = (Enemy*)*it;
-			if (EntityController::isEntityVisible(enemy, this->camera)) {
+			if (enemy->getIsActive() && EntityController::isEntityVisible(enemy, this->camera)) {
 				EnemyController::update(enemy, timer.elapsed());
 			}
 			enemy->serializeEnemy();
