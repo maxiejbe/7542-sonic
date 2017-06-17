@@ -43,8 +43,8 @@
           },
           {
             "tipo": "bonus_super_ring",
-            "cantidad_minima": 1,
-            "cantidad_maxima": 1,
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
             "min_x": 300,
             "max_x": 400,
             "min_y": 441,
@@ -52,8 +52,8 @@
           },
           {
             "tipo": "bonus_invencibilidad",
-            "cantidad_minima": 2,
-            "cantidad_maxima": 2,
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
             "min_x": 400,
             "max_x": 500,
             "min_y": 441,
@@ -61,8 +61,8 @@
           },
           {
             "tipo": "bonus_escudo",
-            "cantidad_minima": 1,
-            "cantidad_maxima": 1,
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
             "min_x": 100,
             "max_x": 200,
             "min_y": 441,
@@ -70,10 +70,10 @@
           },
           {
             "tipo": "enemigo_cangrejo",
-            "cantidad_minima": 2,
-            "cantidad_maxima": 2,
-            "min_x": 300,
-            "max_x": 400,
+            "cantidad_minima": 1,
+            "cantidad_maxima": 1,
+            "min_x": 500,
+            "max_x": 700,
             "min_y": 445,
             "max_y": 445
           },
@@ -81,8 +81,8 @@
             "tipo": "enemigo_pez",
             "cantidad_minima": 1,
             "cantidad_maxima": 2,
-            "min_x": 1100,
-            "max_x": 1400,
+            "min_x": 1000,
+            "max_x": 1500,
             "min_y": 600,
             "max_y": 600
           },

@@ -132,7 +132,7 @@ void Player::damage()
 		return;
 	}
 
-	if (lives > 0) {
+	if (lives > 1) {
 		this->lives--;
 	}
 	else {

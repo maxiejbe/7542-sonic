@@ -142,6 +142,10 @@ void PlayState::update(Game* game, float dt)
 	PlayerView* playerView = NetworkManager::getInstance().getOwnPlayerView();
 	if (playerView != nullptr) {
 		this->ownPlayer = playerView->getPlayer();
+		if (!this->ownPlayer->getIsActive()) {
+			game->changeState(GameOverState::Instance());
+			return;
+		}
 	}
 
 	// Update camera

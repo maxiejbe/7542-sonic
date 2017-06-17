@@ -13,6 +13,7 @@
 #include "views/common/EntityViewResolver.h"
 #include "InGameStatisticsPanel.h"
 #include "EndLevelState.h"
+#include "GameOverState.h"
 #include "Timer.h"
 #include <stdio.h>
 #include <string>
