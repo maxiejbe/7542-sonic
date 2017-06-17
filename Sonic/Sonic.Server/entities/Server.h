@@ -64,6 +64,9 @@ public:
 	GameConfig* getGameConfig();
 	Camera* getCamera();
 
+	unordered_map<int, int>* getTeamPoints();
+	unordered_map <int, int>* getTeamRings();
+
 	ServerMessage * getStatusMessage();
 
 	void levelFinished();

@@ -59,6 +59,7 @@ private:
 
 	Timer timer;
 	
+
 	//recieve handler
 	static DWORD WINAPI runReceiveSocketHandler(void* args);
 	DWORD receiveSocketHandler();

@@ -7,8 +7,10 @@
 #include "../protocol/Message.h"
 #include <chrono>
 #include "common/Collisionable.h"
+#include <unordered_map>
 
 #include <mutex>
+#include <iostream>
 
 using namespace std;
 
@@ -18,7 +20,7 @@ class Player : public Serializable, public Collisionable
 {
 public:
 	Player();
-	Player(int number, int windowHeight, int scenarioWidth, int scenarioHeight, int scrollSpeed) : Player() {
+	Player(int number, int windowHeight, int scenarioWidth, int scenarioHeight, int scrollSpeed, unordered_map<int, int>* teamPoints, unordered_map<int, int>* teamRings, int gameMode) : Player() {
 		this->number = number;
 		this->scenarioWidth = scenarioWidth;
 		this->scenarioHeight = scenarioHeight;
@@ -29,6 +31,9 @@ public:
 		this->isConnected = true;
 		this->time = 0;
 		this->testMode = false;
+		this->generalTeamPoints = teamPoints;
+		this->generalTeamRings = teamRings;
+		this->gameMode = gameMode;
 	}
 	Player(Player&);
 
@@ -139,6 +144,10 @@ private:
 	int teamId;
 	int teamPoints;
 	int teamRings;
+
+	int gameMode;
+	unordered_map<int, int>* generalTeamPoints;
+	unordered_map <int, int>* generalTeamRings;
 
 	int rings;
 	int lives;

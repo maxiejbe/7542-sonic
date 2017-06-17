@@ -80,7 +80,8 @@ bool Client::welcome(int clientNumber, Player* player)
 	int scrollSpeed = this->server->getConfiguration()->getScrollSpeed();
 
 	//Player and last received message can handle reconnection
-	this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
+	this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed, this->server->getTeamPoints(), 
+		this->server->getTeamRings(), this->server->getGameConfig()->getMode());
 	if (player != nullptr) {
 		this->player->copyFrom(*player);
 		//this->player = player;
