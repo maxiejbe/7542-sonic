@@ -2,7 +2,7 @@
   "servidor": {
     "host": "127.0.0.1",
     "puerto": 5000,
-    "maxima_cantidad_conexiones": 1
+    "maxima_cantidad_conexiones": 3
   },
   "ventana": {
     "dimensiones": {
@@ -43,8 +43,8 @@
           },
           {
             "tipo": "bonus_super_ring",
-            "cantidad_minima": 0,
-            "cantidad_maxima": 0,
+            "cantidad_minima": 1,
+            "cantidad_maxima": 1,
             "min_x": 300,
             "max_x": 400,
             "min_y": 441,
@@ -52,8 +52,8 @@
           },
           {
             "tipo": "bonus_invencibilidad",
-            "cantidad_minima": 0,
-            "cantidad_maxima": 0,
+            "cantidad_minima": 1,
+            "cantidad_maxima": 1,
             "min_x": 400,
             "max_x": 500,
             "min_y": 441,
@@ -61,8 +61,8 @@
           },
           {
             "tipo": "bonus_escudo",
-            "cantidad_minima": 0,
-            "cantidad_maxima": 0,
+            "cantidad_minima": 1,
+            "cantidad_maxima": 1,
             "min_x": 100,
             "max_x": 200,
             "min_y": 441,
