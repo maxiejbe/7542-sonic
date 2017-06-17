@@ -34,6 +34,9 @@ int PauseState::unload()
 		}
 	}
 
+	TTF_CloseFont(font);
+	font = NULL;
+
 	return 0;
 }
 
