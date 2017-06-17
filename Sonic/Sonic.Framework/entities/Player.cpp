@@ -562,8 +562,6 @@ void Player::sumPoints(int points)
 	int teamIdIndex = teamId - 1;
 	(*this->generalTeamPoints)[teamIdIndex] += points;
 	this->teamPoints = (*this->generalTeamPoints)[teamIdIndex];
-
-	cout << teamPoints << endl;
 }
 
 void Player::sumRings(int rings)
@@ -577,8 +575,6 @@ void Player::sumRings(int rings)
 	int teamIdIndex = teamId - 1;
 	(*this->generalTeamRings)[teamIdIndex] += rings;
 	this->teamRings = (*this->generalTeamRings)[teamIdIndex];
-
-	cout << teamRings << endl;
 }
 
 void Player::setHasShield(bool hasShield)
