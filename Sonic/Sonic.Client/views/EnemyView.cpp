@@ -42,7 +42,7 @@ void EnemyView::draw(int camX, int camY)
 	SDL_Rect dest = { x, y, currentClip->w * 2, currentClip->h * 2 };
 
 	// Calculate facing direction
-	SDL_RendererFlip flip = (((Enemy*)this->entity)->getFacingDirection() == FACING_RIGHT) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+	SDL_RendererFlip flip = (((Enemy*)this->entity)->getFacingDirection() == FACING_RIGHT) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
 	texture.render(x, y, currentClip, dest, 0, NULL, flip);
 }
@@ -52,7 +52,7 @@ int EnemyView::getFramesDivision()
 	string type = this->entity->getType();
 
 	if (type == EntityResolver::toTypeString(EntityType::enemigo_pez))
-		return 120;
+		return 130;
 	else if (type == EntityResolver::toTypeString(EntityType::enemigo_mosca))
 		return 90;
 	else if (type == EntityResolver::toTypeString(EntityType::enemigo_cangrejo))

@@ -87,7 +87,7 @@ void Game::run()
 	}
 }
 
-int Game::statesSize()
+size_t Game::statesSize()
 {
 	return this->states.size();
 }

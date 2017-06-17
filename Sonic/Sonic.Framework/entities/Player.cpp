@@ -25,7 +25,13 @@ const char* PLAYER_LIVES_NODE = "li";
 const char* PLAYER_POINTS_NODE = "po";
 const char* PLAYER_IS_ACTIVE_NODE = "ia";
 const char* PLAYER_HAS_SHIELD_NODE = "hs";
+const char* PLAYER_IS_INVINCIBLE_NODE = "ii";
+const char* PLAYER_IS_RECOVERING_NODE = "ir";
+const char* PLAYER_TEAM_POINTS_NODE = "tp";
+const char* PLAYER_TEAM_RINGS_NODE = "tr";
 
+const int COLLABORATIVE_MODE = 2;
+const int COLLABORATIVE_TEAM_ID = 1;
 
 Player::Player()
 {
@@ -51,6 +57,12 @@ Player::Player()
 	this->isActive = true;
 
 	this->time = 0;
+	this->hasShield = false;
+	this->isInvincible = false;
+	this->isRecovering = false;
+
+	this->teamPoints = 0;
+	this->teamRings = 0;
 }
 
 Player::Player(Player & anotherPlayer) {
@@ -79,6 +91,10 @@ void Player::copyFrom(Player & anotherPlayer)
 	this->setPoints(anotherPlayer.getPoints());
 	this->setIsActive(anotherPlayer.getIsActive());
 	this->setHasShield(anotherPlayer.getHasShield());
+	this->setIsInvincible(anotherPlayer.getIsInvincible());
+	this->setIsRecovering(anotherPlayer.getIsRecovering());
+	this->setTeamPoints(anotherPlayer.getTeamPoints());
+	this->setTeamRings(anotherPlayer.getTeamRings());
 }
 
 void Player::lock()
@@ -124,16 +140,23 @@ void Player::damage()
 	}
 
 	if (this->rings > 0) {
+		int teamId = getTeamId();
+		if (teamId > 0) {
+			int teamIdIndex = teamId - 1;
+			(*this->generalTeamRings)[teamIdIndex] -= this->rings;
+		}
 		rings = 0;
 		return;
 	}
 
-	if (lives > 0) {
+	if (lives > 1) {
 		this->lives--;
 	}
 	else {
 		isActive = false;
 	}
+
+	this->isRecovering = true;
 }
 
 Vector2 Player::getPosition()
@@ -356,14 +379,64 @@ bool Player::getHasShield()
 	return this->hasShield;
 }
 
+int Player::getTeamPoints()
+{
+	return this->teamPoints;
+}
+
 void Player::setTeamPoints(int teamPoints)
 {
 	this->teamPoints = teamPoints;
 }
 
+int Player::getTeamRings()
+{
+	return this->teamRings;
+}
+
 void Player::setTeamRings(int teamRings)
 {
 	this->teamRings = teamRings;
+}
+
+bool Player::getIsInvincible()
+{
+	return this->isInvincible;
+}
+
+void Player::setIsInvincible(bool isInvincible)
+{
+	this->isInvincible = isInvincible;
+}
+
+int Player::getInvincibleTime()
+{
+	return this->invincibleTime;
+}
+
+void Player::setInvincibleTime(int ms)
+{
+	this->invincibleTime = ms;
+}
+
+bool Player::getIsRecovering()
+{
+	return this->isRecovering;
+}
+
+void Player::setIsRecovering(bool isRecovering)
+{
+	this->isRecovering = isRecovering;
+}
+
+int Player::getRecoveringTime()
+{
+	return this->recoveringTime;;
+}
+
+void Player::setRecoveringTime(int ms)
+{
+	this->recoveringTime = ms;
 }
 
 PlayerType Player::calculatePlayerType()
@@ -438,6 +511,14 @@ void Player::unserialize(Value * nodeRef)
 	parseBool(&isActive, false, nodeRef, PLAYER_IS_ACTIVE_NODE);
 	//has shield
 	parseBool(&hasShield, false, nodeRef, PLAYER_HAS_SHIELD_NODE);
+	//is invincible
+	parseBool(&isInvincible, false, nodeRef, PLAYER_IS_INVINCIBLE_NODE);
+	//is recovering
+	parseBool(&isRecovering, false, nodeRef, PLAYER_IS_RECOVERING_NODE);
+	//team points
+	parseInt(&teamPoints, 0, nodeRef, PLAYER_TEAM_POINTS_NODE);
+	//team rings
+	parseInt(&teamRings, 0, nodeRef, PLAYER_TEAM_RINGS_NODE);
 }
 
 void Player::serializePlayer()
@@ -495,6 +576,14 @@ string Player::serialize()
 	writer.Bool(this->isActive);
 	writer.String(PLAYER_HAS_SHIELD_NODE);
 	writer.Bool(this->hasShield);
+	writer.String(PLAYER_IS_INVINCIBLE_NODE);
+	writer.Bool(this->isInvincible);
+	writer.String(PLAYER_IS_RECOVERING_NODE);
+	writer.Bool(this->isRecovering);
+	writer.String(PLAYER_TEAM_POINTS_NODE);
+	writer.Int(this->teamPoints);
+	writer.String(PLAYER_TEAM_RINGS_NODE);
+	writer.Int(this->teamRings);
 
 	int(time);
 
@@ -520,11 +609,26 @@ void Player::setNumber(int number)
 void Player::sumPoints(int points)
 {
 	this->points += points;
+	int teamId = getTeamId();
+	if (teamId <= 0) return;
+
+	//Total team points and rings
+	int teamIdIndex = teamId - 1;
+	(*this->generalTeamPoints)[teamIdIndex] += points;
+	this->teamPoints = (*this->generalTeamPoints)[teamIdIndex];
 }
 
 void Player::sumRings(int rings)
 {
 	this->rings += rings;
+
+	int teamId = getTeamId();
+	if (teamId <= 0) return;
+
+	//Total team points and rings
+	int teamIdIndex = teamId - 1;
+	(*this->generalTeamRings)[teamIdIndex] += rings;
+	this->teamRings = (*this->generalTeamRings)[teamIdIndex];
 }
 
 void Player::setHasShield(bool hasShield)
@@ -534,7 +638,10 @@ void Player::setHasShield(bool hasShield)
 
 int Player::getTeamId()
 {
-	return this->teamId;
+	int teamId = this->teamId;
+	//Please dont change collaborative mode number
+	if (gameMode == COLLABORATIVE_MODE) teamId = COLLABORATIVE_TEAM_ID;
+	return teamId;
 }
 
 void Player::setTeamId(int teamId)

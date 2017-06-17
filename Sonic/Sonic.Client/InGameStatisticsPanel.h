@@ -9,11 +9,12 @@
 #include "views/PlayerView.h"
 #include "BaseStatisticsPanel.h"
 #include "utils/PlayerUtils.h"
+#include "entities/GameConfig.h"
 
 class InGameStatisticsPanel : public BaseStatisticsPanel
 {
 public:
-	InGameStatisticsPanel();
+	InGameStatisticsPanel(GameMode gameMode, int team);
 	~InGameStatisticsPanel();
 
 	void showStatistics(Player* player);
@@ -25,6 +26,8 @@ private:
 	TTF_Font* fontScore;
 	TTF_Font* fontTestMode;
 	Texture playerImage;
+	GameMode gameMode;
+	int team;
 };
 
 #endif // !INGAMESTATISTICS_H

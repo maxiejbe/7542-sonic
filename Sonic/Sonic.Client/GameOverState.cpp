@@ -16,6 +16,12 @@ void GameOverState::update(Game* game, float dt)
 	InputManager* input = InputManager::getInstance();
 	input->update();
 
+	if (input->quitRequested()) {
+		LOG(logINFO) << "El usuario ha solicitado la terminación del juego.";
+		game->quit();
+		return;
+	}
+
 	if (input->isKeyDown(KEY_RETURN)) {
 		// Disconnect
 		NetworkManager::getInstance().disconnect();

@@ -45,7 +45,7 @@ void PlayState::load(Game* game)
 	}
 
 	// Load statistics player panel
-	statisticsPanel = new InGameStatisticsPanel();
+	statisticsPanel = new InGameStatisticsPanel(gameMode, this->team);
 
 	PlayerView* playerView = NetworkManager::getInstance().getOwnPlayerView();
 
@@ -142,13 +142,17 @@ void PlayState::update(Game* game, float dt)
 	PlayerView* playerView = NetworkManager::getInstance().getOwnPlayerView();
 	if (playerView != nullptr) {
 		this->ownPlayer = playerView->getPlayer();
+		if (!this->ownPlayer->getIsActive()) {
+			game->changeState(GameOverState::Instance());
+			return;
+		}
 	}
 
 	// Update camera
 	cameraModel = NetworkManager::getInstance().getCamera();
 	if (cameraModel) {
-		camera.x = cameraModel->getPosition().x;
-		camera.y = cameraModel->getPosition().y;
+		camera.x = (int)round(cameraModel->getPosition().x);
+		camera.y = (int)round(cameraModel->getPosition().y);
 	}
 }
 
@@ -205,5 +209,6 @@ bool PlayState::clientNumberSet()
 	}
 
 	this->playerNumber = NetworkManager::getInstance().getPlayerNumber();
+	this->gameMode = NetworkManager::getInstance().getGameMode();
 	return true;
 }

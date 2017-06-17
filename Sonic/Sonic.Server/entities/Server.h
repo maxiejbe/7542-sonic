@@ -24,6 +24,7 @@
 #include "entities/ServerConfiguration.h"
 #include "../controllers/CameraController.h"
 #include "../controllers/EnemyController.h"
+#include "../controllers/EntityController.h"
 #include "Timer.h"
 
 #include <mutex>
@@ -48,6 +49,7 @@ public:
 	void terminateThreads();
 	void addConnectedClients();
 	int getCurrentLevel();
+	vector<Entity*> getVisibleEntities();
 
 	void resetLevel();
 	vector<Level>* getLevels();
@@ -64,9 +66,14 @@ public:
 	GameConfig* getGameConfig();
 	Camera* getCamera();
 
+	unordered_map<int, int>* getTeamPoints();
+	unordered_map <int, int>* getTeamRings();
+
 	ServerMessage * getStatusMessage();
 
 	void levelFinished();
+	void notifyClientsLevelFinished();
+	void notifyClientsGameFinished();
 private:
 	/*
 	Initialize socket support WINDOWS ONLY!
@@ -97,6 +104,7 @@ private:
 
 	bool gameStarted;
 	int currentLevel;
+	int lastLevel;
 
 	ServerConfiguration* serverConfig;
 	Window* window;

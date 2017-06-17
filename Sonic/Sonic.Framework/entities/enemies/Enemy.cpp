@@ -1,6 +1,7 @@
 #include "Enemy.h"
 
 const char* ENEMY_FACING_DIRECTION_NODE = "fd";
+const char* ENTITY_TIME_NODE = "time";
 
 const double ENEMY_DEFAULT_POSX = 0;
 const double ENEMY_DEFAULT_POSY = 0;
@@ -23,6 +24,8 @@ const int CRAB_GIVEN_POINTS = 100;
 const int FLY_GIVEN_POINTS = 500;
 const int FISH_GIVEN_POINTS = 200;
 
+const int BOUNCE_ON_COLLISION = 10;
+
 
 Enemy::Enemy(string type)
 {
@@ -38,15 +41,15 @@ void Enemy::InitializeProperties()
 	switch (eType) {
 	case EntityType::enemigo_cangrejo:
 		this->dimensions = Dimensions(ENEMY_CRAB_WIDTH, ENEMY_CRAB_HEIGHT, 0);
-		this->maxDistance = ENEMY_CRAB_MAX_DISTANCE;
+		this->maxHorizontalDistance = ENEMY_CRAB_MAX_DISTANCE;
 		break;
 	case EntityType::enemigo_pez:
 		this->dimensions = Dimensions(ENEMY_FISH_WIDTH, ENEMY_FISH_HEIGHT, 0);
-		this->maxDistance = ENEMY_FISH_MAX_DISTANCE;
+		this->maxVerticalDistance = ENEMY_FISH_MAX_DISTANCE;
 		break;
 	case EntityType::enemigo_mosca:
 		this->dimensions = Dimensions(ENEMY_FLY_WIDTH, ENEMY_FLY_HEIGHT, 0);
-		this->maxDistance = ENEMY_FLY_MAX_DISTANCE;
+		this->maxHorizontalDistance = ENEMY_FLY_MAX_DISTANCE;
 		break;
 	default:
 		this->dimensions = Dimensions(0, 0, 0);
@@ -54,10 +57,10 @@ void Enemy::InitializeProperties()
 	}
 
 	this->points = ENEMY_DEFAULT_POINTS;
-	this->facingDirection = FACING_LEFT;
 	this->distanceTravelled = 0;
 	this->serializedEnemy = string();
 	this->isMoving = true;
+	this->facingDirection = FacingDirection::FACING_LEFT;
 }
 
 
@@ -70,7 +73,6 @@ void Enemy::copyFrom(Enemy& anotherEnemy)
 	Entity::copyFrom(anotherEnemy);
 
 	this->points = anotherEnemy.getPoints();
-	this->facingDirection = anotherEnemy.getFacingDirection();
 }
 
 Vector2 Enemy::getVelocity()
@@ -83,27 +85,10 @@ void Enemy::setVelocity(Vector2 velocity)
 	this->velocity = velocity;
 }
 
-
-FacingDirection Enemy::getFacingDirection()
-{
-	return this->facingDirection;
-}
-
-void Enemy::setFacingDirection(FacingDirection facingDirection)
-{
-	this->facingDirection = facingDirection;
-}
-
-double Enemy::getMaxDistance()
-{
-	return this->maxDistance;
-}
-
 double Enemy::getDistanceTravelled()
 {
 	return this->distanceTravelled;
 }
-
 
 void Enemy::incrementDistanceTravelled(double distance) {
 	this->distanceTravelled += abs(distance);
@@ -112,6 +97,25 @@ void Enemy::incrementDistanceTravelled(double distance) {
 void Enemy::resetDistanceTravelled()
 {
 	this->distanceTravelled = 0;
+}
+
+double Enemy::getMaxDistance()
+{
+	EntityType eType = EntityResolver::fromTypeString(type);
+	switch (eType) {
+	case EntityType::enemigo_cangrejo:
+		return this->maxHorizontalDistance;
+		break;
+	case EntityType::enemigo_pez:
+		return this->maxVerticalDistance;
+		break;
+	case EntityType::enemigo_mosca:
+		return this->maxHorizontalDistance;
+		break;
+	default:
+		return 0;
+		break;
+	}
 }
 
 void Enemy::kill()
@@ -152,8 +156,6 @@ void Enemy::unlock()
 	this->enemyMutex.unlock();
 }
 
-
-
 void Enemy::serializeEnemy()
 {
 	this->lock();
@@ -170,6 +172,7 @@ void Enemy::unserialize(Value * nodeRef)
 {
 	Entity::unserialize(nodeRef);
 	parseInt((int*)&facingDirection, 0, nodeRef, ENEMY_FACING_DIRECTION_NODE, Validator::intGreaterThanOrEqualToZero);
+	parseInt(&time, 0, nodeRef, ENTITY_TIME_NODE);
 }
 
 char * Enemy::getNodeName()
@@ -185,6 +188,8 @@ string Enemy::serialize()
 	basePropertiesSerialization(writer);
 	writer.String(ENEMY_FACING_DIRECTION_NODE);
 	writer.Int(facingDirection);
+	writer.String(ENTITY_TIME_NODE);
+	writer.Int(time);
 	writer.EndObject();
 
 	return s.GetString();
@@ -194,9 +199,10 @@ void Enemy::onCollision(Player * player, Camera* camera)
 {
 	if (!getIsActive()) return;
 
-	if (player->isDamaging()) {
+	if (player->isDamaging() || player->getIsInvincible()) {
 		player->sumPoints(getGivenPoints());
 		this->kill();
+
 		if (player->getIsJumping()) {
 			// If is falling, bounce
 			if (player->getVelocity().y > 0) {
@@ -208,12 +214,21 @@ void Enemy::onCollision(Player * player, Camera* camera)
 		}
 	}
 	else {
-		player->damage();
+		if (!player->getIsRecovering()) {
+			player->damage();
+		}
 
 		if (player->getVelocity().x > 0)
-			player->setXVelocity(-5);
-		else
-			player->setXVelocity(5);
+			player->setXVelocity(-BOUNCE_ON_COLLISION);
+		else if (player->getVelocity().x < 0)
+			player->setXVelocity(BOUNCE_ON_COLLISION);
+		else {
+			if (player->getFacingDirection() == FACING_RIGHT)
+				player->setXVelocity(-BOUNCE_ON_COLLISION);
+			else
+				player->setXVelocity(BOUNCE_ON_COLLISION);
+		}
+
 	}
 }
 

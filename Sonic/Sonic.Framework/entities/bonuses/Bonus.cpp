@@ -16,10 +16,15 @@ void Bonus::onCollision(Player * player, Camera* camera)
 		switch (EntityResolver::fromTypeString(type))
 		{
 		case bonus_super_ring:
-			player->sumPoints(SUPER_RING_GIVEN_POINTS);
+			player->sumRings(SUPER_RING_GIVEN_POINTS);
 			break;
 		case bonus_escudo:
 			player->setHasShield(true);
+			player->setIsInvincible(false);
+			break;
+		case bonus_invencibilidad:
+			player->setIsInvincible(true);
+			player->setHasShield(false);
 			break;
 		default:
 			break;

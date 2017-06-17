@@ -27,8 +27,17 @@ private:
 	int getFramesCount(PlayerStatus status);
 	int getFramesDivision(PlayerStatus status);
 	void loadSpriteClips();
+	bool checkTextures();
+
+	void renderShield(int camX, int camY);
+
+	void renderInvincibility(int camX, int camY);
+
+	void renderPlayer(int camX, int camY);
 
 	Texture texture;
+	Texture textureShield;
+	Texture textureInvincible;
 	Player* player;
 	SDL_Rect** spriteClips;
 	bool isGreyed;

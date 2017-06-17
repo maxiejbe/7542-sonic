@@ -4,11 +4,8 @@ EnemyController::EnemyController()
 {
 }
 
-void EnemyController::update(Enemy * enemy, Camera * camera, int milliseconds)
+void EnemyController::update(Enemy * enemy, int milliseconds)
 {
-	//if enemy is out of screen don't update
-	if (!isEnemyVisible(enemy, camera)) return;
-
 	enemy->lock();
 
 	enemy->setTime(milliseconds);
@@ -18,11 +15,6 @@ void EnemyController::update(Enemy * enemy, Camera * camera, int milliseconds)
 	enemy->unlock();
 }
 
-bool EnemyController::isEnemyVisible(Enemy * enemy, Camera * camera)
-{
-	return (enemy->getCoordinate().getX() >= camera->getPosition().x && enemy->getCoordinate().getX() <= (camera->getPosition().x + camera->getScreenWidth() - enemy->getDimensions().getWidth()));
-}
-
 void EnemyController::move(Enemy * enemy)
 {
 	switch (EntityResolver::fromTypeString(enemy->getType())) {
@@ -30,7 +22,7 @@ void EnemyController::move(Enemy * enemy)
 		horizontalMovement(enemy, 0.01);
 		break;
 	case enemigo_pez:
-		verticalMovement(enemy, 0.2);
+		verticalMovement(enemy, 0.1);
 		break;
 	case enemigo_mosca:
 		horizontalMovement(enemy, 0.03);

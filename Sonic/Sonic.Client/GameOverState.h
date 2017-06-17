@@ -2,8 +2,6 @@
 #define GAME_OVER_STATE_H
 
 #include "GameState.h"
-#include <SDL.h>
-#include <SDL2_gfxPrimitives.h>
 #include <iostream>
 #include "Texture.h"
 #include "InputManager.h"

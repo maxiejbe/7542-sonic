@@ -3,6 +3,8 @@
 const float gravity = 0.41f;
 const float acc = 0.08f;
 const int WIDTH_PLAYER_SPRITE = 72; //Fix player->getWidth()
+const int INVINCIBLE_SECONDS = 20;
+const int RECOVERING_SECONDS = 3;
 
 PlayerController::PlayerController()
 {
@@ -16,6 +18,8 @@ void PlayerController::update(Message* message, Player* player, Camera* camera, 
 	player->setTime(milliseconds);
 
 	if (message == nullptr) return;
+	checkInvincibility(player, milliseconds);
+	checkRecovering(player, milliseconds);
 	updateInput(message, player);
 	move(player, message->getTimeStep(), camera);
 	calculateCollisions(player, scenario, camera);
@@ -152,6 +156,32 @@ void PlayerController::calculateCollisions(Player * player, Scenario* scenario, 
 		if (!(*it)->getIsActive()) continue;
 		if (player->isCollisioning(*it)) {
 			(*it)->onCollision(player, camera);
+		}
+	}
+}
+
+void PlayerController::checkInvincibility(Player* player, int ms)
+{
+	if (player->getIsInvincible()) {
+		if (player->getInvincibleTime() == 0) {
+			player->setInvincibleTime(ms);
+		}
+		else if (ms - player->getInvincibleTime() >= INVINCIBLE_SECONDS * 1000) {
+			player->setIsInvincible(false);
+			player->setInvincibleTime(0);
+		}
+	}
+}
+
+void PlayerController::checkRecovering(Player* player, int ms)
+{
+	if (player->getIsRecovering()) {
+		if (player->getRecoveringTime() == 0) {
+			player->setRecoveringTime(ms);
+		}
+		else if (ms - player->getRecoveringTime() >= RECOVERING_SECONDS * 1000) {
+			player->setIsRecovering(false);
+			player->setRecoveringTime(0);
 		}
 	}
 }

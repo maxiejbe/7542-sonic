@@ -80,7 +80,8 @@ bool Client::welcome(int clientNumber, Player* player)
 	int scrollSpeed = this->server->getConfiguration()->getScrollSpeed();
 
 	//Player and last received message can handle reconnection
-	this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed);
+	this->player = new Player(this->clientNumber, windowHeight, scenarioWidht, scenarioHeight, scrollSpeed, this->server->getTeamPoints(),
+		this->server->getTeamRings(), this->server->getGameConfig()->getMode());
 	if (player != nullptr) {
 		this->player->copyFrom(*player);
 		//this->player = player;
@@ -135,7 +136,6 @@ bool Client::sendHeartBeat() {
 	int bytecount;
 	ServerMessage sMessage;
 	sMessage.setType(heart_beat_server);
-	sMessage.setGameMode(this->server->getGameConfig()->getMode());
 	string serializedMsg = sMessage.serialize();
 	const char* messageToSend = serializedMsg.c_str();
 
@@ -153,6 +153,7 @@ bool Client::sendClientNumber()
 	int bytecount;
 	ServerMessage sMessage;
 	sMessage.setType(player_assign);
+	sMessage.setGameMode(this->server->getGameConfig()->getMode());
 	sMessage.setPlayerNumber(this->clientNumber);
 	string serializedMsg = sMessage.serialize();
 	const char* messageToSend = serializedMsg.c_str();
@@ -254,6 +255,27 @@ bool Client::sendLevelFinish()
 	return true;
 }
 
+bool Client::sendGameFinish()
+{
+	int bytecount;
+
+	ServerMessage * message = this->server->getStatusMessage();
+	message->setType(game_finish);
+	char * serializedMessage = StringUtils::convert(message->serialize());
+
+	delete message;
+
+	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
+		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
+			<< " (Cliente " << this->getClientNumber() << ")";
+		delete serializedMessage;
+		return false;
+	}
+
+	delete serializedMessage;
+	return true;
+}
+
 Player* Client::getPlayer()
 {
 	return this->player;
@@ -323,7 +345,7 @@ void Client::startRefereshing()
 	}
 
 	if (this->continueRefreshing) return;
-	
+
 	this->continueRefreshing = true;
 	this->refreshThreadHandle = CreateThread(0, 0, refreshSocketHandler, (void*)this, 0, &this->refreshThreadId);
 }
@@ -336,7 +358,7 @@ void Client::startSending()
 	}
 
 	if (this->continueSending) return;
-	
+
 	this->continueSending = true;
 	this->sendThreadHandle = CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
 }
@@ -389,11 +411,13 @@ DWORD Client::refreshSocketHandler()
 		if (!this->pauseRefreshing) {
 			this->refreshPlayer();
 		}
-		
+
 		if (this->getLastMessage() == NULL) {
 			Sleep(10);
 			continue;
 		}
+
+		//Sleep(20);
 
 		if (this->getLastMessage()->getTimeStep() * 1000 - 2 > 0) {
 			Sleep(this->getLastMessage()->getTimeStep() * 1000 - 2);
@@ -421,6 +445,8 @@ DWORD Client::sendSocketHandler()
 			continue;
 		}
 
+		//Sleep(20);
+
 		if (this->getLastMessage()->getTimeStep() * 1000 - 2 > 0) {
 			Sleep(this->getLastMessage()->getTimeStep() * 1000 - 2);
 		}
@@ -446,11 +472,7 @@ bool Client::refreshPlayer() {
 
 bool Client::notifyLevelFinished()
 {
-	//finish update and send status threads
-	this->pauseRefreshing = true;
-	this->pauseSending = true;
-	//calculate points obtained from rings
-	this->player->sumPoints(this->player->getRings() * this->server->getGameConfig()->getRingPointsMultiplier());
+	this->levelFinishedActions();
 	//send finish level
 	this->sendLevelFinish();
 	//wait 5 seconds for client to display statistics
@@ -459,6 +481,22 @@ bool Client::notifyLevelFinished()
 	this->player->reset();
 	this->sendLevelStart();
 	return true;
+}
+
+bool Client::notifyGameFinished()
+{
+	this->levelFinishedActions();
+	this->sendGameFinish();
+	return true;
+}
+
+void Client::levelFinishedActions()
+{
+	//finish update and send status threads
+	this->pauseRefreshing = true;
+	this->pauseSending = true;
+	//calculate points obtained from rings
+	this->player->sumPoints(this->player->getRings() * this->server->getGameConfig()->getRingPointsMultiplier());
 }
 
 void Client::setClientNumber(int clientNumber)

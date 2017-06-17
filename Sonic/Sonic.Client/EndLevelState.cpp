@@ -57,7 +57,7 @@ void EndLevelState::render(Game* game)
 
 void EndLevelState::showLevelHasPassed()
 {
-	levelHasPassed.render(200, 100, levelHasPassed.getWidth() / 2.5, levelHasPassed.getHeight() / 2.5);
+	levelHasPassed.render(200, 100, (int)(levelHasPassed.getWidth() / 2.5), (int)(levelHasPassed.getHeight() / 2.5));
 }
 
 void EndLevelState::showText(string text, int x, int y, TTF_Font* font, SDL_Color color)
@@ -69,7 +69,7 @@ void EndLevelState::showText(string text, int x, int y, TTF_Font* font, SDL_Colo
 void EndLevelState::showPlayerImage(Texture playerImage, int x, int y)
 {
 	if (playerImage.getTexture() != nullptr) {
-		playerImage.render(x, y, playerImage.getWidth() * 2.5, playerImage.getHeight() * 2.5);
+		playerImage.render(x, y, (int)(playerImage.getWidth() * 2.5), (int)(playerImage.getHeight() * 2.5));
 	}
 }
 

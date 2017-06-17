@@ -5,26 +5,29 @@
 
 ConnectState ConnectState::m_ConnectState;
 
+const int CLIENT_NUMBER_MAX_CONNECTED_PLAYERS = -99;
+
 void ConnectState::load(Game* game)
 {
-	if (connected && NetworkManager::getInstance().online()) {
+	if (connected && !NetworkManager::getInstance().online()) {
 		reconnect(game);
 	}
 	else {
 		connected = NetworkManager::getInstance().connectToServer(game->getServerConfig());
 
 		if (connected) {
+			while (NetworkManager::getInstance().getPlayerNumber() < 0) {
+				if (NetworkManager::getInstance().getPlayerNumber() == CLIENT_NUMBER_MAX_CONNECTED_PLAYERS) {
+					break;
+				}
 
-			if (NetworkManager::getInstance().getGameMode() == GameMode::grupal)
-			{
-				// Choose Team
+				Sleep(10);
+			}
+
+			if (NetworkManager::getInstance().getGameMode() == GameMode::grupal) // Choose Team
 				game->changeState(SelectTeamState::Instance());
-			}
-			else
-			{ 
+			else // Start game
 				game->changeState(PlayState::Instance());
-				return;
-			}
 		}
 	}
 }
@@ -76,8 +79,8 @@ void ConnectState::reconnect(Game* game)
 
 	if (game->statesSize() > 1) {
 		// Comming from PlayState, so return there.
-		//game->popState();
-		game->changeState(PlayState::Instance());
+		game->popState();
+		//game->changeState(PlayState::Instance());
 	}
 	else {
 		game->changeState(PlayState::Instance());
