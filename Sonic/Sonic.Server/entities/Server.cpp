@@ -58,7 +58,8 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 	this->config = config;
 	this->gameConfig = gameConfig;
 
-	this->currentLevel = 1; // First level 
+	this->currentLevel = 1; // First level
+	this->lastLevel = gameConfig->getLevels()->size();
 	this->resetLevel();
 
 	this->isValid = false;
@@ -87,6 +88,12 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 	LOG(logINFO) << MESSAGE_STARTING_SERVER_OK << SocketUtils::getIpFromAddress(this->address) << ":" << this->portNumber;
 
 	this->isValid = true;
+
+	for (size_t i = 0; i < TEAMS_COUNT; i++)
+	{
+		teamPoints[i] = 0;
+		teamRings[i] = 0;
+	}
 }
 
 bool Server::initializeWindowsSupport()
@@ -258,16 +265,6 @@ vector<Level>* Server::getLevels()
 	return this->gameConfig->getLevels();
 }
 
-void Server::sumPoints(int teamId, int points)
-{
-	this->teamPoints[teamId - 1] += points;
-}
-
-void Server::sumRings(int teamId, int rings)
-{
-	this->teamRings[teamId - 1] += rings;
-}
-
 SOCKET Server::getSocket()
 {
 	return this->_socket;
@@ -301,6 +298,16 @@ GameConfig * Server::getGameConfig()
 Camera * Server::getCamera()
 {
 	return this->camera;
+}
+
+unordered_map<int, int>* Server::getTeamPoints()
+{
+	return &(this->teamPoints);
+}
+
+unordered_map<int, int>* Server::getTeamRings()
+{
+	return &(this->teamRings);
 }
 
 void Server::waitForClientConnections()
@@ -362,58 +369,47 @@ void Server::levelFinished()
 
 	if (notifyLevelFinish)
 	{
-		//increment level
-		this->currentLevel++;
-		//TODO: CHECK FOR LAST LEVEL AND SEND GAME OVER
-		for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
-			int bytecount;
-			//If client is not connected, just set to false
-			if (!it->second->getPlayer()->getIsConnected()) continue;
-			it->second->notifyLevelFinished();
+		if (this->currentLevel == this->lastLevel) {
+			this->notifyClientsGameFinished();
+		}else {
+			//increment level
+			this->currentLevel++;
+			this->notifyClientsLevelFinished();
 		}
+	}
+}
 
-		this->resetLevel();
+void Server::notifyClientsLevelFinished()
+{
+	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+		int bytecount;
+		//If client is not connected, just set to false
+		if (!it->second->getPlayer()->getIsConnected()) continue;
+		it->second->notifyLevelFinished();
 	}
 
+	this->resetLevel();
+}
 
+void Server::notifyClientsGameFinished() 
+{
+	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+		int bytecount;
+		//If client is not connected, just set to false
+		if (!it->second->getPlayer()->getIsConnected()) continue;
+		it->second->notifyGameFinished();
+	}
 }
 
 vector<Player*> Server::clientsPlayers()
 {
-	for (size_t i = 0; i < TEAMS_COUNT; i++)
-	{
-		teamPoints[i] = 0;
-		teamRings[i] = 0;
-	}
-
 	//TODO: ADD MUTEX
 	vector<Player*> clientPlayers = vector<Player*>();
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
 		Player* player = (*it).second->getPlayer();
 		clientPlayers.push_back(player);
-
-		int teamId = player->getTeamId();
-		if (gameConfig->getMode() == colaborativo) teamId = DEFAULT_COLLABORATIVE_TEAM_ID;
-		
-		if (teamId <= 0) continue;
-		//Total team points and rings
-		sumPoints(teamId, player->getPoints());
-		sumRings(teamId, player->getRings());
 	}
-
-	for (vector<Player*>::iterator it = clientPlayers.begin(); it != clientPlayers.end(); ++it)
-	{
-		Player* player = (*it);
-		
-		int teamId = player->getTeamId();
-		if (gameConfig->getMode() == colaborativo) teamId = DEFAULT_COLLABORATIVE_TEAM_ID;
-		
-		if (teamId <= 0) continue;
-		player->setTeamPoints(teamPoints[teamId -1]);
-		player->setTeamRings(teamRings[teamId-1]);
-	}
-
 	return clientPlayers;
 }
 

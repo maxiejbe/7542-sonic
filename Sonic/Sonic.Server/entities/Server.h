@@ -64,9 +64,14 @@ public:
 	GameConfig* getGameConfig();
 	Camera* getCamera();
 
+	unordered_map<int, int>* getTeamPoints();
+	unordered_map <int, int>* getTeamRings();
+
 	ServerMessage * getStatusMessage();
 
 	void levelFinished();
+	void notifyClientsLevelFinished();
+	void notifyClientsGameFinished();
 private:
 	/*
 	Initialize socket support WINDOWS ONLY!
@@ -97,6 +102,7 @@ private:
 
 	bool gameStarted;
 	int currentLevel;
+	int lastLevel;
 
 	ServerConfiguration* serverConfig;
 	Window* window;
