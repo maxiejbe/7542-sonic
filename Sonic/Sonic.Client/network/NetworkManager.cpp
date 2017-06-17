@@ -295,13 +295,12 @@ void NetworkManager::updatePlayerViews(vector<Player*> players)
 		//Player view already exists, just update
 		Player* player = playerViews[index]->getPlayer();
 		player->copyFrom(*(*it));
-
-		delete *it;
 	}
 
 	//Go remove missing players
 	for (unordered_map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it) {
 		int playerWasRemoved = true;
+
 		for (vector<Player*>::iterator pit = players.begin(); pit != players.end(); ++pit)
 		{
 			int playerIndex = (*pit)->getNumber() - 1;
@@ -315,6 +314,12 @@ void NetworkManager::updatePlayerViews(vector<Player*> players)
 			it->second->getPlayer()->setIsActive(false);
 		}
 	}
+	
+	//Dispose
+	for (vector<Player*>::iterator it = players.begin(); it != players.end(); ++it) {
+		delete *it;
+	}
+
 }
 
 void NetworkManager::updateEntityViews(vector<Entity*> entities)
@@ -322,20 +327,18 @@ void NetworkManager::updateEntityViews(vector<Entity*> entities)
 	//TODO: MUTEX HERE
 	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
 	{
-		int id = (*it)->getId();
-		if (!entityViews.count(id)) {
+		int index = (*it)->getId() - 1;
+		if (!entityViews.count(index)) {
 			// Create new entity view and include in map
 			Entity* entity = EntityResolver::resolve((*it)->getType());
 			EntityView* entityView = EntityViewResolver::resolve(entity);
-			entityViews[id] = entityView;
+			entityViews[index] = entityView;
 			continue;
 		}
 
 		// Player view already exists, just update
-		Entity* entity = entityViews[id]->getEntity();
+		Entity* entity = entityViews[index]->getEntity();
 		entity->copyFrom(*(*it));
-
-		delete *it;
 	}
 
 	//Go remove missing entities
@@ -343,7 +346,7 @@ void NetworkManager::updateEntityViews(vector<Entity*> entities)
 		int entityWasRemoved = true;
 		for (vector<Entity*>::iterator pit = entities.begin(); pit != entities.end(); ++pit)
 		{
-			int idIndex = (*pit)->getId();
+			int idIndex = (*pit)->getId() - 1;
 			if (idIndex == it->first) {
 				entityWasRemoved = false;
 				break;
@@ -353,6 +356,12 @@ void NetworkManager::updateEntityViews(vector<Entity*> entities)
 		if (entityWasRemoved) {
 			it->second->getEntity()->setIsActive(false);
 		}
+	}
+
+
+	//Dispose
+	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it) {
+		delete *it;
 	}
 }
 
