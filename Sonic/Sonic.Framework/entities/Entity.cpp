@@ -21,9 +21,12 @@ const int ENTITY_DEFAULT_ID = 1;
 const string ENTITY_DEFAULT_TYPE = "";
 const string ENTITY_DEFAULT_IMAGE_PATH = ""; // Vacio = no hay imagen (solo color)
 //const int ENTITY_DEFAULT_ZINDEX = 0;
+const double ENTITY_DEFAULT_MAX_DISTANCE = 0;
 
 Entity::Entity()
 {
+	this->maxHorizontalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
+	this->maxVerticalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
 }
 
 Entity::Entity(Entity* entity)
@@ -37,6 +40,8 @@ Entity::Entity(Entity* entity)
 	this->isActive = entity->isActive;
 	this->facingDirection = entity->facingDirection;
 	this->time = entity->time;
+	this->maxHorizontalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
+	this->maxVerticalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
 }
 
 void Entity::copyFrom(Entity & anotherEntity)
@@ -50,6 +55,8 @@ void Entity::copyFrom(Entity & anotherEntity)
 	this->isActive = anotherEntity.isActive;
 	this->facingDirection = anotherEntity.facingDirection;
 	this->time = anotherEntity.time;
+	this->maxHorizontalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
+	this->maxVerticalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
 }
 
 bool Entity::validate()
@@ -108,6 +115,15 @@ CollisionableType Entity::getCollisionableType()
 	//For now, every entity is a rectangle
 	//We should override this on each child
 	return CollisionableType::rectangle;
+}
+
+double Entity::getMaxHorizontalDistance()
+{
+	return this->maxHorizontalDistance;
+}
+
+double Entity::getMaxVerticalDistance(){
+	return this->maxVerticalDistance;
 }
 
 bool Entity::getIsMoving()

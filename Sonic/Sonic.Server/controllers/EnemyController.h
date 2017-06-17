@@ -9,9 +9,7 @@ class EnemyController
 {
 public:
 	EnemyController();
-	static void update(Enemy * enemy, Camera * camera, int milliseconds);
-	//check if enemy is seen in the scenario
-	static bool isEnemyVisible(Enemy*, Camera*);
+	static void update(Enemy * enemy, int milliseconds);
 private:
 	static void EnemyController::move(Enemy * enemy);
 	static void horizontalMovement(Enemy*, double velocityX);

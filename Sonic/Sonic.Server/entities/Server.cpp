@@ -350,10 +350,24 @@ ServerMessage* Server::getStatusMessage()
 	ServerMessage * message = new ServerMessage();
 	message->setType(player_entities_status);
 	message->setPlayers(clientsPlayers);
-	message->setEntities(this->scenario->getEntities());
+	message->setEntities(this->getVisibleEntities());
 	message->setCamera(new Camera(*this->camera));
 
 	return message;
+}
+
+vector<Entity*> Server::getVisibleEntities()
+{
+	vector<Entity*> entities = this->scenario->getEntities();
+	vector<Entity*> visibleEntities;
+	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); it++) {
+		
+		if (EntityController::isEntityVisible((*it), this->camera)) {
+			visibleEntities.push_back((*it));
+		}
+	}
+
+	return visibleEntities;
 }
 
 void Server::levelFinished()
@@ -429,9 +443,9 @@ DWORD Server::updateEnemiesHandler()
 
 			//We should find a more elegant solution. JA!
 			Enemy* enemy = (Enemy*)*it;
-			//if (EnemyController::isEnemyVisible(enemy, this->camera)) {
-			EnemyController::update(enemy, this->camera, timer.elapsed());
-			//}
+			if (EntityController::isEntityVisible(enemy, this->camera)) {
+				EnemyController::update(enemy, timer.elapsed());
+			}
 			enemy->serializeEnemy();
 		}
 	}
