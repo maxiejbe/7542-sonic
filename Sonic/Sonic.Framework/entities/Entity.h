@@ -36,6 +36,7 @@ public:
 	
 	bool getIsMoving();
 
+	void setIsActive(bool isActive);
 	bool getIsActive();
 
 	void lock();

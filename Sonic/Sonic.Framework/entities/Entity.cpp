@@ -131,6 +131,11 @@ bool Entity::getIsMoving()
 	return this->isMoving;
 }
 
+void Entity::setIsActive(bool isActive)
+{
+	this->isActive = isActive;
+}
+
 bool Entity::getIsActive()
 {
 	return this->isActive;
