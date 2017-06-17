@@ -299,22 +299,22 @@ void NetworkManager::updatePlayerViews(vector<Player*> players)
 		delete *it;
 	}
 
-	//Go remove missing players
-	for (unordered_map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it) {
-		int playerWasRemoved = true;
-		for (vector<Player*>::iterator pit = players.begin(); pit != players.end(); ++pit)
-		{
-			int playerIndex = (*pit)->getNumber() - 1;
-			if (playerIndex == it->first) {
-				playerWasRemoved = false;
-				break;
-			}
-		}
+	////Go remove missing players
+	//for (unordered_map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it) {
+	//	int playerWasRemoved = true;
+	//	for (vector<Player*>::iterator pit = players.begin(); pit != players.end(); ++pit)
+	//	{
+	//		int playerIndex = (*pit)->getNumber() - 1;
+	//		if (playerIndex == it->first) {
+	//			playerWasRemoved = false;
+	//			break;
+	//		}
+	//	}
 
-		if (playerWasRemoved) {
-			it->second->getPlayer()->setIsActive(false);
-		}
-	}
+	//	if (playerWasRemoved) {
+	//		it->second->getPlayer()->setIsActive(false);
+	//	}
+	//}
 }
 
 void NetworkManager::updateEntityViews(vector<Entity*> entities)
@@ -339,7 +339,7 @@ void NetworkManager::updateEntityViews(vector<Entity*> entities)
 	}
 
 	//Go remove missing entities
-	for (unordered_map<int, EntityView*>::iterator it = entityViews.begin(); it != entityViews.end(); ++it) {
+	/*for (unordered_map<int, EntityView*>::iterator it = entityViews.begin(); it != entityViews.end(); ++it) {
 		int entityWasRemoved = true;
 		for (vector<Entity*>::iterator pit = entities.begin(); pit != entities.end(); ++pit)
 		{
@@ -353,7 +353,7 @@ void NetworkManager::updateEntityViews(vector<Entity*> entities)
 		if (entityWasRemoved) {
 			it->second->getEntity()->setIsActive(false);
 		}
-	}
+	}*/
 }
 
 void NetworkManager::updateCamera(Camera * camera)

@@ -31,8 +31,14 @@ public:
 		return &m_PlayState;
 	}
 
+	static PlayState* Instance(int team) {
+		static PlayState m_PlayState(team);
+		return &m_PlayState;
+	}
+
 protected:
 	PlayState() {}
+	PlayState(int team) { this->team = team; }
 
 private:
 	static PlayState m_PlayState;
@@ -58,6 +64,9 @@ private:
 	bool lastMessageFlag;
 
 	Player* ownPlayer;
+
+	GameMode gameMode;
+	int team;
 };
 
 #endif // !PLAY_STATE_H

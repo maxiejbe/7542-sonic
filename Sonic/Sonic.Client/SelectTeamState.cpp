@@ -71,7 +71,7 @@ void SelectTeamState::update(Game* game, float dt)
 		clientResponse->setTeamId(selectedTeam);
 		NetworkManager::getInstance().sendMessage(clientResponse);
 
-		game->changeState(PlayState::Instance());
+		game->changeState(PlayState::Instance(selectedTeam));
 	}
 }
 

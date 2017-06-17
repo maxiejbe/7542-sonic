@@ -1,11 +1,13 @@
 #include "InGameStatisticsPanel.h"
 
-InGameStatisticsPanel::InGameStatisticsPanel()
+InGameStatisticsPanel::InGameStatisticsPanel(GameMode gameMode, int team)
 {
 	TTF_Init();
 	fontLifes = TTF_OpenFont("fonts/SonicAdvance.ttf", 10);
-	fontScore = TTF_OpenFont("fonts/SonicAdvance.ttf", 20);
+	fontScore = TTF_OpenFont("fonts/SonicAdvance.ttf", 18);
 	fontTestMode = TTF_OpenFont("fonts/SonicAdvance.ttf", 15);
+	this->gameMode = gameMode;
+	this->team = team;
 }
 
 InGameStatisticsPanel::~InGameStatisticsPanel()
@@ -49,9 +51,19 @@ void InGameStatisticsPanel::showStatistics(Player* player)
 	string rings = "RINGS   " + to_string(player->getRings());
 	showText(rings, 30, 65, fontScore, { 255, 255, 0 });
 
-	// Show team
-	string team = "TEAM " + to_string(1); //Refactor when player has team
-	showText(team, 670, 10, fontScore, { 255, 255, 255 });
+	if (gameMode == GameMode::grupal) {
+		// Show team
+		string team = "TEAM " + to_string(this->team);
+		showText(team, 720, 550, fontLifes, { 255, 255, 255 });
+
+		// Show team score
+		string teamScore = "TEAM SCORE   " + to_string(player->getTeamPoints());
+		showText(teamScore, 530, 10, fontScore, { 255, 255, 255 });
+
+		// Show team rings
+		string teamRings = "TEAM RINGS   " + to_string(player->getTeamRings());
+		showText(teamRings, 530, 65, fontScore, { 255, 255, 255 });
+	}
 
 	// Show test mode
 	if (player->getTestMode()) {

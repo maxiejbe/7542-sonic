@@ -45,7 +45,7 @@ void PlayState::load(Game* game)
 	}
 
 	// Load statistics player panel
-	statisticsPanel = new InGameStatisticsPanel();
+	statisticsPanel = new InGameStatisticsPanel(gameMode, this->team);
 
 	PlayerView* playerView = NetworkManager::getInstance().getOwnPlayerView();
 
@@ -209,5 +209,6 @@ bool PlayState::clientNumberSet()
 	}
 
 	this->playerNumber = NetworkManager::getInstance().getPlayerNumber();
+	this->gameMode = NetworkManager::getInstance().getGameMode();
 	return true;
 }

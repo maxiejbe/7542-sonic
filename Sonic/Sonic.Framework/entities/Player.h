@@ -107,7 +107,9 @@ public:
 	void setIsActive(bool isActive);
 	bool getHasShield();
 
+	int getTeamPoints();
 	void setTeamPoints(int teamPoints);
+	int getTeamRings();
 	void setTeamRings(int teamRings);
 	bool getIsInvincible();
 	void setIsInvincible(bool isInvincible);

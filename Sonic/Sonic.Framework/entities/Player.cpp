@@ -27,6 +27,8 @@ const char* PLAYER_IS_ACTIVE_NODE = "ia";
 const char* PLAYER_HAS_SHIELD_NODE = "hs";
 const char* PLAYER_IS_INVINCIBLE_NODE = "ii";
 const char* PLAYER_IS_RECOVERING_NODE = "ir";
+const char* PLAYER_TEAM_POINTS_NODE = "tp";
+const char* PLAYER_TEAM_RINGS_NODE = "tr";
 
 const int COLLABORATIVE_MODE = 2;
 const int COLLABORATIVE_TEAM_ID = 1;
@@ -58,6 +60,9 @@ Player::Player()
 	this->hasShield = false;
 	this->isInvincible = false;
 	this->isRecovering = false;
+
+	this->teamPoints = 0;
+	this->teamRings = 0;
 }
 
 Player::Player(Player & anotherPlayer) {
@@ -88,6 +93,8 @@ void Player::copyFrom(Player & anotherPlayer)
 	this->setHasShield(anotherPlayer.getHasShield());
 	this->setIsInvincible(anotherPlayer.getIsInvincible());
 	this->setIsRecovering(anotherPlayer.getIsRecovering());
+	this->setTeamPoints(anotherPlayer.getTeamPoints());
+	this->setTeamRings(anotherPlayer.getTeamRings());
 }
 
 void Player::lock()
@@ -372,9 +379,19 @@ bool Player::getHasShield()
 	return this->hasShield;
 }
 
+int Player::getTeamPoints()
+{
+	return this->teamPoints;
+}
+
 void Player::setTeamPoints(int teamPoints)
 {
 	this->teamPoints = teamPoints;
+}
+
+int Player::getTeamRings()
+{
+	return this->teamRings;
 }
 
 void Player::setTeamRings(int teamRings)
@@ -498,6 +515,10 @@ void Player::unserialize(Value * nodeRef)
 	parseBool(&isInvincible, false, nodeRef, PLAYER_IS_INVINCIBLE_NODE);
 	//is recovering
 	parseBool(&isRecovering, false, nodeRef, PLAYER_IS_RECOVERING_NODE);
+	//team points
+	parseInt(&teamPoints, 0, nodeRef, PLAYER_TEAM_POINTS_NODE);
+	//team rings
+	parseInt(&teamRings, 0, nodeRef, PLAYER_TEAM_RINGS_NODE);
 }
 
 void Player::serializePlayer()
@@ -559,6 +580,10 @@ string Player::serialize()
 	writer.Bool(this->isInvincible);
 	writer.String(PLAYER_IS_RECOVERING_NODE);
 	writer.Bool(this->isRecovering);
+	writer.String(PLAYER_TEAM_POINTS_NODE);
+	writer.Int(this->teamPoints);
+	writer.String(PLAYER_TEAM_RINGS_NODE);
+	writer.Int(this->teamRings);
 
 	int(time);
 
