@@ -103,6 +103,15 @@ void Texture::render(int x, int y, SDL_Rect* clip, SDL_Rect dest, double angle, 
 	SDL_RenderCopyEx(Renderer::getInstance().gRenderer, texture, clip, &dest, angle, center, flip);
 }
 
+void Texture::setBlendMode(SDL_BlendMode blending)
+{
+	SDL_SetTextureBlendMode(texture, blending);
+}
+
+void Texture::setAlpha(Uint8 alpha)
+{
+	SDL_SetTextureAlphaMod(texture, alpha);
+}
 
 int Texture::getWidth()
 {

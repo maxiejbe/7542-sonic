@@ -40,9 +40,12 @@ void PlayerView::render(int camX, int camY)
 bool PlayerView::checkTextures()
 {
 	// Check texture
-	if (this->texture.getTexture() == nullptr && !this->texture.loadFromFile(PlayerUtils::getPlayerSpritesheetPath(this->player))) {
-		LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << PlayerUtils::getPlayerSpritesheetPath(this->player) << "'.";
-		return false;
+	if (this->texture.getTexture() == nullptr) {
+		if (!this->texture.loadFromFile(PlayerUtils::getPlayerSpritesheetPath(this->player))) {
+			LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << PlayerUtils::getPlayerSpritesheetPath(this->player) << "'.";
+			return false;
+		}
+		texture.setBlendMode(SDL_BLENDMODE_BLEND);
 	}
 
 	if (!this->player->getIsConnected() && !this->isGreyed) {
@@ -52,6 +55,7 @@ bool PlayerView::checkTextures()
 			LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << filePath << "'.";
 			return false;
 		}
+		texture.setBlendMode(SDL_BLENDMODE_BLEND);
 		this->isGreyed = true;
 	}
 	else if (this->player->getIsConnected() && this->isGreyed) {
@@ -60,6 +64,7 @@ bool PlayerView::checkTextures()
 			LOG(logWARNING) << "No se pudo cargar la imagen del personaje '" << PlayerUtils::getPlayerSpritesheetPath(this->player) << "'.";
 			return false;
 		}
+		texture.setBlendMode(SDL_BLENDMODE_BLEND);
 		this->isGreyed = false;
 	}
 
@@ -108,6 +113,17 @@ void PlayerView::renderPlayer(int camX, int camY)
 
 	// Calculate facing direction
 	SDL_RendererFlip flip = (this->player->getFacingDirection() == FACING_RIGHT) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+
+	// Check recovering
+	if (player->getIsRecovering()) {
+		if (this->player->getTime() % 200 < 100)
+			texture.setAlpha(255);
+		else
+			texture.setAlpha(155);
+	}
+	else {
+		texture.setAlpha(255);
+	}
 
 	texture.render((int)(player->getPosition().x - camX), (int)(player->getPosition().y - camY), currentClip, dest, 0, NULL, flip);
 }

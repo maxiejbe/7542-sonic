@@ -108,6 +108,10 @@ public:
 	void setIsInvincible(bool isInvincible);
 	int getInvincibleTime();
 	void setInvincibleTime(int ms);
+	bool getIsRecovering();
+	void setIsRecovering(bool isRecovering);
+	int getRecoveringTime();
+	void setRecoveringTime(int ms);
 
 	string serializedPlayer;
 
@@ -147,6 +151,8 @@ private:
 	bool hasShield;
 	bool isInvincible;
 	int invincibleTime;
+	bool isRecovering;
+	int recoveringTime;
 
 	mutex playerMutex;
 };

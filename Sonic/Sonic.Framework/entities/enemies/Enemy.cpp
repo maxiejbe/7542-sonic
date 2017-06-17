@@ -24,6 +24,8 @@ const int CRAB_GIVEN_POINTS = 100;
 const int FLY_GIVEN_POINTS = 500;
 const int FISH_GIVEN_POINTS = 200;
 
+const int BOUNCE_ON_COLLISION = 10;
+
 
 Enemy::Enemy(string type)
 {
@@ -186,6 +188,7 @@ void Enemy::onCollision(Player * player, Camera* camera)
 	if (player->isDamaging() || player->getIsInvincible()) {
 		player->sumPoints(getGivenPoints());
 		this->kill();
+
 		if (player->getIsJumping()) {
 			// If is falling, bounce
 			if (player->getVelocity().y > 0) {
@@ -197,12 +200,21 @@ void Enemy::onCollision(Player * player, Camera* camera)
 		}
 	}
 	else {
-		player->damage();
+		if (!player->getIsRecovering()) {
+			player->damage();
+		}
 
 		if (player->getVelocity().x > 0)
-			player->setXVelocity(-5);
-		else
-			player->setXVelocity(5);
+			player->setXVelocity(-BOUNCE_ON_COLLISION);
+		else if (player->getVelocity().x < 0)
+			player->setXVelocity(BOUNCE_ON_COLLISION);
+		else {
+			if (player->getFacingDirection() == FACING_RIGHT)
+				player->setXVelocity(-BOUNCE_ON_COLLISION);
+			else
+				player->setXVelocity(BOUNCE_ON_COLLISION);
+		}
+
 	}
 }
 

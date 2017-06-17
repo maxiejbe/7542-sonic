@@ -26,6 +26,7 @@ const char* PLAYER_POINTS_NODE = "po";
 const char* PLAYER_IS_ACTIVE_NODE = "ia";
 const char* PLAYER_HAS_SHIELD_NODE = "hs";
 const char* PLAYER_IS_INVINCIBLE_NODE = "ii";
+const char* PLAYER_IS_RECOVERING_NODE = "ir";
 
 
 Player::Player()
@@ -54,6 +55,7 @@ Player::Player()
 	this->time = 0;
 	this->hasShield = false;
 	this->isInvincible = false;
+	this->isRecovering = false;
 }
 
 Player::Player(Player & anotherPlayer) {
@@ -83,6 +85,7 @@ void Player::copyFrom(Player & anotherPlayer)
 	this->setIsActive(anotherPlayer.getIsActive());
 	this->setHasShield(anotherPlayer.getHasShield());
 	this->setIsInvincible(anotherPlayer.getIsInvincible());
+	this->setIsRecovering(anotherPlayer.getIsRecovering());
 }
 
 void Player::lock()
@@ -138,6 +141,8 @@ void Player::damage()
 	else {
 		isActive = false;
 	}
+
+	this->isRecovering = true;
 }
 
 Vector2 Player::getPosition()
@@ -390,6 +395,26 @@ void Player::setInvincibleTime(int ms)
 	this->invincibleTime = ms;
 }
 
+bool Player::getIsRecovering()
+{
+	return this->isRecovering;
+}
+
+void Player::setIsRecovering(bool isRecovering)
+{
+	this->isRecovering = isRecovering;
+}
+
+int Player::getRecoveringTime()
+{
+	return this->recoveringTime;;
+}
+
+void Player::setRecoveringTime(int ms)
+{
+	this->recoveringTime = ms;
+}
+
 PlayerType Player::calculatePlayerType()
 {
 	switch (this->getNumber() % 4) {
@@ -464,6 +489,8 @@ void Player::unserialize(Value * nodeRef)
 	parseBool(&hasShield, false, nodeRef, PLAYER_HAS_SHIELD_NODE);
 	//is invincible
 	parseBool(&isInvincible, false, nodeRef, PLAYER_IS_INVINCIBLE_NODE);
+	//is recovering
+	parseBool(&isRecovering, false, nodeRef, PLAYER_IS_RECOVERING_NODE);
 }
 
 void Player::serializePlayer()
@@ -523,6 +550,8 @@ string Player::serialize()
 	writer.Bool(this->hasShield);
 	writer.String(PLAYER_IS_INVINCIBLE_NODE);
 	writer.Bool(this->isInvincible);
+	writer.String(PLAYER_IS_RECOVERING_NODE);
+	writer.Bool(this->isRecovering);
 
 	int(time);
 
