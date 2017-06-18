@@ -54,6 +54,9 @@ void PlayState::load(Game* game)
 		playerView->getPlayer()->reset();
 
 	game->pushState(WaitingState::Instance());
+
+	// Show level name
+	showLevelBackgroundName(NetworkManager::getInstance().getActualLevel());
 }
 
 int PlayState::unload()
@@ -211,4 +214,15 @@ bool PlayState::clientNumberSet()
 
 	this->playerNumber = NetworkManager::getInstance().getPlayerNumber();
 	return true;
+}
+
+void PlayState::showLevelBackgroundName(int level)
+{
+	Texture levelNameImage;
+	string path = "img/level" + to_string(level) + "back.jpg";	
+	levelNameImage.loadFromFile(path);
+	levelNameImage.render(0, 0, (int)(levelNameImage.getWidth()), (int)(levelNameImage.getHeight()));
+	SDL_RenderPresent(Renderer::getInstance().gRenderer);
+	
+	Sleep(2000);
 }

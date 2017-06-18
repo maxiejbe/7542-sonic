@@ -44,6 +44,7 @@ private:
 	static PlayState m_PlayState;
 
 	bool clientNumberSet();
+	void showLevelBackgroundName(int level);
 
 	Scenario scenario;
 	Camera* cameraModel;
