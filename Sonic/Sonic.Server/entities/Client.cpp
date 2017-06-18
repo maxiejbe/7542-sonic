@@ -417,11 +417,11 @@ DWORD Client::refreshSocketHandler()
 			continue;
 		}
 
-		Sleep(20);
+		//Sleep(20);
 
-		//if (this->getLastMessage()->getTimeStep() * 1000 > 0) {
-			//Sleep(this->getLastMessage()->getTimeStep() * 1000);
-		//}
+		if (this->getLastMessage()->getTimeStep() * 1000 - 2 > 0) {
+			Sleep(this->getLastMessage()->getTimeStep() * 1000 - 2);
+		}
 	}
 
 	return 0;
@@ -445,11 +445,11 @@ DWORD Client::sendSocketHandler()
 			continue;
 		}
 
-		Sleep(20);
+		//Sleep(20);
 
-		/*if (this->getLastMessage()->getTimeStep() * 1000 > 0) {
-			Sleep(this->getLastMessage()->getTimeStep() * 1000);
-		}*/
+		if (this->getLastMessage()->getTimeStep() * 1000 - 2 > 0) {
+			Sleep(this->getLastMessage()->getTimeStep() * 1000 - 2);
+		}
 	}
 
 	return 0;
