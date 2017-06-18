@@ -24,6 +24,8 @@ void ConnectState::load(Game* game)
 				Sleep(10);
 			}
 
+			game->setGameMode(NetworkManager::getInstance().getGameMode());
+
 			if (NetworkManager::getInstance().getGameMode() == GameMode::grupal) // Choose Team
 				game->changeState(SelectTeamState::Instance());
 			else // Start game

@@ -21,7 +21,7 @@ void EndLevelState::load(Game* game)
 	}
 
 	this->showLevelHasPassed();
-	this->showStatistics();
+	this->showStatistics(game->getGameMode());
 }
 
 int EndLevelState::unload()
@@ -73,7 +73,7 @@ void EndLevelState::showPlayerImage(Texture playerImage, int x, int y)
 	}
 }
 
-void EndLevelState::showStatistics()
+void EndLevelState::showStatistics(GameMode gameMode)
 {
 	int PLAYERS_SIZE = players.size();
 	int x = 400 - (75 + 100 * (PLAYERS_SIZE - 1));
@@ -88,6 +88,8 @@ void EndLevelState::showStatistics()
 	string nameLevel = to_string(1); // TODO get level dynamically
 	showText(nameLevel, 560, 150, fontLevel, { 255, 255, 0 });
 
+	int INITIAL_Y = 300;
+
 	// Show player statistics
 	for (int i = PLAYERS_SIZE - 1; i >= 0; i--) {
 		// Check texture
@@ -97,24 +99,74 @@ void EndLevelState::showStatistics()
 		}
 
 		// Show Player image
-		showPlayerImage(playerImage, x, 350);
+		showPlayerImage(playerImage, x, INITIAL_Y);
 
 		// Show userName
 		string namePlayer = PlayerUtils::getPlayerName(players.at(i));
-		showText(namePlayer, x + playerImage.getWidth() * 2 + 20, 345, fontLifes, { 255, 255, 0 });
+		showText(namePlayer, x + playerImage.getWidth() * 2 + 20, INITIAL_Y - 5, fontLifes, { 255, 255, 0 });
 
-		// Show team
-		string team = "TEAM " + to_string(1); //Refactor when player has rings
-		showText(team, x + playerImage.getWidth() * 2 + 20, 370, fontLifes, { 255, 255, 255 });
+		if (gameMode == GameMode::grupal) {
+			// Show team
+			string team = "TEAM " + to_string(players.at(i)->getTeamId());
+			showText(team, x + playerImage.getWidth() * 2 + 20, INITIAL_Y + 20, fontLifes, { 255, 255, 255 });
+		}
 
 		// Show score
-		string score = "SCORE " + to_string(100); //Refactor when player has rings
-		showText(score, x, 400, fontScore, { 255, 255, 0 });
+		string score = "SCORE    " + to_string(players.at(i)->getPoints());
+		showText(score, x, INITIAL_Y + 50, fontScore, { 255, 255, 0 });
 
 		// Show rings
-		string rings = "RING BONUS " + to_string(500); //Refactor when player has rings
-		showText(rings, x, 430, fontScore, { 255, 255, 0 });
+		string rings = "RING BONUS    " + to_string(players.at(i)->getRings());
+		showText(rings, x, INITIAL_Y + 80, fontScore, { 255, 255, 0 });
 
 		x += 200;
+	}
+
+	// Calculate team stats
+	int teamScore = 0;
+	int teamRings = 0;
+	INITIAL_Y = 470;
+
+	if (gameMode == GameMode::grupal) {
+		x = 400 - (75 + 100 * (2 - 1));
+		for (int j = 1; j <= 2; j++) {
+
+			for (int i = 0; i < PLAYERS_SIZE; i++) {
+				if (players.at(i)->getTeamId() == j) {
+					teamScore = players.at(i)->getTeamPoints();
+					teamRings = players.at(i)->getTeamRings();
+					break;
+				}
+			}
+
+			string team = "TEAM " + to_string(j);
+			showText(team, x + playerImage.getWidth() * 2, INITIAL_Y, fontLifes, { 255, 255, 255 });
+
+			// Show score
+			string score = "SCORE    " + to_string(teamScore);
+			showText(score, x, INITIAL_Y + 30, fontScore, { 255, 255, 0 });
+
+			// Show rings
+			string rings = "RING BONUS    " + to_string(teamRings);
+			showText(rings, x, INITIAL_Y + 60, fontScore, { 255, 255, 0 });
+
+			x += 300;
+		}
+	}
+	else if (gameMode == GameMode::colaborativo) {
+		x = 400 - 75;
+		teamScore = players.at(0)->getTeamPoints();
+		teamRings = players.at(0)->getTeamRings();
+
+		string team = "TOTAL";
+		showText(team, x + playerImage.getWidth() * 2, INITIAL_Y, fontLifes, { 255, 255, 255 });
+
+		// Show score
+		string score = "SCORE    " + to_string(teamScore);
+		showText(score, x, INITIAL_Y + 30, fontScore, { 255, 255, 0 });
+
+		// Show rings
+		string rings = "RING BONUS    " + to_string(teamRings);
+		showText(rings, x, INITIAL_Y + 60, fontScore, { 255, 255, 0 });
 	}
 }

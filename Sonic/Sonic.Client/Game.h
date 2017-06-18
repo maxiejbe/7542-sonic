@@ -8,6 +8,7 @@
 #include "network/NetworkManager.h"
 #include <string>
 #include <vector>
+#include "entities/GameConfig.h"
 
 class GameState;
 
@@ -30,6 +31,9 @@ public:
 
 	void quit() { running = false; }
 
+	GameMode getGameMode();
+	void setGameMode(GameMode gameMode);
+
 	size_t statesSize();
 	string getConfigPath();
 	ServerConfiguration getServerConfig();
@@ -40,6 +44,7 @@ private:
 
 	std::vector<GameState*> states;
 	bool running;
+	GameMode gameMode;
 };
 
 #endif // !GAME_H

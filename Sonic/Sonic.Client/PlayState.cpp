@@ -45,7 +45,7 @@ void PlayState::load(Game* game)
 	}
 
 	// Load statistics player panel
-	statisticsPanel = new InGameStatisticsPanel(gameMode, this->team);
+	statisticsPanel = new InGameStatisticsPanel(game->getGameMode(), this->team);
 
 	PlayerView* playerView = NetworkManager::getInstance().getOwnPlayerView();
 
@@ -154,6 +154,11 @@ void PlayState::update(Game* game, float dt)
 		camera.x = (int)round(cameraModel->getPosition().x);
 		camera.y = (int)round(cameraModel->getPosition().y);
 	}
+
+	// Check level finished
+	if (NetworkManager::getInstance().getLevelFinished()) {
+		game->changeState(EndLevelState::Instance());
+	}
 }
 
 void PlayState::render(Game* game)
@@ -188,10 +193,6 @@ void PlayState::render(Game* game)
 	if (this->ownPlayer != nullptr) {
 		statisticsPanel->showStatistics(this->ownPlayer);
 	}
-
-	// Render final statistics panel
-	/*if (camera.x == 2800) //ONLY FOR TEST
-		game->changeState(EndLevelState::Instance());*/
 }
 
 bool PlayState::clientNumberSet()
@@ -209,6 +210,5 @@ bool PlayState::clientNumberSet()
 	}
 
 	this->playerNumber = NetworkManager::getInstance().getPlayerNumber();
-	this->gameMode = NetworkManager::getInstance().getGameMode();
 	return true;
 }

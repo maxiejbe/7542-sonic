@@ -29,6 +29,7 @@ const char* PLAYER_IS_INVINCIBLE_NODE = "ii";
 const char* PLAYER_IS_RECOVERING_NODE = "ir";
 const char* PLAYER_TEAM_POINTS_NODE = "tp";
 const char* PLAYER_TEAM_RINGS_NODE = "tr";
+const char* PLAYER_TEAM_ID_NODE = "ti";
 
 const int COLLABORATIVE_MODE = 2;
 const int COLLABORATIVE_TEAM_ID = 1;
@@ -63,6 +64,7 @@ Player::Player()
 
 	this->teamPoints = 0;
 	this->teamRings = 0;
+	this->teamId = 0;
 }
 
 Player::Player(Player & anotherPlayer) {
@@ -95,6 +97,7 @@ void Player::copyFrom(Player & anotherPlayer)
 	this->setIsRecovering(anotherPlayer.getIsRecovering());
 	this->setTeamPoints(anotherPlayer.getTeamPoints());
 	this->setTeamRings(anotherPlayer.getTeamRings());
+	this->setTeamId(anotherPlayer.getTeamId());
 }
 
 void Player::lock()
@@ -519,6 +522,8 @@ void Player::unserialize(Value * nodeRef)
 	parseInt(&teamPoints, 0, nodeRef, PLAYER_TEAM_POINTS_NODE);
 	//team rings
 	parseInt(&teamRings, 0, nodeRef, PLAYER_TEAM_RINGS_NODE);
+	//team id
+	parseInt(&teamId, 0, nodeRef, PLAYER_TEAM_ID_NODE);
 }
 
 void Player::serializePlayer()
@@ -584,6 +589,8 @@ string Player::serialize()
 	writer.Int(this->teamPoints);
 	writer.String(PLAYER_TEAM_RINGS_NODE);
 	writer.Int(this->teamRings);
+	writer.String(PLAYER_TEAM_ID_NODE);
+	writer.Int(this->teamId);
 
 	int(time);
 

@@ -29,7 +29,6 @@ protected:
 private:
 	static EndLevelState m_EndLevelState;
 
-	Player* player;
 	TTF_Font* fontLifes;
 	TTF_Font* fontScore;
 	TTF_Font* fontLevel;
@@ -38,12 +37,11 @@ private:
 	Texture playerImage;
 
 	void showLevelHasPassed();
-	void showStatistics();
+	void showStatistics(GameMode gameMode);
 	void showText(string text, int x, int y, TTF_Font* font, SDL_Color color);
 	//void freeSurfaceStatistics();
 	void showPlayerImage(Texture playerImage, int x, int y);
 	vector<Player*> players;
-
 };
 
 #endif // !END_LEVEL_STATE_H

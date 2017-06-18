@@ -41,6 +41,8 @@ public:
 	GameMode getGameMode();
 	vector<Level>* getLevels();
 
+	bool getLevelFinished();
+
 	bool connectToServer(ServerConfiguration serverConfig);
 
 private:
@@ -52,6 +54,7 @@ private:
 	unordered_map<int, EntityView*> entityViews;
 	bool startGame;
 	int actualLevel;
+	bool levelFinished;
 
 	int playerNumber;
 	GameMode gameMode;

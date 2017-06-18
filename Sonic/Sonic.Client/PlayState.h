@@ -65,7 +65,6 @@ private:
 
 	Player* ownPlayer;
 
-	GameMode gameMode;
 	int team;
 };
 

@@ -87,6 +87,16 @@ void Game::run()
 	}
 }
 
+GameMode Game::getGameMode()
+{
+	return this->gameMode;
+}
+
+void Game::setGameMode(GameMode gameMode)
+{
+	this->gameMode = gameMode;
+}
+
 size_t Game::statesSize()
 {
 	return this->states.size();
