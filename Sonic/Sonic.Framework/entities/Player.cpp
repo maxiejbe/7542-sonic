@@ -170,6 +170,20 @@ Vector2 Player::getPosition()
 void Player::reset()
 {
 	this->position = Vector2(0, getGroundPos());
+	this->isJumping = false;
+	this->facingDirection = FACING_RIGHT;
+	this->spriteState = PlayerStatus::idle;
+	this->isConnected = true;
+	this->testMode = false;
+	this->rings = 0;
+	this->points = 0;
+	this->isActive = true;
+	this->time = 0;
+	this->hasShield = false;
+	this->isInvincible = false;
+	this->isRecovering = false;
+	this->teamPoints = 0;
+	this->teamRings = 0;
 }
 
 void Player::setXPosition(double x)

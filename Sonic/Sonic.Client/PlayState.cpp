@@ -49,7 +49,7 @@ void PlayState::load(Game* game)
 
 	PlayerView* playerView = NetworkManager::getInstance().getOwnPlayerView();
 
-	// Put player at the start
+	// Put player at the start and reset his values
 	if (playerView != NULL)
 		playerView->getPlayer()->reset();
 
