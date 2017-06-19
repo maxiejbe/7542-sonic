@@ -3,6 +3,7 @@
 #include "ServerMessage.h"
 
 const char* SERVER_MESSAGE_TYPE_NODE = "t";
+const char* SERVER_MESSAGE_TIME_NODE = "ti";
 const char* SERVER_MESSAGE_GAME_MODE_NODE = "gm";
 const char* SERVER_MESSAGE_PLAYER_NUMBER_NODE = "pn";
 const char* SERVER_MESSAGE_PLAYERS_STATUS_NODE = "ps";
@@ -85,6 +86,16 @@ Camera * ServerMessage::getCamera()
 	return this->camera;
 }
 
+int ServerMessage::getTime()
+{
+	return this->time;
+}
+
+void ServerMessage::setTime(int ms)
+{
+	this->time = ms;
+}
+
 void ServerMessage::setCamera(Camera * camera)
 {
 	this->camera = camera;
@@ -129,6 +140,8 @@ void ServerMessage::unserialize(Value* nodeRef)
 		parseLevels(nodeRef);
 		break;
 	case player_entities_status:
+		//time
+		parseInt((int*)&time, 0, nodeRef, SERVER_MESSAGE_TIME_NODE);
 		parsePlayersStatus(nodeRef);
 		parseCameraStatus(nodeRef);
 		parseEntitiesStatus(nodeRef);
@@ -160,6 +173,7 @@ string ServerMessage::serialize()
 	//type
 	writer.String(SERVER_MESSAGE_TYPE_NODE);
 	writer.Int(this->type);
+
 	//player number
 	switch (this->type)
 	{
@@ -170,6 +184,15 @@ string ServerMessage::serialize()
 		writer.Int(this->playerNumber);
 		break;
 	case player_entities_status:
+		//time
+		writer.String(SERVER_MESSAGE_TIME_NODE);
+		if (players.size() > 0)
+			writer.Int(players.at(0)->getTime());
+		else if (entities.size() > 0)
+			writer.Int(entities.at(0)->getTime());
+		else
+			writer.Int(0);
+
 		this->serializePlayers(writer);
 		this->serializeCamera(writer);
 		this->serializeEntities(writer);

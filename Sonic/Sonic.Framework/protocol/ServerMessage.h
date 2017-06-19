@@ -26,6 +26,10 @@ public:
 	vector<Level>* getLevels();
 	int getLevelToStart();
 	Camera * getCamera();
+
+	int getTime();
+	void setTime(int ms);
+
 	void setCamera(Camera * camera);
 	void setPlayers(vector<Player*> players);
 	void setEntities(vector<Entity*> enemies);
@@ -54,6 +58,7 @@ private:
 	Camera * camera;
 	int playerNumber;
 	GameMode gameMode;
+	int time;
 };
 
 #endif

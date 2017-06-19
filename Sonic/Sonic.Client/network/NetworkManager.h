@@ -84,5 +84,7 @@ private:
 	bool continueHeartBeating;
 
 	time_t lastHeartBeat;
+
+	int ms;
 };
 

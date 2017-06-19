@@ -28,7 +28,7 @@ void Obstacle::onCollision(Player * player, Camera* camera)
 
 	// Jumping
 	if (borderBottom <= otherBorderTop) {
-		if (this->getType() == EntityResolver::toTypeString(EntityType::obstaculo_pinche)) {
+		if (this->getType() == EntityResolver::toTypeString(EntityType::obstaculo_pinche) && !player->getIsRecovering()) {
 			player->damage();
 		}
 

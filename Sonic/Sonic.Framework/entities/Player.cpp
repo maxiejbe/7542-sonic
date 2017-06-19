@@ -18,7 +18,7 @@ const char* PLAYER_SCROLL_SPEED_NODE = "scs";
 const char* PLAYER_FILE_PATH_NODE = "fp";
 const char* PLAYER_TYPE_NODE = "pt";
 const char* PLAYER_IS_CONNECTED_NODE = "ic";
-const char* PLAYER_MILLISECONDS = "ms";
+//const char* PLAYER_MILLISECONDS = "ms";
 const char* PLAYER_TEST_MODE_NODE = "tm";
 const char* PLAYER_RINGS_NODE = "ri";
 const char* PLAYER_LIVES_NODE = "li";
@@ -86,7 +86,7 @@ void Player::copyFrom(Player & anotherPlayer)
 	this->setSpriteState(anotherPlayer.getSpriteState());
 	this->setPlayerType(anotherPlayer.getPlayerType());
 	this->setIsConnected(anotherPlayer.getIsConnected());
-	this->setTime(anotherPlayer.getTime());
+	//this->setTime(anotherPlayer.getTime());
 	this->setTestMode(anotherPlayer.getTestMode());
 	this->setRings(anotherPlayer.getRings());
 	this->setLives(anotherPlayer.getLives());
@@ -515,7 +515,7 @@ void Player::unserialize(Value * nodeRef)
 	//is connected
 	parseBool(&isConnected, false, nodeRef, PLAYER_IS_CONNECTED_NODE);
 	//time
-	parseInt(&time, 0, nodeRef, PLAYER_MILLISECONDS);
+	//parseInt(&time, 0, nodeRef, PLAYER_MILLISECONDS);
 	//test mode
 	parseBool(&testMode, false, nodeRef, PLAYER_TEST_MODE_NODE);
 	//rings
@@ -581,8 +581,8 @@ string Player::serialize()
 	writer.Int(this->playerType);
 	writer.String(PLAYER_IS_CONNECTED_NODE);
 	writer.Bool(this->isConnected);
-	writer.String(PLAYER_MILLISECONDS);
-	writer.Int(this->time);
+	//writer.String(PLAYER_MILLISECONDS);
+	//writer.Int(this->time);
 	writer.String(PLAYER_TEST_MODE_NODE);
 	writer.Bool(this->testMode);
 	writer.String(PLAYER_RINGS_NODE);
