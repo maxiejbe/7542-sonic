@@ -361,8 +361,12 @@ vector<Entity*> Server::getVisibleEntities()
 	vector<Entity*> entities = this->scenario->getEntities();
 	vector<Entity*> visibleEntities;
 	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); it++) {
-		
+
 		if ((*it)->getIsActive() && EntityController::isEntityVisible((*it), this->camera)) {
+			
+			if ((*it)->getType() == "anillo") {
+				(*it)->setTime(timer.elapsed());
+			}
 			visibleEntities.push_back((*it));
 		}
 	}
@@ -385,7 +389,8 @@ void Server::levelFinished()
 	{
 		if (this->currentLevel == this->lastLevel) {
 			this->notifyClientsGameFinished();
-		}else {
+		}
+		else {
 			//increment level
 			this->currentLevel++;
 			this->notifyClientsLevelFinished();
@@ -405,7 +410,7 @@ void Server::notifyClientsLevelFinished()
 	this->resetLevel();
 }
 
-void Server::notifyClientsGameFinished() 
+void Server::notifyClientsGameFinished()
 {
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
 		int bytecount;

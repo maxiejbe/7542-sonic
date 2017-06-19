@@ -34,10 +34,10 @@
         "limites": [
           {
             "tipo": "anillo",
-            "cantidad_minima": 5,
+            "cantidad_minima": 10,
             "cantidad_maxima": 10,
-            "min_x": 1500,
-            "max_x": 3000,
+            "min_x": 150,
+            "max_x": 500,
             "min_y": 300,
             "max_y": 445
           },
