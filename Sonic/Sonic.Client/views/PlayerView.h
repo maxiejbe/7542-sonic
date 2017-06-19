@@ -40,6 +40,7 @@ private:
 	Texture textureInvincible;
 	Player* player;
 	SDL_Rect** spriteClips;
+	SDL_Rect* shieldClips;
 	bool isGreyed;
 };
 

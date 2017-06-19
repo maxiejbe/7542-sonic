@@ -25,16 +25,21 @@ PlayerView::~PlayerView()
 		}
 		delete[] this->spriteClips;
 	}
-	if (this->player == nullptr) return;
+
+	if (this->shieldClips != nullptr) {
+		delete this->shieldClips;
+	}
+
+	if (this->player != nullptr) return;
 	delete this->player;
 }
 
 void PlayerView::render(int camX, int camY)
 {
 	checkTextures();
+	renderPlayer(camX, camY);
 	renderShield(camX, camY);
 	renderInvincibility(camX, camY);
-	renderPlayer(camX, camY);
 }
 
 bool PlayerView::checkTextures()
@@ -89,11 +94,24 @@ void PlayerView::renderShield(int camX, int camY)
 void PlayerView::renderInvincibility(int camX, int camY)
 {
 	if (player->getIsInvincible()) {
-		if (this->textureInvincible.getTexture() == nullptr && !this->textureInvincible.loadFromFile("img/invincibility.png")) {
-			LOG(logWARNING) << "No se pudo cargar la imagen del shield '" << "img/invincibility.png" << "'.";
+		if (this->textureInvincible.getTexture() == nullptr && !this->textureInvincible.loadFromFile("img/shields-spritesheet.png")) {
+			LOG(logWARNING) << "No se pudo cargar la imagen del shield '" << "img/shields-spritesheet.png" << "'.";
 		}
 		else {
-			textureInvincible.render((int)(player->getPosition().x - camX) - INVINCIBILITY_WIDTH / 4, (int)(player->getPosition().y - camY) - INVINCIBILITY_HEIGHT / 8, SHIELD_WIDTH, INVINCIBILITY_HEIGHT);
+			Uint32 sprite = (this->player->getTime() / 120) % 9;
+
+			SDL_Rect* currentClip = &shieldClips[sprite];
+
+			int x = player->getPosition().x - camX - INVINCIBILITY_WIDTH / 4;
+			int y = player->getPosition().y - camY - INVINCIBILITY_HEIGHT / 8;
+			int w = INVINCIBILITY_WIDTH;
+			int h = INVINCIBILITY_HEIGHT;
+
+			// Scale
+			SDL_Rect dest = { x, y, w, h };
+
+			textureInvincible.render(x, y, currentClip, dest, 0, NULL, SDL_FLIP_NONE);
+			//textureInvincible.render((int)(player->getPosition().x - camX) - INVINCIBILITY_WIDTH / 4, (int)(player->getPosition().y - camY) - INVINCIBILITY_HEIGHT / 8, SHIELD_WIDTH, INVINCIBILITY_HEIGHT);
 		}
 	}
 	else if (this->textureInvincible.getTexture() != nullptr) {
@@ -731,6 +749,62 @@ void PlayerView::loadSpriteClips()
 		spriteClips[PlayerStatus::spinning][4].h = 40;// 30;
 		break;
 	}
+
+	shieldClips = new SDL_Rect[9];
+
+	// 1
+	shieldClips[0].x = 7;
+	shieldClips[0].y = 455;
+	shieldClips[0].w = 48;
+	shieldClips[0].h = 48;
+
+	// 2
+	shieldClips[1].x = 58;
+	shieldClips[1].y = 455;
+	shieldClips[1].w = 48;
+	shieldClips[1].h = 48;
+
+	// 3
+	shieldClips[2].x = 109;
+	shieldClips[2].y = 455;
+	shieldClips[2].w = 48;
+	shieldClips[2].h = 48;
+
+	// 4
+	shieldClips[3].x = 160;
+	shieldClips[3].y = 455;
+	shieldClips[3].w = 48;
+	shieldClips[3].h = 48;
+
+	// 5
+	shieldClips[4].x = 211;
+	shieldClips[4].y = 455;
+	shieldClips[4].w = 48;
+	shieldClips[4].h = 48;
+
+	// 2
+	shieldClips[5].x = 262;
+	shieldClips[5].y = 455;
+	shieldClips[5].w = 48;
+	shieldClips[5].h = 48;
+
+	// 3
+	shieldClips[6].x = 313;
+	shieldClips[6].y = 455;
+	shieldClips[6].w = 48;
+	shieldClips[6].h = 48;
+
+	// 4
+	shieldClips[7].x = 364;
+	shieldClips[7].y = 455;
+	shieldClips[7].w = 48;
+	shieldClips[7].h = 48;
+
+	// 5
+	shieldClips[8].x = 415;
+	shieldClips[8].y = 455;
+	shieldClips[8].w = 48;
+	shieldClips[8].h = 48;
 }
 
 Player * PlayerView::getPlayer()
