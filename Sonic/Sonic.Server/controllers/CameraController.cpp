@@ -1,7 +1,7 @@
 #include "CameraController.h"
 
-const int RIGHT_BORDER_WIDTH = 100;
-const int LEFT_BORDER_WIDTH = 10;
+const int RIGHT_BORDER_WIDTH = 300;
+const int LEFT_BORDER_WIDTH = 30;
 
 CameraController::CameraController()
 {

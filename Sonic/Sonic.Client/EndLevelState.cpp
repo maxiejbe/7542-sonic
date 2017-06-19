@@ -85,7 +85,7 @@ void EndLevelState::showStatistics(GameMode gameMode)
 	showLevelHasPassed();
 
 	// Show number level
-	string nameLevel = to_string(1); // TODO get level dynamically
+	string nameLevel = to_string(NetworkManager::getInstance().getActualLevel());
 	showText(nameLevel, 560, 150, fontLevel, { 255, 255, 0 });
 
 	int INITIAL_Y = 300;

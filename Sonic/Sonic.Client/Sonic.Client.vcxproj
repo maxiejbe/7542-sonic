@@ -50,6 +50,7 @@
     <ClCompile Include="views\PlayerView.cpp" />
     <ClCompile Include="views\RingView.cpp" />
     <ClCompile Include="WaitingState.cpp" />
+    <ClCompile Include="WinGameState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\image-not-found.png" />
@@ -100,6 +101,7 @@
     <ClInclude Include="views\PlayerView.h" />
     <ClInclude Include="views\RingView.h" />
     <ClInclude Include="WaitingState.h" />
+    <ClInclude Include="WinGameState.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sonic.rc" />
