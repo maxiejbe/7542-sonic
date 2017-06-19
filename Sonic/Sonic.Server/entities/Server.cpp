@@ -250,6 +250,11 @@ int Server::getCurrentLevel()
 	return this->currentLevel;
 }
 
+bool Server::lastLevelReached()
+{
+	return this->currentLevel == this->lastLevel;
+}
+
 void Server::resetLevel()
 {
 	Level* level = &this->gameConfig->getLevels()->at(this->currentLevel - 1);
@@ -378,23 +383,24 @@ void Server::levelFinished()
 {
 	//mutex in order to avoid multiple level finished notifications
 	bool notifyLevelFinish = false;
+	bool lastLevelReached = false;
 	this->levelFinishedMutex.lock();
 	if (!this->levelFinishedNotified) {
 		this->levelFinishedNotified = true;
 		notifyLevelFinish = true;
 	}
+	lastLevelReached = this->lastLevelReached();
 	this->levelFinishedMutex.unlock();
+
+	//last level should't be notified, boss dead ends game
+	if (lastLevelReached) {
+		return;
+	}
 
 	if (notifyLevelFinish)
 	{
-		if (this->currentLevel == this->lastLevel) {
-			this->notifyClientsGameFinished();
-		}
-		else {
-			//increment level
-			this->currentLevel++;
-			this->notifyClientsLevelFinished();
-		}
+		this->currentLevel++;
+		this->notifyClientsLevelFinished();
 	}
 }
 
