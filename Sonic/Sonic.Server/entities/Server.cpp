@@ -369,10 +369,6 @@ vector<Entity*> Server::getVisibleEntities()
 	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); it++) {
 
 		if ((*it)->getIsActive() && EntityController::isEntityVisible((*it), this->camera)) {
-			
-			if ((*it)->getType() == "anillo") {
-				(*it)->setTime(timer.elapsed());
-			}
 			visibleEntities.push_back((*it));
 		}
 	}
@@ -468,6 +464,8 @@ DWORD Server::updateEnemiesHandler()
 			}
 			enemy->serializeEnemy();
 		}
+
+		Sleep(10);
 	}
 
 	return 0;
