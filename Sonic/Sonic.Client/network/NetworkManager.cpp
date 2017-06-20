@@ -197,10 +197,11 @@ void NetworkManager::handleMessage(char * receivedMessage)
 				this->startGame = true;
 				this->levelFinished = false;
 
-				this->continueHeartBeating = true;
-				this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
-
-				lastHeartBeat = NULL;
+				if (!this->continueHeartBeating) {
+					this->continueHeartBeating = true;
+					this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
+					lastHeartBeat = NULL;
+				}
 				break;
 			case level_finish:
 				this->levelFinished = true;
