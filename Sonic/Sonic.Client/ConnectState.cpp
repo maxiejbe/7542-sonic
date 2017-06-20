@@ -6,6 +6,7 @@
 ConnectState ConnectState::m_ConnectState;
 
 const int CLIENT_NUMBER_MAX_CONNECTED_PLAYERS = -99;
+const int CLIENT_NUMBER_NOT_ACTIVE_PLAYER = -100;
 
 void ConnectState::load(Game* game)
 {
@@ -17,7 +18,8 @@ void ConnectState::load(Game* game)
 
 		if (connected) {
 			while (NetworkManager::getInstance().getPlayerNumber() < 0) {
-				if (NetworkManager::getInstance().getPlayerNumber() == CLIENT_NUMBER_MAX_CONNECTED_PLAYERS) {
+				if (NetworkManager::getInstance().getPlayerNumber() == CLIENT_NUMBER_MAX_CONNECTED_PLAYERS || 
+					NetworkManager::getInstance().getPlayerNumber() == CLIENT_NUMBER_NOT_ACTIVE_PLAYER) {
 					break;
 				}
 

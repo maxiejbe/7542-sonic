@@ -26,6 +26,7 @@ Entity::Entity()
 {
 	this->maxHorizontalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
 	this->maxVerticalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
+	this->isMoving = false;
 }
 
 Entity::Entity(Entity* entity)
@@ -41,6 +42,7 @@ Entity::Entity(Entity* entity)
 	this->maxHorizontalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
 	this->maxVerticalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
 	this->isRecovering = false;
+	this->isMoving = false;
 }
 
 void Entity::copyFrom(Entity & anotherEntity)
@@ -55,6 +57,7 @@ void Entity::copyFrom(Entity & anotherEntity)
 	this->maxHorizontalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
 	this->maxVerticalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
 	this->isRecovering = anotherEntity.isRecovering;
+	this->isMoving = anotherEntity.getIsMoving();
 }
 
 bool Entity::validate()

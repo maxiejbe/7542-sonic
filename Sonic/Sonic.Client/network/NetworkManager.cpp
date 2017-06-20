@@ -1,6 +1,7 @@
 #include "NetworkManager.h"
 
 const int CLIENT_NUMBER_MAX_CONNECTED_PLAYERS = -99;
+const int CLIENT_NUMBER_NOT_ACTIVE_PLAYER = -100;
 
 NetworkManager::NetworkManager()
 {
@@ -170,7 +171,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		switch (sMessage->getType()) {
 			case player_assign:
 				LOG(logINFO) << "Network Manager: Assignación de numero de usuario -> " << sMessage->getPlayerNumber();
-				if (sMessage->getPlayerNumber() != CLIENT_NUMBER_MAX_CONNECTED_PLAYERS) {
+				if (sMessage->getPlayerNumber() != CLIENT_NUMBER_MAX_CONNECTED_PLAYERS && sMessage->getPlayerNumber() != CLIENT_NUMBER_NOT_ACTIVE_PLAYER) {
 					clientResponse->setType(MessageType::player_assign_ok);
 					this->sendMessage(clientResponse);
 				}
