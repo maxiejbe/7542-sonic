@@ -252,7 +252,7 @@ void Enemy::onCollision(Player * player, Camera* camera)
 		bounceVertical(player);
 	}
 	else {
-		if (!player->getIsRecovering()) {
+		if (!player->getIsRecovering() && !player->getTestMode()) {
 			player->damage();
 		}
 

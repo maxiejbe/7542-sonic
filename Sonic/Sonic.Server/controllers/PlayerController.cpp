@@ -147,9 +147,6 @@ void PlayerController::move(Player* player, double dt, Camera* camera)
 
 void PlayerController::calculateCollisions(Player * player, Scenario* scenario, Camera* camera)
 {
-	//dont calculate collisions if user is in test mode
-	if (player->getTestMode()) return;
-
 	vector<Entity*> entities = scenario->getEntities();
 	for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
 	{
