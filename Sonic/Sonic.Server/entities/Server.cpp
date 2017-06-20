@@ -491,14 +491,15 @@ DWORD Server::updateEnemiesHandler()
 	while (this->continueUpdatingEnemies) {
 		vector<Entity*> entities = scenario->getEntities();
 		for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); it++) {
-			if (!(*it)->getIsMoving()) continue;
-
-			//We should find a more elegant solution. JA!
-			Enemy* enemy = (Enemy*)*it;
-			if (enemy->getIsActive() && EntityController::isEntityVisible(enemy, this->camera)) {
-				EnemyController::update(enemy, timer.elapsed());
+			if ((*it)->getIsMoving()) {
+				//We should find a more elegant solution. JA!
+				Enemy* enemy = (Enemy*)*it;
+				if (enemy->getIsActive() && EntityController::isEntityVisible(enemy, this->camera)) {
+					EnemyController::update(enemy, timer.elapsed());
+				}
 			}
-			enemy->serializeEnemy();
+
+			(*it)->serializeEntity();
 		}
 	}
 

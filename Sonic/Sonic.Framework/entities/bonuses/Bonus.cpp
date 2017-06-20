@@ -9,6 +9,12 @@ Bonus::Bonus(string type)
 	this->dimensions = Dimensions(BONUS_DEFAULT_WIDTH, BONUS_DEFAULT_HEIGHT, 0);
 }
 
+void Bonus::serialize(Writer<StringBuffer> &writer)
+{
+	writer.StartObject();
+	Entity::serialize(writer);
+	writer.EndObject();
+}
 
 void Bonus::onCollision(Player * player, Camera* camera)
 {

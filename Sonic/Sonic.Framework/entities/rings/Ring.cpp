@@ -10,6 +10,13 @@ Ring::Ring(string type)
 	this->dimensions = Dimensions(RING_DEFAULT_WIDTH, RING_DEFAULT_HEIGHT, 0);
 }
 
+void Ring::serialize(Writer<StringBuffer> &writer)
+{
+	writer.StartObject();
+	Entity::serialize(writer);
+	writer.EndObject();
+}
+
 void Ring::onCollision(Player * player, Camera* camera)
 {
 	if (!isActive) return;

@@ -72,7 +72,6 @@ void Enemy::InitializeProperties()
 
 	this->points = ENEMY_DEFAULT_POINTS;
 	this->distanceTravelled = 0;
-	this->serializedEnemy = string();
 	this->isMoving = true;
 	this->facingDirection = FacingDirection::FACING_LEFT;
 	this->isRecovering = false;
@@ -180,28 +179,6 @@ int Enemy::getLives()
 	return this->lives;
 }
 
-void Enemy::lock()
-{
-	this->enemyMutex.lock();
-}
-
-void Enemy::unlock()
-{
-	this->enemyMutex.unlock();
-}
-
-void Enemy::serializeEnemy()
-{
-	this->lock();
-	this->serializedEnemy = this->serialize();
-	this->unlock();
-}
-
-string Enemy::getSerializedEnemy()
-{
-	return this->serializedEnemy;
-}
-
 int Enemy::getRecoveringTime()
 {
 	return this->recoveringTime;
@@ -224,19 +201,15 @@ char * Enemy::getNodeName()
 	return nullptr;
 }
 
-string Enemy::serialize()
+void Enemy::serialize(Writer<StringBuffer> &writer)
 {
-	StringBuffer s;
-	Writer<StringBuffer> writer(s);
 	writer.StartObject();
-	basePropertiesSerialization(writer);
+	Entity::serialize(writer);
 	writer.String(ENEMY_FACING_DIRECTION_NODE);
 	writer.Int(facingDirection);
 	writer.String(ENEMY_IS_RECOVERING_NODE);
 	writer.Bool(this->isRecovering);
 	writer.EndObject();
-
-	return s.GetString();
 }
 
 void Enemy::onCollision(Player * player, Camera* camera)

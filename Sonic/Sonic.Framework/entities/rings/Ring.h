@@ -9,6 +9,8 @@ public:
 	Ring(string);
 	~Ring();
 
+	void serialize(Writer<StringBuffer>& writer) override;
+
 	virtual void onCollision(Player* player, Camera* camera) override;
 private:
 

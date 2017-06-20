@@ -82,6 +82,22 @@ Dimensions Entity::getDefaultDimensions()
 	return Dimensions();
 }
 
+
+void Entity::serializeEntity()
+{
+	this->lock();
+	this->serializedEntity = this->serialize();
+	this->unlock();
+}
+
+string Entity::getSerializedEntity()
+{
+	this->lock();
+	string serializedEntity = this->serializedEntity;
+	this->unlock();
+	return serializedEntity;
+}
+
 int Entity::getXPosition()
 {
 	return coordinate.getX();
@@ -191,21 +207,6 @@ void Entity::setDimensions(Dimensions dimensions)
 
 void Entity::serialize(Writer<StringBuffer> &writer)
 {
-	writer.StartObject();
-	basePropertiesSerialization(writer);
-	writer.EndObject();
-}
-
-string Entity::serialize()
-{
-	StringBuffer s;
-	Writer<StringBuffer> writer(s);
-	serialize(writer);
-	return s.GetString();
-}
-
-void Entity::basePropertiesSerialization(Writer<StringBuffer>& writer)
-{
 	writer.String(ENTITY_ID_NODE);
 	writer.Int(id);
 	writer.String(ENTITY_TYPE_NODE);
@@ -218,6 +219,14 @@ void Entity::basePropertiesSerialization(Writer<StringBuffer>& writer)
 	//writer.Int(time);
 	writer.String(coordinate.getNodeName());
 	coordinate.serialize(writer);
+}
+
+string Entity::serialize()
+{
+	StringBuffer s;
+	Writer<StringBuffer> writer(s);
+	serialize(writer);
+	return s.GetString();
 }
 
 void Entity::unserialize(Value * nodeRef)

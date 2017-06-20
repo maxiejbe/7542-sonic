@@ -262,7 +262,7 @@ void ServerMessage::serializeEntities(Writer<StringBuffer>& writer)
 	vector<Entity*>::iterator it = this->entities.begin();
 	while (it != this->entities.end()) {
 		if (*it == NULL) continue;
-		string serializedEntity = (*it)->serialize();
+		string serializedEntity = (*it)->getSerializedEntity();
 		writer.String(serializedEntity.c_str());
 		it++;
 	}
