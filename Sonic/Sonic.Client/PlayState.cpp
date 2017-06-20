@@ -5,6 +5,7 @@
 #include "PauseState.h"
 
 const int CLIENT_NUMBER_MAX_CONNECTED_PLAYERS = -99;
+const int CLIENT_NUMBER_NOT_ACTIVE_PLAYER = -100;
 
 PlayState PlayState::m_PlayState;
 
@@ -206,6 +207,14 @@ bool PlayState::clientNumberSet()
 	while (NetworkManager::getInstance().getPlayerNumber() < 0) {
 		if (NetworkManager::getInstance().getPlayerNumber() == CLIENT_NUMBER_MAX_CONNECTED_PLAYERS) {
 			Banner maxClientsReached = Banner("Max players reached", { 0,0,0,150 }, "img/menu-background.jpg");
+			maxClientsReached.showBanner();
+			Sleep(1000);
+
+			return false;
+		}
+
+		if (NetworkManager::getInstance().getPlayerNumber() == CLIENT_NUMBER_NOT_ACTIVE_PLAYER) {
+			Banner maxClientsReached = Banner("You've lost, game has already started", { 0,0,0,150 }, "img/menu-background.jpg");
 			maxClientsReached.showBanner();
 			Sleep(1000);
 

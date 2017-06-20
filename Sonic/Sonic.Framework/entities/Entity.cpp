@@ -26,6 +26,7 @@ Entity::Entity()
 {
 	this->maxHorizontalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
 	this->maxVerticalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
+	this->isMoving = false;
 }
 
 Entity::Entity(Entity* entity)
@@ -41,6 +42,7 @@ Entity::Entity(Entity* entity)
 	this->maxHorizontalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
 	this->maxVerticalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
 	this->isRecovering = false;
+	this->isMoving = false;
 }
 
 void Entity::copyFrom(Entity & anotherEntity)
@@ -55,6 +57,7 @@ void Entity::copyFrom(Entity & anotherEntity)
 	this->maxHorizontalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
 	this->maxVerticalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
 	this->isRecovering = anotherEntity.isRecovering;
+	this->isMoving = anotherEntity.getIsMoving();
 }
 
 bool Entity::validate()
@@ -195,6 +198,16 @@ void Entity::setCoordinate(Coordinate coordinate)
 	this->coordinate = coordinate;
 }
 
+void Entity::setCoordinateX(double x)
+{
+	this->coordinate = Coordinate(x, coordinate.getY());
+}
+
+void Entity::setCoordinateY(double y)
+{
+	this->coordinate = Coordinate(coordinate.getX(), y);
+}
+
 Dimensions Entity::getDimensions()
 {
 	return dimensions;
@@ -298,4 +311,24 @@ bool Entity::getIsRecovering()
 void Entity::setIsRecovering(bool isRecovering)
 {
 	this->isRecovering = isRecovering;
+}
+
+double Entity::getLeft()
+{
+	return this->getXPosition() - this->getMaxHorizontalDistance();
+}
+
+double Entity::getRight()
+{
+	return this->getXPosition() + this->getWidth();
+}
+
+double Entity::getTop()
+{
+	return this->getYPosition() - this->getMaxVerticalDistance();
+}
+
+double Entity::getBottom()
+{
+	return this->getYPosition() + this->getHeight();
 }

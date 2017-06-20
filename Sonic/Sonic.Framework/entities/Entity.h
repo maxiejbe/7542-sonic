@@ -52,6 +52,8 @@ public:
 
 	Coordinate getCoordinate();
 	void setCoordinate(Coordinate);
+	void setCoordinateX(double x);
+	void setCoordinateY(double y);
 	Dimensions getDimensions();
 	void setDimensions(Dimensions);
 
@@ -60,6 +62,11 @@ public:
 
 	int getTime();
 	void setTime(int time);
+
+	double getLeft();
+	double getRight();
+	double getTop();
+	double getBottom();
 
 	FacingDirection getFacingDirection();
 	void setFacingDirection(FacingDirection);

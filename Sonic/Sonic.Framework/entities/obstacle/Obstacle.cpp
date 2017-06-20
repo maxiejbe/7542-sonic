@@ -41,8 +41,9 @@ void Obstacle::onCollision(Player * player, Camera* camera)
 
 		player->setYVelocity(-7);
 
-		int middleOfObstacle = ((otherBorderRight - otherBorderLeft) / 2) + otherBorderLeft;
-		if (player->getXPosition() <= middleOfObstacle)
+		int middleOfObstacle = (otherBorderLeft + otherBorderRight) / 2;
+		int middleOfPlayer = (borderLeft + borderRight) / 2;
+		if (middleOfPlayer <= middleOfObstacle)
 			player->setXVelocity(-10);
 		else
 			player->setXVelocity(10);

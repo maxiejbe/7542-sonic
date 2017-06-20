@@ -24,22 +24,22 @@ bool Collisionable::isCollisioningRectangle(Collisionable * otherCollisionable)
 	int otherBorderBotton = otherCollisionable->getYPosition() + otherCollisionable->getHeight();
 
 	//RECTANGLE COLLISION							
-	if (borderLeft >= otherBorderRight)
+	if (borderLeft > otherBorderRight)
 	{
 		collision = false;
 	}
 	
-	if (borderRight <= otherBorderLeft)
+	if (borderRight < otherBorderLeft)
 	{
 		collision = false;
 	}
 	
-	if (borderTop >= otherBorderBotton)
+	if (borderTop > otherBorderBotton)
 	{
 		collision = false;
 	}
 	
-	if (borderBotton <= otherBorderTop)
+	if (borderBotton < otherBorderTop)
 	{
 		collision = false;
 	}

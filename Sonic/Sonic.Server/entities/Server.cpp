@@ -15,6 +15,7 @@ const char* MESSAGE_SERVER_SEND_MESSAGE_ERROR = "No se pudo enviar el mensaje ";
 const char* MESSAGE_SERVER_SEND_MESSAGE_SUCCESS = "Se envió correctamente el mensaje ";
 
 const int CLIENT_NUMBER_MAX_CONNECTED_PLAYERS = -99;
+const int CLIENT_NUMBER_NOT_ACTIVE_PLAYERS = -100;
 
 const int DEFAULT_COLLABORATIVE_TEAM_ID = 1;
 const int PLAYER_TEAM_ID_NOT_SET = 0;
@@ -204,6 +205,14 @@ void Server::acceptClientConnection()
 
 	Client * previousClient = nullptr;
 	if (player != nullptr) {
+		//if player is not active inform client that all lives were lost^M
+		if (!player->getIsActive()) {
+			client->setClientNumber(CLIENT_NUMBER_NOT_ACTIVE_PLAYERS);
+			client->sendClientNumber();
+			delete client;
+			return;
+		}
+
 		previousClient = clients[index];
 	}
 
