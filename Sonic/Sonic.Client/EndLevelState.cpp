@@ -128,7 +128,7 @@ void EndLevelState::showStatistics(GameMode gameMode)
 	INITIAL_Y = 470;
 
 	if (gameMode == GameMode::grupal) {
-		x = 400 - (75 + 100 * (2 - 1));
+		x = 400 - (75 + 150);
 		for (int j = 1; j <= 2; j++) {
 
 			for (int i = 0; i < PLAYERS_SIZE; i++) {
@@ -151,6 +151,9 @@ void EndLevelState::showStatistics(GameMode gameMode)
 			showText(rings, x, INITIAL_Y + 60, fontScore, { 255, 255, 0 });
 
 			x += 300;
+
+			teamScore = 0;
+			teamRings = 0;
 		}
 	}
 	else if (gameMode == GameMode::colaborativo) {
