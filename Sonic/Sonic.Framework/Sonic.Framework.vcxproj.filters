@@ -34,6 +34,7 @@
     <ClCompile Include="entities\obstacle\Obstacle.cpp" />
     <ClCompile Include="entities\rings\Ring.cpp" />
     <ClCompile Include="entities\common\Collisionable.cpp" />
+    <ClCompile Include="Rectangle2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entities\Camera.h" />
@@ -70,5 +71,6 @@
     <ClInclude Include="entities\obstacle\Obstacle.h" />
     <ClInclude Include="entities\rings\Ring.h" />
     <ClInclude Include="entities\common\Collisionable.h" />
+    <ClInclude Include="Rectangle2.h" />
   </ItemGroup>
 </Project>

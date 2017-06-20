@@ -3,6 +3,9 @@
 #include "entities/Server.h"
 #include "entities/GameConfig.h"
 #include "Parser.h"
+#include "Rectangle2.h"
+
+vector<Rectangle2> rectangles;
 
 int getRandomBetween(int min, int max) {
 	return rand() % ((max - min) + 1) + min;
@@ -27,14 +30,32 @@ vector<Entity*> generateLevelEntities(Level level, int* entityId) {
 
 			int x = getRandomBetween(elit->getMinX(), elit->getMaxX());
 			int y = getRandomBetween(elit->getMinY(), elit->getMaxY());
-			Coordinate coordinate(x, y);
-			entity->setCoordinate(coordinate);
+			entity->setCoordinate(Coordinate(x, y));
 
-			//TODO: Set random position
+			bool isCollisioning = true;
+			while (isCollisioning) {
+				isCollisioning = false;
+				for (Rectangle2 r : rectangles) {
+					if (r.collisionsWith(entity->getLeft(), entity->getRight(), entity->getTop(), entity->getBottom())) {
+						isCollisioning = true;
+						break;
+					}
+				}
+
+				if (!isCollisioning) break;
+				x = getRandomBetween(elit->getMinX(), elit->getMaxX());
+				y = getRandomBetween(elit->getMinY(), elit->getMaxY());
+				entity->setCoordinate(Coordinate(x, y));
+			}
+
+			rectangles.push_back(Rectangle2(entity->getLeft(), entity->getRight(), entity->getTop(), entity->getBottom()));
+
 			levelEntities.push_back(entity);
 			(*entityId)++;
 		}
 	}
+
+	rectangles.clear();
 	return levelEntities;
 }
 

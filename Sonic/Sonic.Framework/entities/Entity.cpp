@@ -182,6 +182,16 @@ void Entity::setCoordinate(Coordinate coordinate)
 	this->coordinate = coordinate;
 }
 
+void Entity::setCoordinateX(double x)
+{
+	this->coordinate = Coordinate(x, coordinate.getY());
+}
+
+void Entity::setCoordinateY(double y)
+{
+	this->coordinate = Coordinate(coordinate.getX(), y);
+}
+
 Dimensions Entity::getDimensions()
 {
 	return dimensions;
@@ -292,4 +302,24 @@ bool Entity::getIsRecovering()
 void Entity::setIsRecovering(bool isRecovering)
 {
 	this->isRecovering = isRecovering;
+}
+
+double Entity::getLeft()
+{
+	return this->getXPosition() - this->getMaxHorizontalDistance();
+}
+
+double Entity::getRight()
+{
+	return this->getXPosition() + this->getWidth();
+}
+
+double Entity::getTop()
+{
+	return this->getYPosition() - this->getMaxVerticalDistance();
+}
+
+double Entity::getBottom()
+{
+	return this->getYPosition() + this->getHeight();
 }
