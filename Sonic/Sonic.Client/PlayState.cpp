@@ -20,7 +20,9 @@ void PlayState::load(Game* game)
 		Sleep(3000);
 	}
 
-	Level level = NetworkManager::getInstance().getLevels()->at(NetworkManager::getInstance().getActualLevel());
+	int at = NetworkManager::getInstance().getActualLevel() - 1;
+	if (at < 0) at = 0;
+	Level level = NetworkManager::getInstance().getLevels()->at(at);
 
 	Scenario* scenario = level.getScenario();
 
@@ -220,10 +222,10 @@ bool PlayState::clientNumberSet()
 void PlayState::showLevelBackgroundName(int level)
 {
 	Texture levelNameImage;
-	string path = "img/level" + to_string(level) + "back.jpg";	
+	string path = "img/level" + to_string(level) + "back.jpg";
 	levelNameImage.loadFromFile(path);
 	levelNameImage.render(0, 0, (int)(levelNameImage.getWidth()), (int)(levelNameImage.getHeight()));
 	SDL_RenderPresent(Renderer::getInstance().gRenderer);
-	
+
 	Sleep(2000);
 }

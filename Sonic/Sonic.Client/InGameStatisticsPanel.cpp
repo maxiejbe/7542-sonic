@@ -5,7 +5,7 @@ InGameStatisticsPanel::InGameStatisticsPanel(GameMode gameMode, int team)
 	TTF_Init();
 	fontLifes = TTF_OpenFont("fonts/SonicAdvance.ttf", 10);
 	fontScore = TTF_OpenFont("fonts/SonicAdvance.ttf", 18);
-	fontTestMode = TTF_OpenFont("fonts/SonicAdvance.ttf", 15);
+	fontTestMode = TTF_OpenFont("fonts/SonicAdvance.ttf", 14);
 	this->gameMode = gameMode;
 	this->team = team;
 }
@@ -76,6 +76,6 @@ void InGameStatisticsPanel::showStatistics(Player* player)
 
 	// Show test mode
 	if (player->getTestMode()) {
-		showText("MODO DE PRUEBA ACTIVADO", 475, 65, fontTestMode, { 255, 0, 0 });
+		showText("MODO DE PRUEBA ACTIVADO", 280, 550, fontTestMode, { 255, 0, 0 });
 	}
 }

@@ -40,12 +40,8 @@ int EndLevelState::unload()
 
 void EndLevelState::update(Game* game, float dt)
 {
-	InputManager* input = InputManager::getInstance();
-	input->update();
-
-	if (input->quitRequested()) {
-		game->quit();
-		return;
+	while (NetworkManager::getInstance().getLevelFinished()) {
+		Sleep(500);
 	}
 
 	game->changeState(PlayState::Instance());
