@@ -8,11 +8,10 @@ int getRandomBetween(int min, int max) {
 	return rand() % ((max - min) + 1) + min;
 }
 
-vector<Entity*> generateLevelEntities(Level level) {
+vector<Entity*> generateLevelEntities(Level level, int* entityId) {
 	vector<Entity*> levelEntities;
 	levelEntities.clear();
 	vector<EntityLimit> limits = level.getLimits();
-	int eid = 1;
 	srand(time(0));
 
 	for (vector<EntityLimit>::iterator elit = limits.begin(); elit != limits.end(); ++elit) {
@@ -24,7 +23,7 @@ vector<Entity*> generateLevelEntities(Level level) {
 			Entity* entity = EntityResolver::resolve(elit->getType());
 			if (entity == nullptr) continue;
 
-			entity->setId(eid);
+			entity->setId(*entityId);
 
 			int x = getRandomBetween(elit->getMinX(), elit->getMaxX());
 			int y = getRandomBetween(elit->getMinY(), elit->getMaxY());
@@ -33,7 +32,7 @@ vector<Entity*> generateLevelEntities(Level level) {
 
 			//TODO: Set random position
 			levelEntities.push_back(entity);
-			eid++;
+			(*entityId)++;
 		}
 	}
 	return levelEntities;
@@ -67,12 +66,12 @@ int main(int argc, char* args[])
 	parser->parse(&gameConfig);
 
 	vector<Level>* levels = gameConfig.getLevels();
+	int entityId = 1;
 	for (vector<Level>::iterator it = levels->begin(); it != levels->end(); ++it)
 	{
-		vector<Entity*> entities = generateLevelEntities(*it);
+		vector<Entity*> entities = generateLevelEntities(*it, &entityId);
 		(*it).setEntities(entities);
 	}
-
 
 	Server* server = new Server(&serverConfig, parser->getFileContent(), &window, &config, &gameConfig);
 
