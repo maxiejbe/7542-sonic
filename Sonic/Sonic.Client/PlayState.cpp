@@ -61,6 +61,7 @@ void PlayState::load(Game* game)
 
 int PlayState::unload()
 {
+	unordered_map<int, EntityView*> entityViews = NetworkManager::getInstance().getEntityViews();
 	entityViews.clear();
 	layerViews.clear();
 	if (this->statisticsPanel) {
@@ -224,5 +225,5 @@ void PlayState::showLevelBackgroundName(int level)
 	levelNameImage.render(0, 0, (int)(levelNameImage.getWidth()), (int)(levelNameImage.getHeight()));
 	SDL_RenderPresent(Renderer::getInstance().gRenderer);
 	
-	Sleep(2000);
+	Sleep(3000);
 }

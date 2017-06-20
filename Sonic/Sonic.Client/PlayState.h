@@ -48,7 +48,6 @@ private:
 
 	Scenario scenario;
 	Camera* cameraModel;
-	vector<EntityView*> entityViews;
 
 	SDL_Rect camera;
 	vector<LayerView> layerViews;

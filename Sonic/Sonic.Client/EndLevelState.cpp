@@ -48,10 +48,7 @@ void EndLevelState::update(Game* game, float dt)
 		return;
 	}
 
-	if (input->isKeyDown(KEY_RETURN)) {
-		// Go to next level
-		game->changeState(PlayState::Instance());
-	}
+	game->changeState(PlayState::Instance());
 }
 
 void EndLevelState::render(Game* game)

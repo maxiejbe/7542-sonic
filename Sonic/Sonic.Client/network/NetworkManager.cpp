@@ -115,8 +115,8 @@ DWORD WINAPI NetworkManager::runRecvSocketHandler(void * args)
 
 DWORD NetworkManager::recvSocketHandler()
 {
-	char receivedMsg[3096];
-	int receivedMsgLen = 3096;
+	char receivedMsg[20480];
+	int receivedMsgLen = 20480;
 	while (this->online() && this->continueReceiving)
 	{
 		if (!this->client->receiveMessage(receivedMsg, receivedMsgLen))
@@ -153,7 +153,6 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		break;
 	case player_entities_status:
 		if (this->playerNumber < 0) break;
-		this->ms = sMessage->getTime();
 		this->updatePlayerViews(sMessage->getPlayers());
 		this->updateEntityViews(sMessage->getEntities());
 		this->updateCamera(sMessage->getCamera());
@@ -294,7 +293,6 @@ void NetworkManager::updatePlayerViews(vector<Player*> players)
 		if (!playerViews.count(index)) {
 			//Create new player view and include in map
 			Player* player = new Player(*(*it));
-			player->setTime(ms);
 			PlayerView* playerView = new PlayerView(player);
 			playerViews[index] = playerView;
 			continue;
@@ -302,7 +300,6 @@ void NetworkManager::updatePlayerViews(vector<Player*> players)
 
 		//Player view already exists, just update
 		Player* player = playerViews[index]->getPlayer();
-		player->setTime(ms);
 		player->copyFrom(*(*it));
 	}
 
@@ -339,7 +336,6 @@ void NetworkManager::updateEntityViews(vector<Entity*> entities)
 		if (!entityViews.count(index)) {
 			// Create new entity view and include in map
 			Entity* entity = EntityResolver::resolve((*it)->getType());
-			entity->setTime(ms);
 			EntityView* entityView = EntityViewResolver::resolve(entity);
 			entityViews[index] = entityView;
 			continue;
@@ -347,7 +343,6 @@ void NetworkManager::updateEntityViews(vector<Entity*> entities)
 
 		// Player view already exists, just update
 		Entity* entity = entityViews[index]->getEntity();
-		entity->setTime(ms);
 		entity->copyFrom(*(*it));
 	}
 
