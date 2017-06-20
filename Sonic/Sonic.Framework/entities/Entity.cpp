@@ -7,9 +7,7 @@ const char* ENTITY_NODE = "entidades";
 const char* ENTITY_ID_NODE = "id";
 const char* ENTITY_TYPE_NODE = "tipo";
 const char* ENTITY_IMAGE_PATH_NODE = "ruta_imagen";
-//const char* ENTITY_ZINDEX_NODE = "index_z";
 const char* ENTITY_IS_ACTIVE_NODE = "is_active";
-//const char* ENTITY_TIME_NODE = "time";
 
 const char* MESSAGE_PARSING_ENTITY_NODE = "Inicio de parseo de nodo entidad.";
 const char* MESSAGE_END_PARSING_ENTITY_NODE = "Fin de parseo de nodo entidad.";
@@ -21,7 +19,6 @@ const char* ERROR_ENTITY_NO_COORDINATE_Y = "No puede dibujarse la entidad ya que
 const int ENTITY_DEFAULT_ID = 1;
 const string ENTITY_DEFAULT_TYPE = "";
 const string ENTITY_DEFAULT_IMAGE_PATH = ""; // Vacio = no hay imagen (solo color)
-//const int ENTITY_DEFAULT_ZINDEX = 0;
 const double ENTITY_DEFAULT_MAX_DISTANCE = 0;
 
 Entity::Entity()
@@ -37,12 +34,12 @@ Entity::Entity(Entity* entity)
 	this->dimensions = entity->dimensions;
 	this->coordinate = entity->coordinate;
 	this->imagePath = entity->imagePath;
-	//this->zIndex = entity->zIndex;
 	this->isActive = entity->isActive;
 	this->facingDirection = entity->facingDirection;
 	this->time = entity->time;
 	this->maxHorizontalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
 	this->maxVerticalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
+	this->isRecovering = false;
 }
 
 void Entity::copyFrom(Entity & anotherEntity)
@@ -52,12 +49,11 @@ void Entity::copyFrom(Entity & anotherEntity)
 	this->dimensions = anotherEntity.dimensions;
 	this->coordinate = anotherEntity.coordinate;
 	this->imagePath = anotherEntity.imagePath;
-	//this->zIndex = anotherEntity.zIndex;
 	this->isActive = anotherEntity.isActive;
 	this->facingDirection = anotherEntity.facingDirection;
-	//this->time = anotherEntity.time;
 	this->maxHorizontalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
 	this->maxVerticalDistance = ENTITY_DEFAULT_MAX_DISTANCE;
+	this->isRecovering = anotherEntity.isRecovering;
 }
 
 bool Entity::validate()
@@ -281,4 +277,14 @@ FacingDirection Entity::getFacingDirection()
 void Entity::setFacingDirection(FacingDirection facingDirection)
 {
 	this->facingDirection = facingDirection;
+}
+
+bool Entity::getIsRecovering()
+{
+	return this->isRecovering;
+}
+
+void Entity::setIsRecovering(bool isRecovering)
+{
+	this->isRecovering = isRecovering;
 }

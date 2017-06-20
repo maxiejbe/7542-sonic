@@ -21,9 +21,12 @@ EnemyView::~EnemyView()
 void EnemyView::draw(int camX, int camY)
 {
 	// Load image
-	if (texture.getTexture() == nullptr && this->entity->getIsActive() && !texture.loadFromFile("img/enemies-spritesheet.png")) {
-		LOG(logWARNING) << "No se pudo cargar la imagen del bonus '" << "img/enemies-spritesheet.png" << "'.";
-		return;
+	if (texture.getTexture() == nullptr) {
+		if (this->entity->getIsActive() && !texture.loadFromFile("img/enemies-spritesheet.png")) {
+			LOG(logWARNING) << "No se pudo cargar la imagen del bonus '" << "img/enemies-spritesheet.png" << "'.";
+			return;
+		}
+		texture.setBlendMode(SDL_BLENDMODE_BLEND);
 	}
 
 	if (!this->entity->getIsActive()) {
@@ -43,7 +46,19 @@ void EnemyView::draw(int camX, int camY)
 	SDL_Rect dest = { x, y, currentClip->w * 2, currentClip->h * 2 };
 
 	// Calculate facing direction
-	SDL_RendererFlip flip = (((Enemy*)this->entity)->getFacingDirection() == FACING_RIGHT) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+	Enemy* enemy = ((Enemy*)this->entity);
+	SDL_RendererFlip flip = (enemy->getFacingDirection() == FACING_RIGHT) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+
+	// Check recovering
+	if (enemy->getIsRecovering()) {
+		if (this->entity->getTime() % 200 < 100)
+			texture.setAlpha(255);
+		else
+			texture.setAlpha(155);
+	}
+	else {
+		texture.setAlpha(255);
+	}
 
 	texture.render(x, y, currentClip, dest, 0, NULL, flip);
 }
