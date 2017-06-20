@@ -2,7 +2,7 @@
   "servidor": {
     "host": "127.0.0.1",
     "puerto": 5000,
-    "maxima_cantidad_conexiones": 2
+    "maxima_cantidad_conexiones": 1
   },
   "ventana": {
     "dimensiones": {
@@ -14,7 +14,7 @@
     "vel_scroll": 400
   },
   "juego": {
-    "modo": "colaborativo",
+    "modo": "grupal",
     "niveles": [
       {
         "numero": 1,

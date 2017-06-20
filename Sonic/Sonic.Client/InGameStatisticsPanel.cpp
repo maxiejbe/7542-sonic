@@ -58,11 +58,20 @@ void InGameStatisticsPanel::showStatistics(Player* player)
 
 		// Show team score
 		string teamScore = "TEAM SCORE   " + to_string(player->getTeamPoints());
-		showText(teamScore, 530, 10, fontScore, { 255, 255, 255 });
+		showText(teamScore, 515, 10, fontScore, { 255, 255, 255 });
 
 		// Show team rings
 		string teamRings = "TEAM RINGS   " + to_string(player->getTeamRings());
-		showText(teamRings, 530, 65, fontScore, { 255, 255, 255 });
+		showText(teamRings, 515, 65, fontScore, { 255, 255, 255 });
+	}
+	else if (gameMode == GameMode::colaborativo) {
+		// Show grupal score
+		string teamScore = "GRUPAL SCORE   " + to_string(player->getTeamPoints());
+		showText(teamScore, 490, 10, fontScore, { 255, 255, 255 });
+
+		// Show grupal rings
+		string teamRings = "GRUPAL RINGS   " + to_string(player->getTeamRings());
+		showText(teamRings, 490, 65, fontScore, { 255, 255, 255 });
 	}
 
 	// Show test mode
