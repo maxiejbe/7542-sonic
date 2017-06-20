@@ -8,7 +8,7 @@ const char* ENTITY_ID_NODE = "id";
 const char* ENTITY_TYPE_NODE = "tipo";
 const char* ENTITY_IMAGE_PATH_NODE = "ruta_imagen";
 //const char* ENTITY_ZINDEX_NODE = "index_z";
-const char* ENTITY_IS_ACTIVE_NODE = "is_active";
+const char* ENTITY_IS_ACTIVE_NODE = "act";
 //const char* ENTITY_TIME_NODE = "time";
 
 const char* MESSAGE_PARSING_ENTITY_NODE = "Inicio de parseo de nodo entidad.";
@@ -20,6 +20,7 @@ const char* ERROR_ENTITY_NO_COORDINATE_Y = "No puede dibujarse la entidad ya que
 
 const int ENTITY_DEFAULT_ID = 1;
 const string ENTITY_DEFAULT_TYPE = "";
+const int ENTITY_DEFAULT_TYPEID = 0;
 const string ENTITY_DEFAULT_IMAGE_PATH = ""; // Vacio = no hay imagen (solo color)
 //const int ENTITY_DEFAULT_ZINDEX = 0;
 const double ENTITY_DEFAULT_MAX_DISTANCE = 0;
@@ -212,7 +213,7 @@ void Entity::basePropertiesSerialization(Writer<StringBuffer>& writer)
 	writer.String(ENTITY_ID_NODE);
 	writer.Int(id);
 	writer.String(ENTITY_TYPE_NODE);
-	writer.String(type.c_str());
+	writer.Int(EntityResolver::fromTypeString(type));
 	//writer.String(ENTITY_ZINDEX_NODE);
 	//writer.Int(zIndex);
 	writer.String(ENTITY_IS_ACTIVE_NODE);
@@ -232,8 +233,9 @@ void Entity::unserialize(Value * nodeRef)
 
 	parseInt(&id, ENTITY_DEFAULT_ID, nodeRef, ENTITY_ID_NODE, Validator::intGreaterThanZero);
 
-	parseString(&type, ENTITY_DEFAULT_TYPE, nodeRef, ENTITY_TYPE_NODE);
-	type = EntityResolver::toTypeString(EntityResolver::fromTypeString(type));
+	int typeId;
+	parseInt(&typeId, ENTITY_DEFAULT_TYPEID, nodeRef, ENTITY_TYPE_NODE, Validator::intGreaterThanOrEqualToZero);
+	type = EntityResolver::toTypeString((EntityType)typeId);
 
 	coordinate.parseObject(nodeRef);
 

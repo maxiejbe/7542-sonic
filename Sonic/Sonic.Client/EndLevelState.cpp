@@ -12,6 +12,9 @@ void EndLevelState::load(Game* game)
 
 	levelHasPassed.loadFromFile("img/levelhaspassed.png");
 
+	if (players.size() != 0)
+		players.clear();
+
 	unordered_map<int, PlayerView*> playerViews = NetworkManager::getInstance().getPlayerViews();
 	if (!playerViews.empty()) {
 		for (unordered_map<int, PlayerView*>::iterator it = playerViews.begin(); it != playerViews.end(); ++it) {

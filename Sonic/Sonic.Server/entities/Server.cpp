@@ -17,6 +17,7 @@ const char* MESSAGE_SERVER_SEND_MESSAGE_SUCCESS = "Se envió correctamente el men
 const int CLIENT_NUMBER_MAX_CONNECTED_PLAYERS = -99;
 
 const int DEFAULT_COLLABORATIVE_TEAM_ID = 1;
+const int PLAYER_TEAM_ID_NOT_SET = 0;
 const int TEAMS_COUNT = 2;
 
 Server::~Server()
@@ -429,10 +430,18 @@ void Server::notifyClientsGameFinished()
 vector<Player*> Server::clientsPlayers()
 {
 	//TODO: ADD MUTEX
+	int currentPlayerTeamId;
 	vector<Player*> clientPlayers = vector<Player*>();
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
 		Player* player = (*it).second->getPlayer();
+		//set team rings and points
+		currentPlayerTeamId = player->getTeamId();
+		if (currentPlayerTeamId > PLAYER_TEAM_ID_NOT_SET) {
+			player->setTeamPoints(this->teamPoints[currentPlayerTeamId - 1]);
+			player->setTeamRings(this->teamRings[currentPlayerTeamId - 1]);
+		}
+
 		if (player->getIsActive()) clientPlayers.push_back(player);
 	}
 	return clientPlayers;
