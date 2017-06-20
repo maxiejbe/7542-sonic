@@ -115,8 +115,8 @@ DWORD WINAPI NetworkManager::runRecvSocketHandler(void * args)
 
 DWORD NetworkManager::recvSocketHandler()
 {
-	char receivedMsg[4096];
-	int receivedMsgLen = 4096;
+	char receivedMsg[3096];
+	int receivedMsgLen = 3096;
 	while (this->online() && this->continueReceiving)
 	{
 		if (!this->client->receiveMessage(receivedMsg, receivedMsgLen))

@@ -35,9 +35,10 @@ Entity * EntityResolver::parse(Value* nodeRef)
 
 	const Value& entityType = node[ENTITYRESOLVER_ENTITY_TYPE_NODE];
 
-	if (!entityType.IsString()) return nullptr;
+	if (!entityType.IsInt()) return nullptr;
 
-	Entity* entity = resolve(string(entityType.GetString()));
+	//Entity* entity = resolve(string(entityType.GetString()));
+	Entity* entity = resolve(toTypeString((EntityType) entityType.GetInt()));
 	entity->unserialize(nodeRef);
 	return entity;
 }

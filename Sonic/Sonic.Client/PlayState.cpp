@@ -56,7 +56,7 @@ void PlayState::load(Game* game)
 	game->pushState(WaitingState::Instance());
 
 	// Show level name
-	showLevelBackgroundName(NetworkManager::getInstance().getActualLevel());
+	showLevelBackgroundName(level.getNumber());
 }
 
 int PlayState::unload()

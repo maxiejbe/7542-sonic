@@ -17,6 +17,7 @@ const char* MESSAGE_SERVER_SEND_MESSAGE_SUCCESS = "Se envió correctamente el men
 const int CLIENT_NUMBER_MAX_CONNECTED_PLAYERS = -99;
 
 const int DEFAULT_COLLABORATIVE_TEAM_ID = 1;
+const int PLAYER_TEAM_ID_NOT_SET = 0;
 const int TEAMS_COUNT = 2;
 
 Server::~Server()
@@ -250,6 +251,11 @@ int Server::getCurrentLevel()
 	return this->currentLevel;
 }
 
+bool Server::lastLevelReached()
+{
+	return this->currentLevel == this->lastLevel;
+}
+
 void Server::resetLevel()
 {
 	Level* level = &this->gameConfig->getLevels()->at(this->currentLevel - 1);
@@ -378,23 +384,24 @@ void Server::levelFinished()
 {
 	//mutex in order to avoid multiple level finished notifications
 	bool notifyLevelFinish = false;
+	bool lastLevelReached = false;
 	this->levelFinishedMutex.lock();
 	if (!this->levelFinishedNotified) {
 		this->levelFinishedNotified = true;
 		notifyLevelFinish = true;
 	}
+	lastLevelReached = this->lastLevelReached();
 	this->levelFinishedMutex.unlock();
+
+	//last level should't be notified, boss dead ends game
+	if (lastLevelReached) {
+		return;
+	}
 
 	if (notifyLevelFinish)
 	{
-		if (this->currentLevel == this->lastLevel) {
-			this->notifyClientsGameFinished();
-		}
-		else {
-			//increment level
-			this->currentLevel++;
-			this->notifyClientsLevelFinished();
-		}
+		this->currentLevel++;
+		this->notifyClientsLevelFinished();
 	}
 }
 
@@ -423,10 +430,18 @@ void Server::notifyClientsGameFinished()
 vector<Player*> Server::clientsPlayers()
 {
 	//TODO: ADD MUTEX
+	int currentPlayerTeamId;
 	vector<Player*> clientPlayers = vector<Player*>();
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
 		Player* player = (*it).second->getPlayer();
+		//set team rings and points
+		currentPlayerTeamId = player->getTeamId();
+		if (currentPlayerTeamId > PLAYER_TEAM_ID_NOT_SET) {
+			player->setTeamPoints(this->teamPoints[currentPlayerTeamId - 1]);
+			player->setTeamRings(this->teamRings[currentPlayerTeamId - 1]);
+		}
+
 		if (player->getIsActive()) clientPlayers.push_back(player);
 	}
 	return clientPlayers;

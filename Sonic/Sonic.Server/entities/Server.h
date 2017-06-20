@@ -49,6 +49,7 @@ public:
 	void terminateThreads();
 	void addConnectedClients();
 	int getCurrentLevel();
+	bool lastLevelReached();
 	vector<Entity*> getVisibleEntities();
 
 	void resetLevel();
