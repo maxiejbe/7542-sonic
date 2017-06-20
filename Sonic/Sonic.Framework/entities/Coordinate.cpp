@@ -1,6 +1,6 @@
 #include "Coordinate.h"
 
-char* COORDINATE_NODE = "coordenada";
+char* COORDINATE_NODE = "coo";
 const char* COORDINATE_X_NODE = "x";
 const char* COORDINATE_Y_NODE = "y";
 

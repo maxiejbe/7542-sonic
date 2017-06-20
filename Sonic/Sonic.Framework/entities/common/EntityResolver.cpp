@@ -20,7 +20,8 @@ Entity * EntityResolver::resolve(string entityType)
 	}
 	else if (entityType == toTypeString(EntityType::enemigo_cangrejo) ||
 		entityType == toTypeString(EntityType::enemigo_pez) ||
-		entityType == toTypeString(EntityType::enemigo_mosca)) {
+		entityType == toTypeString(EntityType::enemigo_mosca) ||
+		entityType == toTypeString(EntityType::enemigo_final)) {
 		destination = new Enemy(entityType);
 	}
 
@@ -76,6 +77,8 @@ EntityType EntityResolver::fromTypeString(string entityType)
 		return EntityType::enemigo_pez;
 	else if (entityType == "enemigo_mosca")
 		return EntityType::enemigo_mosca;
+	else if (entityType == "enemigo_final")
+		return EntityType::enemigo_final;
 	else
 		return EntityType::null;
 }
@@ -101,6 +104,8 @@ string EntityResolver::toTypeString(EntityType entityType)
 		return "enemigo_pez";
 	case EntityType::enemigo_mosca:
 		return "enemigo_mosca";
+	case EntityType::enemigo_final:
+		return "enemigo_final";
 	default:
 		return "";
 	}

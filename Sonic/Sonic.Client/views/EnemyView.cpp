@@ -3,6 +3,7 @@
 const int ANIMATION_MAX_FRAMES_FISH = 2;
 const int ANIMATION_MAX_FRAMES_FLY = 1;
 const int ANIMATION_MAX_FRAMES_CRAB = 5;
+const int ANIMATION_MAX_FRAMES_FINAL = 1;
 
 EnemyView::EnemyView(Enemy * enemy)
 {
@@ -57,6 +58,8 @@ int EnemyView::getFramesDivision()
 		return 90;
 	else if (type == EntityResolver::toTypeString(EntityType::enemigo_cangrejo))
 		return 85;
+	else if (type == EntityResolver::toTypeString(EntityType::enemigo_final))
+		return 90;
 
 	return 1;
 }
@@ -71,6 +74,8 @@ int EnemyView::getFramesCount()
 		return ANIMATION_MAX_FRAMES_FLY;
 	else if (type == EntityResolver::toTypeString(EntityType::enemigo_cangrejo))
 		return ANIMATION_MAX_FRAMES_CRAB;
+	else if (type == EntityResolver::toTypeString(EntityType::enemigo_final))
+		return ANIMATION_MAX_FRAMES_FINAL;
 
 	return 1;
 }
@@ -127,5 +132,13 @@ void EnemyView::loadSpriteClips()
 		spriteClips[4].y = 73;
 		spriteClips[4].w = 48;
 		spriteClips[4].h = 30;
+	}
+	else if (type == EntityResolver::toTypeString(EntityType::enemigo_final)) {
+		spriteClips = new SDL_Rect[ANIMATION_MAX_FRAMES_FINAL];
+
+		spriteClips[0].x = 389;
+		spriteClips[0].y = 14;
+		spriteClips[0].w = 91;
+		spriteClips[0].h = 75;
 	}
 }

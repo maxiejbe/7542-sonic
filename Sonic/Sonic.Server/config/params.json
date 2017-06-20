@@ -34,8 +34,8 @@
         "limites": [
           {
             "tipo": "anillo",
-            "cantidad_minima": 10,
-            "cantidad_maxima": 10,
+            "cantidad_minima": 1,
+            "cantidad_maxima": 3,
             "min_x": 150,
             "max_x": 500,
             "min_y": 300,
@@ -97,8 +97,8 @@
           },
           {
             "tipo": "obstaculo_pinche",
-            "cantidad_minima": 1,
-            "cantidad_maxima": 2,
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
             "min_x": 1500,
             "max_x": 3000,
             "min_y": 445,
@@ -106,12 +106,21 @@
           },
           {
             "tipo": "obstaculo_piedra",
-            "cantidad_minima": 1,
-            "cantidad_maxima": 2,
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
             "min_x": 1500,
             "max_x": 3000,
             "min_y": 425,
             "max_y": 425
+          },
+          {
+            "tipo": "enemigo_final",
+            "cantidad_minima": 1,
+            "cantidad_maxima": 1,
+            "min_x": 3600,
+            "max_x": 3600,
+            "min_y": 150,
+            "max_y": 150
           }
         ]
       },

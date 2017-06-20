@@ -27,6 +27,9 @@ void EnemyController::move(Enemy * enemy)
 	case enemigo_mosca:
 		horizontalMovement(enemy, 0.03);
 		break;
+	case enemigo_final:
+		horizontalMovement(enemy, 0.05);
+		break;
 	}
 
 	// If reached max distance change direction
@@ -34,6 +37,12 @@ void EnemyController::move(Enemy * enemy)
 		FacingDirection newDirection = (enemy->getFacingDirection() == FACING_LEFT) ? FACING_RIGHT : FACING_LEFT;
 		enemy->setFacingDirection(newDirection);
 		enemy->resetDistanceTravelled();
+
+		if (EntityResolver::fromTypeString(enemy->getType()) == enemigo_final) {
+			Coordinate c = Coordinate(enemy->getCoordinate().getX(),
+				newDirection == FACING_RIGHT ? enemy->getCoordinate().getY() + 230 : enemy->getCoordinate().getY() - 230);
+			enemy->setCoordinate(c);
+		}
 	}
 }
 

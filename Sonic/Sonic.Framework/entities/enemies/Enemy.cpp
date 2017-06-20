@@ -12,16 +12,20 @@ const int ENEMY_FISH_WIDTH = 60;
 const int ENEMY_FISH_HEIGHT = 64;
 const int ENEMY_FLY_WIDTH = 90;
 const int ENEMY_FLY_HEIGHT = 38;
+const int ENEMY_FINAL_WIDTH = 182;
+const int ENEMY_FINAL_HEIGHT = 150;
 
 const int ENEMY_DEFAULT_POINTS = 10;
 
 const int ENEMY_CRAB_MAX_DISTANCE = 180;
 const int ENEMY_FISH_MAX_DISTANCE = 350;
 const int ENEMY_FLY_MAX_DISTANCE = 300;
+const int ENEMY_FINAL_MAX_DISTANCE = 980;
 
 const int CRAB_GIVEN_POINTS = 100;
 const int FLY_GIVEN_POINTS = 500;
 const int FISH_GIVEN_POINTS = 200;
+const int FINAL_GIVEN_POINTS = 1000;
 
 const int BOUNCE_ON_COLLISION = 10;
 
@@ -49,6 +53,10 @@ void Enemy::InitializeProperties()
 	case EntityType::enemigo_mosca:
 		this->dimensions = Dimensions(ENEMY_FLY_WIDTH, ENEMY_FLY_HEIGHT, 0);
 		this->maxHorizontalDistance = ENEMY_FLY_MAX_DISTANCE;
+		break;
+	case EntityType::enemigo_final:
+		this->dimensions = Dimensions(ENEMY_FINAL_WIDTH, ENEMY_FINAL_HEIGHT, 0);
+		this->maxHorizontalDistance = ENEMY_FINAL_MAX_DISTANCE;
 		break;
 	default:
 		this->dimensions = Dimensions(0, 0, 0);
@@ -111,6 +119,9 @@ double Enemy::getMaxDistance()
 	case EntityType::enemigo_mosca:
 		return this->maxHorizontalDistance;
 		break;
+	case EntityType::enemigo_final:
+		return this->maxHorizontalDistance;
+		break;
 	default:
 		return 0;
 		break;
@@ -139,6 +150,9 @@ int Enemy::getGivenPoints()
 		break;
 	case enemigo_pez:
 		return FISH_GIVEN_POINTS;
+		break;
+	case enemigo_final:
+		return FINAL_GIVEN_POINTS;
 		break;
 	default:
 		return 0;
