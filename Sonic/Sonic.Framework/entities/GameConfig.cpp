@@ -11,6 +11,8 @@ string GAME_CONFIG_MODE_DEFAULT = "individual";
 
 GameConfig::GameConfig()
 {
+	this->ringPointsMultiplier = 10;
+	this->ringsForBonus = 5;
 	this->ringPointsMultiplier = 2;
 }
 
@@ -85,6 +87,16 @@ char* GameConfig::getNodeName()
 }
 
 int GameConfig::getRingPointsMultiplier()
+{
+	return this->ringPointsMultiplier;
+}
+
+int GameConfig::getRingsForBonus() 
+{
+	return this->ringsForBonus;
+}
+
+int GameConfig::getBonusRingPointsMultiplier() 
 {
 	return this->ringPointsMultiplier;
 }

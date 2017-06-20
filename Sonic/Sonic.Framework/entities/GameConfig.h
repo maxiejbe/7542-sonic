@@ -18,6 +18,8 @@ public:
 
 	GameMode getMode();
 	int getRingPointsMultiplier();
+	int getRingsForBonus();
+	int getBonusRingPointsMultiplier();
 private:
 	vector<Level> levels;
 
@@ -26,6 +28,8 @@ private:
 
 	GameMode mode;
 	int ringPointsMultiplier;
+	int ringsForBonus;
+	int	bonusRingPointsMultiplier;
 
 	// Inherited via Serializable
 	virtual void unserialize(Value * nodeRef) override;

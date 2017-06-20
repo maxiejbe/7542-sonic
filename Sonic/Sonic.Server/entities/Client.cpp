@@ -475,8 +475,11 @@ bool Client::notifyLevelFinished()
 	this->levelFinishedActions();
 	//send finish level
 	this->sendLevelFinish();
-	//wait 5 seconds for client to display statistics
-	Sleep(3000);
+	return true;
+}
+
+bool Client::notifyStartNewLevel()
+{
 	//reset user position
 	this->player->reset();
 	this->sendLevelStart();
@@ -495,8 +498,6 @@ void Client::levelFinishedActions()
 	//finish update and send status threads
 	this->pauseRefreshing = true;
 	this->pauseSending = true;
-	//calculate points obtained from rings
-	this->player->sumPoints(this->player->getRings() * this->server->getGameConfig()->getRingPointsMultiplier());
 }
 
 void Client::setClientNumber(int clientNumber)

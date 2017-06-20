@@ -176,13 +176,11 @@ void Player::reset()
 	this->isConnected = true;
 	this->testMode = false;
 	this->rings = 0;
-	this->points = 0;
 	this->isActive = true;
 	this->time = 0;
 	this->hasShield = false;
 	this->isInvincible = false;
 	this->isRecovering = false;
-	this->teamPoints = 0;
 	this->teamRings = 0;
 }
 
