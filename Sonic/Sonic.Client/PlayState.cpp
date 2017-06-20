@@ -225,5 +225,5 @@ void PlayState::showLevelBackgroundName(int level)
 	levelNameImage.render(0, 0, (int)(levelNameImage.getWidth()), (int)(levelNameImage.getHeight()));
 	SDL_RenderPresent(Renderer::getInstance().gRenderer);
 	
-	Sleep(3000);
+	Sleep(2000);
 }

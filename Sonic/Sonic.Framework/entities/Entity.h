@@ -89,7 +89,7 @@ protected:
 	bool isRecovering;
 
 	bool isActive;
-	bool isMoving = false;
+	bool isMoving;
 
 	void basePropertiesSerialization(Writer<StringBuffer>& writer);
 

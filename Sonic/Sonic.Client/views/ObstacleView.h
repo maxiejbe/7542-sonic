@@ -7,6 +7,7 @@ class ObstacleView : public EntityView {
 public:
 	ObstacleView(Entity* entity) : EntityView(entity) {
 	}
+	~ObstacleView();
 
 	virtual void draw(int camX, int camY) override;
 private:

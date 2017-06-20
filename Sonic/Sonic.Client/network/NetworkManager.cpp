@@ -115,8 +115,8 @@ DWORD WINAPI NetworkManager::runRecvSocketHandler(void * args)
 
 DWORD NetworkManager::recvSocketHandler()
 {
-	char receivedMsg[20480];
-	int receivedMsgLen = 20480;
+	char receivedMsg[10000];
+	int receivedMsgLen = 10000;
 	while (this->online() && this->continueReceiving)
 	{
 		if (!this->client->receiveMessage(receivedMsg, receivedMsgLen))
@@ -130,61 +130,90 @@ DWORD NetworkManager::recvSocketHandler()
 
 void NetworkManager::handleMessage(char * receivedMessage)
 {
-	const char * constRMessage = receivedMessage;
-	ServerMessage * sMessage = new ServerMessage();
-	if (!sMessage->fromJson(string(constRMessage))) {
-		LOG(logERROR) << "Network Manager: no se pudo deserializar el mensaje";
-		delete sMessage;
-		return;
+	char * constRMessage = receivedMessage;
+	char* multipleRootElements = "}{";
+	vector<string> messages;
+
+	//Try parse multiple elements. Split!
+	string stringMessage = string(constRMessage);
+	
+	int start_pos = 0;
+	int last_start_pos = 0;
+
+	string message;
+	while (std::string::npos != (start_pos = stringMessage.find(multipleRootElements, start_pos)))
+	{
+		++start_pos;
+		int length = start_pos - last_start_pos;
+		last_start_pos = start_pos;
+
+		//Get next message from string
+		message = stringMessage.substr(last_start_pos, start_pos);
+		messages.push_back(message);
 	}
-
-	Message* clientResponse = new Message();
-
-	switch (sMessage->getType()) {
-	case player_assign:
-		LOG(logINFO) << "Network Manager: Assignación de numero de usuario -> " << sMessage->getPlayerNumber();
-		if (sMessage->getPlayerNumber() != CLIENT_NUMBER_MAX_CONNECTED_PLAYERS) {
-			clientResponse->setType(MessageType::player_assign_ok);
-			this->sendMessage(clientResponse);
+	
+	//Last message from string
+	message = stringMessage.substr(last_start_pos, stringMessage.length() - last_start_pos);
+	messages.push_back(message);
+	
+	for (vector<string>::iterator it = messages.begin(); it < messages.end(); it++)
+	{
+		ServerMessage * sMessage = new ServerMessage();
+		if (!sMessage->fromJson(*it)) {
+			LOG(logERROR) << "Network Manager: no se pudo deserializar el mensaje";
+			delete sMessage;
+			return;
 		}
 
-		this->playerNumber = sMessage->getPlayerNumber();
-		this->gameMode = sMessage->getGameMode();
-		break;
-	case player_entities_status:
-		if (this->playerNumber < 0) break;
-		this->updatePlayerViews(sMessage->getPlayers());
-		this->updateEntityViews(sMessage->getEntities());
-		this->updateCamera(sMessage->getCamera());
-		//TODO: handle entities views
-		break;
-	case levels_content:
-		this->gameLevels = sMessage->getLevels();
-		break;
-	case level_start:
-		clientResponse->setType(MessageType::level_start_ok);
-		this->actualLevel = sMessage->getLevelToStart();
-		this->sendMessage(clientResponse);
-		this->startGame = true;
-		this->levelFinished = false;
+		Message* clientResponse = new Message();
 
-		this->continueHeartBeating = true;
-		this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
+		switch (sMessage->getType()) {
+			case player_assign:
+				LOG(logINFO) << "Network Manager: Assignación de numero de usuario -> " << sMessage->getPlayerNumber();
+				if (sMessage->getPlayerNumber() != CLIENT_NUMBER_MAX_CONNECTED_PLAYERS) {
+					clientResponse->setType(MessageType::player_assign_ok);
+					this->sendMessage(clientResponse);
+				}
 
-		lastHeartBeat = NULL;
-		break;
-	case level_finish:
-		this->levelFinished = true;
-		break;
-	case heart_beat_server:
-		time(&lastHeartBeat);
-		break;
-	default:
-		break;
+				this->playerNumber = sMessage->getPlayerNumber();
+				this->gameMode = sMessage->getGameMode();
+				break;
+			case player_entities_status:
+				if (this->playerNumber < 0) break;
+				this->ms = sMessage->getTime();
+				this->updatePlayerViews(sMessage->getPlayers());
+				this->updateEntityViews(sMessage->getEntities());
+				this->updateCamera(sMessage->getCamera());
+				//TODO: handle entities views
+				break;
+			case levels_content:
+				this->gameLevels = sMessage->getLevels();
+				break;
+			case level_start:
+				clientResponse->setType(MessageType::level_start_ok);
+				this->actualLevel = sMessage->getLevelToStart();
+				this->sendMessage(clientResponse);
+				this->startGame = true;
+				this->levelFinished = false;
+
+				this->continueHeartBeating = true;
+				this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
+
+				lastHeartBeat = NULL;
+				break;
+			case level_finish:
+				this->levelFinished = true;
+				break;
+			case heart_beat_server:
+				time(&lastHeartBeat);
+				break;
+			default:
+				break;
+		}
+		
+		delete clientResponse;
+		delete sMessage;
 	}
-
-	delete clientResponse;
-	delete sMessage;
 }
 
 DWORD WINAPI NetworkManager::runHeartBeatSocketHandler(void * args)
@@ -293,6 +322,7 @@ void NetworkManager::updatePlayerViews(vector<Player*> players)
 		if (!playerViews.count(index)) {
 			//Create new player view and include in map
 			Player* player = new Player(*(*it));
+			player->setTime(ms);
 			PlayerView* playerView = new PlayerView(player);
 			playerViews[index] = playerView;
 			continue;
@@ -300,6 +330,7 @@ void NetworkManager::updatePlayerViews(vector<Player*> players)
 
 		//Player view already exists, just update
 		Player* player = playerViews[index]->getPlayer();
+		player->setTime(ms);
 		player->copyFrom(*(*it));
 	}
 
@@ -336,6 +367,7 @@ void NetworkManager::updateEntityViews(vector<Entity*> entities)
 		if (!entityViews.count(index)) {
 			// Create new entity view and include in map
 			Entity* entity = EntityResolver::resolve((*it)->getType());
+			entity->setTime(ms);
 			EntityView* entityView = EntityViewResolver::resolve(entity);
 			entityViews[index] = entityView;
 			continue;
@@ -343,6 +375,7 @@ void NetworkManager::updateEntityViews(vector<Entity*> entities)
 
 		// Player view already exists, just update
 		Entity* entity = entityViews[index]->getEntity();
+		entity->setTime(ms);
 		entity->copyFrom(*(*it));
 	}
 

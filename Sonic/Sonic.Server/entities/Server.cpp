@@ -500,8 +500,6 @@ DWORD Server::updateEnemiesHandler()
 			}
 			enemy->serializeEnemy();
 		}
-
-		Sleep(10);
 	}
 
 	return 0;
