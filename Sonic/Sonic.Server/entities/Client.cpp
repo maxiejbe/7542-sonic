@@ -139,12 +139,14 @@ bool Client::sendHeartBeat() {
 	string serializedMsg = sMessage.serialize();
 	const char* messageToSend = serializedMsg.c_str();
 
+	this->sendMutex.lock();
 	if ((bytecount = send(this->socket, messageToSend, strlen(messageToSend), 0)) == SOCKET_ERROR) {
 		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << messageToSend << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->clientNumber << ")";
+		this->sendMutex.unlock();
 		return false;
 	}
-
+	this->sendMutex.unlock();
 	return true;
 }
 
@@ -196,13 +198,16 @@ bool Client::sendStatus()
 
 	delete message;
 
+	this->sendMutex.lock();
 	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
 		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->getClientNumber() << ")";
+		this->sendMutex.unlock();
 		delete serializedMessage;
 		return false;
 	}
 
+	this->sendMutex.unlock();
 	delete serializedMessage;
 	return true;
 }
