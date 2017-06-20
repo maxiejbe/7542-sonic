@@ -174,7 +174,6 @@ void Player::reset()
 	this->facingDirection = FACING_RIGHT;
 	this->spriteState = PlayerStatus::idle;
 	this->isConnected = true;
-	this->testMode = false;
 	this->rings = 0;
 	this->isActive = true;
 	this->time = 0;
