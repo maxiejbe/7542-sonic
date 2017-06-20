@@ -18,7 +18,8 @@ EntityView * EntityViewResolver::resolve(Entity * origin)
 	}
 	else if (origin->getType() == EntityResolver::toTypeString(EntityType::enemigo_cangrejo) ||
 		origin->getType() == EntityResolver::toTypeString(EntityType::enemigo_pez) ||
-		origin->getType() == EntityResolver::toTypeString(EntityType::enemigo_mosca)) {
+		origin->getType() == EntityResolver::toTypeString(EntityType::enemigo_mosca) ||
+		origin->getType() == EntityResolver::toTypeString(EntityType::enemigo_final)) {
 		destination = new EnemyView(origin);
 	}
 

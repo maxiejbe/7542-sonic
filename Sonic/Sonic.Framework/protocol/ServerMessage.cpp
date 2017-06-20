@@ -19,7 +19,7 @@ ServerMessage::ServerMessage()
 	this->type = typeless;
 	this->players = vector<Player*>();
 	this->entities = vector<Entity*>();
-	this->levels = new vector<Level>();
+	this->levels = nullptr;
 	this->camera = nullptr;
 	this->levelToStart = 0;
 }
@@ -350,6 +350,7 @@ void ServerMessage::parseLevels(Value * nodeRef)
 
 	//unserialize enemies
 	Document jsonEnemy;
+	this->levels = new vector<Level>();
 	for (Value::ConstValueIterator itr = levels.Begin(); itr != levels.End(); ++itr) {
 		if (jsonEnemy.Parse((*itr).GetString()).HasParseError()) {
 			//LOG

@@ -14,6 +14,7 @@ private:
 	static void EnemyController::move(Enemy * enemy);
 	static void horizontalMovement(Enemy*, double velocityX);
 	static void verticalMovement(Enemy*, double velocityX);
+	static void checkRecovering(Enemy* enemy, int ms);
 };
 #endif // !ENEMYCONTROLLER_H
 

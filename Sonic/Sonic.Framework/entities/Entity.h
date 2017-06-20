@@ -61,6 +61,8 @@ public:
 
 	FacingDirection getFacingDirection();
 	void setFacingDirection(FacingDirection);
+	bool getIsRecovering();
+	void setIsRecovering(bool isRecovering);
 
 	virtual void onCollision(Player* player, Camera* camera) = 0;
 
@@ -84,6 +86,7 @@ protected:
 	FacingDirection facingDirection;
 	double maxHorizontalDistance;
 	double maxVerticalDistance;
+	bool isRecovering;
 
 	bool isActive;
 	bool isMoving = false;

@@ -51,13 +51,58 @@
             "max_y": 441
           },
           {
+            "tipo": "enemigo_cangrejo",
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
+            "min_x": 500,
+            "max_x": 700,
+            "min_y": 445,
+            "max_y": 445
+          },
+          {
+            "tipo": "enemigo_pez",
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
+            "min_x": 1000,
+            "max_x": 1500,
+            "min_y": 600,
+            "max_y": 600
+          },
+          {
             "tipo": "enemigo_mosca",
-            "cantidad_minima": 20,
-            "cantidad_maxima": 20,
-            "min_x": 0,
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
+            "min_x": 1000,
+            "max_x": 1200,
+            "min_y": 250,
+            "max_y": 350
+          },
+          {
+            "tipo": "obstaculo_pinche",
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
+            "min_x": 1500,
             "max_x": 3000,
             "min_y": 445,
             "max_y": 445
+          },
+          {
+            "tipo": "obstaculo_piedra",
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
+            "min_x": 1500,
+            "max_x": 3000,
+            "min_y": 425,
+            "max_y": 425
+          },
+          {
+            "tipo": "enemigo_final",
+            "cantidad_minima": 1,
+            "cantidad_maxima": 1,
+            "min_x": 3600,
+            "max_x": 3600,
+            "min_y": 150,
+            "max_y": 150
           }
         ]
       },

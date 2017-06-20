@@ -22,12 +22,13 @@ public:
 	void incrementDistanceTravelled(double);
 	double getDistanceTravelled();
 	void resetDistanceTravelled();
-	void kill();
+	void handleKill(Player* player);
 
 	double getMaxDistance();
 
 	int getPoints();
 	int getGivenPoints();
+	int getLives();
 
 	mutex enemyMutex;
 
@@ -36,6 +37,9 @@ public:
 
 	void serializeEnemy();
 	string getSerializedEnemy();
+
+	int getRecoveringTime();
+	void setRecoveringTime(int ms);
 
 	// Inherited via Serializable
 	virtual void unserialize(Value* nodeRef);
@@ -46,10 +50,14 @@ public:
 private:
 	Vector2 velocity;
 	int points;
+	int lives;
 	double distanceTravelled;
 	string serializedEnemy;
+	int recoveringTime;
 
 	void InitializeProperties();
+	void bounce(Player * player);
+	void bounceVertical(Player * player);
 };
 
 #endif
