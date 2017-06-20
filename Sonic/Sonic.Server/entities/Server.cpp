@@ -93,7 +93,6 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 	for (size_t i = 0; i < TEAMS_COUNT; i++)
 	{
 		teamPoints[i] = 0;
-		teamRings[i] = 0;
 	}
 }
 
@@ -264,6 +263,11 @@ void Server::resetLevel()
 	//initialize camera
 	this->camera = new Camera(0, 0, window->getWidth(), window->getHeight(), window->getWidth(), window->getHeight(), scenario->getWidth(), scenario->getHeight());
 	this->levelFinishedNotified = false;
+	//reset team rings
+	for (size_t i = 0; i < TEAMS_COUNT; i++)
+	{
+		teamRings[i] = 0;
+	}
 }
 
 vector<Level>* Server::getLevels()
@@ -396,21 +400,56 @@ void Server::levelFinished()
 
 	if (notifyLevelFinish)
 	{
-		this->currentLevel++;
+		this->updateScoresLevelFinished();
 		this->notifyClientsLevelFinished();
+		//wait 5 seconds for client to display statistics
+		Sleep(6000);
+		this->currentLevel++;
+		this->notifyClientsStartNewLevel();
+		this->resetLevel();
+	}
+}
+
+void Server::updateScoresLevelFinished() 
+{
+	int currentPlayerTeamId;
+	int ringPoints;
+	Player* player;
+	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+		//If client is not connected, just set to false
+		if (!it->second->getPlayer()->getIsConnected()) continue;
+		player = it->second->getPlayer();
+		currentPlayerTeamId = player->getTeamId();
+		//calculate points obtained from rings
+		ringPoints = player->getRings() * this->gameConfig->getRingPointsMultiplier();
+		if (player->getRings() >= this->gameConfig->getRingsForBonus()) {
+			ringPoints *= this->gameConfig->getBonusRingPointsMultiplier();
+		}
+
+		//update points
+		player->sumPoints(ringPoints);
+		if (currentPlayerTeamId > PLAYER_TEAM_ID_NOT_SET) {
+			this->teamPoints[currentPlayerTeamId - 1] += ringPoints;
+		}
 	}
 }
 
 void Server::notifyClientsLevelFinished()
 {
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
-		int bytecount;
 		//If client is not connected, just set to false
 		if (!it->second->getPlayer()->getIsConnected()) continue;
 		it->second->notifyLevelFinished();
 	}
+}
 
-	this->resetLevel();
+void Server::notifyClientsStartNewLevel()
+{
+	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+		//If client is not connected, just set to false
+		if (!it->second->getPlayer()->getIsConnected()) continue;
+		it->second->notifyStartNewLevel();
+	}
 }
 
 void Server::notifyClientsGameFinished()

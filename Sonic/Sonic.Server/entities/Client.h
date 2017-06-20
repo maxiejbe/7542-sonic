@@ -38,6 +38,7 @@ public:
 	bool sendStatus();
 	bool refreshPlayer();
 	bool notifyLevelFinished();
+	bool notifyStartNewLevel();
 	bool notifyGameFinished();
 	void levelFinishedActions();
 

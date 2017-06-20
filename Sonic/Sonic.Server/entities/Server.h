@@ -73,7 +73,9 @@ public:
 	ServerMessage * getStatusMessage();
 
 	void levelFinished();
+	void updateScoresLevelFinished();
 	void notifyClientsLevelFinished();
+	void notifyClientsStartNewLevel();
 	void notifyClientsGameFinished();
 private:
 	/*
