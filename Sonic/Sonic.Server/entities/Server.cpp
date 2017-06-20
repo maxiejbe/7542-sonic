@@ -428,9 +428,6 @@ void Server::updateScoresLevelFinished()
 
 		//update points
 		player->sumPoints(ringPoints);
-		if (currentPlayerTeamId > PLAYER_TEAM_ID_NOT_SET) {
-			this->teamPoints[currentPlayerTeamId - 1] += ringPoints;
-		}
 	}
 }
 
