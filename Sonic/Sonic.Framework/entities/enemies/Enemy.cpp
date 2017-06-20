@@ -22,7 +22,7 @@ const int ENEMY_DEFAULT_POINTS = 10;
 const int ENEMY_CRAB_MAX_DISTANCE = 180;
 const int ENEMY_FISH_MAX_DISTANCE = 350;
 const int ENEMY_FLY_MAX_DISTANCE = 300;
-const int ENEMY_FINAL_MAX_DISTANCE = 980;
+const int ENEMY_FINAL_MAX_DISTANCE = 780;
 
 const int CRAB_GIVEN_POINTS = 100;
 const int FLY_GIVEN_POINTS = 500;
@@ -124,19 +124,20 @@ double Enemy::getMaxDistance()
 	switch (eType) {
 	case EntityType::enemigo_cangrejo:
 		return this->maxHorizontalDistance;
-		break;
 	case EntityType::enemigo_pez:
 		return this->maxVerticalDistance;
-		break;
 	case EntityType::enemigo_mosca:
 		return this->maxHorizontalDistance;
-		break;
 	case EntityType::enemigo_final:
 		return this->maxHorizontalDistance;
 	default:
 		return 0;
-		break;
 	}
+}
+
+void Enemy::setMaxHorizontalDistance(double max)
+{
+	this->maxHorizontalDistance = max;
 }
 
 void Enemy::handleKill(Player* player)

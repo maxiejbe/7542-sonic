@@ -25,6 +25,7 @@ public:
 	void handleKill(Player* player);
 
 	double getMaxDistance();
+	void setMaxHorizontalDistance(double max);
 
 	int getPoints();
 	int getGivenPoints();
