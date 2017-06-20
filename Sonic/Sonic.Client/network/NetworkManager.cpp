@@ -205,6 +205,8 @@ void NetworkManager::handleMessage(char * receivedMessage)
 			case level_finish:
 				this->levelFinished = true;
 				break;
+			case game_finish:
+				break;
 			case heart_beat_server:
 				time(&lastHeartBeat);
 				break;

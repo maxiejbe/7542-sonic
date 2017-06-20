@@ -507,6 +507,13 @@ DWORD Server::updateEnemiesHandler()
 			if (enemy->getIsActive() && EntityController::isEntityVisible(enemy, this->camera)) {
 				EnemyController::update(enemy, timer.elapsed());
 			}
+
+			//HORRIBLE BUT WORKS
+			if (!enemy->getIsActive() && enemy->getType() == EntityResolver::toTypeString(EntityType::enemigo_final)) {
+				//notify end of game
+				this->notifyClientsGameFinished();
+			}
+
 			enemy->serializeEnemy();
 		}
 	}
