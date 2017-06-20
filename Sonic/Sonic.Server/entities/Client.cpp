@@ -99,9 +99,6 @@ bool Client::welcome(int clientNumber, Player* player)
 	this->continueReceiving = true;
 	this->recvThreadHandle = CreateThread(0, 0, runReceiveSocketHandler, (void*)this, 0, &this->threadId);
 
-	this->pauseRefreshing = false;
-	this->pauseSending = false;
-
 	return true;
 }
 
@@ -139,14 +136,11 @@ bool Client::sendHeartBeat() {
 	string serializedMsg = sMessage.serialize();
 	const char* messageToSend = serializedMsg.c_str();
 
-	this->sendMutex.lock();
 	if ((bytecount = send(this->socket, messageToSend, strlen(messageToSend), 0)) == SOCKET_ERROR) {
 		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << messageToSend << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->clientNumber << ")";
-		this->sendMutex.unlock();
 		return false;
 	}
-	this->sendMutex.unlock();
 	return true;
 }
 
@@ -198,16 +192,13 @@ bool Client::sendStatus()
 
 	delete message;
 
-	this->sendMutex.lock();
 	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
 		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
 			<< " (Cliente " << this->getClientNumber() << ")";
-		this->sendMutex.unlock();
 		delete serializedMessage;
 		return false;
 	}
 
-	this->sendMutex.unlock();
 	delete serializedMessage;
 	return true;
 }
@@ -343,12 +334,6 @@ void Client::handleReceivedMessage(char* recievedMessage)
 
 void Client::startRefereshing()
 {
-	if (this->pauseRefreshing)
-	{
-		this->pauseRefreshing = false;
-		return;
-	}
-
 	if (this->continueRefreshing) return;
 
 	this->continueRefreshing = true;
@@ -357,11 +342,6 @@ void Client::startRefereshing()
 
 void Client::startSending()
 {
-	if (this->pauseSending) {
-		this->pauseSending = false;
-		return;
-	}
-
 	if (this->continueSending) return;
 
 	this->continueSending = true;
@@ -391,7 +371,7 @@ DWORD Client::receiveSocketHandler() {
 		memset(recievedMessage, 0, recievedMessageLen);
 		if ((bytecount = recv(this->socket, recievedMessage, recievedMessageLen, 0)) == SOCKET_ERROR) {
 			LOG(logERROR) << MESSAGE_CLIENT_DATA_RECV_INCORRECT << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError() << " (Cliente " << this->clientNumber << ")";
-			break;
+			continue;
 		}
 
 		LOG(logINFO) << MESSAGE_CLIENT_DATA_RECV_SUCCESS << recievedMessage << " (Cliente " << this->clientNumber << ")";
@@ -413,19 +393,16 @@ DWORD WINAPI Client::refreshSocketHandler(void * args)
 DWORD Client::refreshSocketHandler()
 {
 	while (this->continueRefreshing) {
-		if (!this->pauseRefreshing) {
-			this->refreshPlayer();
-		}
-
+		this->refreshPlayer();
+		
 		if (this->getLastMessage() == NULL) {
 			Sleep(10);
 			continue;
 		}
 
-		//Sleep(20);
-
-		if (this->getLastMessage()->getTimeStep() * 1000 - 2 > 0) {
-			Sleep(this->getLastMessage()->getTimeStep() * 1000 - 2);
+		int sleepingTime = this->getLastMessage()->getTimeStep() * 1000 - 2;
+		if (sleepingTime > 0) {
+			Sleep(sleepingTime);
 		}
 	}
 
@@ -441,19 +418,16 @@ DWORD WINAPI Client::runSendSocketHandler(void * args)
 DWORD Client::sendSocketHandler()
 {
 	while (this->continueSending) {
-		if (!this->pauseSending) {
-			this->sendStatus();
-		}
-
+		this->sendStatus();
+		
 		if (this->getLastMessage() == NULL) {
 			Sleep(10);
 			continue;
 		}
 
-		//Sleep(20);
-
-		if (this->getLastMessage()->getTimeStep() * 1000 - 2 > 0) {
-			Sleep(this->getLastMessage()->getTimeStep() * 1000 - 2);
+		int sleepingTime = this->getLastMessage()->getTimeStep() * 1000 - 2;
+		if (sleepingTime > 0) {
+			Sleep(sleepingTime);
 		}
 	}
 
@@ -477,7 +451,6 @@ bool Client::refreshPlayer() {
 
 bool Client::notifyLevelFinished()
 {
-	this->levelFinishedActions();
 	//send finish level
 	this->sendLevelFinish();
 	return true;
@@ -493,16 +466,8 @@ bool Client::notifyStartNewLevel()
 
 bool Client::notifyGameFinished()
 {
-	this->levelFinishedActions();
 	this->sendGameFinish();
 	return true;
-}
-
-void Client::levelFinishedActions()
-{
-	//finish update and send status threads
-	this->pauseRefreshing = true;
-	this->pauseSending = true;
 }
 
 void Client::setClientNumber(int clientNumber)

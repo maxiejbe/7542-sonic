@@ -10,6 +10,8 @@ CameraController::CameraController()
 
 void CameraController::updateCamera(Camera * camera, vector<Player*> players)
 {
+	camera->lock();
+
 	int rightBorder, leftBorder = 0;
 
 	if (!arePlayersInBothBorders(camera, players))
@@ -39,6 +41,8 @@ void CameraController::updateCamera(Camera * camera, vector<Player*> players)
 			it++;
 		}
 	}
+
+	camera->unlock();
 }
 
 void CameraController::keepCameraInBounds(Camera * camera)

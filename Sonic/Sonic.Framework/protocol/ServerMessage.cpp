@@ -221,7 +221,7 @@ void ServerMessage::serializeCamera(Writer<StringBuffer>& writer)
 {
 	if (!this->camera) return;
 	writer.String(SERVER_MESSAGE_CAMERA_NODE);
-	string serializedcamera = this->camera->serialize();
+	string serializedcamera = this->camera->getSerializedCamera();
 	writer.String(serializedcamera.c_str());
 }
 

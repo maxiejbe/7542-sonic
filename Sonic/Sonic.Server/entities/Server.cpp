@@ -356,6 +356,7 @@ ServerMessage* Server::getStatusMessage()
 
 	//update camera
 	CameraController::updateCamera(this->camera, clientsPlayers);
+	this->camera->serializeCamera();
 
 	ServerMessage * message = new ServerMessage();
 	message->setType(player_entities_status);
@@ -500,6 +501,7 @@ DWORD Server::updateEnemiesHandler()
 			}
 
 			(*it)->serializeEntity();
+			//Sleep(10);
 		}
 	}
 

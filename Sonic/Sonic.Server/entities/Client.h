@@ -40,8 +40,7 @@ public:
 	bool notifyLevelFinished();
 	bool notifyStartNewLevel();
 	bool notifyGameFinished();
-	void levelFinishedActions();
-
+	
 	void setClientNumber(int);
 
 	Player* getPlayer();
@@ -80,16 +79,14 @@ private:
 	static DWORD WINAPI refreshSocketHandler(void* args);
 	DWORD refreshSocketHandler();
 	bool continueRefreshing;
-	bool pauseRefreshing;
-
+	
 	//send handler
 	DWORD sendThreadId;
 	HANDLE sendThreadHandle;
 	static DWORD WINAPI runSendSocketHandler(void* args);
 	DWORD sendSocketHandler();
 	bool continueSending;
-	bool pauseSending;
-
+	
 	mutex playerMutex;
 	mutex sendMutex;
 
