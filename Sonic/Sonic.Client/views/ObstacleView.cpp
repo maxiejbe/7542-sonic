@@ -1,5 +1,12 @@
 #include "ObstacleView.h"
 
+
+ObstacleView::~ObstacleView()
+{
+	if (this->entity == nullptr) return;
+	delete this->entity;
+}
+
 void ObstacleView::draw(int camX, int camY)
 {
 	// Load image

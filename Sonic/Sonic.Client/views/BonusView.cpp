@@ -1,5 +1,11 @@
 #include "BonusView.h"
 
+BonusView::~BonusView()
+{
+	if (this->entity == nullptr) return;
+	delete this->entity;
+}
+
 void BonusView::draw(int camX, int camY)
 {
 	// Load image

@@ -7,6 +7,7 @@ class BonusView : public EntityView {
 public:
 	BonusView(Entity* entity) : EntityView(entity) {
 	}
+	~BonusView();
 
 	virtual void draw(int camX, int camY) override;
 

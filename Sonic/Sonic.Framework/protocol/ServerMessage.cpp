@@ -267,6 +267,10 @@ void ServerMessage::serializeEntities(Writer<StringBuffer>& writer)
 		it++;
 	}
 	writer.EndArray();
+
+	while (it != this->entities.end()) {
+		delete *it;
+	}
 }
 
 
