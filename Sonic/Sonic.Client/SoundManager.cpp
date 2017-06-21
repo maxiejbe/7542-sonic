@@ -19,9 +19,6 @@ void SoundManager::playMusic(const string & fileName)
 		}
 		Mix_PlayMusic(music, -1);
 	}
-	else {
-		//this->pauseMusic();
-	}
 }
 
 void SoundManager::playSound(const string & fileName)

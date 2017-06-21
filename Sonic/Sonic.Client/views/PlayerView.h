@@ -43,7 +43,8 @@ private:
 	SDL_Rect** spriteClips;
 	SDL_Rect* shieldClips;
 	bool isGreyed;
-	bool isPlayingSound;
+	bool isPlayingLoseRings = false;
+	bool isPlayingSpin = false;
 	int lastLives;
 };
 

@@ -134,11 +134,11 @@ void PlayerView::renderPlayer(int camX, int camY)
 
 	// Check recovering
 	if (player->getIsRecovering()) {
-		if (!this->isPlayingSound) {
+		if (!this->isPlayingLoseRings) {
 			if (this->player->getLives() == this->lastLives) {
 				SoundManager::getInstance().playSound("sounds/lost_rings.wav");
 			}
-			this->isPlayingSound = true;
+			this->isPlayingLoseRings = true;
 		}
 		if (this->player->getTime() % 200 < 100)
 			texture.setAlpha(255);
@@ -147,7 +147,17 @@ void PlayerView::renderPlayer(int camX, int camY)
 	}
 	else {
 		texture.setAlpha(255);
-		this->isPlayingSound = false;
+		this->isPlayingLoseRings = false;
+	}
+
+	if (player->getSpriteState() == spinning) {
+		if (!isPlayingSpin) {
+			SoundManager::getInstance().playSound("sounds/spin.wav");
+			isPlayingSpin = true;
+		}
+	}
+	else {
+		isPlayingSpin = false;
 	}
 
 	this->lastLives = this->player->getLives();
