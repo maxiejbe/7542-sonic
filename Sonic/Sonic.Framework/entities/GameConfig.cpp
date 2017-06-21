@@ -98,5 +98,5 @@ int GameConfig::getRingsForBonus()
 
 int GameConfig::getBonusRingPointsMultiplier() 
 {
-	return this->ringPointsMultiplier;
+	return this->bonusRingPointsMultiplier;
 }
