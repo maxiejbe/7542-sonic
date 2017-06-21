@@ -162,8 +162,8 @@ void PlayState::update(Game* game, float dt)
 		camera.y = (int)round(cameraModel->getPosition().y);
 	}
 
-	// Check level finished
-	if (NetworkManager::getInstance().getLevelFinished()) {
+	// Check level or game finished
+	if (NetworkManager::getInstance().getLevelFinished() || NetworkManager::getInstance().getGameFinished()) {
 		game->changeState(EndLevelState::Instance());
 	}
 }

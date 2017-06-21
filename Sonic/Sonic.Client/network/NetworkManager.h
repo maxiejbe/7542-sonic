@@ -42,6 +42,7 @@ public:
 	vector<Level>* getLevels();
 
 	bool getLevelFinished();
+	bool getGameFinished();
 
 	bool connectToServer(ServerConfiguration serverConfig);
 
@@ -55,6 +56,7 @@ private:
 	bool startGame;
 	int actualLevel;
 	bool levelFinished;
+	bool gameFinished;
 
 	int playerNumber;
 	GameMode gameMode;

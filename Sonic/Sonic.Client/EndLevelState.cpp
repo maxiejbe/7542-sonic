@@ -41,11 +41,17 @@ int EndLevelState::unload()
 
 void EndLevelState::update(Game* game, float dt)
 {
-	while (NetworkManager::getInstance().getLevelFinished()) {
-		Sleep(500);
-	}
+	if (!NetworkManager::getInstance().getGameFinished()) {
+		while (NetworkManager::getInstance().getLevelFinished()) {
+			Sleep(500);
+		}
 
-	game->changeState(PlayState::Instance());
+		game->changeState(PlayState::Instance());
+	}
+	else {
+		Sleep(4000);
+		game->changeState(WinGameState::Instance());
+	}
 }
 
 void EndLevelState::render(Game* game)

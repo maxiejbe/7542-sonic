@@ -201,6 +201,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 			this->sendMessage(clientResponse);
 			this->startGame = true;
 			this->levelFinished = false;
+			this->gameFinished = false;
 
 			this->continueHeartBeating = true;
 			this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
@@ -211,6 +212,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 			this->levelFinished = true;
 			break;
 		case game_finish:
+			this->gameFinished = true;
 			break;
 		case heart_beat_server:
 			time(&lastHeartBeat);
@@ -314,6 +316,11 @@ vector<Level>* NetworkManager::getLevels()
 bool NetworkManager::getLevelFinished()
 {
 	return this->levelFinished;
+}
+
+bool NetworkManager::getGameFinished()
+{
+	return this->gameFinished;
 }
 
 int NetworkManager::getActualLevel()
