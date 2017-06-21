@@ -532,6 +532,8 @@ DWORD Server::updateEnemiesHandler()
 
 			entity->serializeEntity();
 		}
+
+		Sleep(10);
 	}
 
 	return 0;
