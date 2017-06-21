@@ -157,6 +157,8 @@ void PlayerController::calculateCollisions(Player * player, Scenario* scenario, 
 			(*it)->onCollision(player, camera);
 		}
 	}
+
+	entities.clear();
 }
 
 void PlayerController::checkInvincibility(Player* player, int ms)
