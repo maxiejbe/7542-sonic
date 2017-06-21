@@ -25,6 +25,32 @@ Camera::~Camera()
 {
 }
 
+void Camera::serializeCamera()
+{
+	this->lock();
+	this->serializedCamera = this->serialize();
+	this->unlock();
+}
+
+string Camera::getSerializedCamera()
+{
+	this->lock();
+	string serializedCamera = this->serializedCamera;
+	this->unlock();
+	return serializedCamera;
+}
+
+
+void Camera::lock()
+{
+	this->cameraMutex.lock();
+}
+
+void Camera::unlock()
+{
+	this->cameraMutex.unlock();
+}
+
 Vector2 Camera::getPosition()
 {
 	return this->position;
@@ -83,7 +109,6 @@ string Camera::serialize()
 
 void Camera::copyFrom(Camera & camera)
 {
-
 	this->setXPosition(camera.getPosition().x);
 	this->setYPosition(camera.getPosition().y);
 	this->setWidth(camera.getWidth());
@@ -92,6 +117,7 @@ void Camera::copyFrom(Camera & camera)
 	this->setScreenHeight(camera.getScreenHeight());
 	this->setScenarioWidth(camera.getScenarioWidth());
 	this->setScenarioHeight(camera.getScenarioHeight());
+	this->serializedCamera = camera.getSerializedCamera();
 }
 
 void Camera::unserialize(Value * nodeRef)

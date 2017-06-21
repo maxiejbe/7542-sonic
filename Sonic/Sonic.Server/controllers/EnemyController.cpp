@@ -26,19 +26,19 @@ void EnemyController::move(Enemy * enemy)
 {
 	switch (EntityResolver::fromTypeString(enemy->getType())) {
 	case enemigo_cangrejo:
-		horizontalMovement(enemy, 0.01);
+		horizontalMovement(enemy, 0.8);
 		break;
 	case enemigo_pez:
-		verticalMovement(enemy, 0.1);
+		verticalMovement(enemy, 2);
 		break;
 	case enemigo_mosca:
-		horizontalMovement(enemy, 0.03);
+		horizontalMovement(enemy, 0.8);
 		break;
 	case enemigo_final:
 		if (resetCounter % 2 == 0)
-			horizontalMovement(enemy, 0.03);
+			horizontalMovement(enemy, 1);
 		else
-			verticalMovement(enemy, 0.03);
+			verticalMovement(enemy, 1);
 		break;
 	}
 

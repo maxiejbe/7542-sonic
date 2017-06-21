@@ -23,6 +23,8 @@ public:
 
 	virtual Dimensions getDefaultDimensions();
 
+	string getSerializedEntity();
+
 	//Collisionable
 	int getXPosition() override;
 	int getYPosition() override;
@@ -77,9 +79,10 @@ public:
 		return zIndex < other.zIndex;
 	}
 
-	void serialize(Writer<StringBuffer>& writer);
+	virtual void serialize(Writer<StringBuffer>& writer) = 0;
 	// Inherited via Serializable
-	virtual string serialize() override;
+	virtual string serialize();
+	void serializeEntity();
 	virtual void unserialize(Value * nodeRef) override;
 	virtual char * getNodeName() override;
 protected:
@@ -94,6 +97,8 @@ protected:
 	double maxHorizontalDistance;
 	double maxVerticalDistance;
 	bool isRecovering;
+
+	string serializedEntity;
 
 	bool isActive;
 	bool isMoving;

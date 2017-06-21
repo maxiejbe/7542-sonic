@@ -11,6 +11,8 @@ PlayState PlayState::m_PlayState;
 
 void PlayState::load(Game* game)
 {
+	int teamId = 0;
+
 	if (!clientNumberSet()) {
 		NetworkManager::getInstance().disconnect();
 		game->changeState(MenuState::Instance());
@@ -47,14 +49,19 @@ void PlayState::load(Game* game)
 		layerView->loadLayer();
 	}
 
-	// Load statistics player panel
-	statisticsPanel = new InGameStatisticsPanel(game->getGameMode(), this->team);
-
 	PlayerView* playerView = NetworkManager::getInstance().getOwnPlayerView();
 
 	// Put player at the start and reset his values
-	if (playerView != NULL)
+	if (playerView != NULL) {
 		playerView->getPlayer()->reset();
+		teamId = playerView->getPlayer()->getTeamId();
+	}
+	else {
+		teamId = this->team;
+	}
+
+	// Load statistics player panel
+	statisticsPanel = new InGameStatisticsPanel(game->getGameMode(), teamId);
 
 	game->pushState(WaitingState::Instance());
 
@@ -175,8 +182,8 @@ void PlayState::update(Game* game, float dt)
 		camera.y = (int)round(cameraModel->getPosition().y);
 	}
 
-	// Check level finished
-	if (NetworkManager::getInstance().getLevelFinished()) {
+	// Check level or game finished
+	if (NetworkManager::getInstance().getLevelFinished() || NetworkManager::getInstance().getGameFinished()) {
 		game->changeState(EndLevelState::Instance());
 	}
 }

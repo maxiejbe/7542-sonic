@@ -72,6 +72,8 @@ public:
 
 	ServerMessage * getStatusMessage();
 
+	ServerMessage * getEntitiesStatusMessage();
+
 	void levelFinished();
 	void updateScoresLevelFinished();
 	void notifyClientsLevelFinished();
@@ -126,6 +128,8 @@ private:
 
 	bool levelFinishedNotified;
 	mutex levelFinishedMutex;
+
+	bool gameFinished;
 
 	Timer timer;
 

@@ -29,6 +29,7 @@ public:
 	
 	void terminateThreads();
 
+	bool sendMessage(const char*, bool);
 	bool sendHeartBeat();
 	bool sendClientNumber();
 	bool sendLevels();
@@ -36,12 +37,13 @@ public:
 	bool sendLevelFinish();
 	bool sendGameFinish();
 	bool sendStatus();
+	bool sendEntitiesStatus();
+	
 	bool refreshPlayer();
 	bool notifyLevelFinished();
 	bool notifyStartNewLevel();
 	bool notifyGameFinished();
-	void levelFinishedActions();
-
+	
 	void setClientNumber(int);
 
 	Player* getPlayer();
@@ -71,6 +73,7 @@ private:
 	void handleReceivedMessage(char* recievedMessage);
 	void startRefereshing();
 	void startSending();
+	void startSendingEntities();
 	void startHeartBeating();
 	bool continueReceiving;
 
@@ -80,18 +83,23 @@ private:
 	static DWORD WINAPI refreshSocketHandler(void* args);
 	DWORD refreshSocketHandler();
 	bool continueRefreshing;
-	bool pauseRefreshing;
-
+	
 	//send handler
 	DWORD sendThreadId;
 	HANDLE sendThreadHandle;
 	static DWORD WINAPI runSendSocketHandler(void* args);
 	DWORD sendSocketHandler();
 	bool continueSending;
-	bool pauseSending;
-
+	
 	mutex playerMutex;
 	mutex sendMutex;
+
+	//send handler
+	DWORD sendEntitiesThreadId;
+	HANDLE sendEntitiesThreadHandle;
+	static DWORD WINAPI runSendEntitiesSocketHandler(void* args);
+	DWORD sendEntitiesSocketHandler();
+	bool continueSendingEntites;
 
 	//Connection check
 	HANDLE heartBeatThreadHandle;

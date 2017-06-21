@@ -61,6 +61,7 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 	this->gameConfig = gameConfig;
 
 	this->currentLevel = 1; // First level
+	this->gameFinished = false;
 	this->lastLevel = gameConfig->getLevels()->size();
 	this->resetLevel();
 
@@ -365,12 +366,21 @@ ServerMessage* Server::getStatusMessage()
 
 	//update camera
 	CameraController::updateCamera(this->camera, clientsPlayers);
+	this->camera->serializeCamera();
 
 	ServerMessage * message = new ServerMessage();
-	message->setType(player_entities_status);
+	message->setType(player_status);
 	message->setPlayers(clientsPlayers);
-	message->setEntities(this->getVisibleEntities());
 	message->setCamera(new Camera(*this->camera));
+
+	return message;
+}
+
+ServerMessage * Server::getEntitiesStatusMessage() 
+{
+	ServerMessage * message = new ServerMessage();
+	message->setType(entities_status);
+	message->setEntities(this->getVisibleEntities());
 
 	return message;
 }
@@ -453,7 +463,11 @@ void Server::notifyClientsStartNewLevel()
 {
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
 		//If client is not connected, just set to false
-		if (!it->second->getPlayer()->getIsConnected()) continue;
+		if (!it->second->getPlayer()->getIsConnected()) {
+			//reset disconnected player
+			it->second->getPlayer()->reset();
+			continue;
+		}
 		it->second->notifyStartNewLevel();
 	}
 }
@@ -500,15 +514,26 @@ DWORD Server::updateEnemiesHandler()
 	while (this->continueUpdatingEnemies) {
 		vector<Entity*> entities = scenario->getEntities();
 		for (vector<Entity*>::iterator it = entities.begin(); it != entities.end(); it++) {
-			if (!(*it)->getIsMoving()) continue;
-
-			//We should find a more elegant solution. JA!
-			Enemy* enemy = (Enemy*)*it;
-			if (enemy->getIsActive() && EntityController::isEntityVisible(enemy, this->camera)) {
-				EnemyController::update(enemy, timer.elapsed());
+			Entity* entity = (*it);
+			if (entity->getIsMoving()) {
+				//We should find a more elegant solution. JA!
+				Enemy* enemy = (Enemy*)*it;
+				if (enemy->getIsActive() && EntityController::isEntityVisible(enemy, this->camera)) {
+					EnemyController::update(enemy, timer.elapsed());
+				}
 			}
-			enemy->serializeEnemy();
+
+			//HORRIBLE BUT WORKS
+			if (!this->gameFinished && !entity->getIsActive() && entity->getType() == EntityResolver::toTypeString(EntityType::enemigo_final)) {
+				//notify end of game
+				this->gameFinished = true;
+				this->notifyClientsGameFinished();
+			}
+
+			entity->serializeEntity();
 		}
+
+		Sleep(10);
 	}
 
 	return 0;

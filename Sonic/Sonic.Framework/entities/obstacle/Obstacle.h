@@ -10,7 +10,9 @@ public:
 	Obstacle(string);
 	~Obstacle();
 
+	void serialize(Writer<StringBuffer>& writer) override;
 	virtual void onCollision(Player* player, Camera* camera) override;
+
 private:
 
 };

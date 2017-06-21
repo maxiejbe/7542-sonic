@@ -139,11 +139,15 @@ void ServerMessage::unserialize(Value* nodeRef)
 	case levels_content:
 		parseLevels(nodeRef);
 		break;
-	case player_entities_status:
+	case player_status:
 		//time
 		parseInt((int*)&time, 0, nodeRef, SERVER_MESSAGE_TIME_NODE);
 		parsePlayersStatus(nodeRef);
 		parseCameraStatus(nodeRef);
+		break;
+	case entities_status:
+		//time
+		parseInt((int*)&time, 0, nodeRef, SERVER_MESSAGE_TIME_NODE);
 		parseEntitiesStatus(nodeRef);
 		break;
 	case level_finish:
@@ -183,18 +187,25 @@ string ServerMessage::serialize()
 		writer.String(SERVER_MESSAGE_PLAYER_NUMBER_NODE);
 		writer.Int(this->playerNumber);
 		break;
-	case player_entities_status:
+	case player_status:
 		//time
 		writer.String(SERVER_MESSAGE_TIME_NODE);
 		if (players.size() > 0)
 			writer.Int(players.at(0)->getTime());
-		else if (entities.size() > 0)
-			writer.Int(entities.at(0)->getTime());
 		else
 			writer.Int(0);
 
 		this->serializePlayers(writer);
 		this->serializeCamera(writer);
+		break;
+	case entities_status:
+		//time
+		writer.String(SERVER_MESSAGE_TIME_NODE);
+		if (entities.size() > 0)
+			writer.Int(entities.at(0)->getTime());
+		else
+			writer.Int(0);
+
 		this->serializeEntities(writer);
 		break;
 	case levels_content:
@@ -221,7 +232,7 @@ void ServerMessage::serializeCamera(Writer<StringBuffer>& writer)
 {
 	if (!this->camera) return;
 	writer.String(SERVER_MESSAGE_CAMERA_NODE);
-	string serializedcamera = this->camera->serialize();
+	string serializedcamera = this->camera->getSerializedCamera();
 	writer.String(serializedcamera.c_str());
 }
 
@@ -262,7 +273,7 @@ void ServerMessage::serializeEntities(Writer<StringBuffer>& writer)
 	vector<Entity*>::iterator it = this->entities.begin();
 	while (it != this->entities.end()) {
 		if (*it == NULL) continue;
-		string serializedEntity = (*it)->serialize();
+		string serializedEntity = (*it)->getSerializedEntity();
 		writer.String(serializedEntity.c_str());
 		it++;
 	}

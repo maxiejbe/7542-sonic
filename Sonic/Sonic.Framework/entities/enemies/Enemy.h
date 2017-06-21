@@ -3,7 +3,6 @@
 
 #include "../Player.h"
 #include "../Entity.h"
-#include <mutex>
 #include "../common/EntityResolver.h"
 
 //TODO: Enemy and player should hava a common parent class
@@ -31,21 +30,14 @@ public:
 	int getGivenPoints();
 	int getLives();
 
-	mutex enemyMutex;
-
-	void lock();
-	void unlock();
-
-	void serializeEnemy();
-	string getSerializedEnemy();
-
 	int getRecoveringTime();
 	void setRecoveringTime(int ms);
 
 	// Inherited via Serializable
 	virtual void unserialize(Value* nodeRef);
 	virtual char* getNodeName() override;
-	virtual string serialize() override;
+
+	void serialize(Writer<StringBuffer>& writer) override;
 	// Inherited via Entity
 	virtual void onCollision(Player* player, Camera* camera) override;
 private:
@@ -53,7 +45,6 @@ private:
 	int points;
 	int lives;
 	double distanceTravelled;
-	string serializedEnemy;
 	int recoveringTime;
 
 	void InitializeProperties();

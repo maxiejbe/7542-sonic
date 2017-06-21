@@ -16,6 +16,13 @@ Obstacle::Obstacle(string type)
 	}
 }
 
+void Obstacle::serialize(Writer<StringBuffer> &writer)
+{
+	writer.StartObject();
+	Entity::serialize(writer);
+	writer.EndObject();
+}
+
 void Obstacle::onCollision(Player * player, Camera* camera)
 {
 	int borderLeft = player->getXPosition();

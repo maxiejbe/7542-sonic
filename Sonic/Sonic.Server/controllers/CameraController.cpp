@@ -10,6 +10,8 @@ CameraController::CameraController()
 
 void CameraController::updateCamera(Camera * camera, vector<Player*> players)
 {
+	camera->lock();
+
 	int rightBorder = camera->getPosition().x + camera->getScreenWidth() - RIGHT_BORDER_WIDTH;
 	int leftBorder = camera->getPosition().x + LEFT_BORDER_WIDTH;
 
@@ -29,6 +31,8 @@ void CameraController::updateCamera(Camera * camera, vector<Player*> players)
 			keepCameraInBounds(camera);
 		}
 	}
+
+	camera->unlock();
 }
 
 void CameraController::keepCameraInBounds(Camera * camera)
