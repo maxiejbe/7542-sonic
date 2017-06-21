@@ -200,6 +200,9 @@ void PlayState::render(Game* game)
 	if (this->ownPlayer != nullptr) {
 		statisticsPanel->showStatistics(this->ownPlayer);
 	}
+
+	entityViews.clear();
+	playerViews.clear();
 }
 
 bool PlayState::clientNumberSet()

@@ -137,7 +137,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 
 	//Try parse multiple elements. Split!
 	string stringMessage = string(constRMessage);
-	
+
 	int start_pos = 0;
 	int last_start_pos = 0;
 
@@ -152,11 +152,11 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		message = stringMessage.substr(last_start_pos, start_pos);
 		messages.push_back(message);
 	}
-	
+
 	//Last message from string
 	message = stringMessage.substr(last_start_pos, stringMessage.length() - last_start_pos);
 	messages.push_back(message);
-	
+
 	for (vector<string>::iterator it = messages.begin(); it < messages.end(); it++)
 	{
 		ServerMessage * sMessage = new ServerMessage();
@@ -169,51 +169,56 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		Message* clientResponse = new Message();
 
 		switch (sMessage->getType()) {
-			case player_assign:
-				LOG(logINFO) << "Network Manager: Assignación de numero de usuario -> " << sMessage->getPlayerNumber();
-				if (sMessage->getPlayerNumber() != CLIENT_NUMBER_MAX_CONNECTED_PLAYERS && sMessage->getPlayerNumber() != CLIENT_NUMBER_NOT_ACTIVE_PLAYER) {
-					clientResponse->setType(MessageType::player_assign_ok);
-					this->sendMessage(clientResponse);
-				}
-
-				this->playerNumber = sMessage->getPlayerNumber();
-				this->gameMode = sMessage->getGameMode();
-				break;
-			case player_entities_status:
-				if (this->playerNumber < 0) break;
-				this->ms = sMessage->getTime();
-				this->updatePlayerViews(sMessage->getPlayers());
-				this->updateEntityViews(sMessage->getEntities());
-				this->updateCamera(sMessage->getCamera());
-				//TODO: handle entities views
-				break;
-			case levels_content:
-				this->gameLevels = sMessage->getLevels();
-				break;
-			case level_start:
-				clientResponse->setType(MessageType::level_start_ok);
-				this->actualLevel = sMessage->getLevelToStart();
+		case player_assign:
+			LOG(logINFO) << "Network Manager: Assignación de numero de usuario -> " << sMessage->getPlayerNumber();
+			if (sMessage->getPlayerNumber() != CLIENT_NUMBER_MAX_CONNECTED_PLAYERS && sMessage->getPlayerNumber() != CLIENT_NUMBER_NOT_ACTIVE_PLAYER) {
+				clientResponse->setType(MessageType::player_assign_ok);
 				this->sendMessage(clientResponse);
-				this->startGame = true;
-				this->levelFinished = false;
+			}
+			this->playerNumber = sMessage->getPlayerNumber();
+			this->gameMode = sMessage->getGameMode();
+			break;
+		case player_entities_status:
+			if (this->playerNumber < 0) break;
+			this->ms = sMessage->getTime();
+			this->updatePlayerViews(sMessage->getPlayers());
+			this->updateEntityViews(sMessage->getEntities());
+			this->updateCamera(sMessage->getCamera());
+			//TODO: handle entities views
+			break;
+		case levels_content:
+			this->gameLevels = sMessage->getLevels();
+			break;
+		case level_start:
+			clientResponse->setType(MessageType::level_start_ok);
 
-				this->continueHeartBeating = true;
-				this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
+			for (unordered_map<int, EntityView*>::iterator it = entityViews.begin(); it != entityViews.end(); ++it) {
+				if (it->second) delete it->second;
+			}
+			entityViews.clear();
 
-				lastHeartBeat = NULL;
-				break;
-			case level_finish:
-				this->levelFinished = true;
-				break;
-			case game_finish:
-				break;
-			case heart_beat_server:
-				time(&lastHeartBeat);
-				break;
-			default:
-				break;
+			this->actualLevel = sMessage->getLevelToStart();
+			this->sendMessage(clientResponse);
+			this->startGame = true;
+			this->levelFinished = false;
+
+			this->continueHeartBeating = true;
+			this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
+
+			lastHeartBeat = NULL;
+			break;
+		case level_finish:
+			this->levelFinished = true;
+			break;
+		case game_finish:
+			break;
+		case heart_beat_server:
+			time(&lastHeartBeat);
+			break;
+		default:
+			break;
 		}
-		
+
 		delete clientResponse;
 		delete sMessage;
 	}

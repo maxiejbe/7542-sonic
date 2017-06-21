@@ -35,6 +35,7 @@ int EndLevelState::unload()
 	fontScore = NULL;
 	TTF_CloseFont(fontLevel);
 	fontLevel = NULL;
+	players.clear();
 	return 0;
 }
 

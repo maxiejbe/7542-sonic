@@ -11,10 +11,12 @@ public:
 	EnemyController();
 	static void update(Enemy * enemy, int milliseconds);
 private:
-	static void EnemyController::move(Enemy * enemy);
+	static void move(Enemy * enemy);
 	static void horizontalMovement(Enemy*, double velocityX);
 	static void verticalMovement(Enemy*, double velocityX);
 	static void checkRecovering(Enemy* enemy, int ms);
+	static int resetCounter;
+	
 };
 #endif // !ENEMYCONTROLLER_H
 
