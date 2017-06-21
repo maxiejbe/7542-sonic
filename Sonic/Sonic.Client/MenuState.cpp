@@ -31,6 +31,7 @@ void MenuState::load(Game* game)
 	initColorNameOptions();
 	showBackgroundImage();
 	//updateAndRenderOptions();
+	SoundManager::getInstance().playMusic("sounds/menu.mp3");
 }
 
 int MenuState::unload()

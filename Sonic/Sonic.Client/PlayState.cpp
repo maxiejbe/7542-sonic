@@ -65,6 +65,9 @@ void PlayState::load(Game* game)
 
 	game->pushState(WaitingState::Instance());
 
+	SoundManager::getInstance().stopMusic();
+	SoundManager::getInstance().close();
+
 	if (levelNumber == 0)
 		SoundManager::getInstance().playMusic("sounds/level1_song.mp3");
 	else if (levelNumber == 1)
@@ -88,6 +91,7 @@ int PlayState::unload()
 	}
 
 	SoundManager::getInstance().stopMusic();
+	SoundManager::getInstance().close();
 
 	return 0;
 }

@@ -8,6 +8,7 @@ void WinGameState::load(Game* game)
 	winGameBackground.loadFromFile("img/wingame.jpg");
 
 	this->showWinGame();
+	SoundManager::getInstance().playSound("sounds/ending.mp3");
 }
 
 void WinGameState::update(Game* game, float dt)
@@ -35,6 +36,8 @@ void WinGameState::render(Game* game)
 
 int WinGameState::unload()
 {
+	SoundManager::getInstance().stopMusic();
+	SoundManager::getInstance().close();
 	return 0;
 }
 

@@ -25,8 +25,8 @@ void EndLevelState::load(Game* game)
 
 	this->showLevelHasPassed();
 	this->showStatistics(game->getGameMode());
-	/*SoundManager::getInstance().pauseMusic();*/
-	SoundManager::getInstance().playSound("sounds/end_level.mp3");
+
+	SoundManager::getInstance().playMusic("sounds/end_level.mp3");
 }
 
 int EndLevelState::unload()
@@ -38,6 +38,8 @@ int EndLevelState::unload()
 	TTF_CloseFont(fontLevel);
 	fontLevel = NULL;
 	players.clear();
+	SoundManager::getInstance().stopMusic();
+	SoundManager::getInstance().close();
 	return 0;
 }
 
