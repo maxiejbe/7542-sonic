@@ -14,6 +14,8 @@ string DateUtils::getCurrentDate(bool time) {
 
 	stringstream ss;
 	const char *args = time ? "%Y-%m-%d %X" : "%Y-%m-%d";
-	ss << put_time(localtime(&in_time_t), args);
+	struct tm timeinfo;
+	localtime_s(&timeinfo, &in_time_t);
+	ss << put_time(&timeinfo, args);
 	return ss.str();
 }
