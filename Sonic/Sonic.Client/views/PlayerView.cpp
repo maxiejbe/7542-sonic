@@ -36,6 +36,7 @@ PlayerView::~PlayerView()
 
 void PlayerView::render(int camX, int camY)
 {
+	if (!this->player->getIsActive()) return;
 	checkTextures();
 	renderPlayer(camX, camY);
 	renderShield(camX, camY);
