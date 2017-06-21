@@ -162,8 +162,8 @@ void PlayState::update(Game* game, float dt)
 		camera.y = (int)round(cameraModel->getPosition().y);
 	}
 
-	// Check level finished
-	if (NetworkManager::getInstance().getLevelFinished()) {
+	// Check level or game finished
+	if (NetworkManager::getInstance().getLevelFinished() || NetworkManager::getInstance().getGameFinished()) {
 		game->changeState(EndLevelState::Instance());
 	}
 }
@@ -200,6 +200,9 @@ void PlayState::render(Game* game)
 	if (this->ownPlayer != nullptr) {
 		statisticsPanel->showStatistics(this->ownPlayer);
 	}
+
+	entityViews.clear();
+	playerViews.clear();
 }
 
 bool PlayState::clientNumberSet()

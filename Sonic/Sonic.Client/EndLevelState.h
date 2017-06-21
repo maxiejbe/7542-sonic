@@ -10,6 +10,7 @@
 #include "InputManager.h"
 #include "MenuState.h"
 #include "PlayState.h"
+#include "WinGameState.h"
 #include "utils/PlayerUtils.h"
 
 class EndLevelState : public GameState {

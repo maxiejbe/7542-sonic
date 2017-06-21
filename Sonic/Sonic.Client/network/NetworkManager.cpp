@@ -138,7 +138,6 @@ void NetworkManager::handleMessage(char * receivedMessage)
 		delete sMessage;
 		return;
 	}
-
 	Message* clientResponse = new Message();
 
 	switch (sMessage->getType()) {
@@ -148,7 +147,6 @@ void NetworkManager::handleMessage(char * receivedMessage)
 				clientResponse->setType(MessageType::player_assign_ok);
 				this->sendMessage(clientResponse);
 			}
-
 			this->playerNumber = sMessage->getPlayerNumber();
 			this->gameMode = sMessage->getGameMode();
 			break;
@@ -168,6 +166,12 @@ void NetworkManager::handleMessage(char * receivedMessage)
 			break;
 		case level_start:
 			clientResponse->setType(MessageType::level_start_ok);
+
+			for (unordered_map<int, EntityView*>::iterator it = entityViews.begin(); it != entityViews.end(); ++it) {
+				if (it->second) delete it->second;
+			}
+			entityViews.clear();
+
 			this->actualLevel = sMessage->getLevelToStart();
 			this->sendMessage(clientResponse);
 			this->startGame = true;
@@ -178,9 +182,14 @@ void NetworkManager::handleMessage(char * receivedMessage)
 				this->heartBeatThreadHandle = CreateThread(0, 0, runHeartBeatSocketHandler, (void*)this, 0, &this->heartBeatThreadId);
 				lastHeartBeat = NULL;
 			}
+			this->gameFinished = false;
+
 			break;
 		case level_finish:
 			this->levelFinished = true;
+			break;
+		case game_finish:
+			this->gameFinished = true;
 			break;
 		case heart_beat_server:
 			time(&lastHeartBeat);
@@ -283,6 +292,11 @@ vector<Level>* NetworkManager::getLevels()
 bool NetworkManager::getLevelFinished()
 {
 	return this->levelFinished;
+}
+
+bool NetworkManager::getGameFinished()
+{
+	return this->gameFinished;
 }
 
 int NetworkManager::getActualLevel()
