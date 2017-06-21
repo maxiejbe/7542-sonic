@@ -9,6 +9,7 @@ void GameOverState::load(Game* game)
 	gameOverBackground.loadFromFile("img/gameover.jpg");
 
 	this->showGameOver();
+	SoundManager::getInstance().playMusic("sounds/game_over.mp3");
 }
 
 void GameOverState::update(Game* game, float dt)
@@ -36,6 +37,8 @@ void GameOverState::render(Game* game)
 
 int GameOverState::unload()
 {
+	SoundManager::getInstance().stopMusic();
+	SoundManager::getInstance().close();
 	return 0;
 }
 

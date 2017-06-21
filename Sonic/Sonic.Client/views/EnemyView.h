@@ -2,6 +2,7 @@
 #define ENEMYVIEW_H
 
 #include "EntityView.h"
+#include "SoundManager.h"
 
 class EnemyView : public EntityView {
 public:

@@ -10,7 +10,7 @@ Rectangle2::Rectangle2(double x0, double x1, double y0, double y1)
 
 bool Rectangle2::collisionsWith(double x0, double x1, double y0, double y1)
 {
-	if (x0 < this->x1 && x1 > this->x0 && y0 < this->y1 && y1 > this->y0) return true;
+	if (x0 <= this->x1 && x1 >= this->x0 && y0 <= this->y1 && y1 >= this->y0) return true;
 	return false;
 
 	//bool c = true;

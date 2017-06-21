@@ -21,7 +21,7 @@ bool SDLWindow::create(int width, int height)
 	this->screenWidth = width;
 	this->screenHeight = height;
 
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
 		LOG(logERROR) << "SDL no pude ser inicializado! SDL Error: " << SDL_GetError();
 		return false;
 	}

@@ -20,6 +20,7 @@ void RingView::draw(int camX, int camY)
 	if (!this->entity->getIsActive()) {
 		if (texture.getTexture() == nullptr) return;
 		texture.free();
+		SoundManager::getInstance().playSound("sounds/ring.wav");
 	}
 
 	if (entity->getId() >= 0) {

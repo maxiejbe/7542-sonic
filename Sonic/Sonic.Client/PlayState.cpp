@@ -23,9 +23,9 @@ void PlayState::load(Game* game)
 		Sleep(3000);
 	}
 
-	int at = NetworkManager::getInstance().getActualLevel() - 1;
-	if (at < 0) at = 0;
-	Level level = NetworkManager::getInstance().getLevels()->at(at);
+	int levelNumber = NetworkManager::getInstance().getActualLevel() - 1;
+	if (levelNumber < 0) levelNumber = 0;
+	Level level = NetworkManager::getInstance().getLevels()->at(levelNumber);
 
 	Scenario* scenario = level.getScenario();
 
@@ -65,6 +65,16 @@ void PlayState::load(Game* game)
 
 	game->pushState(WaitingState::Instance());
 
+	SoundManager::getInstance().stopMusic();
+	SoundManager::getInstance().close();
+
+	if (levelNumber == 0)
+		SoundManager::getInstance().playMusic("sounds/level1_song.mp3");
+	else if (levelNumber == 1)
+		SoundManager::getInstance().playMusic("sounds/level2_song.mp3");
+	else if (levelNumber == 2)
+		SoundManager::getInstance().playMusic("sounds/level3_song.mp3");
+
 	// Show level name
 	showLevelBackgroundName(level.getNumber());
 }
@@ -79,6 +89,9 @@ int PlayState::unload()
 		delete statisticsPanel;
 		statisticsPanel = NULL;
 	}
+
+	SoundManager::getInstance().stopMusic();
+	SoundManager::getInstance().close();
 
 	return 0;
 }
@@ -106,6 +119,7 @@ void PlayState::update(Game* game, float dt)
 		stepTimer.pause();
 		game->pushState(ConnectState::Instance());
 		stepTimer.unpause();
+		lastMessage = nullptr; // new
 	}
 
 	/*if (reconnected) {
@@ -156,6 +170,9 @@ void PlayState::update(Game* game, float dt)
 	PlayerView* playerView = NetworkManager::getInstance().getOwnPlayerView();
 	if (playerView != nullptr) {
 		this->ownPlayer = playerView->getPlayer();
+		if (input->isKeyDown(KEY_UP) && !this->ownPlayer->getIsJumping()) {
+			SoundManager::getInstance().playSound("sounds/jump.wav");
+		}
 		if (!this->ownPlayer->getIsActive()) {
 			game->changeState(GameOverState::Instance());
 			return;

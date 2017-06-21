@@ -17,6 +17,7 @@ void BonusView::draw(int camX, int camY)
 	if (!this->entity->getIsActive()) {
 		if (texture.getTexture() == nullptr) return;
 		texture.free();
+		SoundManager::getInstance().playSound("sounds/attack.wav");
 	}
 
 	int x = entity->getCoordinate().getX() - camX;

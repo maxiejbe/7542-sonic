@@ -11,6 +11,7 @@
 #include "protocol/Message.h"
 #include "entities/Player.h"
 #include "../utils/PlayerUtils.h"
+#include "SoundManager.h"
 
 using namespace std;
 
@@ -42,6 +43,9 @@ private:
 	SDL_Rect** spriteClips;
 	SDL_Rect* shieldClips;
 	bool isGreyed;
+	bool isPlayingLoseRings = false;
+	bool isPlayingSpin = false;
+	int lastLives;
 };
 
 #endif // !PLAYERVIEW_H

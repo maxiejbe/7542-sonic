@@ -5,6 +5,7 @@
 #include "Renderer.h"
 #include "entities/ServerConfiguration.h"
 #include "network/NetworkManager.h"
+#include "SoundManager.h"
 #include "Game.h"
 
 void close()
@@ -12,8 +13,10 @@ void close()
 	SDLWindow::getInstance().close();
 	Renderer::getInstance().close();
 	NetworkManager::getInstance().close();
+	SoundManager::getInstance().close();
 
 	IMG_Quit();
+	Mix_Quit();
 	SDL_Quit();
 }
 
@@ -43,6 +46,7 @@ int main(int argc, char* args[])
 
 	bool windowCreated = SDLWindow::getInstance().create(window.getWidth(), window.getHeight());
 	bool rendererCreated = Renderer::getInstance().create();
+	bool soundManagerCreated = SoundManager::getInstance().create();
 
 	Game game(serverConfig, configPath);
 

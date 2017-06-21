@@ -2,6 +2,7 @@
 #define BONUSVIEW_H
 
 #include "EntityView.h"
+#include "SoundManager.h"
 
 class BonusView : public EntityView {
 public:

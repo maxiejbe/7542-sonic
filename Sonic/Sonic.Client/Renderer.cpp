@@ -10,6 +10,7 @@ bool Renderer::create()
 	else {
 		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 		int imgFlags = IMG_INIT_PNG;
+
 		if (!(IMG_Init(imgFlags) & imgFlags)) {
 			LOG(logERROR) << "SDL_Image no pudo ser inicializado! SDL_Image Error: " << IMG_GetError();
 			return false;

@@ -111,6 +111,9 @@
     <ClCompile Include="WinGameState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -218,6 +221,9 @@
     <ClInclude Include="WinGameState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\level.png">
@@ -264,5 +270,22 @@
     <ResourceCompile Include="Sonic.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sounds\endlevel.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="sounds\ring.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="sounds\S1_A0.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="sounds\stats.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="sounds\jump.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

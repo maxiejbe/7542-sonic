@@ -7,7 +7,7 @@
 #include "InputManager.h"
 #include "MenuState.h"
 #include "utils/PlayerUtils.h"
-
+#include "SoundManager.h"
 
 class GameOverState : public GameState {
 public:

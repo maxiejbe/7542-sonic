@@ -15,6 +15,7 @@
 #include "EndLevelState.h"
 #include "GameOverState.h"
 #include "Timer.h"
+#include "SoundManager.h"
 #include <stdio.h>
 #include <string>
 #include <cmath>
@@ -23,6 +24,7 @@
 class PlayState : public GameState {
 public:
 	void load(Game* game);
+	void loadSounds();
 	int unload();
 	void update(Game* game, float dt);
 	void render(Game* game);
