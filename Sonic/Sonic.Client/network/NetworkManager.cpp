@@ -179,13 +179,16 @@ void NetworkManager::handleMessage(char * receivedMessage)
 				this->playerNumber = sMessage->getPlayerNumber();
 				this->gameMode = sMessage->getGameMode();
 				break;
-			case player_entities_status:
+			case player_status:
 				if (this->playerNumber < 0) break;
 				this->ms = sMessage->getTime();
 				this->updatePlayerViews(sMessage->getPlayers());
-				this->updateEntityViews(sMessage->getEntities());
 				this->updateCamera(sMessage->getCamera());
 				//TODO: handle entities views
+				break;
+			case entities_status:
+				//this->ms = sMessage->getTime();
+				this->updateEntityViews(sMessage->getEntities());
 				break;
 			case levels_content:
 				this->gameLevels = sMessage->getLevels();

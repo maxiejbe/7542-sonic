@@ -36,6 +36,7 @@ public:
 	bool sendLevelFinish();
 	bool sendGameFinish();
 	bool sendStatus();
+	bool sendEntitiesStatus();
 	bool refreshPlayer();
 	bool notifyLevelFinished();
 	bool notifyStartNewLevel();
@@ -70,6 +71,7 @@ private:
 	void handleReceivedMessage(char* recievedMessage);
 	void startRefereshing();
 	void startSending();
+	void startSendingEntities();
 	void startHeartBeating();
 	bool continueReceiving;
 
@@ -89,6 +91,13 @@ private:
 	
 	mutex playerMutex;
 	mutex sendMutex;
+
+	//send handler
+	DWORD sendEntitiesThreadId;
+	HANDLE sendEntitiesThreadHandle;
+	static DWORD WINAPI runSendEntitiesSocketHandler(void* args);
+	DWORD sendEntitiesSocketHandler();
+	bool continueSendingEntites;
 
 	//Connection check
 	HANDLE heartBeatThreadHandle;

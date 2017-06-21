@@ -368,10 +368,18 @@ ServerMessage* Server::getStatusMessage()
 	this->camera->serializeCamera();
 
 	ServerMessage * message = new ServerMessage();
-	message->setType(player_entities_status);
+	message->setType(player_status);
 	message->setPlayers(clientsPlayers);
-	message->setEntities(this->getVisibleEntities());
 	message->setCamera(new Camera(*this->camera));
+
+	return message;
+}
+
+ServerMessage * Server::getEntitiesStatusMessage() 
+{
+	ServerMessage * message = new ServerMessage();
+	message->setType(entities_status);
+	message->setEntities(this->getVisibleEntities());
 
 	return message;
 }
