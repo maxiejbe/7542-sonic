@@ -72,6 +72,8 @@ public:
 
 	ServerMessage * getStatusMessage();
 
+	ServerMessage * getEntitiesStatusMessage();
+
 	void levelFinished();
 	void updateScoresLevelFinished();
 	void notifyClientsLevelFinished();

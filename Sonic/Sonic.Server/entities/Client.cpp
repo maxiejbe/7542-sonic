@@ -127,6 +127,13 @@ void Client::terminateThreads()
 		CloseHandle(this->sendThreadHandle);
 		this->sendThreadHandle = NULL;
 	}
+
+	if (this->sendEntitiesThreadHandle != NULL)
+	{
+		this->continueSendingEntites = false;
+		CloseHandle(this->sendEntitiesThreadHandle);
+		this->sendEntitiesThreadHandle = NULL;
+	}
 }
 
 bool Client::sendHeartBeat() {
@@ -188,6 +195,26 @@ bool Client::sendStatus()
 	int bytecount;
 
 	ServerMessage * message = this->server->getStatusMessage();
+	char * serializedMessage = StringUtils::convert(message->serialize());
+
+	delete message;
+
+	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
+		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
+			<< " (Cliente " << this->getClientNumber() << ")";
+		delete serializedMessage;
+		return false;
+	}
+
+	delete serializedMessage;
+	return true;
+}
+
+bool Client::sendEntitiesStatus()
+{
+	int bytecount;
+
+	ServerMessage * message = this->server->getEntitiesStatusMessage();
 	char * serializedMessage = StringUtils::convert(message->serialize());
 
 	delete message;
@@ -320,6 +347,7 @@ void Client::handleReceivedMessage(char* recievedMessage)
 	case level_start_ok:
 		startRefereshing();
 		startSending();
+		startSendingEntities();
 		startHeartBeating();
 	case status:
 		if (this->lastReceivedMessage != nullptr) delete this->lastReceivedMessage;
@@ -346,6 +374,14 @@ void Client::startSending()
 
 	this->continueSending = true;
 	this->sendThreadHandle = CreateThread(0, 0, runSendSocketHandler, (void*)this, 0, &this->sendThreadId);
+}
+
+void Client::startSendingEntities()
+{
+	if (this->continueSendingEntites) return;
+
+	this->continueSendingEntites = true;
+	this->sendEntitiesThreadHandle = CreateThread(0, 0, runSendEntitiesSocketHandler, (void*)this, 0, &this->sendEntitiesThreadId);
 }
 
 void Client::startHeartBeating()
@@ -429,6 +465,22 @@ DWORD Client::sendSocketHandler()
 		if (sleepingTime > 0) {
 			Sleep(sleepingTime);
 		}
+	}
+
+	return 0;
+}
+
+DWORD Client::runSendEntitiesSocketHandler(void * args)
+{
+	Client * client = (Client*)args;
+	return client->sendEntitiesSocketHandler();
+}
+
+DWORD Client::sendEntitiesSocketHandler()
+{
+	while (this->continueSendingEntites) {
+		this->sendEntitiesStatus();
+		Sleep(10);
 	}
 
 	return 0;
