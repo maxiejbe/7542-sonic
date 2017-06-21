@@ -385,15 +385,18 @@ DWORD Client::refreshSocketHandler()
 {
 	while (this->continueRefreshing) {
 		this->refreshPlayer();
-		
+
 		if (this->getLastMessage() == NULL) {
 			Sleep(10);
 			continue;
 		}
 
 		int sleepingTime = this->getLastMessage()->getTimeStep() * 1000 - 2;
-		if (sleepingTime > 0) {
+		if (sleepingTime > 0 && sleepingTime < 100) {
 			Sleep(sleepingTime);
+		}
+		else {
+			Sleep(16);
 		}
 	}
 
@@ -410,15 +413,18 @@ DWORD Client::sendSocketHandler()
 {
 	while (this->continueSending) {
 		this->sendStatus();
-		
+
 		if (this->getLastMessage() == NULL) {
 			Sleep(10);
 			continue;
 		}
 
 		int sleepingTime = this->getLastMessage()->getTimeStep() * 1000 - 2;
-		if (sleepingTime > 0) {
+		if (sleepingTime > 0 && sleepingTime < 100) {
 			Sleep(sleepingTime);
+		}
+		else {
+			Sleep(16);
 		}
 	}
 

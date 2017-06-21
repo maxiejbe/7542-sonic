@@ -178,6 +178,9 @@ void Player::reset()
 	this->isInvincible = false;
 	this->isRecovering = false;
 	this->teamRings = 0;
+	this->velocity = Vector2(0, 0);
+	this->invincibleTime = 0;
+	this->recoveringTime = 0;
 }
 
 void Player::setXPosition(double x)
