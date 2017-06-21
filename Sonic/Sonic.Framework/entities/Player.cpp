@@ -171,9 +171,7 @@ void Player::reset()
 	this->isJumping = false;
 	this->facingDirection = FACING_RIGHT;
 	this->spriteState = PlayerStatus::idle;
-	this->isConnected = true;
 	this->rings = 0;
-	this->isActive = true;
 	this->time = 0;
 	this->hasShield = false;
 	this->isInvincible = false;
