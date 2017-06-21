@@ -14,6 +14,7 @@ void close()
 	NetworkManager::getInstance().close();
 
 	IMG_Quit();
+	Mix_Quit();
 	SDL_Quit();
 }
 

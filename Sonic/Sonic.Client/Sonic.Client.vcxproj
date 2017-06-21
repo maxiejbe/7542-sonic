@@ -116,6 +116,13 @@
     <Font Include="fonts\SEGA.TTF" />
     <Font Include="fonts\SonicAdvance.ttf" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="sounds\endlevel.wav" />
+    <Media Include="sounds\jump.wav" />
+    <Media Include="sounds\ring.wav" />
+    <Media Include="sounds\S1_A0.wav" />
+    <Media Include="sounds\stats.wav" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A3F8E1A0-5C50-4336-A742-6CAFA67F93A0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

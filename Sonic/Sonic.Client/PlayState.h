@@ -23,6 +23,7 @@
 class PlayState : public GameState {
 public:
 	void load(Game* game);
+	void loadSounds();
 	int unload();
 	void update(Game* game, float dt);
 	void render(Game* game);
@@ -66,6 +67,10 @@ private:
 	Player* ownPlayer;
 
 	int team;
+
+	Mix_Music* musicSound;
+	Mix_Chunk* jumpSound;
+	Mix_Chunk* ringSound;
 };
 
 #endif // !PLAY_STATE_H

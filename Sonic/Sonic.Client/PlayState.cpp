@@ -58,8 +58,29 @@ void PlayState::load(Game* game)
 
 	game->pushState(WaitingState::Instance());
 
+	// Load sounds
+	loadSounds();
+
 	// Show level name
 	showLevelBackgroundName(level.getNumber());
+}
+
+void PlayState::loadSounds()
+{
+	musicSound = Mix_LoadMUS("sounds/music.wav");
+	if (musicSound == NULL) {
+		LOG(logERROR) << "Error al cargar la música! SDL_mixer Error: " << Mix_GetError();
+	}
+
+	jumpSound = Mix_LoadWAV("sounds/jump.wav");
+	if (jumpSound == NULL) {
+		LOG(logERROR) << "Error al cargar el sonido de jump! SDL_mixer Error: " << Mix_GetError();
+	}
+
+	ringSound = Mix_LoadWAV("sounds/ring.wav");
+	if (ringSound == NULL) {
+		LOG(logERROR) << "Error al cargar el sonido de ring! SDL_mixer Error: " << Mix_GetError();
+	}
 }
 
 int PlayState::unload()
@@ -72,6 +93,13 @@ int PlayState::unload()
 		delete statisticsPanel;
 		statisticsPanel = NULL;
 	}
+
+	Mix_FreeChunk(jumpSound);
+	jumpSound = NULL;
+	Mix_FreeChunk(ringSound);
+	ringSound = NULL;
+	Mix_FreeMusic(musicSound);
+	musicSound = NULL;
 
 	return 0;
 }
@@ -99,6 +127,7 @@ void PlayState::update(Game* game, float dt)
 		stepTimer.pause();
 		game->pushState(ConnectState::Instance());
 		stepTimer.unpause();
+		lastMessage = nullptr; // new
 	}
 
 	/*if (reconnected) {
@@ -149,6 +178,9 @@ void PlayState::update(Game* game, float dt)
 	PlayerView* playerView = NetworkManager::getInstance().getOwnPlayerView();
 	if (playerView != nullptr) {
 		this->ownPlayer = playerView->getPlayer();
+		if (input->isKeyDown(KEY_UP) && !this->ownPlayer->getIsJumping()) {
+			Mix_PlayChannel(-1, jumpSound, 0);
+		}
 		if (!this->ownPlayer->getIsActive()) {
 			game->changeState(GameOverState::Instance());
 			return;
