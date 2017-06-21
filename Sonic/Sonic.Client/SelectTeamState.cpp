@@ -26,12 +26,6 @@ void SelectTeamState::load(Game* game)
 
 int SelectTeamState::unload()
 {
-	for (int i = 0; i < OPCMENU; i++) {
-		if (menus[i] != NULL) {
-			SDL_FreeSurface(menus[i]);
-		}
-	}
-
 	TTF_CloseFont(fontTeam);
 	fontTeam = NULL;
 
@@ -89,12 +83,12 @@ int SelectTeamState::getTeam()
 void SelectTeamState::initColorNameOptions()
 {
 	option = 0;
-	menus[option] = TTF_RenderText_Solid(fontTeam, labels[option], color[1]);
+	textures[option].loadFromFont(fontTeam, labels[option], color[1]);
 
 	for (int i = 0; i < OPCMENU; i++) {
 		if (i != option) {
 			selected[i] = false;
-			menus[i] = TTF_RenderText_Solid(fontTeam, labels[i], color[0]);
+			textures[i].loadFromFont(fontTeam, labels[i], color[0]);
 		}
 	}
 }
@@ -110,13 +104,13 @@ void SelectTeamState::renderSelectedOption()
 
 	for (int i = 0; i < OPCMENU; i++) {
 		if (selected[i] == true) {
-			menus[i] = TTF_RenderText_Solid(fontTeam, labels[i], color[1]);
+			textures[i].loadFromFont(fontTeam, labels[i], color[1]);
 		}
 		else if (team[i] == true) {
-			menus[i] = TTF_RenderText_Solid(fontTeam, labels[i], color[2]);
+			textures[i].loadFromFont(fontTeam, labels[i], color[2]);
 		}
 		else {
-			menus[i] = TTF_RenderText_Solid(fontTeam, labels[i], color[0]);
+			textures[i].loadFromFont(fontTeam, labels[i], color[0]);
 		}
 	}
 }
@@ -137,25 +131,12 @@ int SelectTeamState::getNextOption(int option, int order) {
 
 void SelectTeamState::updateAndRenderOptions()
 {
-	SDL_Rect Message_rect;
-	SDL_Texture* text;
-
-	//Show team1 text
-	text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, menus[0]);
-	Message_rect.x = 190;
-	Message_rect.y = 410;
-	Message_rect.w = menus[0]->w;
-	Message_rect.h = menus[0]->h;
-	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &Message_rect);
-
-	//Show team2 text
-	text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, menus[1]);
-	Message_rect.x = 490;
-	Message_rect.y = 410;
-	Message_rect.w = menus[1]->w;
-	Message_rect.h = menus[1]->h;
-	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &Message_rect);
-
+	int x = 190;
+	int y = 460;
+	for (int i = 0; i < OPCMENU; i++) {
+		textures[i].render(x, y, NULL);
+		x += 300;
+	}
 
 	SDL_RenderPresent(Renderer::getInstance().gRenderer);
 }

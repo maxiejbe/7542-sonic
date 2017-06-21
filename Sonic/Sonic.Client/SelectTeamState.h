@@ -38,10 +38,10 @@ private:
 	Texture backgroundTexture;
 	Uint32 time;
 	const char* labels[OPCMENU];
-	SDL_Surface* menus[OPCMENU];
+	Texture textures[OPCMENU];
 	bool selected[OPCMENU];
 	bool team[TEAMS_COUNT];
-	SDL_Color color[OPCMENU];
+	SDL_Color color[3];
 	int option;
 	int selectedTeam;
 

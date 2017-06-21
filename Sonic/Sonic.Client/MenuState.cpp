@@ -117,13 +117,13 @@ int MenuState::getNextOption(int option, int order) {
 
 void MenuState::updateAndRenderOptions()
 {
-	int x = (SDLWindow::getInstance().getScreenWidth() / 2) - (151 / 2);
+	int x = (SDLWindow::getInstance().getScreenWidth() / 2) - (textureConnect.getWidth() / 2);
 	int y = (int)(SDLWindow::getInstance().getScreenHeight() - SDLWindow::getInstance().getScreenHeight() / 4);
 
 	textureConnect.render(x, y, NULL);
 
-	x = SDLWindow::getInstance().getScreenWidth() / 2 - 81 / 2;
-	y = (int)(SDLWindow::getInstance().getScreenHeight() - SDLWindow::getInstance().getScreenHeight() / 4) + (2 * (31));
+	x = SDLWindow::getInstance().getScreenWidth() / 2 - textureExit.getWidth() / 2;
+	y = (int)(SDLWindow::getInstance().getScreenHeight() - SDLWindow::getInstance().getScreenHeight() / 4) + (2 * (textureExit.getHeight()));
 	textureExit.render(x, y, NULL);
 
 	SDL_RenderPresent(Renderer::getInstance().gRenderer);

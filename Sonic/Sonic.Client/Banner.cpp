@@ -54,14 +54,5 @@ void Banner::showBanner()
 
 	textTexture.render(x, y, NULL);
 
-	/*message = TTF_RenderText_Solid(font, allpoint.c_str(), { 255, 255, 255 });
-
-	SDL_Texture* text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, message);
-	destrect.x = SDLWindow::getInstance().getScreenWidth() / 2 - message->clip_rect.w / 2;
-	destrect.y = (int)(SDLWindow::getInstance().getScreenHeight() - SDLWindow::getInstance().getScreenHeight() / 3.5) + (3 * (message->clip_rect.h));
-	destrect.w = message->w;
-	destrect.h = message->h;
-	SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &destrect);*/
-
 	SDL_RenderPresent(Renderer::getInstance().gRenderer);
 }
