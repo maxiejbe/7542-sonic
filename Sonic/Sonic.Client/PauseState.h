@@ -25,21 +25,19 @@ private:
 
 	TTF_Font* font;
 	Texture texture;
+	Texture textures[OPCMENU];
 	Uint32 time;
 	float posX, posY;
 	const char* labels[OPCMENU];
-	SDL_Surface* menus[OPCMENU];
 	bool selected[OPCMENU];
-	SDL_Color color[OPCMENU];
+	SDL_Color color[2];
 	int option;
-	bool enabled[OPCMENU];
 
 	void initColorNameOptions();
 	void showBackgroundImage();
 	void updateAndRenderOptions();
 	void renderSelectedOption();
 	int getNextOption(int, int);
-	void setEnabledOptions();
 };
 
 #endif // !PAUSE_STATE_H

@@ -13,9 +13,8 @@ void PauseState::load(Game* game)
 	selected[0] = true;
 	selected[1] = selected[2] = false;
 
-	color[0] = { 255,255,255 };
-	color[1] = { 255,0,0 };
-	color[2] = { 192,192,192 };
+	color[0] = { 255,255,255 }; // White
+	color[1] = { 255,0,0 }; // Red
 
 	labels[0] = "Resume";
 	labels[1] = "Disconnect";
@@ -23,17 +22,10 @@ void PauseState::load(Game* game)
 
 	initColorNameOptions();
 	showBackgroundImage();
-	//updateAndRenderOptions();
 }
 
 int PauseState::unload()
 {
-	for (int i = 0; i < OPCMENU; i++) {
-		if (menus[i] != NULL) {
-			SDL_FreeSurface(menus[i]);
-		}
-	}
-
 	TTF_CloseFont(font);
 	font = NULL;
 
@@ -73,15 +65,10 @@ void PauseState::update(Game* game, float dt)
 			game->quit();
 		}
 	}
-
-	//if (input->isKeyDown(KEY_ESCAPE)) {
-	//	return 0;
-	//}
 }
 
 void PauseState::render(Game* game)
 {
-	this->setEnabledOptions();
 	this->updateAndRenderOptions();
 	this->renderSelectedOption();
 }
@@ -89,14 +76,12 @@ void PauseState::render(Game* game)
 void PauseState::initColorNameOptions()
 {
 	option = 0;
-	menus[option] = TTF_RenderText_Solid(font, labels[option], color[1]);
+	textures[option].loadFromFont(font, labels[option], color[1]);
 
-	for (int i = 0; i < OPCMENU; i++)
-	{
-		if (i != option)
-		{
+	for (int i = 0; i < OPCMENU; i++) {
+		if (i != option) {
 			selected[i] = false;
-			menus[i] = TTF_RenderText_Solid(font, labels[i], color[0]);
+			textures[i].loadFromFont(font, labels[i], color[0]);
 		}
 	}
 }
@@ -111,14 +96,12 @@ void PauseState::showBackgroundImage()
 void PauseState::renderSelectedOption()
 {
 	selected[option] = true;
-	menus[option] = TTF_RenderText_Solid(font, labels[option], color[1]);
+	textures[option].loadFromFont(font, labels[option], color[1]);
 
-	for (int i = 0; i < OPCMENU; i++)
-	{
-		if (i != option)
-		{
+	for (int i = 0; i < OPCMENU; i++) {
+		if (i != option) {
 			selected[i] = false;
-			menus[i] = TTF_RenderText_Solid(font, labels[i], color[0]);
+			textures[i].loadFromFont(font, labels[i], color[0]);
 		}
 	}
 }
@@ -127,40 +110,24 @@ int PauseState::getNextOption(int option, int order) {
 	if (order > 0) {
 		// Abajo
 		for (int i = option + 1; i < OPCMENU; i++) {
-			if (enabled[i]) {
-				return i;
-			}
+			return i;
 		}
 	}
 	else if (order < 0) {
 		// Arriba
 		for (int i = option - 1; i >= 0; i--) {
-			if (enabled[i]) {
-				return i;
-			}
+			return i;
 		}
 	}
 	return option;
 }
 
-void PauseState::setEnabledOptions()
-{
-	for (int i = 0; i < OPCMENU; i++) {
-		enabled[i] = true;
-	}
-}
-
 void PauseState::updateAndRenderOptions()
 {
-	SDL_Rect Message_rect;
-	for (int i = 0; i < OPCMENU; i += 1)
-	{
-		SDL_Texture* text = SDL_CreateTextureFromSurface(Renderer::getInstance().gRenderer, menus[i]);
-		Message_rect.x = SDLWindow::getInstance().getScreenWidth() / 2 - menus[i]->clip_rect.w / 2;
-		Message_rect.y = (int)(SDLWindow::getInstance().getScreenHeight() - SDLWindow::getInstance().getScreenHeight() / 3.5) + (2 * (menus[i]->clip_rect.h) * i);
-		Message_rect.w = menus[i]->w;
-		Message_rect.h = menus[i]->h;
-		SDL_RenderCopy(Renderer::getInstance().gRenderer, text, NULL, &Message_rect);
+	for (int i = 0; i < OPCMENU; i++) {
+		int x = SDLWindow::getInstance().getScreenWidth() / 2 - textures[i].getWidth() / 2;
+		int y = (int)(SDLWindow::getInstance().getScreenHeight() - SDLWindow::getInstance().getScreenHeight() / 3.5) + (2 * (textures[i].getHeight()) * i);
+		textures[i].render(x, y, NULL);
 	}
 
 	SDL_RenderPresent(Renderer::getInstance().gRenderer);

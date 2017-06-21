@@ -24,7 +24,6 @@ void MenuState::load(Game* game)
 
 	initColorNameOptions();
 	showBackgroundImage();
-	//updateAndRenderOptions();
 	SoundManager::getInstance().playMusic("sounds/menu.mp3");
 }
 
@@ -119,12 +118,12 @@ int MenuState::getNextOption(int option, int order) {
 void MenuState::updateAndRenderOptions()
 {
 	int x = (SDLWindow::getInstance().getScreenWidth() / 2) - (151 / 2);
-	int y = (int)(SDLWindow::getInstance().getScreenHeight() - SDLWindow::getInstance().getScreenHeight() / 3.5);
+	int y = (int)(SDLWindow::getInstance().getScreenHeight() - SDLWindow::getInstance().getScreenHeight() / 4);
 
 	textureConnect.render(x, y, NULL);
 
 	x = SDLWindow::getInstance().getScreenWidth() / 2 - 81 / 2;
-	y = (int)(SDLWindow::getInstance().getScreenHeight() - SDLWindow::getInstance().getScreenHeight() / 3.5) + (2 * (31));
+	y = (int)(SDLWindow::getInstance().getScreenHeight() - SDLWindow::getInstance().getScreenHeight() / 4) + (2 * (31));
 	textureExit.render(x, y, NULL);
 
 	SDL_RenderPresent(Renderer::getInstance().gRenderer);
