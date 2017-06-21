@@ -34,10 +34,19 @@
         "limites": [
           {
             "tipo": "enemigo_pez",
-            "cantidad_minima": 5,
-            "cantidad_maxima": 5,
+            "cantidad_minima": 2,
+            "cantidad_maxima": 2,
             "min_x": 1150,
-            "max_x": 2050,
+            "max_x": 1430,
+            "min_y": 600,
+            "max_y": 600
+          },
+           {
+            "tipo": "enemigo_pez",
+            "cantidad_minima": 3,
+            "cantidad_maxima": 3,
+            "min_x": 1750,
+            "max_x": 2030,
             "min_y": 600,
             "max_y": 600
           },
