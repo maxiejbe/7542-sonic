@@ -127,6 +127,8 @@ private:
 	bool levelFinishedNotified;
 	mutex levelFinishedMutex;
 
+	bool gameFinished;
+
 	Timer timer;
 
 	//update enemies handler

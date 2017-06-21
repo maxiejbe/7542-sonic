@@ -61,6 +61,7 @@ Server::Server(ServerConfiguration* serverConfig, string fileContent, Window* wi
 	this->gameConfig = gameConfig;
 
 	this->currentLevel = 1; // First level
+	this->gameFinished = false;
 	this->lastLevel = gameConfig->getLevels()->size();
 	this->resetLevel();
 
@@ -509,8 +510,9 @@ DWORD Server::updateEnemiesHandler()
 			}
 
 			//HORRIBLE BUT WORKS
-			if (!enemy->getIsActive() && enemy->getType() == EntityResolver::toTypeString(EntityType::enemigo_final)) {
+			if (!this->gameFinished && !enemy->getIsActive() && enemy->getType() == EntityResolver::toTypeString(EntityType::enemigo_final)) {
 				//notify end of game
+				this->gameFinished = true;
 				this->notifyClientsGameFinished();
 			}
 
