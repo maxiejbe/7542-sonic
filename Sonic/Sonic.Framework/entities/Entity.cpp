@@ -315,7 +315,7 @@ void Entity::setIsRecovering(bool isRecovering)
 
 double Entity::getLeft()
 {
-	return this->getXPosition() - this->getMaxHorizontalDistance();
+	return this->getXPosition() - this->getMaxHorizontalDistance() / 2;
 }
 
 double Entity::getRight()
