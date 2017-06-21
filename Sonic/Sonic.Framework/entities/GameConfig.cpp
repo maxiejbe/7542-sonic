@@ -12,8 +12,8 @@ string GAME_CONFIG_MODE_DEFAULT = "individual";
 GameConfig::GameConfig()
 {
 	this->ringPointsMultiplier = 10;
-	this->ringsForBonus = 5;
-	this->ringPointsMultiplier = 2;
+	this->ringsForBonus = 50;
+	this->bonusRingPointsMultiplier = 2;
 }
 
 GameMode GameConfig::fromStringMode(string gameMode)

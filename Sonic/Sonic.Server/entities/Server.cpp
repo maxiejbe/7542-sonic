@@ -431,14 +431,13 @@ void Server::levelFinished()
 
 void Server::updateScoresLevelFinished() 
 {
-	int currentPlayerTeamId;
 	int ringPoints;
 	Player* player;
+	int playerTeamId;
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
 		//If client is not connected, just set to false
 		if (!it->second->getPlayer()->getIsConnected()) continue;
 		player = it->second->getPlayer();
-		currentPlayerTeamId = player->getTeamId();
 		//calculate points obtained from rings
 		ringPoints = player->getRings() * this->gameConfig->getRingPointsMultiplier();
 		if (player->getRings() >= this->gameConfig->getRingsForBonus()) {
@@ -447,6 +446,12 @@ void Server::updateScoresLevelFinished()
 
 		//update points
 		player->sumPoints(ringPoints);
+		playerTeamId = player->getTeamId();
+		if (playerTeamId > PLAYER_TEAM_ID_NOT_SET) {
+			player->setTeamPoints(this->teamPoints[playerTeamId - 1]);
+			player->setTeamRings(this->teamRings[playerTeamId - 1]);
+		}
+		player->serializePlayer();
 	}
 }
 
