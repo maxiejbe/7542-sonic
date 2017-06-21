@@ -453,7 +453,11 @@ void Server::notifyClientsStartNewLevel()
 {
 	for (unordered_map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
 		//If client is not connected, just set to false
-		if (!it->second->getPlayer()->getIsConnected()) continue;
+		if (!it->second->getPlayer()->getIsConnected()) {
+			//reset disconnected player
+			it->second->getPlayer()->reset();
+			continue;
+		}
 		it->second->notifyStartNewLevel();
 	}
 }
