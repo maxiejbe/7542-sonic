@@ -136,6 +136,26 @@ void Client::terminateThreads()
 	}
 }
 
+bool Client::sendMessage(const char* serializedMessage, bool dispose = false)
+{
+	char fixedSerializedMessage[2048] = "";
+	for (size_t i = 0; i < strlen(serializedMessage); i++)
+	{
+		fixedSerializedMessage[i] = serializedMessage[i];
+	}
+	int messageLength = strlen(fixedSerializedMessage);
+
+	int bytecount;
+	if ((bytecount = send(this->getSocket(), fixedSerializedMessage, 2048, 0)) == SOCKET_ERROR) {
+		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
+			<< " (Cliente " << this->getClientNumber() << ")";
+		if (dispose) delete serializedMessage;
+		return false;
+	}
+	if (dispose) delete serializedMessage;
+	return true;
+}
+
 bool Client::sendHeartBeat() {
 	int bytecount;
 	ServerMessage sMessage;
@@ -143,12 +163,7 @@ bool Client::sendHeartBeat() {
 	string serializedMsg = sMessage.serialize();
 	const char* messageToSend = serializedMsg.c_str();
 
-	if ((bytecount = send(this->socket, messageToSend, strlen(messageToSend), 0)) == SOCKET_ERROR) {
-		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << messageToSend << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
-			<< " (Cliente " << this->clientNumber << ")";
-		return false;
-	}
-	return true;
+	return this->sendMessage(messageToSend);
 }
 
 bool Client::sendClientNumber()
@@ -161,13 +176,7 @@ bool Client::sendClientNumber()
 	string serializedMsg = sMessage.serialize();
 	const char* messageToSend = serializedMsg.c_str();
 
-	if ((bytecount = send(this->socket, messageToSend, strlen(messageToSend), 0)) == SOCKET_ERROR) {
-		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << messageToSend << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
-			<< " (Cliente " << this->clientNumber << ")";
-		return false;
-	}
-
-	return true;
+	return this->sendMessage(messageToSend);
 }
 
 bool Client::sendLevels()
@@ -178,16 +187,10 @@ bool Client::sendLevels()
 	message->setType(levels_content);
 	message->setLevels(this->server->getLevels());
 	string serializedMessage = message->serialize();
-
 	const char* levelsMessage = serializedMessage.c_str();
 	delete message;
 
-	if ((bytecount = send(this->socket, levelsMessage, strlen(levelsMessage), 0)) == SOCKET_ERROR) {
-		LOG(logERROR) << MESSAGE_CLIENT_SEND_LEVEL_ERROR << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
-			<< " (Cliente " << this->clientNumber << ")";
-		return false;
-	}
-	return true;
+	return this->sendMessage(levelsMessage);
 }
 
 bool Client::sendStatus()
@@ -196,18 +199,9 @@ bool Client::sendStatus()
 
 	ServerMessage * message = this->server->getStatusMessage();
 	char * serializedMessage = StringUtils::convert(message->serialize());
-
 	delete message;
 
-	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
-		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
-			<< " (Cliente " << this->getClientNumber() << ")";
-		delete serializedMessage;
-		return false;
-	}
-
-	delete serializedMessage;
-	return true;
+	return this->sendMessage(serializedMessage, true);
 }
 
 bool Client::sendEntitiesStatus()
@@ -216,25 +210,13 @@ bool Client::sendEntitiesStatus()
 
 	ServerMessage * message = this->server->getEntitiesStatusMessage();
 	char * serializedMessage = StringUtils::convert(message->serialize());
-
 	delete message;
 
-	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
-		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
-			<< " (Cliente " << this->getClientNumber() << ")";
-		delete serializedMessage;
-		return false;
-	}
-
-	delete serializedMessage;
-	return true;
+	return this->sendMessage(serializedMessage, true);
 }
 
 bool Client::sendLevelStart()
 {
-	//if send game notification was sent, don't send it again
-	//if (this->gameStartSent) return true;
-
 	int bytecount;
 
 	ServerMessage* message = new ServerMessage();
@@ -243,18 +225,9 @@ bool Client::sendLevelStart()
 	char* serializedMessage = StringUtils::convert(message->serialize());
 	delete message;
 
-	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
-		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
-			<< " (Cliente " << this->getClientNumber() << ")";
-		delete serializedMessage;
-		return false;
-	}
-
-	//set flag
+	int result = this->sendMessage(serializedMessage, true);
 	this->gameStartSent = true;
-
-	delete serializedMessage;
-	return true;
+	return result;
 }
 
 bool Client::sendLevelFinish()
@@ -264,18 +237,9 @@ bool Client::sendLevelFinish()
 	ServerMessage * message = this->server->getStatusMessage();
 	message->setType(level_finish);
 	char * serializedMessage = StringUtils::convert(message->serialize());
-
 	delete message;
 
-	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
-		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
-			<< " (Cliente " << this->getClientNumber() << ")";
-		delete serializedMessage;
-		return false;
-	}
-
-	delete serializedMessage;
-	return true;
+	return this->sendMessage(serializedMessage, true);
 }
 
 bool Client::sendGameFinish()
@@ -285,18 +249,9 @@ bool Client::sendGameFinish()
 	ServerMessage * message = this->server->getStatusMessage();
 	message->setType(game_finish);
 	char * serializedMessage = StringUtils::convert(message->serialize());
-
 	delete message;
 
-	if ((bytecount = send(this->getSocket(), serializedMessage, strlen(serializedMessage), 0)) == SOCKET_ERROR) {
-		LOG(logERROR) << MESSAGE_CLIENT_SEND_MESSAGE_ERROR << serializedMessage << ". " << MESSAGE_CLIENT_ERROR_CODE << WSAGetLastError()
-			<< " (Cliente " << this->getClientNumber() << ")";
-		delete serializedMessage;
-		return false;
-	}
-
-	delete serializedMessage;
-	return true;
+	return this->sendMessage(serializedMessage, true);
 }
 
 Player* Client::getPlayer()

@@ -29,6 +29,7 @@ public:
 	
 	void terminateThreads();
 
+	bool sendMessage(const char*, bool);
 	bool sendHeartBeat();
 	bool sendClientNumber();
 	bool sendLevels();
@@ -37,6 +38,7 @@ public:
 	bool sendGameFinish();
 	bool sendStatus();
 	bool sendEntitiesStatus();
+	
 	bool refreshPlayer();
 	bool notifyLevelFinished();
 	bool notifyStartNewLevel();
