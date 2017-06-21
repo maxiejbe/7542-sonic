@@ -31,6 +31,26 @@ void SoundManager::playSound(const string & fileName)
 	Mix_PlayChannel(-1, sound, 0);
 }
 
+void SoundManager::pauseMusic()
+{
+	if (Mix_PlayingMusic() == 1) {
+		Mix_PauseMusic();
+	}
+}
+
+void SoundManager::unpauseMusic()
+{
+	if (Mix_PausedMusic() == 1) {
+		Mix_ResumeMusic();
+	}
+}
+
+
+void SoundManager::stopMusic()
+{
+	Mix_HaltMusic();
+}
+
 void SoundManager::close()
 {
 	Mix_FreeChunk(sound);

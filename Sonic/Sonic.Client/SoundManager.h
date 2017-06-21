@@ -18,13 +18,10 @@ public:
 	bool create();
 	void close();
 	void playMusic(const string& fileName);
-	//void pauseMusic();
-	//void stopMusic();
+	void pauseMusic();
+	void unpauseMusic();
+	void stopMusic();
 	void playSound(const string& fileName);
-
-	//bool isPaused();
-	//bool isStopped();
-	//bool isPlaying();
 
 	SoundManager(SoundManager const&) = delete;
 	void operator=(SoundManager const&) = delete;

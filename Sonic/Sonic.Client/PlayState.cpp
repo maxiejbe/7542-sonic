@@ -21,9 +21,9 @@ void PlayState::load(Game* game)
 		Sleep(3000);
 	}
 
-	int at = NetworkManager::getInstance().getActualLevel() - 1;
-	if (at < 0) at = 0;
-	Level level = NetworkManager::getInstance().getLevels()->at(at);
+	int levelNumber = NetworkManager::getInstance().getActualLevel() - 1;
+	if (levelNumber < 0) levelNumber = 0;
+	Level level = NetworkManager::getInstance().getLevels()->at(levelNumber);
 
 	Scenario* scenario = level.getScenario();
 
@@ -58,7 +58,12 @@ void PlayState::load(Game* game)
 
 	game->pushState(WaitingState::Instance());
 
-	SoundManager::getInstance().playMusic("sounds/level1_song.mp3");
+	if (levelNumber == 0)
+		SoundManager::getInstance().playMusic("sounds/level1_song.mp3");
+	else if (levelNumber == 1)
+		SoundManager::getInstance().playMusic("sounds/level2_song.mp3");
+	else if (levelNumber == 2)
+		SoundManager::getInstance().playMusic("sounds/level3_song.mp3");
 
 	// Show level name
 	showLevelBackgroundName(level.getNumber());
@@ -74,6 +79,8 @@ int PlayState::unload()
 		delete statisticsPanel;
 		statisticsPanel = NULL;
 	}
+
+	SoundManager::getInstance().stopMusic();
 
 	return 0;
 }
