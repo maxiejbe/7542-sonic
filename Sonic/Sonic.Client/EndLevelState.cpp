@@ -25,6 +25,7 @@ void EndLevelState::load(Game* game)
 
 	this->showLevelHasPassed();
 	this->showStatistics(game->getGameMode());
+	SoundManager::getInstance().playMusic("sounds/stats.wav");
 }
 
 int EndLevelState::unload()

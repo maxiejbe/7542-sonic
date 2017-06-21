@@ -2,6 +2,7 @@
 #define RINGVIEW_H
 
 #include "EntityView.h"
+#include "SoundManager.h"
 
 class RingView : public EntityView {
 public:

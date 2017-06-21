@@ -15,11 +15,6 @@ bool Renderer::create()
 			LOG(logERROR) << "SDL_Image no pudo ser inicializado! SDL_Image Error: " << IMG_GetError();
 			return false;
 		}
-
-		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-			LOG(logERROR) << "SDL_mixer no pudo ser inicializado! SDL_mixer Error: " << IMG_GetError();
-			return false;
-		}
 	}
 	return true;
 }

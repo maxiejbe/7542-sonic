@@ -31,6 +31,7 @@
     <ClCompile Include="network\NetworkManager.cpp" />
     <ClCompile Include="network\SocketClient.cpp" />
     <ClCompile Include="SelectTeamState.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="utils\PlayerUtils.cpp" />
     <ClCompile Include="views\BonusView.cpp" />
     <ClCompile Include="views\common\EntityViewResolver.cpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="network\NetworkManager.h" />
     <ClInclude Include="network\SocketClient.h" />
     <ClInclude Include="SelectTeamState.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="utils\PlayerUtils.h" />
     <ClInclude Include="views\BonusView.h" />
     <ClInclude Include="views\common\Drawable.h" />
@@ -225,9 +227,11 @@ xcopy /Q /Y "$(ProjectDir)libs\SDL2-2.0.5\lib\x86\*.dll" "$(ProjectDir)$(Configu
 xcopy /Q /Y "$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86\*.dll" "$(ProjectDir)$(Configuration)"
 xcopy /Q /Y "$(ProjectDir)libs\SDL2_ttf-2.0.14\lib\x86\*.dll" "$(ProjectDir)$(Configuration)"
 xcopy /Q /Y "$(ProjectDir)libs\SDL2_gfx-1.0.3\lib\*.dll" "$(ProjectDir)$(Configuration)"
+xcopy /Q /Y "$(ProjectDir)libs\SDL2_mixer-2.0.1\lib\x86\*.dll" "$(ProjectDir)$(Configuration)"
 xcopy /S /E /Q /Y "$(ProjectDir)img" "$(ProjectDir)$(Configuration)\img\"
 xcopy /S /E /Q /Y "$(ProjectDir)config" "$(ProjectDir)$(Configuration)\config\"
-xcopy /S /E /Q /Y "$(ProjectDir)fonts" "$(ProjectDir)$(Configuration)\fonts\"</Command>
+xcopy /S /E /Q /Y "$(ProjectDir)fonts" "$(ProjectDir)$(Configuration)\fonts\"
+xcopy /S /E /Q /Y "$(ProjectDir)sounds" "$(ProjectDir)$(Configuration)\sounds\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -277,9 +281,11 @@ xcopy /Q /Y "$(ProjectDir)libs\SDL2-2.0.5\lib\x86\*.dll" "$(ProjectDir)$(Configu
 xcopy /Q /Y "$(ProjectDir)libs\SDL2_image-2.0.1\lib\x86\*.dll" "$(ProjectDir)$(Configuration)"
 xcopy /Q /Y "$(ProjectDir)libs\SDL2_ttf-2.0.14\lib\x86\*.dll" "$(ProjectDir)$(Configuration)"
 xcopy /Q /Y "$(ProjectDir)libs\SDL2_gfx-1.0.3\lib\*.dll" "$(ProjectDir)$(Configuration)"
+xcopy /Q /Y "$(ProjectDir)libs\SDL2_mixer-2.0.1\lib\x86\*.dll" "$(ProjectDir)$(Configuration)"
 xcopy /S /E /Q /Y "$(ProjectDir)img" "$(ProjectDir)$(Configuration)\img\"
 xcopy /S /E /Q /Y "$(ProjectDir)config" "$(ProjectDir)$(Configuration)\config\"
-xcopy /S /E /Q /Y "$(ProjectDir)fonts" "$(ProjectDir)$(Configuration)\fonts\"</Command>
+xcopy /S /E /Q /Y "$(ProjectDir)fonts" "$(ProjectDir)$(Configuration)\fonts\"
+xcopy /S /E /Q /Y "$(ProjectDir)sounds" "$(ProjectDir)$(Configuration)\sounds\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

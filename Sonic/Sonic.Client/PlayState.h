@@ -15,6 +15,7 @@
 #include "EndLevelState.h"
 #include "GameOverState.h"
 #include "Timer.h"
+#include "SoundManager.h"
 #include <stdio.h>
 #include <string>
 #include <cmath>
@@ -67,10 +68,6 @@ private:
 	Player* ownPlayer;
 
 	int team;
-
-	Mix_Music* musicSound;
-	Mix_Chunk* jumpSound;
-	Mix_Chunk* ringSound;
 };
 
 #endif // !PLAY_STATE_H

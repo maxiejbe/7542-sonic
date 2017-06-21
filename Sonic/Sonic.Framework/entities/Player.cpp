@@ -147,6 +147,7 @@ void Player::damage()
 			(*this->generalTeamRings)[teamIdIndex] -= this->rings;
 		}
 		rings = 0;
+		this->isRecovering = true;
 		return;
 	}
 

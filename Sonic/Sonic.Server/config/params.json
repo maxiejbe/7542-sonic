@@ -79,10 +79,10 @@
           },
           {
             "tipo": "obstaculo_pinche",
-            "cantidad_minima": 0,
-            "cantidad_maxima": 0,
+            "cantidad_minima": 1,
+            "cantidad_maxima": 1,
             "min_x": 200,
-            "max_x": 3400,
+            "max_x": 340,
             "min_y": 441,
             "max_y": 441
           },
