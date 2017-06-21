@@ -187,6 +187,7 @@ void NetworkManager::handleMessage(char * receivedMessage)
 			break;
 		case level_finish:
 			this->levelFinished = true;
+			this->updatePlayerViews(sMessage->getPlayers());
 			break;
 		case game_finish:
 			this->gameFinished = true;
