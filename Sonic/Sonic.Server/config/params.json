@@ -34,8 +34,8 @@
         "limites": [
           {
             "tipo": "enemigo_pez",
-            "cantidad_minima": 1,
-            "cantidad_maxima": 1,
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
             "min_x": 1000,
             "max_x": 1400,
             "min_y": 600,
@@ -52,8 +52,8 @@
           },
           {
             "tipo": "bonus_super_ring",
-            "cantidad_minima": 5,
-            "cantidad_maxima": 5,
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
             "min_x": 200,
             "max_x": 3400,
             "min_y": 441,
@@ -61,8 +61,8 @@
           },
           {
             "tipo": "enemigo_cangrejo",
-            "cantidad_minima": 3,
-            "cantidad_maxima": 7,
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
             "min_x": 200,
             "max_x": 3400,
             "min_y": 441,
@@ -70,8 +70,8 @@
           },
           {
             "tipo": "enemigo_mosca",
-            "cantidad_minima": 2,
-            "cantidad_maxima": 3,
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
             "min_x": 200,
             "max_x": 1500,
             "min_y": 250,
@@ -79,8 +79,8 @@
           },
           {
             "tipo": "obstaculo_pinche",
-            "cantidad_minima": 1,
-            "cantidad_maxima": 3,
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
             "min_x": 200,
             "max_x": 3400,
             "min_y": 441,
@@ -88,12 +88,21 @@
           },
           {
             "tipo": "obstaculo_piedra",
-            "cantidad_minima": 1,
-            "cantidad_maxima": 3,
+            "cantidad_minima": 0,
+            "cantidad_maxima": 0,
             "min_x": 200,
             "max_x": 3400,
             "min_y": 441,
             "max_y": 441
+          },
+          {
+            "tipo": "enemigo_final",
+            "cantidad_minima": 1,
+            "cantidad_maxima": 1,
+            "min_x": 3600,
+            "max_x": 3600,
+            "min_y": 150,
+            "max_y": 150
           }
         ]
       },

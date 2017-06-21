@@ -2,8 +2,12 @@
 
 const int RECOVERING_SECONDS = 3;
 
+int EnemyController::resetCounter = 0;
+
 EnemyController::EnemyController()
 {
+	//EnemyController::resetCounter = 0;
+	//this->resetCounter = 0;
 }
 
 void EnemyController::update(Enemy * enemy, int milliseconds)
@@ -31,21 +35,37 @@ void EnemyController::move(Enemy * enemy)
 		horizontalMovement(enemy, 0.03);
 		break;
 	case enemigo_final:
-		horizontalMovement(enemy, 0.03);
+		if (resetCounter % 2 == 0)
+			horizontalMovement(enemy, 0.03);
+		else
+			verticalMovement(enemy, 0.03);
 		break;
 	}
 
 	// If reached max distance change direction
-	if (enemy->getDistanceTravelled() >= enemy->getMaxDistance()) {
+	if (EntityResolver::fromTypeString(enemy->getType()) == enemigo_final) {
+		if (enemy->getDistanceTravelled() >= enemy->getMaxDistance()) {
+			if (EnemyController::resetCounter % 2 == 0) {
+				FacingDirection newDirection = (enemy->getFacingDirection() == FACING_LEFT) ? FACING_RIGHT : FACING_LEFT;
+				enemy->setFacingDirection(newDirection);
+				enemy->setMaxHorizontalDistance(250);
+			}
+			else {
+				enemy->setMaxHorizontalDistance(800);
+			}
+
+			enemy->resetDistanceTravelled();
+
+			EnemyController::resetCounter++;
+			if (EnemyController::resetCounter > 3) {
+				EnemyController::resetCounter = 0;
+			}
+		}
+	}
+	else if (enemy->getDistanceTravelled() >= enemy->getMaxDistance()) {
 		FacingDirection newDirection = (enemy->getFacingDirection() == FACING_LEFT) ? FACING_RIGHT : FACING_LEFT;
 		enemy->setFacingDirection(newDirection);
 		enemy->resetDistanceTravelled();
-
-		if (EntityResolver::fromTypeString(enemy->getType()) == enemigo_final) {
-			Coordinate c = Coordinate(enemy->getCoordinate().getX(),
-				newDirection == FACING_RIGHT ? enemy->getCoordinate().getY() + 230 : enemy->getCoordinate().getY() - 230);
-			enemy->setCoordinate(c);
-		}
 	}
 }
 
