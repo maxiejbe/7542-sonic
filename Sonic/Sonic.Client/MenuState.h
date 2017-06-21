@@ -30,19 +30,19 @@ protected:
 private:
 	static MenuState m_MenuState;
 
-	static const int OPCMENU = 3;
+	static const int OPCMENU = 2;
 
 	TTF_Font* font;
 	Texture texture;
+	Texture textureConnect;
+	Texture textureExit;
 	Uint32 time;
 	float posX, posY;
 	const char* labels[OPCMENU];
-	SDL_Surface* menus[OPCMENU];
 	bool selected[OPCMENU];
 	SDL_Color color[OPCMENU];
 	int option;
 	MenuConnectionStatus connectionStatus;
-	bool enabled[OPCMENU];
 	GameMode gameMode;
 
 	void initColorNameOptions();
@@ -50,7 +50,6 @@ private:
 	void updateAndRenderOptions();
 	void renderSelectedOption();
 	int getNextOption(int, int);
-	void setEnabledOptions();
 };
 
 #endif // !MENU_STATE_H
