@@ -65,6 +65,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="config\params.json" />
-    <None Include="config\params2.json" />
   </ItemGroup>
 </Project>
