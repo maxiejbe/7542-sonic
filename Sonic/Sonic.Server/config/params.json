@@ -2,7 +2,7 @@
   "servidor": {
     "host": "127.0.0.1",
     "puerto": 5000,
-    "maxima_cantidad_conexiones": 1
+    "maxima_cantidad_conexiones": 2
   },
   "ventana": {
     "dimensiones": {
@@ -14,7 +14,7 @@
     "vel_scroll": 400
   },
   "juego": {
-    "modo": "individual",
+    "modo": "colaborativo",
     "niveles": [
       {
         "numero": 1,
@@ -52,8 +52,8 @@
           },
           {
             "tipo": "enemigo_cangrejo",
-            "cantidad_minima": 0,
-            "cantidad_maxima": 0,
+            "cantidad_minima": 1,
+            "cantidad_maxima": 2,
             "min_x": 2100,
             "max_x": 3400,
             "min_y": 441,
@@ -61,8 +61,8 @@
           },
           {
             "tipo": "enemigo_mosca",
-            "cantidad_minima": 0,
-            "cantidad_maxima": 0,
+            "cantidad_minima": 1,
+            "cantidad_maxima": 2,
             "min_x": 2100,
             "max_x": 3400,
             "min_y": 250,
@@ -70,8 +70,8 @@
           },
           {
             "tipo": "bonus_super_ring",
-            "cantidad_minima": 10,
-            "cantidad_maxima": 10,
+            "cantidad_minima": 1,
+            "cantidad_maxima": 5,
             "min_x": 500,
             "max_x": 3200,
             "min_y": 441,
@@ -79,18 +79,18 @@
           },
           {
             "tipo": "bonus_invencibilidad",
-            "cantidad_minima": 0,
-            "cantidad_maxima": 0,
+            "cantidad_minima": 1,
+            "cantidad_maxima": 5,
             "min_x": 500,
-            "max_x": 1100,
+            "max_x": 3200,
             "min_y": 441,
             "max_y": 441
           },
           {
             "tipo": "bonus_escudo",
-            "cantidad_minima": 0,
-            "cantidad_maxima": 0,
-            "min_x": 2200,
+            "cantidad_minima": 1,
+            "cantidad_maxima": 5,
+            "min_x": 1200,
             "max_x": 3100,
             "min_y": 441,
             "max_y": 441
@@ -115,7 +115,7 @@
           },
           {
             "tipo": "anillo",
-            "cantidad_minima": 20,
+            "cantidad_minima": 10,
             "cantidad_maxima": 30,
             "min_x": 200,
             "max_x": 3400,
